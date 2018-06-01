@@ -10,26 +10,49 @@ namespace Meteo
 {
     class PreImage
     {
-        Bitmap orp;
-
-        public PreImage()
+        Bitmap orp = Properties.Resources.ORP;
+		
+		public PreImage()
         {
             View.FormMain.button1.Click += new EventHandler(button1_Click);
 
-            orp = Properties.Resources.ORP;
-            
-        }
+		}
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Thread t = new Thread(new ThreadStart(Test));
-            t.Start();
-        }
+		private void LoadORP()
+		{
+			try
+			{
+				Util.ShowLoading("ORP...");
+				var mapCR =
+					 from x in Enumerable.Range(0, orp.Width - 1)
+					 from y in Enumerable.Range(0, orp.Height - 1)
+					 select new { color = orp.GetPixel(x, y), point = new Point(x, y) };
+
+				mapCR = mapCR.Where((key, val) => !(key.color.Name == "ffffffff" || key.color.Name == "ff000000"));
+
+				foreach (var map in mapCR.Where((key, val) => key.color.Name == "ff191919"))
+				{
+					Util.l(map.color.Name+" "+map.point.X+"x"+map.point.Y);
+				}
+			}
+			catch (Exception ex)
+			{
+				Util.l(ex.ToString());
+			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Thread t = new Thread(new ThreadStart(LoadORP));
+			t.Start();
+		}
+
+
 
         private void Test()
         {
             try {
-                Util.ShowLoading("Zpracování...");
+                Util.ShowLoading("Zpracování ...");
 
                 View.FormMain.button1.BeginInvoke((Action)(() =>
                     View.FormMain.button1.Text = "počítám"

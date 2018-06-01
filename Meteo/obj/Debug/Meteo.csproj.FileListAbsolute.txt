@@ -11,3 +11,11 @@ D:\_PROGRAMOVANI\workspace\csharp\Meteo\Meteo\obj\Debug\Meteo.FormMain.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Meteo.exe.config
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Meteo.exe
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Meteo.pdb
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csprojAssemblyReference.cache
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormLoader.resources
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormMain.resources
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.Properties.Resources.resources
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.GenerateResource.cache
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInputs.cache
