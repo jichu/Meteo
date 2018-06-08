@@ -19,3 +19,14 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormMain.res
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.Properties.Resources.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.GenerateResource.cache
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInputs.cache
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Meteo.exe.config
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Meteo.exe
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Meteo.pdb
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csprojAssemblyReference.cache
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.FormLoader.resources
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.FormMain.resources
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.Properties.Resources.resources
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.GenerateResource.cache
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInputs.cache
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb

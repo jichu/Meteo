@@ -84,7 +84,7 @@ namespace Meteo
         private void Test()
         {
             try {
-                Util.ShowLoading("Zpracování ...");
+                Util.ShowLoading("Pracuju ...");
 
                 View.FormMain.button1.BeginInvoke((Action)(() =>
                     View.FormMain.button1.Text = "počítám"
