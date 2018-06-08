@@ -37,7 +37,7 @@ namespace Meteo
                     if (!greyColors.Exists(x => x == map.color))
                         greyColors.Add(map.color);
                 }
-                foreach (var map in mapCR.Where((key, val) => key.color.Name == greyColors[2].Name))
+                foreach (var map in mapCR.Where((key, val) => key.color.Name == greyColors[0].Name))
                 {
                     Util.l(map.color.Name + " " + map.point.X + "x" + map.point.Y);
                 }
