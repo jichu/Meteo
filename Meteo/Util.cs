@@ -11,7 +11,8 @@ namespace Meteo
 {
     public static class Util
     {
-		//public static Dictionary<Color, List<Point>> mapCR = new Dictionary<Color, List<Point>>();
+        //public static Dictionary<Color, List<Point>> mapCR = new Dictionary<Color, List<Point>>();
+
 
         public static void ShowLoading(string message)
         {
