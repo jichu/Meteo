@@ -11,13 +11,16 @@ namespace Meteo
     class PreImage
     {
         Bitmap orp = Properties.Resources.ORP;
-        Dictionary<Color, List<Point>> mapORP;
-
+        private Dictionary<string, List<Point>> mapORP=new Dictionary<string, List<Point>>();
         public PreImage()
         {
-            View.FormMain.button1.Click += new EventHandler(button1_Click);
+            //View.FormMain.button1.Click += new EventHandler(button1_Click);
+            LoadORP();
 
 		}
+        public Dictionary<string, List<Point>> getMapORP() {
+            return mapORP;
+        }
 
 		private void LoadORP()
 		{
@@ -30,35 +33,39 @@ namespace Meteo
                      select new { color = orp.GetPixel(x, y), point = new Point(x, y) };
 
                 mapCR = mapCR.Where((key, val) => !(key.color.Name == "ffffffff" || key.color.Name == "ff000000"));
-
+                /*
                 List<Color> greyColors = new List<Color>();
                 foreach (var map in mapCR)
                 {
                     if (!greyColors.Exists(x => x == map.color))
                         greyColors.Add(map.color);
                 }
-                foreach (var map in mapCR.Where((key, val) => key.color.Name == greyColors[0].Name))
+                foreach (var color in greyColors)
                 {
-                    Util.l(map.color.Name + " " + map.point.X + "x" + map.point.Y);
-                }
-                /*
+                    foreach (var map in mapCR.Where((key, val) => key.color.Name == color.Name))
+                    {
+                        Util.l(map.color.Name + " " + map.point.X + "x" + map.point.Y);
+                    }
+                }*/
+
+                
                 foreach (var map in mapCR)
                 {
-                    List<Point> p = new List<Point>();
-                    if (mapORP.ContainsKey(map.color))
+                    if (mapORP.ContainsKey(map.color.Name))
                     {
-                        List<Point> pp = mapORP[map.color];
+                        List<Point> pp = mapORP[map.color.Name];
                         pp.Add(map.point);
-                        mapORP[map.color] = pp;
+                        mapORP[map.color.Name]=pp;
                     }
                     else
                     {
+                        List<Point> p = new List<Point>();
                         p.Add(map.point);
-                        mapORP[map.color] = p;
+                        mapORP.Add(map.color.Name, p);
                     }
                 }
 
-                foreach (var map in mapORP)
+               /* foreach (var map in mapORP)
                 {
                     Util.l(map.Key + ":");
                     foreach (var point in map.Value)

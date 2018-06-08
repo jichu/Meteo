@@ -14,10 +14,43 @@ namespace Meteo
         private bool isDragging;
         private int currentX;
         private int currentY;
+        private PreImage mapORP;
+        private Bitmap bmp;
 
         public Images() {
+            mapORP = new PreImage();
             LoadModel();
-            LoadORP();
+            //LoadORP();
+            LoadPointsOfColorsInMap();
+
+        }
+
+        private void LoadPointsOfColorsInMap()
+        {
+
+            foreach (var map in mapORP.getMapORP())
+            {
+                Util.l(map.Key + ":");
+                List<Color> colors = new List<Color>();
+                foreach (var point in map.Value)
+                {
+                    Color c = bmp.GetPixel(point.X, point.Y);
+                    bmp.SetPixel(point.X, point.Y, Color.FromArgb(0,Color.ForestGreen));
+                    colors.Add(c);
+                    //Util.l("  -- " + point.X + "x" + point.Y+ " "+c.Name);
+                }
+                GetColorFromSpectrumBar(colors);
+            }
+            View.FormMain.pictureBoxModel.Image = bmp;
+        }
+
+        private void GetColorFromSpectrumBar(List<Color> list)
+        {
+            foreach (var c in list)
+                if (Util.spektrumRadar.Contains(c.Name)) {
+                    Util.l(c.Name);
+                }
+            ;
 
         }
 
@@ -61,7 +94,7 @@ namespace Meteo
             foreach (var filename in files)
             
                 {
-                    Bitmap bmp = null;
+                    
                     try
                     {
                         bmp = new Bitmap(filename);

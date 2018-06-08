@@ -11,7 +11,7 @@ namespace Meteo
         public Controller()
         {
             new Images();
-            new PreImage();
+            
         }
     }
 }

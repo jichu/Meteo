@@ -54,7 +54,7 @@
             // 
             // pictureBoxORP
             // 
-            this.pictureBoxORP.Location = new System.Drawing.Point(48, 138);
+            this.pictureBoxORP.Location = new System.Drawing.Point(48, 60);
             this.pictureBoxORP.Name = "pictureBoxORP";
             this.pictureBoxORP.Size = new System.Drawing.Size(100, 50);
             this.pictureBoxORP.TabIndex = 2;
