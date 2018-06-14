@@ -27,6 +27,21 @@ namespace Meteo
 			try
 			{
 				Util.ShowLoading("ORP...");
+                
+
+                List<CloudORP> l = Model.Cloud.GetORPs();
+                foreach(var ll in l)
+                {
+                    Util.l($"{ll.Color}  point: {ll.Point}");
+                }
+
+                l= Model.Cloud.GetORPsPointByColor("fff");
+                foreach (var ll in l)
+                {
+                    Util.l(ll.Point);
+                }
+
+
                 var mapCR =
                      from x in Enumerable.Range(0, orp.Width - 1)
                      from y in Enumerable.Range(0, orp.Height - 1)
