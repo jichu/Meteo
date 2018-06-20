@@ -15,7 +15,7 @@ namespace Meteo
         public static List<String> spektrumRadar = new List<string>() { "fffcfcfc","ffa00000", "fffc0000", "fffc5800", "fffc8400", "fffcb000", "ffe0dc00", "ff9cdc00", "ff34d800", "ff00bc00", "ff00a000", "ff006cc0", "ff0000fc", "ff3000a8", "ff380070" };
 
         public static bool Develop = true;
-
+         
         public static void ShowLoading(string message)
         {
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)
