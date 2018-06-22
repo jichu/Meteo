@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -80,14 +82,34 @@ namespace Meteo
                     }
                 }
 
-               /* foreach (var map in mapORP)
+                Dictionary<string, JArray> data = new Dictionary<string, JArray>();
+
+                foreach (var map in mapCR)
                 {
-                    Util.l(map.Key + ":");
-                    foreach (var point in map.Value)
+                    if (data.ContainsKey(map.color.Name))
                     {
-                        Util.l("  -- " + point.X + "x" + point.Y);
+                        JArray array = data[map.color.Name];
+                        JArray p = new JArray();
+                        p.Add(map.point.X);
+                        p.Add(map.point.Y);
+                        array.Add(p);
+                        data[map.color.Name] = array;
                     }
-                }*/
+                    else
+                    {
+                        JArray array = new JArray();
+                        JArray p = new JArray();
+                        p.Add(map.point.X);
+                        p.Add(map.point.Y);
+                        array.Add(p);
+                        data.Add(map.color.Name, array);
+                    }
+                }
+
+                foreach (var map in data)
+                 {
+                         Util.l(JsonConvert.SerializeObject(map.Value));
+                 }
             }
 			catch (Exception ex)
 			{
