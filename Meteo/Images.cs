@@ -30,40 +30,51 @@ namespace Meteo
 
             foreach (var map in mapORP.getMapORP())
             {
-                Util.l(map.Key + ":");
+                Util.l("Region: "+map.Key + ":");
                 List<Color> colors = new List<Color>();
+                int sizeRegion = 0;
                 foreach (var point in map.Value)
                 {
                     Color c = bmp.GetPixel(point.X, point.Y);
-                    bmp.SetPixel(point.X, point.Y, Color.FromArgb(0,Color.ForestGreen));
+                    bmp.SetPixel(point.X, point.Y, Color.ForestGreen);
                     colors.Add(c);
+                    sizeRegion++;
                     //Util.l("  -- " + point.X + "x" + point.Y+ " "+c.Name);
                 }
-                GetColorFromSpectrumBar(colors);
+                GetColorFromSpectrumBar(colors, sizeRegion);
             }
             View.FormMain.pictureBoxModel.Image = bmp;
         }
 
-        private void GetColorFromSpectrumBar(List<Color> list)
+        private void GetColorFromSpectrumBar(List<Color> list, int sizeRegion)
         {
+            Dictionary<string,int> counts = new Dictionary<string, int>();
             foreach (var c in list)
-                if (Util.spektrumRadar.Contains(c.Name)) {
-                    Util.l(c.Name);
+                if (Util.spektrumSrazky.Contains(c.Name))
+                {
+                    if (counts.ContainsKey(c.Name))
+                        counts[c.Name]++;
+                    else
+                        counts[c.Name]=1;
                 }
-            ;
 
+            Util.l($" - region size: {sizeRegion}");
+            foreach (var c in counts)
+                Util.l($" - {c.Key}: {c.Value}x");
         }
 
         private void LoadORP()
         {
+            /*
             View.FormMain.pictureBoxORP.Image = Properties.Resources.ORP;
             View.FormMain.pictureBoxORP.Width = Properties.Resources.ORP.Width;
             View.FormMain.pictureBoxORP.Height = Properties.Resources.ORP.Height;
             View.FormMain.pictureBoxORP.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseDown);
             View.FormMain.pictureBoxORP.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseMove);
             View.FormMain.pictureBoxORP.MouseUp+= new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseUp);
+            */
         }
-
+        /*
         private void pictureBoxORP_MouseDown(object sender, MouseEventArgs e)
         {
             isDragging = true;
@@ -83,10 +94,10 @@ namespace Meteo
         {
             isDragging = false;
         }
-
+        */
         private void LoadModel()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"models\1_Radarove_snimky\");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"models\2_Srazky\");
 
             Util.l(path);
             string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);

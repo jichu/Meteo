@@ -30,14 +30,12 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBoxModel = new System.Windows.Forms.PictureBox();
-            this.pictureBoxORP = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxModel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxORP)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(28, 13);
+            this.button1.Location = new System.Drawing.Point(978, 55);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -46,19 +44,11 @@
             // 
             // pictureBoxModel
             // 
-            this.pictureBoxModel.Location = new System.Drawing.Point(48, 60);
+            this.pictureBoxModel.Location = new System.Drawing.Point(12, 12);
             this.pictureBoxModel.Name = "pictureBoxModel";
             this.pictureBoxModel.Size = new System.Drawing.Size(100, 50);
             this.pictureBoxModel.TabIndex = 1;
             this.pictureBoxModel.TabStop = false;
-            // 
-            // pictureBoxORP
-            // 
-            this.pictureBoxORP.Location = new System.Drawing.Point(48, 60);
-            this.pictureBoxORP.Name = "pictureBoxORP";
-            this.pictureBoxORP.Size = new System.Drawing.Size(100, 50);
-            this.pictureBoxORP.TabIndex = 2;
-            this.pictureBoxORP.TabStop = false;
             // 
             // FormMain
             // 
@@ -66,7 +56,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1065, 513);
-            this.Controls.Add(this.pictureBoxORP);
             this.Controls.Add(this.pictureBoxModel);
             this.Controls.Add(this.button1);
             this.Name = "FormMain";
@@ -75,7 +64,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxModel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxORP)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -84,7 +72,6 @@
 
         public System.Windows.Forms.Button button1;
         public System.Windows.Forms.PictureBox pictureBoxModel;
-        public System.Windows.Forms.PictureBox pictureBoxORP;
     }
 }
 
