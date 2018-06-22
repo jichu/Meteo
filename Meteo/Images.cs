@@ -49,18 +49,22 @@ namespace Meteo
         private void GetColorFromSpectrumBar(List<Color> list, int sizeRegion)
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
+            Dictionary<string, int> values = new Dictionary<string, int>();
+            float sumValues = 0;
             foreach (var c in list)
-                if (Util.spektrumSrazky.Contains(c.Name))
+                if (Util.spektrumSrazky.ContainsKey(c.Name))
                 {
                     if (counts.ContainsKey(c.Name))
                         counts[c.Name]++;
                     else
                         counts[c.Name]=1;
+                    sumValues += Util.spektrumSrazky[c.Name];
                 }
 
-            Util.l($" - region size: {sizeRegion}");
             foreach (var c in counts)
-                Util.l($" - {c.Key}: {c.Value}x");
+                Util.l($" + nalezeno {c.Key}: {c.Value}x");
+            Util.l($" - region size: {sizeRegion}");
+            Util.l($" - průměrná hodnota regionu: {sumValues/sizeRegion}");
         }
 
         private void LoadORP()
