@@ -39,3 +39,12 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.xm
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud.mdf
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud_log.ldf
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Cloud.mdf
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Cloud_log.ldf
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Dapper.dll
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Drapper.dll
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Drapper.Validation.dll
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Dapper.xml
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
