@@ -48,5 +48,3 @@ C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Dapper.xml
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
-C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\_Cloud.mdf
-C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\_Cloud_log.ldf
