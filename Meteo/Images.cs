@@ -20,7 +20,7 @@ namespace Meteo
         public Images() {
             mapORP = new PreImage();
             LoadModel();
-            //LoadORP();
+            LoadORP();
             LoadPointsOfColorsInMap();
 
         }
@@ -35,10 +35,16 @@ namespace Meteo
                 int sizeRegion = 0;
                 foreach (var point in map.Value)
                 {
-                    Color c = bmp.GetPixel(point.X, point.Y);
-                    bmp.SetPixel(point.X, point.Y, Color.ForestGreen);
-                    colors.Add(c);
-                    sizeRegion++;
+                    try
+                    {
+                        Color c = bmp.GetPixel(point.X, point.Y);
+                        bmp.SetPixel(point.X, point.Y, Color.ForestGreen);
+                        colors.Add(c);
+                        sizeRegion++;
+                        
+                    }
+                    catch (Exception e) {
+                    }
                     //Util.l("  -- " + point.X + "x" + point.Y+ " "+c.Name);
                 }
                 GetColorFromSpectrumBar(colors, sizeRegion);
@@ -69,16 +75,16 @@ namespace Meteo
 
         private void LoadORP()
         {
-            /*
-            View.FormMain.pictureBoxORP.Image = Properties.Resources.ORP;
-            View.FormMain.pictureBoxORP.Width = Properties.Resources.ORP.Width;
-            View.FormMain.pictureBoxORP.Height = Properties.Resources.ORP.Height;
-            View.FormMain.pictureBoxORP.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseDown);
-            View.FormMain.pictureBoxORP.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseMove);
-            View.FormMain.pictureBoxORP.MouseUp+= new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseUp);
-            */
+            
+            View.FormMain.pictureBoxModel.Image = Properties.Resources.ORP;
+            View.FormMain.pictureBoxModel.Width = Properties.Resources.ORP.Width;
+            View.FormMain.pictureBoxModel.Height = Properties.Resources.ORP.Height;
+            View.FormMain.pictureBoxModel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseDown);
+            View.FormMain.pictureBoxModel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseMove);
+            View.FormMain.pictureBoxModel.MouseUp+= new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseUp);
+            
         }
-        /*
+        
         private void pictureBoxORP_MouseDown(object sender, MouseEventArgs e)
         {
             isDragging = true;
@@ -90,15 +96,15 @@ namespace Meteo
         {
             if (isDragging)
             {
-                View.FormMain.pictureBoxORP.Top = View.FormMain.pictureBoxORP.Top + (e.Y - currentY);
-                View.FormMain.pictureBoxORP.Left = View.FormMain.pictureBoxORP.Left + (e.X - currentX);
+                View.FormMain.pictureBoxModel.Top = View.FormMain.pictureBoxModel.Top + (e.Y - currentY);
+                View.FormMain.pictureBoxModel.Left = View.FormMain.pictureBoxModel.Left + (e.X - currentX);
             }
         }
         private void pictureBoxORP_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
         }
-        */
+        
         private void LoadModel()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"models\2_Srazky\");
