@@ -33,5 +33,16 @@ namespace Meteo.Properties {
                 return ((string)(this["CloudConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Pokus.mdf;Int" +
+            "egrated Security=True")]
+        public string PokusConnectionString {
+            get {
+                return ((string)(this["PokusConnectionString"]));
+            }
+        }
     }
 }

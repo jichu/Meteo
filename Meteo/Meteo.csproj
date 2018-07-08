@@ -96,6 +96,11 @@
     <Compile Include="Images.cs" />
     <Compile Include="CloudORP.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="PokusDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PokusDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="PreImage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,6 +136,17 @@
     </None>
     <None Include="Drapper.Settings.json" />
     <None Include="packages.config" />
+    <None Include="PokusDataSet.xsc">
+      <DependentUpon>PokusDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="PokusDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PokusDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PokusDataSet.xss">
+      <DependentUpon>PokusDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -153,9 +169,23 @@
     <Content Include="Cloud.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Cloud2.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Cloud2_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Cloud2.mdf</DependentUpon>
+    </Content>
     <Content Include="Cloud_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Cloud.mdf</DependentUpon>
+    </Content>
+    <Content Include="Pokus.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pokus_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Pokus.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +195,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
