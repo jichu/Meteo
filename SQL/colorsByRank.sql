@@ -1,0 +1,2 @@
+﻿SELECT color from MODEL_SPECTRUM as MS join MODELS as M ON M.ID_MODEL = MS.ID_MODEL where M.name='ALADIN' AND MS.RANK=0;
+SELECT color from MODEL_SPECTRUM where ID_MODEL=1 and RANK=0
