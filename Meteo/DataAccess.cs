@@ -27,5 +27,15 @@ namespace Meteo
                 return output;
             }
         }
+
+        public List<CloudORP> GetMSCoodsByColor(string color)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORP>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color", new { Color = color }).ToList();
+                               
+                return output;
+            }
+        }
     }
 }

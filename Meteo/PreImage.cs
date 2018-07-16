@@ -31,16 +31,22 @@ namespace Meteo
 				Util.ShowLoading("ORP...");
                 
 
-                List<CloudORP> l = Model.Cloud.GetORPs();
+                /*List<CloudORP> l = Model.Cloud.GetORPs();
                 foreach(var ll in l)
                 {
                     Util.l($"{ll.Color}  point: {ll.Point}");
-                }
+                }*/
 
-                l= Model.Cloud.GetORPsPointByColor("fff");
+                /*l= Model.Cloud.GetORPsPointByColor("fff");
                 foreach (var ll in l)
                 {
                     Util.l(ll.Point);
+                }*/
+                List<CloudORP> l = Model.Cloud.GetMSCoodsByColor("#fff");
+                
+                foreach (var ll in l)
+                {
+                    Util.l($"col:{ll.Color}  points: {ll.Coods}");
                 }
 
 

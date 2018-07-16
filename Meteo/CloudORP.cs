@@ -9,6 +9,6 @@ namespace Meteo
     public class CloudORP
     {
         public string Color { get; set; }
-        public string Point { get; set; }
+        public string Coods { get; set; }
     }
 }
