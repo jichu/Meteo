@@ -43,7 +43,7 @@ namespace Meteo
                     Util.l(ll.Point);
                 }*/
                 List<CloudORP> l = Model.Cloud.GetMSCoodsByColor("#fff");
-                
+                Util.l("Tu to bude vypisovat");
                 foreach (var ll in l)
                 {
                     Util.l($"col:{ll.Color}  points: {ll.Coods}");
