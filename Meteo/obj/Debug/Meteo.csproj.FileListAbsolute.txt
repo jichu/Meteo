@@ -28,8 +28,6 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.xm
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud.mdf
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud_log.ldf
-C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Cloud2.mdf
-C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Cloud2_log.ldf
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Pokus.mdf
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Pokus_log.ldf
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Meteo.exe.config
