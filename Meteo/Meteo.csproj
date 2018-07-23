@@ -166,9 +166,7 @@
     <None Include="Resources\ORP.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cloud.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Cloud.mdf" />
     <Content Include="Cloud2.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -177,7 +175,6 @@
       <DependentUpon>Cloud2.mdf</DependentUpon>
     </Content>
     <Content Include="Cloud_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Cloud.mdf</DependentUpon>
     </Content>
     <Content Include="Pokus.mdf">
