@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace Meteo
 {
     class PreImage
@@ -47,8 +48,17 @@ namespace Meteo
                 foreach (var ll in l)
                 {
                     Util.l($"col:{ll.Color}  points: {ll.Coods}");
+                    string ch = @"{'coods':[[11,21],[12,22]]}";
+                    //string ch = @"{'coods':[[11,21],[12,22]]}";
+                    string json = ch; 
+                    //string json = @"{'coods':[[11,21],[12,22]]}";
+                    JObject rss = JObject.Parse(json);
+                    string rssX = (string)rss["coods"][0][0];
+                    Util.l(rssX);
                 }
 
+
+                
 
                 var mapCR =
                      from x in Enumerable.Range(0, orp.Width - 1)
