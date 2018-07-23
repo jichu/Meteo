@@ -75,11 +75,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CloudDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CloudDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="DataAccess.cs" />
     <Compile Include="FormLoader.cs">
       <SubType>Form</SubType>
@@ -96,11 +91,6 @@
     <Compile Include="Images.cs" />
     <Compile Include="CloudORP.cs" />
     <Compile Include="Model.cs" />
-    <Compile Include="PokusDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PokusDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="PreImage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,30 +113,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="CloudDataSet.xsc">
-      <DependentUpon>CloudDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="CloudDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>CloudDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="CloudDataSet.xss">
-      <DependentUpon>CloudDataSet.xsd</DependentUpon>
-    </None>
     <None Include="Drapper.Settings.json" />
     <None Include="packages.config" />
-    <None Include="PokusDataSet.xsc">
-      <DependentUpon>PokusDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="PokusDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>PokusDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="PokusDataSet.xss">
-      <DependentUpon>PokusDataSet.xsd</DependentUpon>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -166,23 +134,12 @@
     <None Include="Resources\ORP.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cloud.mdf" />
-    <Content Include="Cloud2.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Cloud2_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Cloud2.mdf</DependentUpon>
-    </Content>
     <Content Include="Cloud3.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Cloud3_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Cloud3.mdf</DependentUpon>
-    </Content>
-    <Content Include="Cloud_log.ldf">
-      <DependentUpon>Cloud.mdf</DependentUpon>
     </Content>
     <Content Include="Pokus.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
