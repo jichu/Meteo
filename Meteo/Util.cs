@@ -43,6 +43,10 @@ namespace Meteo
         public static void l(object obj)
         {
             Console.WriteLine(obj);
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("log.txt", true)) {
+                file.WriteLine(obj);
+            }
+                //System.IO.File.WriteAllText("log.txt", obj.ToString());
         }
 
 

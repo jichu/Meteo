@@ -99,7 +99,7 @@ namespace Meteo
                 }
 
                 Dictionary<string, JArray> data = new Dictionary<string, JArray>();
-                /*
+                
                 foreach (var map in mapCR)
                 {
                     if (data.ContainsKey(map.color.Name))
@@ -125,7 +125,7 @@ namespace Meteo
                 foreach (var map in data)
                  {
                          Util.l(JsonConvert.SerializeObject(map.Value));
-                 }*/
+                 }
             }
 			catch (Exception ex)
 			{
