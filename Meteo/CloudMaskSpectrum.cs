@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace Meteo
 {
-    public class CloudORP
+    public class CloudMaskSpectrum
     {
+        public int id_model { get; set; }
+        public int id_orp { get; set; }
         public string Color { get; set; }
         public string Coods { get; set; }
+
+        
     }
+
+    
 }

@@ -89,7 +89,9 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Images.cs" />
-    <Compile Include="CloudORP.cs" />
+    <Compile Include="CloudMaskSpectrum.cs" />
+    <Compile Include="Chu.cs" />
+    <Compile Include="Ji.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="PreImage.cs" />
     <Compile Include="Program.cs" />
@@ -140,13 +142,6 @@
     <Content Include="Cloud3_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Cloud3.mdf</DependentUpon>
-    </Content>
-    <Content Include="Pokus.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Pokus_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Pokus.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

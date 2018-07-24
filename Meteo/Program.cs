@@ -16,7 +16,6 @@ namespace Meteo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            System.IO.File.WriteAllText("log.txt", "Výstup z programu: ");
             Application.Run(new FormMain());
         }
     }

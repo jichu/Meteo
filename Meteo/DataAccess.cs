@@ -11,28 +11,28 @@ namespace Meteo
 {
     public class DataAccess
     {
-        public List<CloudORP> GetORPs()
+        public List<CloudMaskSpectrum> GetORPs()
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudORP>("SELECT * FROM ORP").ToList();
+                var output = conn.Query<CloudMaskSpectrum>("SELECT * FROM ORP").ToList();
                 return output;
             }
         }
-        public List<CloudORP> GetORPsPointByColor(string color)
+        public List<CloudMaskSpectrum> GetORPsPointByColor(string color)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudORP>("dbo.ORP_GetPointByColor @Color",new { Color=color }).ToList();
+                var output = conn.Query<CloudMaskSpectrum>("dbo.ORP_GetPointByColor @Color",new { Color=color }).ToList();
                 return output;
             }
         }
 
-        public List<CloudORP> GetMSCoodsByColor(string color)
+        public List<CloudMaskSpectrum> GetMSCoodsByColor(string color)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudORP>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color", new { Color = color }).ToList();
+                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color", new { Color = color }).ToList();
                                
                 return output;
             }

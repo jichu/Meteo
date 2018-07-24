@@ -10,8 +10,10 @@ namespace Meteo
     {
         public Controller()
         {
-            new Images();
             
+            new Images();
+            new Ji();
+            new Chu(); 
         }
     }
 }

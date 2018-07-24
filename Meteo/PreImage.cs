@@ -43,18 +43,21 @@ namespace Meteo
                 {
                     Util.l(ll.Point);
                 }*/
-                List<CloudORP> l = Model.Cloud.GetMSCoodsByColor("#fff");
+                List<CloudMaskSpectrum> l = Model.Cloud.GetMSCoodsByColor("#fff");
                 Util.l("Tu to bude vypisovat");
                 foreach (var ll in l)
                 {
-                    Util.l($"col:{ll.Color}  points: {ll.Coods}");
-                    string ch = @"{'coods':[[11,21],[12,22]]}";
-                    //string ch = @"{'coods':[[11,21],[12,22]]}";
-                    string json = ch; 
                     //string json = @"{'coods':[[11,21],[12,22]]}";
-                    JObject rss = JObject.Parse(json);
-                    string rssX = (string)rss["coods"][0][0];
-                    Util.l(rssX);
+                    string jsonString = ll.Coods; 
+                    JObject jsonObj = JObject.Parse(jsonString);
+                    JArray posArray = (JArray)jsonObj["coods"];
+                    string posX = (string)jsonObj["coods"][0][0];
+                    string posY = (string)jsonObj["coods"][0][1];
+                    Util.l($"Barva: {ll.Color}");
+                    Util.l("X:Y");
+                    foreach (JArray arr in posArray) {
+                          Util.l(String.Join(":", arr.Select(i => i.ToString())));  
+                    }
                 }
 
 

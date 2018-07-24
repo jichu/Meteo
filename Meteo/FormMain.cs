@@ -23,6 +23,7 @@ namespace Meteo
         private void FormMain_Load(object sender, EventArgs e)
         {
             Util.ShowLoading("Načítání aplikace...");
+            System.IO.File.WriteAllText("log.txt", "Výstup z programu: ");
             new Controller();
 
 
