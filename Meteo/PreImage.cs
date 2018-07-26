@@ -43,7 +43,7 @@ namespace Meteo
                 {
                     Util.l(ll.Point);
                 }*/
-                List<CloudMaskSpectrum> l = Model.Cloud.GetMSCoodsByColor("#fff");
+                List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
                 Util.l("Tu to bude vypisovat");
                 foreach (var ll in l)
                 {
