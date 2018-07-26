@@ -11,11 +11,11 @@ namespace Meteo
         public int id { get; set; }
         public int id_model { get; set; }
         public int id_orp { get; set; }
-        public string Color { get; set; }
-        public string Coods { get; set; }
+        public string color { get; set; }
+        public string coods { get; set; }
 
         public void ShowRecord() {
-            Util.l("id: "+id + " id_model: " + id_model + " id_orp: "+ id_orp + " Color: " + Color + " Coods: " + Coods);
+            Util.l("id: "+id + " id_model: " + id_model + " id_orp: "+ id_orp + " Color: " + color + " Coods: " + coods);
         }
     }
 

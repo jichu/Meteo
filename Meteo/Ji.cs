@@ -22,12 +22,12 @@ namespace Meteo
             {
                 //string json = @"{'coods':[[11,21],[12,22]]}";
                 ll.ShowRecord();
-                /*string jsonString = ll.Coods;
+                /*string jsonString = ll.coods;
                 JObject jsonObj = JObject.Parse(jsonString);
                 JArray posArray = (JArray)jsonObj["coods"];
                 string posX = (string)jsonObj["coods"][0][0];
                 string posY = (string)jsonObj["coods"][0][1];
-                Util.l($"Barva: {ll.Color}");
+                Util.l($"Barva: {ll.color}");
                 Util.l("X:Y");
                 foreach (JArray arr in posArray)
                 {
@@ -40,7 +40,7 @@ namespace Meteo
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColors();
             foreach (var ll in l)
             {
-                Util.l(ll.Color);
+                Util.l(ll.color);
                 ll.ShowRecord();
             }
         }

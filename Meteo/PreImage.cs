@@ -48,12 +48,12 @@ namespace Meteo
                 foreach (var ll in l)
                 {
                     //string json = @"{'coods':[[11,21],[12,22]]}";
-                    string jsonString = ll.Coods; 
+                    string jsonString = ll.coods; 
                     JObject jsonObj = JObject.Parse(jsonString);
                     JArray posArray = (JArray)jsonObj["coods"];
                     string posX = (string)jsonObj["coods"][0][0];
                     string posY = (string)jsonObj["coods"][0][1];
-                    Util.l($"Barva: {ll.Color}");
+                    Util.l($"Barva: {ll.color}");
                     Util.l("X:Y");
                     foreach (JArray arr in posArray) {
                           Util.l(String.Join(":", arr.Select(i => i.ToString())));  
