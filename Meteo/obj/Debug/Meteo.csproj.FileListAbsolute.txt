@@ -26,8 +26,6 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.dl
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Dapper.xml
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Newtonsoft.Json.xml
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
-D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud.mdf
-D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud_log.ldf
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Cloud3.mdf
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Cloud3_log.ldf
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\bin\Debug\Meteo.exe.config
@@ -48,3 +46,5 @@ C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInpu
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud3.mdf
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud3_log.ldf
