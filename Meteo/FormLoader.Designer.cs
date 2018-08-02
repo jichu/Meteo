@@ -46,7 +46,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Yellow;
-            this.ClientSize = new System.Drawing.Size(116, 38);
+            this.ClientSize = new System.Drawing.Size(203, 38);
             this.Controls.Add(this.labelMessage);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

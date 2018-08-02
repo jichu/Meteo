@@ -32,7 +32,7 @@
             this.souborToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemClose = new System.Windows.Forms.ToolStripMenuItem();
             this.modelyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.načístToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemLoadModels = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExplore = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
             this.menuMain.SuspendLayout();
@@ -60,24 +60,25 @@
             // menuItemClose
             // 
             this.menuItemClose.Name = "menuItemClose";
-            this.menuItemClose.Size = new System.Drawing.Size(180, 22);
+            this.menuItemClose.Size = new System.Drawing.Size(107, 22);
             this.menuItemClose.Text = "Konec";
             this.menuItemClose.Click += new System.EventHandler(this.menuItemClose_Click);
             // 
             // modelyToolStripMenuItem
             // 
             this.modelyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.načístToolStripMenuItem,
+            this.menuItemLoadModels,
             this.menuItemExplore});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";
             // 
-            // načístToolStripMenuItem
+            // menuItemLoadModels
             // 
-            this.načístToolStripMenuItem.Name = "načístToolStripMenuItem";
-            this.načístToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.načístToolStripMenuItem.Text = "Načíst...";
+            this.menuItemLoadModels.Name = "menuItemLoadModels";
+            this.menuItemLoadModels.Size = new System.Drawing.Size(182, 22);
+            this.menuItemLoadModels.Text = "Načíst ORP masky ...";
+            this.menuItemLoadModels.Click += new System.EventHandler(this.menuItemLoadModels_Click);
             // 
             // menuItemExplore
             // 
@@ -123,7 +124,7 @@
         private System.Windows.Forms.ToolStripMenuItem souborToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuItemClose;
         private System.Windows.Forms.ToolStripMenuItem modelyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem načístToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuItemLoadModels;
         private System.Windows.Forms.ToolStripMenuItem menuItemExplore;
         public System.Windows.Forms.Panel panelLayout;
     }

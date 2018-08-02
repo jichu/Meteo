@@ -52,6 +52,21 @@ namespace Meteo
             Close();
         }
 
+        // menu MODELY
+        private void menuItemLoadModels_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP?", "Načíst data z ORP masek", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                PreImage mapORP = new PreImage();
+                mapORP.LoadORPfromModels();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+            }
+
+        }
+
         private void menuItemExplore_Click(object sender, EventArgs e)
         {
             if (!panelLayout.Controls.Contains(UserControlModel.Instance))
@@ -63,5 +78,6 @@ namespace Meteo
             else
                 UserControlModel.Instance.BringToFront();
         }
+
     }
 }

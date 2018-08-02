@@ -18,10 +18,12 @@ namespace Meteo
         private Bitmap bmp;
 
         public Images() {
+            /*
             mapORP = new PreImage();
+            mapORP.LoadORPfromModels();
             LoadModel();
             LoadORP();
-            LoadPointsOfColorsInMap();
+            LoadPointsOfColorsInMap();*/
 
         }
 

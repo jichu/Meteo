@@ -68,7 +68,7 @@ namespace Meteo
                     }
                     nodeModel++;
                 }
-                this.treeViewModel.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewModel_NodeMouseClick);
+                this.treeViewModel.AfterSelect += new TreeViewEventHandler(treeViewModel_AfterSelect);
             }
             catch (Exception e)
             {
@@ -76,18 +76,18 @@ namespace Meteo
             }
         }
 
-        private void treeViewModel_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void treeViewModel_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Level == 2)
             {
                 Thread t = new Thread(() => LoadMap(e.Node.Name));
                 t.Start();
             }
-           }
+        }
 
         private void LoadMap(string map)
         {
-            Util.ShowLoading("Načítám mapu...");
+            Util.ShowLoading("Načítání mapy...");
             BeginInvoke(new MethodInvoker(delegate
             {
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
