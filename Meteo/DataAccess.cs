@@ -29,5 +29,14 @@ namespace Meteo
                 return output;
             }
         }
+        /*public bool MaskSpectrumInsertOrUpdate(CloudMaskSpectrum item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color").ToList();
+
+                return true;
+            }
+        }*/
     }
 }

@@ -107,7 +107,7 @@ namespace Meteo
         
         private void LoadModel()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"models\2_Srazky\");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"models\Model_ALADIN_CZ\");
 
             Util.l(path);
             string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);

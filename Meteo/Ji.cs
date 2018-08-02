@@ -44,5 +44,17 @@ namespace Meteo
                 ll.ShowRecord();
             }
         }
+
+        /*public void MaskSpectrumInsertOrUpdate()
+        {
+            CloudMaskSpectrum objekt = new CloudMaskSpectrum();
+            objekt.id = "Model_ALADIN_CZ";
+            objekt.id_model = "Oblačnost";
+            objekt.id_orp = "ZL";
+            objekt.coods = "{}";
+            objekt.color = "#GGG";
+            bool vystup = Model.Cloud.MaskSpectrumInsertOrUpdate(objekt);
+
+        }*/
     }
 }

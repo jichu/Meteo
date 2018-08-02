@@ -48,3 +48,4 @@ C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
 C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud3.mdf
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Cloud3_log.ldf
+C:\Users\Jaromir\Source\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlModel.resources
