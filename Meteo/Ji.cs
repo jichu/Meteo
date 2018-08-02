@@ -13,7 +13,8 @@ namespace Meteo
         public Ji() {
             Util.l("Tohle je Jickovo hriste");
             MaskSpectrumGetCoodsByColor();
-            MaskSpectrumGetAllColors();
+            MaskSpectrumGetAllColorsForModel();
+            MaskSpectrumInsertOrUpdate();
         }
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
@@ -36,25 +37,25 @@ namespace Meteo
             }
         }
 
-        public void MaskSpectrumGetAllColors() {
-            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColors();
+        public void MaskSpectrumGetAllColorsForModel() {
+            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColorsForModel(Model.Cloud.MODELSGetIDFromName("Model_ALADIN_CZ"));
             foreach (var ll in l)
             {
-                Util.l(ll.color);
-                ll.ShowRecord();
+                Util.l("Barvy pro zvolený model: "+ ll.color);
+                //ll.ShowRecord();
             }
         }
 
-        /*public void MaskSpectrumInsertOrUpdate()
+        public void MaskSpectrumInsertOrUpdate()
         {
-            CloudMaskSpectrum objekt = new CloudMaskSpectrum();
-            objekt.id = "Model_ALADIN_CZ";
-            objekt.id_model = "Oblačnost";
-            objekt.id_orp = "ZL";
-            objekt.coods = "{}";
-            objekt.color = "#GGG";
-            bool vystup = Model.Cloud.MaskSpectrumInsertOrUpdate(objekt);
+            //Nastavení atributů se provádí přes klasický konstruktor - KULATÉ závorky namísto složených - v pořadí: Hlavní model, podmodel, okres, barva, souřadnice. 
+            //Všechno mohou být stringy - tam, kde je v tabulce MaskSpectrum uvedeno číselné ID se provádí automatický překlad ze stringu na int.
+            //Je potřeba dodržet ty názvy, které jsou již uložené v DB, jinak je nutno updatovat "překladové" tabulky.
+            //Je možno použít u IDček - první 3 položky - i konstruktor, který přijímá int hodnoty. 
+            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_ALADIN_CZ", "Oblačnost","ZL","#FUNGUJ","{}");
+            Model.Cloud.MaskSpectrumInsertOrUpdate(record);
 
-        }*/
+        }
+        
     }
 }
