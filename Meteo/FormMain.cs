@@ -79,5 +79,13 @@ namespace Meteo
                 UserControlModel.Instance.BringToFront();
         }
 
+        private void FormMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.N)
+            {
+                PreImage mapORP = new PreImage();
+                mapORP.LoadORPfromModels();
+            }
+         }
     }
 }

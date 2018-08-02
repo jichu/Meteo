@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Meteo
 {
-    class Chu
+    static class Chu
     {
-        public Chu() {
-            Util.l("Tohle je Chuckovo hriste");
-        }
+        public static string color { get; set; }
+        public static string coords { get; set; }
+        public static Dictionary<string, JArray> data = new Dictionary<string, JArray>();
     }
 }

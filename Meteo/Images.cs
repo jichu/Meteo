@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -15,7 +16,7 @@ namespace Meteo
         private int currentX;
         private int currentY;
         private PreImage mapORP;
-        private Bitmap bmp;
+        public Bitmap bmp;
 
         public Images() {
             /*
@@ -27,10 +28,19 @@ namespace Meteo
 
         }
 
+        public Images(string path)
+        {
+            LoadImage(path);
+            LoadPointsOfColorsInMap();
+        }
+
         private void LoadPointsOfColorsInMap()
         {
-
-            foreach (var map in mapORP.getMapORP())
+            bool checkBoxShowORPchecked = (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"]as CheckBox).Checked;
+            var str = @"[1, 2, 3]";
+            var jArray = JArray.Parse(str);
+            Util.l(Chu.coords);
+            foreach (var map in Chu.data)
             {
                 Util.l("Region: "+map.Key + ":");
                 List<Color> colors = new List<Color>();
@@ -39,19 +49,21 @@ namespace Meteo
                 {
                     try
                     {
-                        Color c = bmp.GetPixel(point.X, point.Y);
-                        bmp.SetPixel(point.X, point.Y, Color.ForestGreen);
+                        Color c = bmp.GetPixel((int)point[0], (int)point[1]);
+                        if(checkBoxShowORPchecked)
+                            bmp.SetPixel((int)point[0], (int)point[1], Color.ForestGreen);
                         colors.Add(c);
                         sizeRegion++;
                         
                     }
                     catch (Exception e) {
+                        Util.l(e);
                     }
                     //Util.l("  -- " + point.X + "x" + point.Y+ " "+c.Name);
                 }
                 GetColorFromSpectrumBar(colors, sizeRegion);
             }
-            //View.FormMain.pictureBoxModel.Image = bmp;
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["pictureBoxMap"] as PictureBox).Image = bmp;
         }
 
         private void GetColorFromSpectrumBar(List<Color> list, int sizeRegion)
@@ -109,31 +121,17 @@ namespace Meteo
             isDragging = false;
         }
         
-        private void LoadModel()
+        private void LoadImage(string path)
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"models\Model_ALADIN_CZ\");
-
-            Util.l(path);
-            string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
-
-            foreach (var filename in files)
-            
-                {
-                    
-                    try
-                    {
-                        bmp = new Bitmap(filename);
-                    /*
-                        View.FormMain.pictureBoxModel.Image = bmp;
-                    View.FormMain.pictureBoxModel.Width = bmp.Width;
-                    View.FormMain.pictureBoxModel.Height = bmp.Height;
-                    */
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-
+            try
+            {
+                Bitmap bmp1 =  (Bitmap)Image.FromFile(path);
+                bmp = new Bitmap(bmp1, new Size(bmp1.Width, bmp1.Height));
+            }
+            catch (Exception e)
+            {
+                Util.l(e);
+            }
         }
     }
 }

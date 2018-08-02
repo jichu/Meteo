@@ -13,7 +13,6 @@ namespace Meteo
             
             new Images();
             new Ji();
-            new Chu(); 
         }
     }
 }

@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.treeViewModel = new System.Windows.Forms.TreeView();
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
+            this.checkBoxShowORP = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,10 +64,24 @@
             this.pictureBoxMap.TabIndex = 4;
             this.pictureBoxMap.TabStop = false;
             // 
+            // checkBoxShowORP
+            // 
+            this.checkBoxShowORP.AutoSize = true;
+            this.checkBoxShowORP.Checked = true;
+            this.checkBoxShowORP.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxShowORP.Location = new System.Drawing.Point(194, 28);
+            this.checkBoxShowORP.Name = "checkBoxShowORP";
+            this.checkBoxShowORP.Size = new System.Drawing.Size(124, 17);
+            this.checkBoxShowORP.TabIndex = 5;
+            this.checkBoxShowORP.Text = "Zobrazit ORP masku";
+            this.checkBoxShowORP.UseVisualStyleBackColor = true;
+            this.checkBoxShowORP.CheckedChanged += new System.EventHandler(this.checkBoxShowORP_CheckedChanged);
+            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxShowORP);
             this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.treeViewModel);
             this.Controls.Add(this.label1);
@@ -82,5 +97,6 @@
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TreeView treeViewModel;
         public System.Windows.Forms.PictureBox pictureBoxMap;
+        public System.Windows.Forms.CheckBox checkBoxShowORP;
     }
 }

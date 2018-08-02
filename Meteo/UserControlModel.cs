@@ -12,6 +12,7 @@ namespace Meteo
     public partial class UserControlModel : UserControl
     {
         private static UserControlModel uc;
+        private string curImage;
 
         public static UserControlModel Instance
         {
@@ -88,10 +89,18 @@ namespace Meteo
         private void LoadMap(string map)
         {
             Util.ShowLoading("Načítání mapy...");
+            curImage = map;
             BeginInvoke(new MethodInvoker(delegate
             {
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
             }));
+            new Images(map);
+        }
+
+        private void checkBoxShowORP_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread t = new Thread(() => LoadMap(curImage));
+            t.Start();
         }
     }
 }
