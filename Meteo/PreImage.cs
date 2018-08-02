@@ -223,28 +223,5 @@ namespace Meteo
             */
 		}
 
-
-
-        private void Test()
-        {
-            try {
-                Util.ShowLoading("Pracuju ...");
-
-                View.FormMain.button1.BeginInvoke((Action)(() =>
-                    View.FormMain.button1.Text = "počítám"
-                ));
-
-                for (var i = 1; i < 11000; i++)
-                    Util.l(i);
-
-                View.FormMain.button1.BeginInvoke((Action)(() =>
-                    View.FormMain.button1.Text = "hotovo"
-                ));
-            }
-            catch (Exception ex)
-            {
-                Util.l(ex.ToString());
-            }
-        }
     }
 }

@@ -46,5 +46,22 @@ namespace Meteo
             }
             catch (Exception ex) { Console.WriteLine(ex); }
         }
+
+        private void menuItemClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void menuItemExplore_Click(object sender, EventArgs e)
+        {
+            if (!panelLayout.Controls.Contains(UserControlModel.Instance))
+            {
+                panelLayout.Controls.Add(UserControlModel.Instance);
+                UserControlModel.Instance.Dock = DockStyle.Fill;
+                UserControlModel.Instance.BringToFront();
+            }
+            else
+                UserControlModel.Instance.BringToFront();
+        }
     }
 }

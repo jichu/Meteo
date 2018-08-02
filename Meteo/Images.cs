@@ -49,7 +49,7 @@ namespace Meteo
                 }
                 GetColorFromSpectrumBar(colors, sizeRegion);
             }
-            View.FormMain.pictureBoxModel.Image = bmp;
+            //View.FormMain.pictureBoxModel.Image = bmp;
         }
 
         private void GetColorFromSpectrumBar(List<Color> list, int sizeRegion)
@@ -75,13 +75,14 @@ namespace Meteo
 
         private void LoadORP()
         {
-            
+            /*
             View.FormMain.pictureBoxModel.Image = Properties.Resources.ORP;
             View.FormMain.pictureBoxModel.Width = Properties.Resources.ORP.Width;
             View.FormMain.pictureBoxModel.Height = Properties.Resources.ORP.Height;
             View.FormMain.pictureBoxModel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseDown);
             View.FormMain.pictureBoxModel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseMove);
             View.FormMain.pictureBoxModel.MouseUp+= new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseUp);
+            */
             
         }
         
@@ -94,11 +95,12 @@ namespace Meteo
 
         private void pictureBoxORP_MouseMove(object sender, MouseEventArgs e)
         {
+            /*
             if (isDragging)
             {
                 View.FormMain.pictureBoxModel.Top = View.FormMain.pictureBoxModel.Top + (e.Y - currentY);
                 View.FormMain.pictureBoxModel.Left = View.FormMain.pictureBoxModel.Left + (e.X - currentX);
-            }
+            }*/
         }
         private void pictureBoxORP_MouseUp(object sender, MouseEventArgs e)
         {
@@ -119,9 +121,11 @@ namespace Meteo
                     try
                     {
                         bmp = new Bitmap(filename);
+                    /*
                         View.FormMain.pictureBoxModel.Image = bmp;
                     View.FormMain.pictureBoxModel.Width = bmp.Width;
                     View.FormMain.pictureBoxModel.Height = bmp.Height;
+                    */
                     }
                     catch (Exception e)
                     {
