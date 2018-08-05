@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Meteo
 {
-    class Images
+    class Images : Form
     {
         private bool isDragging;
         private int currentX;
@@ -37,12 +37,22 @@ namespace Meteo
         private void LoadPointsOfColorsInMap()
         {
             bool checkBoxShowORPchecked = (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"]as CheckBox).Checked;
+
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Clear();
+            }));
+
             var str = @"[1, 2, 3]";
             var jArray = JArray.Parse(str);
             Util.l(Chu.coords);
             foreach (var map in Chu.data)
             {
                 Util.l("Region: "+map.Key + ":");
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
+                {
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += "Region: " + map.Key + ":";
+                }));
                 List<Color> colors = new List<Color>();
                 int sizeRegion = 0;
                 foreach (var point in map.Value)
@@ -51,7 +61,7 @@ namespace Meteo
                     {
                         Color c = bmp.GetPixel((int)point[0], (int)point[1]);
                         if(checkBoxShowORPchecked)
-                            bmp.SetPixel((int)point[0], (int)point[1], Color.ForestGreen);
+                            bmp.SetPixel((int)point[0], (int)point[1], System.Drawing.ColorTranslator.FromHtml("#"+map.Key.Substring(2,6)));
                         colors.Add(c);
                         sizeRegion++;
                         
@@ -81,10 +91,21 @@ namespace Meteo
                     sumValues += Util.spektrumSrazky[c.Name];
                 }
 
+            string output = "";
             foreach (var c in counts)
+            {
                 Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                output += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
+            }
             Util.l($" - region size: {sizeRegion}");
             Util.l($" - průměrná hodnota regionu: {sumValues/sizeRegion}");
+            output += $" - průměrná hodnota regionu: {sumValues / sizeRegion}" + Environment.NewLine+Environment.NewLine;
+
+
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += output;
+            }));
         }
 
         private void LoadORP()

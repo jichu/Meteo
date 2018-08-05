@@ -32,6 +32,7 @@
             this.treeViewModel = new System.Windows.Forms.TreeView();
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
             this.checkBoxShowORP = new System.Windows.Forms.CheckBox();
+            this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,10 +78,21 @@
             this.checkBoxShowORP.UseVisualStyleBackColor = true;
             this.checkBoxShowORP.CheckedChanged += new System.EventHandler(this.checkBoxShowORP_CheckedChanged);
             // 
+            // richTextBoxOutput
+            // 
+            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxOutput.Location = new System.Drawing.Point(348, 28);
+            this.richTextBoxOutput.Name = "richTextBoxOutput";
+            this.richTextBoxOutput.Size = new System.Drawing.Size(118, 258);
+            this.richTextBoxOutput.TabIndex = 6;
+            this.richTextBoxOutput.Text = "";
+            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.richTextBoxOutput);
             this.Controls.Add(this.checkBoxShowORP);
             this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.treeViewModel);
@@ -98,5 +110,6 @@
         public System.Windows.Forms.TreeView treeViewModel;
         public System.Windows.Forms.PictureBox pictureBoxMap;
         public System.Windows.Forms.CheckBox checkBoxShowORP;
+        public System.Windows.Forms.RichTextBox richTextBoxOutput;
     }
 }

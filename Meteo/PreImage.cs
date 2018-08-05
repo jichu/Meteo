@@ -41,7 +41,6 @@ namespace Meteo
                         Util.l("Load mask: " + orpMask);
                         Thread t = new Thread(() => LoadORP((Bitmap)Image.FromFile(orpMask)));
                         t.Start();
-                        
                     }
                     Console.WriteLine("{0}", dir.Substring(dir.LastIndexOf("\\") + 1));
                 }
