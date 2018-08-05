@@ -17,6 +17,29 @@ namespace Meteo
         public void ShowRecord() {
             Util.l("id: "+id + " id_model: " + id_model + " id_orp: "+ id_orp + " Color: " + color + " Coods: " + coods);
         }
+        public CloudMaskSpectrum() {
+
+        }
+        public CloudMaskSpectrum(int id, int id_model, int id_orp, string color, string coods)
+        {
+
+            this.color = color;
+            this.coods = coods;
+            this.id_orp = id_orp;
+            this.id = id;
+            this.id_model = id_model;
+
+        }
+
+        public CloudMaskSpectrum(string id, string id_model, string id_orp, string color, string coods) {
+
+            this.color = color;
+            this.coods = coods;
+            this.id_orp = Model.Cloud.ORPSGetIDFromName(id_orp);
+            this.id = Model.Cloud.MODELSGetIDFromName(id);
+            this.id_model = Model.Cloud.MODELSGetIDFromName(id_model);
+
+        }
     }
 
     

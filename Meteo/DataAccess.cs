@@ -20,23 +20,56 @@ namespace Meteo
                 return output;
             }
         }
-        public List<CloudMaskSpectrum> MaskSpectrumGetAllColors()
+        public List<CloudMaskSpectrum> MaskSpectrumGetAllColorsForModel(int mod)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetAllColors").ToList();
+                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetAllColorsForModel @Model", new {model = mod }).ToList();
 
                 return output;
             }
         }
-        /*public bool MaskSpectrumInsertOrUpdate(CloudMaskSpectrum item)
+        public bool MaskSpectrumInsertOrUpdate(CloudMaskSpectrum item)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color").ToList();
-
+                item.ShowRecord();
+                List<CloudMaskSpectrum> records = new List<CloudMaskSpectrum>();
+                records.Add(item);
+                conn.Execute("dbo.MASK_SPECTRUM_InsertOrUpdateData @ID, @ID_MODEL, @ID_ORP, @COLOR, @COODS", records);
+                
                 return true;
             }
-        }*/
+        }
+        public int ORPSGetIDFromName(string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPS>("dbo.ORPS_GetIDFromName @NAME",new {name =  nam}).ToList();
+
+                int id = 0;
+                foreach (var o in output)
+                {
+                    id = o.id;
+                }
+                return id;
+            }
+            
+        }
+        public int MODELSGetIDFromName(string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudModels>("dbo.MODELS_GetIDFromName @NAME", new { name = nam }).ToList();
+
+                int id = 0;
+                foreach (var o in output)
+                {
+                    id = o.id;
+                }
+                return id;
+            }
+
+        }
     }
 }

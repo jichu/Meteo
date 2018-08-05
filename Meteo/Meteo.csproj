@@ -75,6 +75,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudModels.cs" />
+    <Compile Include="CloudORPS.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="FormLoader.cs">
       <SubType>Form</SubType>
