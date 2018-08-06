@@ -103,6 +103,45 @@ namespace Meteo
                 output += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
             }
             Util.l($" - region size: {sizeRegion}");
+            Util.l($" - sum value: {sumValues}");
+
+            int n = sumValues > 1 ? 1 : 0;
+            output += $" - hodnota regionu: {n}" + Environment.NewLine+Environment.NewLine;
+
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += output;
+            }));
+        }
+
+        private void GetColorFromSpectrumBarAverage(List<Color> list, int sizeRegion)
+        {
+            Dictionary<string,int> counts = new Dictionary<string, int>();
+            Dictionary<string, int> values = new Dictionary<string, int>();
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModel("Model_ALADIN_CZ");
+            float sumValues = 0;
+
+
+            foreach (var c in list)
+                foreach (var r in records) {
+                    if (r.color.Replace("#", "ff") == c.Name)
+                        {
+                            if (counts.ContainsKey(c.Name))
+                                counts[c.Name]++;
+                            else
+                                counts[c.Name] = 1;
+                            sumValues += r.rank;
+                        }
+                }
+
+            string output = "";
+            foreach (var c in counts)
+            {
+                Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                output += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
+            }
+            Util.l($" - region size: {sizeRegion}");
+            Util.l($" - sum value: {sumValues}");
             Util.l($" - průměrná hodnota regionu: {sumValues/sizeRegion}");
             output += $" - průměrná hodnota regionu: {sumValues / sizeRegion}" + Environment.NewLine+Environment.NewLine;
 
