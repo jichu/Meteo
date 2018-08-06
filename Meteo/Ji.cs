@@ -15,6 +15,7 @@ namespace Meteo
             MaskSpectrumGetCoodsByColor();
             MaskSpectrumGetAllColorsForModel();
             MaskSpectrumInsertOrUpdate();
+            ModelSpectrumScaleForModel();
         }
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
@@ -56,6 +57,14 @@ namespace Meteo
             Model.Cloud.MaskSpectrumInsertOrUpdate(record);
 
         }
-        
+
+        public void ModelSpectrumScaleForModel() {
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModel("Model_ALADIN_CZ");
+            foreach (var r in records)
+            {
+                Util.l($"Barva: {r.color} Rank: {r.rank}");
+            }
+        }
+
     }
 }

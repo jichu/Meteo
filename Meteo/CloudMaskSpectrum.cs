@@ -9,13 +9,12 @@ namespace Meteo
     public class CloudMaskSpectrum
     {
         public int id { get; set; }
-        public int id_model { get; set; }
         public int id_orp { get; set; }
         public string color { get; set; }
         public string coods { get; set; }
 
         public void ShowRecord() {
-            Util.l("id: "+id + " id_model: " + id_model + " id_orp: "+ id_orp + " Color: " + color + " Coods: " + coods);
+            Util.l("id: "+id + " id_orp: "+ id_orp + " Color: " + color + " Coods: " + coods);
         }
         public CloudMaskSpectrum() {
 
@@ -27,7 +26,7 @@ namespace Meteo
             this.coods = coods;
             this.id_orp = id_orp;
             this.id = id;
-            this.id_model = id_model;
+            
 
         }
 
@@ -37,7 +36,7 @@ namespace Meteo
             this.coods = coods;
             this.id_orp = Model.Cloud.ORPSGetIDFromName(id_orp);
             this.id = Model.Cloud.MODELSGetIDFromName(id);
-            this.id_model = Model.Cloud.MODELSGetIDFromName(id_model);
+            
 
         }
     }

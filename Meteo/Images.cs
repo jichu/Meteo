@@ -51,7 +51,7 @@ namespace Meteo
                 Util.l("Region: "+map.Key + ":");
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
                 {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += "Region: " + map.Key + ":";
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += "Region: " + map.Key + ":\n";
                 }));
                 List<Color> colors = new List<Color>();
                 int sizeRegion = 0;
@@ -80,15 +80,20 @@ namespace Meteo
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModel("Model_ALADIN_CZ");
             float sumValues = 0;
+
+
             foreach (var c in list)
-                if (Util.spektrumSrazky.ContainsKey(c.Name))
-                {
-                    if (counts.ContainsKey(c.Name))
-                        counts[c.Name]++;
-                    else
-                        counts[c.Name]=1;
-                    sumValues += Util.spektrumSrazky[c.Name];
+                foreach (var r in records) {
+                    if (r.color.Replace("#", "ff") == c.Name)
+                        {
+                            if (counts.ContainsKey(c.Name))
+                                counts[c.Name]++;
+                            else
+                                counts[c.Name] = 1;
+                            sumValues += r.rank;
+                        }
                 }
 
             string output = "";

@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudModels.cs" />
+    <Compile Include="CloudModelSpectrum.cs" />
     <Compile Include="CloudORPS.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="FormLoader.cs">
@@ -90,7 +91,9 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Images.cs" />
+    <Compile Include="Images.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CloudMaskSpectrum.cs" />
     <Compile Include="Chu.cs" />
     <Compile Include="Ji.cs" />

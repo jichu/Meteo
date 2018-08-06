@@ -36,7 +36,7 @@ namespace Meteo
                 item.ShowRecord();
                 List<CloudMaskSpectrum> records = new List<CloudMaskSpectrum>();
                 records.Add(item);
-                conn.Execute("dbo.MASK_SPECTRUM_InsertOrUpdateData @ID, @ID_MODEL, @ID_ORP, @COLOR, @COODS", records);
+                conn.Execute("dbo.MASK_SPECTRUM_InsertOrUpdateData @ID, @ID_ORP, @COLOR, @COODS", records);
                 
                 return true;
             }
@@ -70,6 +70,17 @@ namespace Meteo
                 return id;
             }
 
+        }
+
+        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModel(string mod)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int id = MODELSGetIDFromName(mod);
+                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new {model = id }).ToList();
+
+                return output;
+            }
         }
     }
 }

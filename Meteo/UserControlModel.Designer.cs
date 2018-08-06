@@ -82,9 +82,9 @@
             // 
             this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxOutput.Location = new System.Drawing.Point(348, 28);
+            this.richTextBoxOutput.Location = new System.Drawing.Point(313, 28);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
-            this.richTextBoxOutput.Size = new System.Drawing.Size(118, 258);
+            this.richTextBoxOutput.Size = new System.Drawing.Size(153, 258);
             this.richTextBoxOutput.TabIndex = 6;
             this.richTextBoxOutput.Text = "";
             // 
