@@ -39,14 +39,15 @@ namespace Meteo
             Application.Idle -= OnLoaded;
             View.FormLoader.Close();
         }
-        
+
         public static void l(object obj)
         {
             Console.WriteLine(obj);
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter("log.txt", true)) {
-                file.WriteLine(obj);
-            }
-                
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter("log.txt", true))
+                {
+                    file.WriteLine(obj);
+                    file.Close();
+                }
         }
 
 

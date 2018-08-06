@@ -43,9 +43,9 @@ namespace Meteo
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Clear();
             }));
 
-            var str = @"[1, 2, 3]";
-            var jArray = JArray.Parse(str);
-            Util.l(Chu.coords);
+            if(Chu.coords==null)
+                MessageBox.Show("Nemáte načtenou ORP masku.", "Debug mode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
             foreach (var map in Chu.data)
             {
                 Util.l("Region: "+map.Key + ":");

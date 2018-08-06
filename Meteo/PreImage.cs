@@ -91,8 +91,7 @@ namespace Meteo
                 Chu.data = data;
                 foreach (var map in data)
                 {
-                    Util.l(JsonConvert.SerializeObject(map.Key));
-                    Util.l(JsonConvert.SerializeObject(map.Value));
+                    Util.l(JsonConvert.SerializeObject(map.Key)+": "+JsonConvert.SerializeObject(map.Value));
                     Chu.color = JsonConvert.SerializeObject(map.Key);
                     Chu.coords = JsonConvert.SerializeObject(map.Value);
                 }
