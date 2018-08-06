@@ -34,9 +34,11 @@
             // labelMessage
             // 
             this.labelMessage.AutoSize = true;
+            this.labelMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
+            this.labelMessage.ForeColor = System.Drawing.Color.White;
             this.labelMessage.Location = new System.Drawing.Point(12, 9);
             this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(72, 13);
+            this.labelMessage.Size = new System.Drawing.Size(203, 37);
             this.labelMessage.TabIndex = 0;
             this.labelMessage.Text = "Zpracování...";
             this.labelMessage.UseWaitCursor = true;
@@ -45,8 +47,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Yellow;
-            this.ClientSize = new System.Drawing.Size(203, 38);
+            this.BackColor = System.Drawing.Color.Black;
+            this.ClientSize = new System.Drawing.Size(479, 56);
             this.Controls.Add(this.labelMessage);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
