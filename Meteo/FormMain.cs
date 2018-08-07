@@ -27,6 +27,14 @@ namespace Meteo
             new Controller();
 
 
+            if (!panelLayout.Controls.Contains(UserControlPaletteForMask.Instance))
+            {
+                panelLayout.Controls.Add(UserControlPaletteForMask.Instance);
+                UserControlPaletteForMask.Instance.Dock = DockStyle.Fill;
+                UserControlPaletteForMask.Instance.BringToFront();
+            }
+            else
+                UserControlPaletteForMask.Instance.BringToFront();
         }
 
 
@@ -86,6 +94,18 @@ namespace Meteo
                 PreImage mapORP = new PreImage();
                 mapORP.LoadORPfromModels();
             }
-         }
+
+            if (e.KeyCode == Keys.P)
+            {
+                if (!panelLayout.Controls.Contains(UserControlPaletteForMask.Instance))
+                {
+                    panelLayout.Controls.Add(UserControlPaletteForMask.Instance);
+                    UserControlPaletteForMask.Instance.Dock = DockStyle.Fill;
+                    UserControlPaletteForMask.Instance.BringToFront();
+                }
+                else
+                    UserControlPaletteForMask.Instance.BringToFront();
+            }
+        }
     }
 }
