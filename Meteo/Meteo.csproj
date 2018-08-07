@@ -108,6 +108,12 @@
     <Compile Include="UserControlModel.Designer.cs">
       <DependentUpon>UserControlModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControlPaletteForMask.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControlPaletteForMask.Designer.cs">
+      <DependentUpon>UserControlPaletteForMask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util.cs" />
     <Compile Include="View.cs" />
     <EmbeddedResource Include="FormLoader.resx">
@@ -129,6 +135,9 @@
     <EmbeddedResource Include="UserControlModel.resx">
       <DependentUpon>UserControlModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControlPaletteForMask.resx">
+      <DependentUpon>UserControlPaletteForMask.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Drapper.Settings.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -147,9 +156,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ORP.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Cloud3.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -165,7 +171,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
