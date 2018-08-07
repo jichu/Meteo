@@ -20,11 +20,12 @@ namespace Meteo
                 return output;
             }
         }
-        public List<CloudMaskSpectrum> MaskSpectrumGetAllColorsForModel(int mod)
+        public List<CloudMaskSpectrum> MaskSpectrumGetAllColorsForModel(string mod)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetAllColorsForModel @Model", new {model = mod }).ToList();
+                int id = Model.Cloud.MODELSGetIDFromName(mod);
+                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetAllColorsForModel @Model", new {model = id }).ToList();
 
                 return output;
             }

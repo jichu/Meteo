@@ -39,7 +39,7 @@ namespace Meteo
         }
 
         public void MaskSpectrumGetAllColorsForModel() {
-            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColorsForModel(Model.Cloud.MODELSGetIDFromName("Model_ALADIN_CZ"));
+            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColorsForModel("Srážky_MAIN");
             foreach (var ll in l)
             {
                 Util.l("Barvy pro zvolený model: "+ ll.color);
