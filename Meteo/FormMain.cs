@@ -26,15 +26,6 @@ namespace Meteo
             System.IO.File.WriteAllText("log.txt", "Výstup z programu: ");
             new Controller();
 
-
-            if (!panelLayout.Controls.Contains(UserControlPaletteForMask.Instance))
-            {
-                panelLayout.Controls.Add(UserControlPaletteForMask.Instance);
-                UserControlPaletteForMask.Instance.Dock = DockStyle.Fill;
-                UserControlPaletteForMask.Instance.BringToFront();
-            }
-            else
-                UserControlPaletteForMask.Instance.BringToFront();
         }
 
 
@@ -97,15 +88,19 @@ namespace Meteo
 
             if (e.KeyCode == Keys.P)
             {
-                if (!panelLayout.Controls.Contains(UserControlPaletteForMask.Instance))
-                {
-                    panelLayout.Controls.Add(UserControlPaletteForMask.Instance);
-                    UserControlPaletteForMask.Instance.Dock = DockStyle.Fill;
-                    UserControlPaletteForMask.Instance.BringToFront();
-                }
-                else
-                    UserControlPaletteForMask.Instance.BringToFront();
             }
+        }
+
+        private void menuItemPalette_Click(object sender, EventArgs e)
+        {
+            if (!panelLayout.Controls.Contains(UserControlPaletteForMask.Instance))
+            {
+                panelLayout.Controls.Add(UserControlPaletteForMask.Instance);
+                UserControlPaletteForMask.Instance.Dock = DockStyle.Fill;
+                UserControlPaletteForMask.Instance.BringToFront();
+            }
+            else
+                UserControlPaletteForMask.Instance.BringToFront();
         }
     }
 }

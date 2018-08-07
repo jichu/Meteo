@@ -35,6 +35,7 @@
             this.menuItemLoadModels = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExplore = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
+            this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,7 +69,8 @@
             // 
             this.modelyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemLoadModels,
-            this.menuItemExplore});
+            this.menuItemExplore,
+            this.menuItemPalette});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";
@@ -97,6 +99,13 @@
             this.panelLayout.Name = "panelLayout";
             this.panelLayout.Size = new System.Drawing.Size(983, 681);
             this.panelLayout.TabIndex = 3;
+            // 
+            // menuItemPalette
+            // 
+            this.menuItemPalette.Name = "menuItemPalette";
+            this.menuItemPalette.Size = new System.Drawing.Size(182, 22);
+            this.menuItemPalette.Text = "Paleta masky";
+            this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
             // 
             // FormMain
             // 
@@ -128,6 +137,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemLoadModels;
         private System.Windows.Forms.ToolStripMenuItem menuItemExplore;
         public System.Windows.Forms.Panel panelLayout;
+        private System.Windows.Forms.ToolStripMenuItem menuItemPalette;
     }
 }
 
