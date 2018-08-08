@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,6 +17,7 @@ namespace Meteo
             MaskSpectrumGetAllColorsForModel();
             MaskSpectrumInsertOrUpdate();
             ModelSpectrumScaleForModel();
+            //ReadCSVFile(@"ObceSRozsirenouPusobnosti_CR.csv");
         }
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
@@ -66,5 +68,25 @@ namespace Meteo
             }
         }
 
+        public void ReadCSVFile(string filename) {
+            using (var reader = new StreamReader(filename)) {
+                List<CloudORPS> listOfRecords = new List<CloudORPS>();
+                var header = reader.ReadLine(); //načte hlavičku
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(';');
+                    
+                    CloudORPS record = new CloudORPS(values[0], values[1]);
+                    listOfRecords.Add(record);
+                }
+
+                Util.l(header);
+                foreach (var r in listOfRecords) {
+                    Util.l($"{r.id}:{r.name}");
+                    Model.Cloud.ORPSInsertOrUpdate(r);
+                }
+            }
+        }
     }
 }

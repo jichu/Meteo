@@ -99,5 +99,17 @@ namespace Meteo
                 return output;
             }
         }
+
+        public bool ORPSInsertOrUpdate(CloudORPS item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudORPS> records = new List<CloudORPS>();
+                records.Add(item);
+                conn.Execute("dbo.ORPS_InsertOrUpdateData @ID, @NAME", records);
+
+                return true;
+            }
+        }
     }
 }
