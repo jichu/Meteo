@@ -17,6 +17,7 @@ namespace Meteo
         private int currentY;
         private PreImage mapORP;
         public Bitmap bmp;
+        private List<CloudModelSpectrum> cloudModelSpectrum;
 
         public Images() {
             /*
@@ -80,12 +81,12 @@ namespace Meteo
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
+            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
             float sumValues = 0;
 
 
             foreach (var c in list)
-                foreach (var r in records) {
+                foreach (var r in cloudModelSpectrum) {
                     if (r.color.Replace("#", "ff") == c.Name)
                         {
                             if (counts.ContainsKey(c.Name))
@@ -118,12 +119,11 @@ namespace Meteo
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
             float sumValues = 0;
 
 
             foreach (var c in list)
-                foreach (var r in records) {
+                foreach (var r in cloudModelSpectrum) {
                     if (r.color.Replace("#", "ff") == c.Name)
                         {
                             if (counts.ContainsKey(c.Name))
