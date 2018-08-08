@@ -73,12 +73,40 @@ namespace Meteo
 
         }
 
+        public int MODELSGetSubmodelIDFromName(string namModel, string namSubmodel)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudModels>("dbo.MODELS_GetSubmodelIDFromName @NMODEL, @NSUBMODEL", new { nmodel = namModel, nsubmodel=namSubmodel }).ToList();
+
+                int id = 0;
+                foreach (var o in output)
+                {
+                    id = o.id;
+                }
+                return id;
+            }
+
+        }
+
+        //deprecated - use ModelSpectrumGetScaleForModels instead
         public List<CloudModelSpectrum> ModelSpectrumGetScaleForModel(string mod)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
                 int id = MODELSGetIDFromName(mod);
                 var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new {model = id }).ToList();
+
+                return output;
+            }
+        }
+
+        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModels(string mod, string submod)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int id = MODELSGetSubmodelIDFromName(mod, submod);
+                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new { model = id }).ToList();
 
                 return output;
             }

@@ -59,7 +59,7 @@ namespace Meteo
         }
 
         public void ModelSpectrumScaleForModel() {
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModel("Model_ALADIN_CZ");
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
             foreach (var r in records)
             {
                 Util.l($"Barva: {r.color} Rank: {r.rank}");
