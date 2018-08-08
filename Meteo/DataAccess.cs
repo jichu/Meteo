@@ -89,18 +89,6 @@ namespace Meteo
 
         }
 
-        //deprecated - use ModelSpectrumGetScaleForModels instead
-        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModel(string mod)
-        {
-            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
-            {
-                int id = MODELSGetIDFromName(mod);
-                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new {model = id }).ToList();
-
-                return output;
-            }
-        }
-
         public List<CloudModelSpectrum> ModelSpectrumGetScaleForModels(string mod, string submod)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
