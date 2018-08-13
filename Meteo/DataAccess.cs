@@ -57,6 +57,29 @@ namespace Meteo
             }
             
         }
+
+        public bool ORPSInsertOrUpdate(CloudORPS item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudORPS> records = new List<CloudORPS>();
+                records.Add(item);
+                conn.Execute("dbo.ORPS_InsertOrUpdateData @ID, @NAME", records);
+
+                return true;
+            }
+        }
+
+        public List<CloudORPS> ORPSGetORPNames()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPS>("dbo.ORPS_GetORPNames").ToList();
+
+                return output;
+            }
+        }
+
         public int MODELSGetIDFromName(string nam)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
@@ -100,16 +123,6 @@ namespace Meteo
             }
         }
 
-        public bool ORPSInsertOrUpdate(CloudORPS item)
-        {
-            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
-            {
-                List<CloudORPS> records = new List<CloudORPS>();
-                records.Add(item);
-                conn.Execute("dbo.ORPS_InsertOrUpdateData @ID, @NAME", records);
-
-                return true;
-            }
-        }
+        
     }
 }

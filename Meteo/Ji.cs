@@ -17,6 +17,7 @@ namespace Meteo
             MaskSpectrumGetAllColorsForModel();
             MaskSpectrumInsertOrUpdate();
             ModelSpectrumScaleForModel();
+            ORPS_GetORPNames();
             //ReadCSVFile(@"ObceSRozsirenouPusobnosti_CR.csv");
         }
         public void MaskSpectrumGetCoodsByColor() {
@@ -55,7 +56,7 @@ namespace Meteo
             //Všechno mohou být stringy - tam, kde je v tabulce MaskSpectrum uvedeno číselné ID se provádí automatický překlad ze stringu na int.
             //Je potřeba dodržet ty názvy, které jsou již uložené v DB, jinak je nutno updatovat "překladové" tabulky.
             //Je možno použít u IDček - první 3 položky - i konstruktor, který přijímá int hodnoty. 
-            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_ALADIN_CZ", "Oblačnost","ZL","#FUNGUJ","{}");
+            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_ALADIN_CZ", "Oblačnost","Zlín","#FUNGUJ","{}");
             Model.Cloud.MaskSpectrumInsertOrUpdate(record);
 
         }
@@ -65,6 +66,15 @@ namespace Meteo
             foreach (var r in records)
             {
                 Util.l($"Barva: {r.color} Rank: {r.rank}");
+            }
+        }
+
+        public void ORPS_GetORPNames()
+        {
+            List<CloudORPS> l = Model.Cloud.ORPSGetORPNames();
+            foreach (var ll in l)
+            {
+                Util.l($"ID: {ll.id} Název Okresu: {ll.name}");
             }
         }
 
