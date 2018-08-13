@@ -111,7 +111,7 @@ namespace Meteo
                     var line = reader.ReadLine();
                     var values = line.Split(';');
 
-                    CloudORPColor record = new CloudORPColor(values[0], values[1]);
+                    CloudORPColor record = new CloudORPColor(values[0], $"#{values[1].Substring(2,6)}");
                     listOfRecords.Add(record);
                 }
 
