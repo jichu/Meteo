@@ -19,7 +19,7 @@ namespace Meteo
         public CloudMaskSpectrum() {
 
         }
-        public CloudMaskSpectrum(int id, int id_model, int id_orp, string color, string coods)
+        public CloudMaskSpectrum(int id, int id_orp, string color, string coods)
         {
 
             this.color = color;
@@ -30,7 +30,7 @@ namespace Meteo
 
         }
 
-        public CloudMaskSpectrum(string id, string id_model, string id_orp, string color, string coods) {
+        public CloudMaskSpectrum(string id, string id_orp, string color, string coods) {
 
             this.color = color;
             this.coods = coods;

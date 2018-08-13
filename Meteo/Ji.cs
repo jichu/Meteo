@@ -55,8 +55,8 @@ namespace Meteo
             //Nastavení atributů se provádí přes klasický konstruktor - KULATÉ závorky namísto složených - v pořadí: Hlavní model, podmodel, okres, barva, souřadnice. 
             //Všechno mohou být stringy - tam, kde je v tabulce MaskSpectrum uvedeno číselné ID se provádí automatický překlad ze stringu na int.
             //Je potřeba dodržet ty názvy, které jsou již uložené v DB, jinak je nutno updatovat "překladové" tabulky.
-            //Je možno použít u IDček - první 3 položky - i konstruktor, který přijímá int hodnoty. 
-            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_ALADIN_CZ", "Oblačnost","Zlín","#FUNGUJ","{}");
+            //Je možno použít u IDček - první 2 položky - i konstruktor, který přijímá int hodnoty. 
+            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_ALADIN_CZ","Zlín","#FUNGUJ","{}");
             Model.Cloud.MaskSpectrumInsertOrUpdate(record);
 
         }
