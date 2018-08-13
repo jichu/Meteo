@@ -18,6 +18,7 @@ namespace Meteo
             MaskSpectrumInsertOrUpdate();
             ModelSpectrumScaleForModel();
             ORPS_GetORPNames();
+            ORPS_GetORPColors();
             //Pomocné nahrávání dat do DB z CSV souborů
             //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
             //ReadCSVFileORPColor(@"PaletaBarev.csv");
@@ -77,6 +78,15 @@ namespace Meteo
             foreach (var ll in l)
             {
                 Util.l($"ID: {ll.id} Název Okresu: {ll.name}");
+            }
+        }
+
+        public void ORPS_GetORPColors()
+        {
+            List<CloudORPColor> l = Model.Cloud.ORPColorGetORPColors();
+            foreach (var ll in l)
+            {
+                Util.l($"ID_ORP: {ll.id_orp} Barva: {ll.color}");
             }
         }
 

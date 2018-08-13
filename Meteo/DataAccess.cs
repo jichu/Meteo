@@ -92,6 +92,16 @@ namespace Meteo
             }
         }
 
+        public List<CloudORPColor> ORPColorGetORPColors()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPColor>("dbo.ORP_COLOR_GetORPColors").ToList();
+
+                return output;
+            }
+        }
+
         public int MODELSGetIDFromName(string nam)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
