@@ -80,6 +80,18 @@ namespace Meteo
             }
         }
 
+        public bool ORPColorInsertOrUpdate(CloudORPColor item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudORPColor> records = new List<CloudORPColor>();
+                records.Add(item);
+                conn.Execute("dbo.ORP_COLOR_InsertOrUpdateData @ID_ORP, @COLOR", records);
+
+                return true;
+            }
+        }
+
         public int MODELSGetIDFromName(string nam)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
