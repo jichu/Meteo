@@ -81,6 +81,8 @@ namespace Meteo
         {
             if (e.Node.Level == 2)
             {
+                Util.curModelName = e.Node.Parent.Parent.Text;
+                Util.curSubmodelName = e.Node.Parent.Text;
                 Thread t = new Thread(() => LoadMap(e.Node.Name));
                 t.Start();
             }

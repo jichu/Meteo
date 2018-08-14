@@ -21,7 +21,10 @@ namespace Meteo
         public static Dictionary<int, string> palette = new Dictionary<int, string>();
 
         public static bool Develop = true;
-         
+
+        public static string curModelName { get; set; }
+        public static string curSubmodelName { get; set; }
+
         public static void ShowLoading(string message)
         {
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)

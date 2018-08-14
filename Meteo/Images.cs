@@ -95,7 +95,8 @@ namespace Meteo
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
-            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
+
+            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName);
             float sumValues = 0;
 
 
