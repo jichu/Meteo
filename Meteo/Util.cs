@@ -21,7 +21,7 @@ namespace Meteo
         };
         public static Dictionary<int, string> palette = new Dictionary<int, string>();
 
-        public static bool Develop = false;
+        public static bool Develop = true;
 
         public static string curModelName { get; set; }
         public static string curSubmodelName { get; set; }
