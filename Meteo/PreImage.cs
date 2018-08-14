@@ -107,9 +107,8 @@ namespace Meteo
                     Chu.color = JsonConvert.SerializeObject(map.Key);
                     Chu.coords = JsonConvert.SerializeObject(map.Value);
                     if (regionName != "")
-                    {
                         Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, "#" + map.Key.Substring(2, 6), JsonConvert.SerializeObject(map.Value)));
-                    }
+                    
                 }
             }
             catch (Exception ex)

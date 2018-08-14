@@ -18,6 +18,8 @@ namespace Meteo
         private PreImage mapORP;
         public Bitmap bmp;
         private List<CloudModelSpectrum> cloudModelSpectrum;
+        private List<CloudORPS> ORPSGetORPNames;
+        private List<CloudORPColor> ORPColorGetORPColors;
 
         public Images() {
             /*
@@ -35,8 +37,20 @@ namespace Meteo
             LoadPointsOfColorsInMap();
         }
 
+        private string GetRegionNameByColor(string regioncolor)
+        {
+            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
+                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+            else
+                return regioncolor;
+        }
+
+
         private void LoadPointsOfColorsInMap()
         {
+            ORPSGetORPNames = Model.Cloud.ORPSGetORPNames();
+            ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
+
             bool checkBoxShowORPchecked = (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"]as CheckBox).Checked;
 
             (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
@@ -49,10 +63,10 @@ namespace Meteo
 
             foreach (var map in Chu.data)
             {
-                Util.l("Region: "+map.Key + ":");
+                Util.l("Region: "+GetRegionNameByColor("#"+ map.Key.Substring(2,6)));
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
                 {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += "Region: " + map.Key + ":\n";
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += GetRegionNameByColor("#" + map.Key.Substring(2, 6)).Trim()+":\n";
                 }));
                 List<Color> colors = new List<Color>();
                 int sizeRegion = 0;
