@@ -20,8 +20,8 @@ namespace Meteo
             ORPS_GetORPNames();
             ORPS_GetORPColors();
             //Pomocné nahrávání dat do DB z CSV souborů
-            //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
-            //ReadCSVFileORPColor(@"PaletaBarev.csv");
+            ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
+            ReadCSVFileORPColor(@"PaletaBarev.csv");
         }
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
@@ -116,15 +116,17 @@ namespace Meteo
             using (var reader = new StreamReader(filename))
             {
                 List<CloudORPColor> listOfRecords = new List<CloudORPColor>();
+                var header = reader.ReadLine(); //načte hlavičku
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
                     var values = line.Split(';');
 
-                    CloudORPColor record = new CloudORPColor(values[0], $"#{values[1].Substring(2,6)}");
+                    //CloudORPColor record = new CloudORPColor(values[0], $"#{values[1].Substring(2,6)}");
+                    CloudORPColor record = new CloudORPColor(values[0],values[1]);
                     listOfRecords.Add(record);
                 }
-
+                Util.l(header);
                 foreach (var r in listOfRecords)
                 {
                     Util.l($"{r.id_orp}:{r.color}");
