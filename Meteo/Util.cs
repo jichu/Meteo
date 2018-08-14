@@ -18,6 +18,7 @@ namespace Meteo
             { "ffffb200", 8 },
             { "ffe3df00", 10 }
         };
+        public static Dictionary<int, string> palette = new Dictionary<int, string>();
 
         public static bool Develop = true;
          

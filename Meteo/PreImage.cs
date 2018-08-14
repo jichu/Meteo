@@ -15,6 +15,8 @@ namespace Meteo
     class PreImage
     {
         private Dictionary<string, List<Point>> mapORP=new Dictionary<string, List<Point>>();
+        private List<CloudORPS> ORPSGetORPNames;
+        private List<CloudORPColor> ORPColorGetORPColors;
 
         public PreImage()
         {
@@ -29,6 +31,8 @@ namespace Meteo
         {
             try
             {
+                ORPSGetORPNames = Model.Cloud.ORPSGetORPNames();
+                ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
                 string dirPath = AppDomain.CurrentDomain.BaseDirectory+@"\models\";
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 foreach (var dir in dirs)
@@ -39,7 +43,7 @@ namespace Meteo
                     if (File.Exists(orpMask))
                     {
                         Util.l("Load mask: " + orpMask);
-                        Thread t = new Thread(() => LoadORP((Bitmap)Image.FromFile(orpMask)));
+                        Thread t = new Thread(() => LoadORP((Bitmap)Image.FromFile(orpMask),model));
                         t.Start();
                     }
                     Console.WriteLine("{0}", dir.Substring(dir.LastIndexOf("\\") + 1));
@@ -52,8 +56,15 @@ namespace Meteo
             }
         }
 
+        private string GetRegionNameByColor(string regioncolor)
+        {
+            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
+                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+            else
+                return "";
+        }
 
-        private void LoadORP(Bitmap orp)
+        private void LoadORP(Bitmap orp, string modelName)
         {
             try
             {
@@ -91,9 +102,14 @@ namespace Meteo
                 Chu.data = data;
                 foreach (var map in data)
                 {
-                    Util.l(JsonConvert.SerializeObject(map.Key)+": "+JsonConvert.SerializeObject(map.Value));
+                    string regionName = GetRegionNameByColor("#" + map.Key.Substring(2, 6));
+                    Util.l(regionName+JsonConvert.SerializeObject("#"+map.Key.Substring(2,6))+": "+JsonConvert.SerializeObject(map.Value));
                     Chu.color = JsonConvert.SerializeObject(map.Key);
                     Chu.coords = JsonConvert.SerializeObject(map.Value);
+                    if (regionName != "")
+                    {
+                        Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, "#" + map.Key.Substring(2, 6), JsonConvert.SerializeObject(map.Value)));
+                    }
                 }
             }
             catch (Exception ex)
