@@ -48,7 +48,7 @@ namespace Meteo
                 for (int x = 0; x < 6; x++)
                     for (int y = 0; y < 35; y++)
                     {
-                        if (count > 204) break;
+                        if (count > 205) break;
                         Brush brush = GetColor(colorIntense);
                         g.FillRectangle(brush, x * boxSize, y * boxSize, boxSize, boxSize);
                         g.DrawString(count.ToString(), new Font(FontFamily.GenericSansSerif, 7, FontStyle.Regular),

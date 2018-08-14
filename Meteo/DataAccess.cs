@@ -34,7 +34,6 @@ namespace Meteo
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                item.ShowRecord();
                 List<CloudMaskSpectrum> records = new List<CloudMaskSpectrum>();
                 records.Add(item);
                 conn.Execute("dbo.MASK_SPECTRUM_InsertOrUpdateData @ID, @ID_ORP, @COLOR, @COODS", records);

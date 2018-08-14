@@ -6,23 +6,29 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Meteo
 {
     class Ji
     {
         public Ji() {
-            Util.l("Tohle je Jickovo hriste");
-            MaskSpectrumGetCoodsByColor();
-            MaskSpectrumGetAllColorsForModel();
-            MaskSpectrumInsertOrUpdate();
-            ModelSpectrumScaleForModel();
-            ORPS_GetORPNames();
-            ORPS_GetORPColors();
+            /*Util.l("Tohle je Jickovo hriste|kkk", new Dictionary<string, object>
+            {
+                { "messageBoxIcon", MessageBoxIcon.Stop }
+            });*/
+            //MaskSpectrumGetCoodsByColor();
+            //MaskSpectrumGetAllColorsForModel();
+            //MaskSpectrumInsertOrUpdate();
+            //ModelSpectrumScaleForModel();
+            //ORPS_GetORPNames();
+            //ORPS_GetORPColors();
             //Pomocné nahrávání dat do DB z CSV souborů
-            ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
-            ReadCSVFileORPColor(@"PaletaBarev.csv");
+            //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
+            //ReadCSVFileORPColor(@"PaletaBarev.csv");
         }
+        
+
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
 

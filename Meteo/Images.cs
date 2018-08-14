@@ -58,8 +58,8 @@ namespace Meteo
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Clear();
             }));
 
-            if(Chu.coords==null)
-                MessageBox.Show("Nemáte načtenou ORP masku.", "Debug mode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (Chu.coords == null)
+                Util.l("Nemáte načtenou ORP masku.|Debug mode");
 
             foreach (var map in Chu.data)
             {
