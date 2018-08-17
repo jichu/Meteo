@@ -26,6 +26,7 @@ namespace Meteo
             //Pomocné nahrávání dat do DB z CSV souborů
             //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
             //ReadCSVFileORPColor(@"PaletaBarev.csv");
+            MODELS_InsertOrUpdate();
         }
         
 
@@ -94,6 +95,37 @@ namespace Meteo
             {
                 Util.l($"ID_ORP: {ll.id_orp} Barva: {ll.color}");
             }
+        }
+
+        public void MODELS_InsertOrUpdate() {
+            //Použití metody Model.Cloud.MODELSInsertOrUpdate() - přidání záznamu do tabulky MODELS
+            //Model.Cloud.MODELSInsertOrUpdate(Nazev nového modelu (musí být zadán vždy)
+                                             //,nazev rodičovského modelu (zadává se jen u podmodelů)
+                                             //, nastavení (libovolně použitelné pole))
+            
+            //Vložení nového hlavního modelu (např. Model_ALADIN_CZ). 
+            //Pokud již existuje v databázi hlavní model s tímto jménem, pak původní zůstává nezměnen.
+            //CloudModels recordParent = new CloudModels("Nový root model");
+            //Model.Cloud.MODELSInsertOrUpdate(recordParent);
+
+            //Vložení podmodelu (např. Srážky_MAIN)
+            //Druhý parametr je název rodičovského modelu. 
+            //Pokud nelze v DB název dohledat, udělá se z podmodelu hlavní model.
+            //CloudModels recordChild = new CloudModels("Nový child model", "Nový root model");
+            //Model.Cloud.MODELSInsertOrUpdate(recordChild);
+
+            //Přidání nastavení (používá se při určení metody výpočtu). Struktura není pevn dána.
+            //Pole options si lze využít libovolně. V ukázce je pouze schematický návrh.
+            //Pole options je také to jediné, co funkce  Model.Cloud.MODELSInsertOrUpdate umožňuje u jednotlivých položek aktualizovat.
+            //Nelze tedy aktualizovat název modelu a rodiče.
+            //CloudModels recordWithOptions = new CloudModels("Nový child model", "Nový root model", "{countMethod = average}");
+            //Model.Cloud.MODELSInsertOrUpdate(recordWithOptions);
+
+            //Příklady použití s reálnými daty
+
+            Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_CZ"));
+            Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ"));
+            Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ", "{countMethod = sum}"));
         }
 
         public void ReadCSVFileORPS(string filename) {

@@ -101,6 +101,18 @@ namespace Meteo
             }
         }
 
+        public bool MODELSInsertOrUpdate(CloudModels item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudModels> records = new List<CloudModels>();
+                records.Add(item);
+                conn.Execute("dbo.MODELS_InsertOrUpdateData @name, @id_parent, @options", records);
+
+                return true;
+            }
+        }
+
         public int MODELSGetIDFromName(string nam)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
