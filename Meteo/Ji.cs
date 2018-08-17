@@ -26,7 +26,12 @@ namespace Meteo
             //Pomocné nahrávání dat do DB z CSV souborů
             //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
             //ReadCSVFileORPColor(@"PaletaBarev.csv");
-            MODELS_InsertOrUpdate();
+
+            //NEW
+
+            //MODELS_InsertOrUpdate();
+            //SETTING_GetSettings();
+            SETTING_InsertOrUpdateSettings();
         }
         
 
@@ -126,6 +131,24 @@ namespace Meteo
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ", "{countMethod = sum}"));
+        }
+
+        public void SETTING_GetSettings() {
+            //načtení celého nastavení aplikace s výpisem jednotlivých parametrů nastavení
+            List<CloudSettings> settings = Model.Cloud.SETTINGSGetSettings();
+            foreach (var s in settings)
+            {
+                Util.l($"OPTION_NAME: {s.option_name} OPTION_VALUE: {s.option_value}");
+            }
+        }
+
+        public void SETTING_InsertOrUpdateSettings()
+        {
+            //Přidání nebo změna existujícího parametru do nastavení aplikace
+            //Pokud existuje položka s názvem, pak je pouze změněna hodnota parametru
+            //new CloudSettings(Jméno parametru,Hodnota parametru);
+            Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings("debug", "true|false"));
+
         }
 
         public void ReadCSVFileORPS(string filename) {

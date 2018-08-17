@@ -156,6 +156,27 @@ namespace Meteo
             }
         }
 
-        
+        public List<CloudSettings> SETTINGSGetSettings()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudSettings>("dbo.SETTINGS_GetSettings").ToList();
+
+                return output;
+            }
+        }
+
+        public bool SETTINGSInsertOrUpdate(CloudSettings item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudSettings> records = new List<CloudSettings>();
+                records.Add(item);
+                conn.Execute("dbo.SETTINGS_InsertOrUpdateSettings @option_name, @option_value", records);
+
+                return true;
+            }
+        }
+
     }
 }
