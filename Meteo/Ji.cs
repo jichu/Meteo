@@ -34,7 +34,7 @@ namespace Meteo
             //MODELS_InsertOrUpdate();
             //MODELS_GetIDFromName();
             //MODELS_GetSubmodelIDFromName();
-
+            //REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
 
@@ -153,6 +153,15 @@ namespace Meteo
         public void ORPS_GetIDFromName()
         {
             Util.l(Model.Cloud.ORPSGetIDFromName("Hlavní město Praha"));
+        }
+
+        public void REGIONS_GetRegionCities()
+        {
+            List<CloudORPS> l = Model.Cloud.REGIONSGetRegionCities();
+            foreach (var ll in l)
+            {
+                Util.l($"ID: {ll.id} Zástupce Okresu: {ll.name}");
+            }
         }
 
         public void SETTING_GetSettings() {

@@ -157,6 +157,16 @@ namespace Meteo
             }
         }
 
+        public List<CloudORPS> REGIONSGetRegionCities()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPS>("dbo.REGIONS_GetRegionCities").ToList();
+
+                return output;
+            }
+        }
+
         public List<CloudSettings> SETTINGSGetSettings()
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
