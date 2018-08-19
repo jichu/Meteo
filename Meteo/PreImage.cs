@@ -33,7 +33,7 @@ namespace Meteo
             {
                 ORPSGetORPNames = Model.Cloud.ORPSGetORPNames();
                 ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
-                string dirPath = AppDomain.CurrentDomain.BaseDirectory+@"\models\";
+                string dirPath = Util.pathSource["models"];
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 foreach (var dir in dirs)
                 {
@@ -46,7 +46,14 @@ namespace Meteo
                         Thread t = new Thread(() => LoadORP((Bitmap)Image.FromFile(orpMask),model));
                         t.Start();
                     }
-                    Console.WriteLine("{0}", dir.Substring(dir.LastIndexOf("\\") + 1));
+
+                    List<string> subdirs = new List<string>(Directory.EnumerateDirectories(dirPath + "\\" + model));
+                    foreach (var subdir in subdirs)
+                    {
+                        string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
+                        Util.l(model + " " + submodel);
+                        Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, "{countMethod = sum}"));
+                    }
                 }
                 //View.FormMain.Close();
             }

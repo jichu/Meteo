@@ -54,7 +54,7 @@ namespace Meteo
         // menu MODELY
         private void menuItemLoadModels_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP?", "Načíst data z ORP masek", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou /models/?", "Načíst data do databáze", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 PreImage mapORP = new PreImage();

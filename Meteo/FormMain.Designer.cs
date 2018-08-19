@@ -34,8 +34,8 @@
             this.modelyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemLoadModels = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExplore = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelLayout = new System.Windows.Forms.Panel();
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelLayout = new System.Windows.Forms.Panel();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,17 +78,24 @@
             // menuItemLoadModels
             // 
             this.menuItemLoadModels.Name = "menuItemLoadModels";
-            this.menuItemLoadModels.Size = new System.Drawing.Size(182, 22);
-            this.menuItemLoadModels.Text = "Načíst ORP masky ...";
+            this.menuItemLoadModels.Size = new System.Drawing.Size(234, 22);
+            this.menuItemLoadModels.Text = "Načíst modely a ORP masky ...";
             this.menuItemLoadModels.Click += new System.EventHandler(this.menuItemLoadModels_Click);
             // 
             // menuItemExplore
             // 
             this.menuItemExplore.Name = "menuItemExplore";
             this.menuItemExplore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.menuItemExplore.Size = new System.Drawing.Size(182, 22);
+            this.menuItemExplore.Size = new System.Drawing.Size(234, 22);
             this.menuItemExplore.Text = "Prohlídnout";
             this.menuItemExplore.Click += new System.EventHandler(this.menuItemExplore_Click);
+            // 
+            // menuItemPalette
+            // 
+            this.menuItemPalette.Name = "menuItemPalette";
+            this.menuItemPalette.Size = new System.Drawing.Size(234, 22);
+            this.menuItemPalette.Text = "Paleta masky";
+            this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
             // 
             // panelLayout
             // 
@@ -99,13 +106,6 @@
             this.panelLayout.Name = "panelLayout";
             this.panelLayout.Size = new System.Drawing.Size(983, 681);
             this.panelLayout.TabIndex = 3;
-            // 
-            // menuItemPalette
-            // 
-            this.menuItemPalette.Name = "menuItemPalette";
-            this.menuItemPalette.Size = new System.Drawing.Size(182, 22);
-            this.menuItemPalette.Text = "Paleta masky";
-            this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
             // 
             // FormMain
             // 
