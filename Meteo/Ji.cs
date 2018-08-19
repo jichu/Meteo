@@ -21,19 +21,26 @@ namespace Meteo
             //MaskSpectrumGetAllColorsForModel();
             //MaskSpectrumInsertOrUpdate();
             //ModelSpectrumScaleForModel();
+            //ORP_COLOR_GetORPColors()
             //ORPS_GetORPNames();
-            //ORPS_GetORPColors();
+            //ORPS_GetIDFromName();
+
             //Pomocné nahrávání dat do DB z CSV souborů
-            //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv");
-            //ReadCSVFileORPColor(@"PaletaBarev.csv");
+            //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv"); //Zde se používá ORPSInsertOrUpdate().
+            //ReadCSVFileORPColor(@"PaletaBarev.csv"); //Zde se používá  ORPColorInsertOrUpdate().
 
             //NEW
 
             //MODELS_InsertOrUpdate();
+            //MODELS_GetIDFromName();
+            //MODELS_GetSubmodelIDFromName();
+
             //SETTING_GetSettings();
-            SETTING_InsertOrUpdateSettings();
+            //SETTING_InsertOrUpdateSettings();
+
+
         }
-        
+
 
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
@@ -57,7 +64,7 @@ namespace Meteo
         }
 
         public void MaskSpectrumGetAllColorsForModel() {
-            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColorsForModel("Srážky_MAIN");
+            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColorsForModel("Model_ALADIN_CZ");
             foreach (var ll in l)
             {
                 Util.l("Barvy pro zvolený model: "+ ll.color);
@@ -71,7 +78,7 @@ namespace Meteo
             //Všechno mohou být stringy - tam, kde je v tabulce MaskSpectrum uvedeno číselné ID se provádí automatický překlad ze stringu na int.
             //Je potřeba dodržet ty názvy, které jsou již uložené v DB, jinak je nutno updatovat "překladové" tabulky.
             //Je možno použít u IDček - první 2 položky - i konstruktor, který přijímá int hodnoty. 
-            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_EURO4", "Praha","#FUNGUJ","{}");
+            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_EURO4", "Zlín", "{}");
             Model.Cloud.MaskSpectrumInsertOrUpdate(record);
 
         }
@@ -84,30 +91,13 @@ namespace Meteo
             }
         }
 
-        public void ORPS_GetORPNames()
+        public void MODELS_InsertOrUpdate()
         {
-            List<CloudORPS> l = Model.Cloud.ORPSGetORPNames();
-            foreach (var ll in l)
-            {
-                Util.l($"ID: {ll.id} Název Okresu: {ll.name}");
-            }
-        }
-
-        public void ORPS_GetORPColors()
-        {
-            List<CloudORPColor> l = Model.Cloud.ORPColorGetORPColors();
-            foreach (var ll in l)
-            {
-                Util.l($"ID_ORP: {ll.id_orp} Barva: {ll.color}");
-            }
-        }
-
-        public void MODELS_InsertOrUpdate() {
             //Použití metody Model.Cloud.MODELSInsertOrUpdate() - přidání záznamu do tabulky MODELS
             //Model.Cloud.MODELSInsertOrUpdate(Nazev nového modelu (musí být zadán vždy)
-                                             //,nazev rodičovského modelu (zadává se jen u podmodelů)
-                                             //, nastavení (libovolně použitelné pole))
-            
+            //,nazev rodičovského modelu (zadává se jen u podmodelů)
+            //, nastavení (libovolně použitelné pole))
+
             //Vložení nového hlavního modelu (např. Model_ALADIN_CZ). 
             //Pokud již existuje v databázi hlavní model s tímto jménem, pak původní zůstává nezměnen.
             //CloudModels recordParent = new CloudModels("Nový root model");
@@ -131,6 +121,38 @@ namespace Meteo
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ", "{countMethod = sum}"));
+        }
+
+        public void MODELS_GetIDFromName() {
+            Util.l(Model.Cloud.MODELSGetIDFromName("Model_ALADIN_CZ"));
+        }
+
+        public void MODELS_GetSubmodelIDFromName()
+        {
+            Util.l(Model.Cloud.MODELSGetSubmodelIDFromName("Model_ALADIN_CZ", "Srážky_MAIN"));
+        } 
+
+        public void ORP_COLOR_GetORPColors()
+        {
+            List<CloudORPColor> l = Model.Cloud.ORPColorGetORPColors();
+            foreach (var ll in l)
+            {
+                Util.l($"ID_ORP: {ll.id_orp} Barva: {ll.color}");
+            }
+        }
+
+        public void ORPS_GetORPNames()
+        {
+            List<CloudORPS> l = Model.Cloud.ORPSGetORPNames();
+            foreach (var ll in l)
+            {
+                Util.l($"ID: {ll.id} Název Okresu: {ll.name}");
+            }
+        }
+
+        public void ORPS_GetIDFromName()
+        {
+            Util.l(Model.Cloud.ORPSGetIDFromName("Hlavní město Praha"));
         }
 
         public void SETTING_GetSettings() {

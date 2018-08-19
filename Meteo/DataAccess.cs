@@ -36,66 +36,18 @@ namespace Meteo
             {
                 List<CloudMaskSpectrum> records = new List<CloudMaskSpectrum>();
                 records.Add(item);
-                conn.Execute("dbo.MASK_SPECTRUM_InsertOrUpdateData @ID, @ID_ORP, @COLOR, @COODS", records);
+                conn.Execute("dbo.MASK_SPECTRUM_InsertOrUpdateData @ID, @ID_ORP, @COODS", records);
                 
                 return true;
             }
         }
-        public int ORPSGetIDFromName(string nam)
+
+        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModels(string mod, string submod)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudORPS>("dbo.ORPS_GetIDFromName @NAME",new {name =  nam}).ToList();
-
-                int id = 0;
-                foreach (var o in output)
-                {
-                    id = o.id;
-                }
-                return id;
-            }
-            
-        }
-
-        public bool ORPSInsertOrUpdate(CloudORPS item)
-        {
-            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
-            {
-                List<CloudORPS> records = new List<CloudORPS>();
-                records.Add(item);
-                conn.Execute("dbo.ORPS_InsertOrUpdateData @ID, @NAME", records);
-
-                return true;
-            }
-        }
-
-        public List<CloudORPS> ORPSGetORPNames()
-        {
-            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
-            {
-                var output = conn.Query<CloudORPS>("dbo.ORPS_GetORPNames").ToList();
-
-                return output;
-            }
-        }
-
-        public bool ORPColorInsertOrUpdate(CloudORPColor item)
-        {
-            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
-            {
-                List<CloudORPColor> records = new List<CloudORPColor>();
-                records.Add(item);
-                conn.Execute("dbo.ORP_COLOR_InsertOrUpdateData @ID_ORP, @COLOR", records);
-
-                return true;
-            }
-        }
-
-        public List<CloudORPColor> ORPColorGetORPColors()
-        {
-            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
-            {
-                var output = conn.Query<CloudORPColor>("dbo.ORP_COLOR_GetORPColors").ToList();
+                int id = MODELSGetSubmodelIDFromName(mod, submod);
+                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new { model = id }).ToList();
 
                 return output;
             }
@@ -133,7 +85,7 @@ namespace Meteo
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudModels>("dbo.MODELS_GetSubmodelIDFromName @NMODEL, @NSUBMODEL", new { nmodel = namModel, nsubmodel=namSubmodel }).ToList();
+                var output = conn.Query<CloudModels>("dbo.MODELS_GetSubmodelIDFromName @NMODEL, @NSUBMODEL", new { nmodel = namModel, nsubmodel = namSubmodel }).ToList();
 
                 int id = 0;
                 foreach (var o in output)
@@ -145,12 +97,61 @@ namespace Meteo
 
         }
 
-        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModels(string mod, string submod)
+        public bool ORPColorInsertOrUpdate(CloudORPColor item)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                int id = MODELSGetSubmodelIDFromName(mod, submod);
-                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new { model = id }).ToList();
+                List<CloudORPColor> records = new List<CloudORPColor>();
+                records.Add(item);
+                conn.Execute("dbo.ORP_COLOR_InsertOrUpdateData @ID_ORP, @COLOR", records);
+
+                return true;
+            }
+        }
+
+        public List<CloudORPColor> ORPColorGetORPColors()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPColor>("dbo.ORP_COLOR_GetORPColors").ToList();
+
+                return output;
+            }
+        }
+
+        public int ORPSGetIDFromName(string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPS>("dbo.ORPS_GetIDFromName @NAME",new {name =  nam}).ToList();
+
+                int id = 0;
+                foreach (var o in output)
+                {
+                    id = o.id;
+                }
+                return id;
+            }
+            
+        }
+
+        public bool ORPSInsertOrUpdate(CloudORPS item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudORPS> records = new List<CloudORPS>();
+                records.Add(item);
+                conn.Execute("dbo.ORPS_InsertOrUpdateData @ID, @NAME", records);
+
+                return true;
+            }
+        }
+
+        public List<CloudORPS> ORPSGetORPNames()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPS>("dbo.ORPS_GetORPNames").ToList();
 
                 return output;
             }
