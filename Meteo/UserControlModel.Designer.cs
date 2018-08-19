@@ -34,6 +34,7 @@
             this.checkBoxShowORP = new System.Windows.Forms.CheckBox();
             this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
             this.checkBoxShoweRain = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowOutput = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,7 +63,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxMap.Location = new System.Drawing.Point(194, 89);
             this.pictureBoxMap.Name = "pictureBoxMap";
-            this.pictureBoxMap.Size = new System.Drawing.Size(272, 197);
+            this.pictureBoxMap.Size = new System.Drawing.Size(473, 197);
             this.pictureBoxMap.TabIndex = 4;
             this.pictureBoxMap.TabStop = false;
             // 
@@ -82,11 +83,12 @@
             // 
             this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxOutput.Location = new System.Drawing.Point(313, 28);
+            this.richTextBoxOutput.Location = new System.Drawing.Point(514, 28);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
             this.richTextBoxOutput.Size = new System.Drawing.Size(153, 258);
             this.richTextBoxOutput.TabIndex = 6;
             this.richTextBoxOutput.Text = "";
+            this.richTextBoxOutput.Visible = false;
             // 
             // checkBoxShoweRain
             // 
@@ -100,10 +102,23 @@
             this.checkBoxShoweRain.UseVisualStyleBackColor = true;
             this.checkBoxShoweRain.CheckedChanged += new System.EventHandler(this.checkBoxShoweRain_CheckedChanged);
             // 
+            // checkBoxShowOutput
+            // 
+            this.checkBoxShowOutput.AutoSize = true;
+            this.checkBoxShowOutput.Enabled = false;
+            this.checkBoxShowOutput.Location = new System.Drawing.Point(324, 28);
+            this.checkBoxShowOutput.Name = "checkBoxShowOutput";
+            this.checkBoxShowOutput.Size = new System.Drawing.Size(98, 17);
+            this.checkBoxShowOutput.TabIndex = 8;
+            this.checkBoxShowOutput.Text = "Zobrazit výstup";
+            this.checkBoxShowOutput.UseVisualStyleBackColor = true;
+            this.checkBoxShowOutput.CheckedChanged += new System.EventHandler(this.checkBoxShowOutput_CheckedChanged);
+            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxShowOutput);
             this.Controls.Add(this.checkBoxShoweRain);
             this.Controls.Add(this.richTextBoxOutput);
             this.Controls.Add(this.checkBoxShowORP);
@@ -111,7 +126,7 @@
             this.Controls.Add(this.treeViewModel);
             this.Controls.Add(this.label1);
             this.Name = "UserControlModel";
-            this.Size = new System.Drawing.Size(469, 289);
+            this.Size = new System.Drawing.Size(670, 289);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -125,5 +140,6 @@
         public System.Windows.Forms.CheckBox checkBoxShowORP;
         public System.Windows.Forms.RichTextBox richTextBoxOutput;
         public System.Windows.Forms.CheckBox checkBoxShoweRain;
+        public System.Windows.Forms.CheckBox checkBoxShowOutput;
     }
 }

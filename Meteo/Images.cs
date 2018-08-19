@@ -68,10 +68,16 @@ namespace Meteo
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled = false;
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
             }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Checked = false;
+            }));
 
             try
             {
                 Util.rainRegion.Clear();
+                Util.curModelOutput = "";
                 foreach (var map in ORPColorGetORPColors)
                 {
                     List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(map.color.Trim());
@@ -84,11 +90,14 @@ namespace Meteo
                     else
                     {
                         string regionName = GetRegionNameByColor(map.color);
+                        Util.curModelOutput += regionName + Environment.NewLine;
                         //Util.l("Region: " + GetRegionNameByColor(map.color)+map.color);
+                        /*
                         (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
                         {
                             (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += regionName+":\n";
                         }));
+                        */
                         //Util.l(coods);
                         List<Color> colors = new List<Color>();
                         int sizeRegion = 0;
@@ -127,39 +136,12 @@ namespace Meteo
                 {
                     (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = true;
                 }));
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
+                {
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
+                }));
             } catch(Exception e) { Util.l(e); }
 
-            /*
-            foreach (var map in Chu.data)
-            {
-                Util.l("Region: " + GetRegionNameByColor("#" + map.Key.Substring(2, 6)));
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
-                {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += GetRegionNameByColor("#" + map.Key.Substring(2, 6)).Trim() + ":\n";
-                }));
-                List<Color> colors = new List<Color>();
-                int sizeRegion = 0;
-                foreach (var point in map.Value)
-                {
-                    try
-                    {
-                        Color c = bmp.GetPixel((int)point[0], (int)point[1]);
-                        if (checkBoxShowORPchecked)
-                            bmp.SetPixel((int)point[0], (int)point[1], System.Drawing.ColorTranslator.FromHtml("#" + map.Key.Substring(2, 6)));
-                        colors.Add(c);
-                        sizeRegion++;
-
-                    }
-                    catch (Exception e)
-                    {
-                        Util.l(e);
-                    }
-                    //Util.l("  -- " + point.X + "x" + point.Y+ " "+c.Name);
-                }
-                GetColorFromSpectrumBar(colors, sizeRegion);
-            }
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["pictureBoxMap"] as PictureBox).Image = bmp;
-            */
         }
 
         private int GetValueFromSpectrumBar(List<Color> list, int sizeRegion)
@@ -183,23 +165,14 @@ namespace Meteo
                         }
                 }
 
-            string output = "";
             foreach (var c in counts)
             {
-                Util.l($" + nalezeno {c.Key}: {c.Value}x");
-                output += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
+                //Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
             }
-            Util.l($" - region size: {sizeRegion}");
-            Util.l($" - sum value: {sumValues}");
 
             int n = sumValues > 1 ? 1 : 0;
-            output += $" - hodnota regionu: {n}" + Environment.NewLine+Environment.NewLine;
-
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
-            {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += output;
-            }));
-
+            Util.curModelOutput += $" - hodnota regionu: {n}" + Environment.NewLine+Environment.NewLine;
             return n;
         }
 
@@ -225,8 +198,8 @@ namespace Meteo
             string output = "";
             foreach (var c in counts)
             {
-                Util.l($" + nalezeno {c.Key}: {c.Value}x");
-                output += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
+                //Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
             }
             Util.l($" - region size: {sizeRegion}");
             Util.l($" - sum value: {sumValues}");
