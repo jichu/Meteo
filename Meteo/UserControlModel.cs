@@ -142,40 +142,7 @@ namespace Meteo
         {
             if ((sender as CheckBox).Checked)
             {
-                try
-                {
-                    int size = 24;
-                    symbolsRainCount = 0;
-                    string path = Util.pathSource["symbol_rain"];
-                    if (File.Exists(path))
-                    {
-                        Util.ShowLoading("Načítání symbolů...");
-                        foreach (var point in Util.rainRegion)
-                        {
-                            PictureBox symbol = new PictureBox();
-                            symbol.Width = size;
-                            symbol.Height = size;
-                            symbol.Name = "rain" + symbolsRainCount;
-                            symbol.Tag = point.Key;
-                            symbol.BackColor = Color.Transparent;
-                            symbol.BackgroundImage = Image.FromFile(path);
-                            symbol.BackgroundImageLayout = ImageLayout.Stretch;
-                            this.Controls.Add(symbol);
-                            this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X)-size/2, (pictureBoxMap.Location.Y + point.Value.Y)-size/2);
-                            this.Controls["rain" + symbolsRainCount].BringToFront();
-                            this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);
-                            symbolsRainCount++;
-                        }
-                    }
-                    else
-                    {
-                        Util.l($"Program nemůže načíst obrázek {path}.|Chybí symbol srážek");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Util.l(ex);
-                }
+                LoadSymbols();
             }
             else
             {
@@ -210,25 +177,55 @@ namespace Meteo
             e.Graphics.DrawString(e.ToolTipText, f, Brushes.Black, new PointF(2, 2));
         }
 
-        private void LoadSymbol(int id,string path, Point point)
+        private void LoadSymbols()
         {
-            int size = 24;
-            using (PictureBox symbol = new PictureBox())
+            try
             {
-                symbol.Width = size;
-                symbol.Height = size;
-                symbol.Name = "rain"+id;
-                symbol.Image = Image.FromFile(path);
-                this.Controls.Add(symbol);
-                /*
-                this.Controls.BeginInvoke((Action)(() =>
+                int size = 24;
+                symbolsRainCount = 0;
+                string path = Util.pathSource["symbol_rain"];
+                if (File.Exists(path))
                 {
-                    this.Controls["rain" + id].Location = new Point(pictureBoxMap.Location.X + point.X, pictureBoxMap.Location.Y + point.Y);
-                    this.Controls["rain" + id].BringToFront();
-                }));*/
-                symbols.Add(symbol);
+                    Util.ShowLoading("Načítání symbolů...");
+                    foreach (var point in Util.rainRegion)
+                    {
+                        PictureBox symbol = new PictureBox();
+                        symbol.Width = size;
+                        symbol.Height = size;
+                        symbol.Name = "rain" + symbolsRainCount;
+                        symbol.Tag = point.Key;
+                        symbol.BackColor = Color.Transparent;
+                        symbol.BackgroundImage = Image.FromFile(path);
+                        symbol.BackgroundImageLayout = ImageLayout.Stretch;
+                        this.Controls.Add(symbol);
+                        this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X) - size / 2, (pictureBoxMap.Location.Y + point.Value.Y) - size / 2);
+                        this.Controls["rain" + symbolsRainCount].BringToFront();
+                        this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);
+                        symbolsRainCount++;
+                    }
+                }
+                else
+                {
+                    Util.l($"Program nemůže načíst obrázek {path}.|Chybí symbol srážek");
+                }
+            }
+            catch (Exception ex)
+            {
+                Util.l(ex);
             }
         }
 
+        private void checkBoxShowOutput_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBox).Checked)
+            {
+                richTextBoxOutput.Visible = true;
+                richTextBoxOutput.Text = Util.curModelOutput;
+            }
+            else
+            {
+                richTextBoxOutput.Visible = false;
+            }
+        }
     }
 }

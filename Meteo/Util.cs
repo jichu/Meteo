@@ -27,6 +27,8 @@ namespace Meteo
 
         public static string curModelName { get; set; }
         public static string curSubmodelName { get; set; }
+        public static string curModelOutput { get; set; }
+
         public static string ExceptionText = "Exception";
         public static char logMessageDelimiter = '|';
 
