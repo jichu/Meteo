@@ -52,27 +52,10 @@ namespace Meteo
             ORPSGetORPNames = Model.Cloud.ORPSGetORPNames();
             ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
 
-            bool checkBoxShowORPchecked = (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"]as CheckBox).Checked;
+            JObject jo = JObject.Parse(Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName));
+            var p = jo.Property("countMethod");
 
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
-            {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Clear();
-            }));
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).BeginInvoke((Action)(() =>
-            {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = false;
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
-            }));
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).BeginInvoke((Action)(() =>
-            {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled = false;
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
-            }));
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
-            {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Checked = false;
-            }));
+            DefaultUserControlModel();
 
             try
             {
@@ -85,33 +68,35 @@ namespace Meteo
                     if (coods == "")
                     {
                         //Util.l("Nemáte načtenou ORP masku.|Debug mode");
-                       // return;
+                        // return;
                     }
                     else
                     {
                         string regionName = GetRegionNameByColor(map.color);
                         Util.curModelOutput += regionName + Environment.NewLine;
-                        //Util.l("Region: " + GetRegionNameByColor(map.color)+map.color);
-                        /*
-                        (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
-                        {
-                            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += regionName+":\n";
-                        }));
-                        */
-                        //Util.l(coods);
                         List<Color> colors = new List<Color>();
                         int sizeRegion = 0;
                         foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
                         {
                             Color c = bmp.GetPixel((int)point[0], (int)point[1]);
-                            /*
-                            if (checkBoxShowORPchecked)
-                                bmp.SetPixel((int)point[0], (int)point[1], ColorTranslator.FromHtml(map.color));
-                                */
                             colors.Add(c);
                             sizeRegion++;
                         }
-                        int value = GetValueFromSpectrumBar(colors, sizeRegion);
+
+                        float value = 0;
+                        if (p != null)
+                        {
+                            switch (p.Value.ToString()) {
+                                default:
+                                case "sum":
+                                    value = (float)GetValueFromSpectrumBar(colors, sizeRegion);
+                                    break;
+                                case "avarage":
+                                    value = GetValueFromSpectrumBarAvarage(colors, sizeRegion);
+                                    break;
+                            }
+                        }
+
                         if (value == 1)
                         {
                             int x = 0, y =0, count=0;
@@ -126,20 +111,9 @@ namespace Meteo
 
                     }
                 }
-                //(View.FormMain.panelLayout.Controls["UserControlModel"].Controls["pictureBoxMap"] as PictureBox).Image = bmp;
 
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).BeginInvoke((Action)(() =>
-                {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled=true;
-                }));
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).BeginInvoke((Action)(() =>
-                {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = true;
-                }));
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
-                {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
-                }));
+                DefaultUserControlModelReady();
+
             } catch(Exception e) { Util.l(e); }
 
         }
@@ -176,13 +150,11 @@ namespace Meteo
             return n;
         }
 
-        private void GetValueFromSpectrumBarAvarage(List<Color> list, int sizeRegion)
+        private float GetValueFromSpectrumBarAvarage(List<Color> list, int sizeRegion)
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
-            float sumValues = 0;
-
-
+            float sumValues = 0;            
             foreach (var c in list)
                 foreach (var r in cloudModelSpectrum) {
                     if (r.color.Replace("#", "ff") == c.Name)
@@ -195,22 +167,14 @@ namespace Meteo
                         }
                 }
 
-            string output = "";
             foreach (var c in counts)
             {
                 //Util.l($" + nalezeno {c.Key}: {c.Value}x");
                 Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
             }
-            Util.l($" - region size: {sizeRegion}");
-            Util.l($" - sum value: {sumValues}");
-            Util.l($" - průměrná hodnota regionu: {sumValues/sizeRegion}");
-            output += $" - průměrná hodnota regionu: {sumValues / sizeRegion}" + Environment.NewLine+Environment.NewLine;
 
-
-            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
-            {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += output;
-            }));
+            Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion}" + Environment.NewLine+Environment.NewLine;
+            return sumValues;
         }
 
         private void LoadORP()
@@ -259,5 +223,45 @@ namespace Meteo
                 Util.l(e);
             }
         }
+
+        private void DefaultUserControlModel()
+        {
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Clear();
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = false;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled = false;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Checked = false;
+            }));
+        }
+
+        private void DefaultUserControlModelReady()
+        {
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled = true;
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = true;
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
+            }));
+        }
+
     }
 }
