@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -57,16 +58,84 @@ namespace Meteo
             {
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Clear();
             }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = false;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled = false;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Checked = false;
+            }));
 
-            if (Chu.coords == null)
-                Util.l("Nemáte načtenou ORP masku.|Debug mode");
+            try
+            {
+                Util.rainRegion.Clear();
+                foreach (var map in ORPColorGetORPColors)
+                {
+                    List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(map.color.Trim());
+                    string coods = cms.Count > 0 ? cms.First().coods : "";
+                    if (coods == "")
+                    {
+                        //Util.l("Nemáte načtenou ORP masku.|Debug mode");
+                       // return;
+                    }
+                    else
+                    {
+                        string regionName = GetRegionNameByColor(map.color);
+                        //Util.l("Region: " + GetRegionNameByColor(map.color)+map.color);
+                        (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
+                        {
+                            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += regionName+":\n";
+                        }));
+                        //Util.l(coods);
+                        List<Color> colors = new List<Color>();
+                        int sizeRegion = 0;
+                        foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
+                        {
+                            Color c = bmp.GetPixel((int)point[0], (int)point[1]);
+                            /*
+                            if (checkBoxShowORPchecked)
+                                bmp.SetPixel((int)point[0], (int)point[1], ColorTranslator.FromHtml(map.color));
+                                */
+                            colors.Add(c);
+                            sizeRegion++;
+                        }
+                        int value = GetValueFromSpectrumBar(colors, sizeRegion);
+                        if (value == 1)
+                        {
+                            int x = 0, y =0, count=0;
+                            foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
+                            {
+                                x += (int)point[0];
+                                y += (int)point[1];
+                                count++;
+                            }
+                            Util.rainRegion.Add(regionName,(new Point((int)Math.Round((float)x/count), (int)Math.Round((float)y / count))));
+                        }
 
+                    }
+                }
+                //(View.FormMain.panelLayout.Controls["UserControlModel"].Controls["pictureBoxMap"] as PictureBox).Image = bmp;
+
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).BeginInvoke((Action)(() =>
+                {
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShoweRain"] as CheckBox).Enabled=true;
+                }));
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).BeginInvoke((Action)(() =>
+                {
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowORP"] as CheckBox).Enabled = true;
+                }));
+            } catch(Exception e) { Util.l(e); }
+
+            /*
             foreach (var map in Chu.data)
             {
-                Util.l("Region: "+GetRegionNameByColor("#"+ map.Key.Substring(2,6)));
+                Util.l("Region: " + GetRegionNameByColor("#" + map.Key.Substring(2, 6)));
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).BeginInvoke((Action)(() =>
                 {
-                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += GetRegionNameByColor("#" + map.Key.Substring(2, 6)).Trim()+":\n";
+                    (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += GetRegionNameByColor("#" + map.Key.Substring(2, 6)).Trim() + ":\n";
                 }));
                 List<Color> colors = new List<Color>();
                 int sizeRegion = 0;
@@ -75,13 +144,14 @@ namespace Meteo
                     try
                     {
                         Color c = bmp.GetPixel((int)point[0], (int)point[1]);
-                        if(checkBoxShowORPchecked)
-                            bmp.SetPixel((int)point[0], (int)point[1], System.Drawing.ColorTranslator.FromHtml("#"+map.Key.Substring(2,6)));
+                        if (checkBoxShowORPchecked)
+                            bmp.SetPixel((int)point[0], (int)point[1], System.Drawing.ColorTranslator.FromHtml("#" + map.Key.Substring(2, 6)));
                         colors.Add(c);
                         sizeRegion++;
-                        
+
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         Util.l(e);
                     }
                     //Util.l("  -- " + point.X + "x" + point.Y+ " "+c.Name);
@@ -89,9 +159,10 @@ namespace Meteo
                 GetColorFromSpectrumBar(colors, sizeRegion);
             }
             (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["pictureBoxMap"] as PictureBox).Image = bmp;
+            */
         }
 
-        private void GetColorFromSpectrumBar(List<Color> list, int sizeRegion)
+        private int GetValueFromSpectrumBar(List<Color> list, int sizeRegion)
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
@@ -128,9 +199,11 @@ namespace Meteo
             {
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["richTextBoxOutput"] as RichTextBox).Text += output;
             }));
+
+            return n;
         }
 
-        private void GetColorFromSpectrumBarAverage(List<Color> list, int sizeRegion)
+        private void GetValueFromSpectrumBarAvarage(List<Color> list, int sizeRegion)
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
