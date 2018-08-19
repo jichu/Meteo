@@ -78,7 +78,7 @@ namespace Meteo
             //Všechno mohou být stringy - tam, kde je v tabulce MaskSpectrum uvedeno číselné ID se provádí automatický překlad ze stringu na int.
             //Je potřeba dodržet ty názvy, které jsou již uložené v DB, jinak je nutno updatovat "překladové" tabulky.
             //Je možno použít u IDček - první 2 položky - i konstruktor, který přijímá int hodnoty. 
-            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_EURO4", "Praha","#FUNGUJ","{}");
+            CloudMaskSpectrum record = new CloudMaskSpectrum("Model_EURO4", "Zlín", "{}");
             Model.Cloud.MaskSpectrumInsertOrUpdate(record);
 
         }
