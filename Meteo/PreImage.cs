@@ -51,8 +51,8 @@ namespace Meteo
                     foreach (var subdir in subdirs)
                     {
                         string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
-                        Util.l(model + " " + submodel);
-                        Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, "{countMethod = sum}"));
+                        //Util.l(model + " " + submodel);
+                        Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, JsonConvert.SerializeObject(LoadConfig(dir+@"\"+ Util.pathSource["model_cfg"]))));
                     }
                 }
                 //View.FormMain.Close();
@@ -124,6 +124,31 @@ namespace Meteo
             }
         }
 
+        private JObject LoadConfig(string fileName)
+        {
+            JObject jo = new JObject();
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    StreamReader reader = new StreamReader(fileName);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line == null) continue;
+                        if (line[0].ToString() == "#") continue;
+                        if (line.IndexOf('=') == -1) continue;
+                        string[] item = line.Split('=');
+                        if (item.Length > 2) continue;
+                        string value = item[1];
+                        string key = item[0];
+                        jo.Add(new JProperty(key, value));
+                    }
+                    reader.Close();
+                }
+            } catch(Exception e) { Util.l(e); }
+            return jo;
+        }
 
 
 

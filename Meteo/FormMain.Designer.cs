@@ -78,7 +78,8 @@
             // menuItemLoadModels
             // 
             this.menuItemLoadModels.Name = "menuItemLoadModels";
-            this.menuItemLoadModels.Size = new System.Drawing.Size(234, 22);
+            this.menuItemLoadModels.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.menuItemLoadModels.Size = new System.Drawing.Size(277, 22);
             this.menuItemLoadModels.Text = "Načíst modely a ORP masky ...";
             this.menuItemLoadModels.Click += new System.EventHandler(this.menuItemLoadModels_Click);
             // 

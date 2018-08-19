@@ -17,6 +17,7 @@ namespace Meteo
         public static Dictionary<string, string> pathSource = new Dictionary<string, string>
         {
             { "models", @".\models\" },
+            { "model_cfg", @"model.cfg" },
             { "symbol_rain", @".\images\symbol_rain.png" }
         };
         public static Dictionary<int, string> palette = new Dictionary<int, string>();

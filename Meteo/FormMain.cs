@@ -80,7 +80,7 @@ namespace Meteo
 
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.N)
+            if (e.KeyCode == Keys.F12)
             {
                 PreImage mapORP = new PreImage();
                 mapORP.LoadORPfromModels();
