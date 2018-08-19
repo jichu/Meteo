@@ -48,6 +48,7 @@ namespace Meteo
                     }
 
                     List<string> subdirs = new List<string>(Directory.EnumerateDirectories(dirPath + "\\" + model));
+                    Model.Cloud.MODELSInsertOrUpdate(new CloudModels(model));
                     foreach (var subdir in subdirs)
                     {
                         string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
