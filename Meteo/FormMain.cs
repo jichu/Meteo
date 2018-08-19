@@ -24,7 +24,6 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
             new Controller();
-            this.menuItemExplore.PerformClick();
 
         }
 

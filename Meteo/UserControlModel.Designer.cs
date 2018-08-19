@@ -33,7 +33,6 @@
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
             this.checkBoxShowORP = new System.Windows.Forms.CheckBox();
             this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
-            this.checkBoxShoweRain = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +68,8 @@
             // checkBoxShowORP
             // 
             this.checkBoxShowORP.AutoSize = true;
-            this.checkBoxShowORP.Enabled = false;
+            this.checkBoxShowORP.Checked = true;
+            this.checkBoxShowORP.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxShowORP.Location = new System.Drawing.Point(194, 28);
             this.checkBoxShowORP.Name = "checkBoxShowORP";
             this.checkBoxShowORP.Size = new System.Drawing.Size(124, 17);
@@ -88,23 +88,10 @@
             this.richTextBoxOutput.TabIndex = 6;
             this.richTextBoxOutput.Text = "";
             // 
-            // checkBoxShoweRain
-            // 
-            this.checkBoxShoweRain.AutoSize = true;
-            this.checkBoxShoweRain.Enabled = false;
-            this.checkBoxShoweRain.Location = new System.Drawing.Point(194, 51);
-            this.checkBoxShoweRain.Name = "checkBoxShoweRain";
-            this.checkBoxShoweRain.Size = new System.Drawing.Size(97, 17);
-            this.checkBoxShoweRain.TabIndex = 7;
-            this.checkBoxShoweRain.Text = "Zobrazit srážky";
-            this.checkBoxShoweRain.UseVisualStyleBackColor = true;
-            this.checkBoxShoweRain.CheckedChanged += new System.EventHandler(this.checkBoxShoweRain_CheckedChanged);
-            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.checkBoxShoweRain);
             this.Controls.Add(this.richTextBoxOutput);
             this.Controls.Add(this.checkBoxShowORP);
             this.Controls.Add(this.pictureBoxMap);
@@ -124,6 +111,5 @@
         public System.Windows.Forms.PictureBox pictureBoxMap;
         public System.Windows.Forms.CheckBox checkBoxShowORP;
         public System.Windows.Forms.RichTextBox richTextBoxOutput;
-        public System.Windows.Forms.CheckBox checkBoxShoweRain;
     }
 }

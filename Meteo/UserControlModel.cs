@@ -13,8 +13,6 @@ namespace Meteo
     {
         private static UserControlModel uc;
         private string curImage;
-        private List<PictureBox> symbols = new List<PictureBox>();
-        private int symbolsRainCount = 0;
 
         public static UserControlModel Instance
         {
@@ -30,7 +28,6 @@ namespace Meteo
         {
             InitializeComponent();
             ShowModels();
-            treeViewModel.ExpandAll();
         }
 
         public void ShowModels()
@@ -48,7 +45,6 @@ namespace Meteo
                     treeViewModel.Nodes.Add(model);
 
                     string orpMask = dir + @"\" + model + ".bmp";
-
                     if (!File.Exists(orpMask))
                     {
                         treeViewModel.Nodes[nodeModel].ForeColor = Color.Red;
@@ -105,130 +101,8 @@ namespace Meteo
 
         private void checkBoxShowORP_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as CheckBox).Checked)
-            {
-                try
-                {
-                    string orpMask = Util.pathSource["models"] + Util.curModelName+@"\"+Util.curModelName+".bmp";
-                    if (File.Exists(orpMask))
-                    {
-                        Util.ShowLoading("Načítání masky...");
-                        PictureBox symbol = new PictureBox();
-                        Bitmap bmp1 = (Bitmap)Image.FromFile(orpMask);
-                        symbol.Width = bmp1.Width;
-                        symbol.Height = bmp1.Height;
-                        symbol.Name = "pictureBoxMask";
-                        symbol.BackColor = Color.Transparent;
-                        symbol.BackgroundImage = (Image)bmp1;
-                        symbol.BackgroundImageLayout = ImageLayout.Stretch;
-                        this.Controls.Add(symbol);
-                        this.Controls["pictureBoxMask"].Location = new Point(pictureBoxMap.Location.X, pictureBoxMap.Location.Y);
-                        this.Controls["pictureBoxMask"].BringToFront();
-                    }
-                    else Util.l($"V adresáři chybí maska {orpMask}.|Chybí maska");
-                }
-                catch (Exception ex)
-                {
-                    Util.l(ex);
-                }
-            }
-            else
-            {
-                this.Controls.Remove(this.Controls["pictureBoxMask"]);
-            }
+            Thread t = new Thread(() => LoadMap(curImage));
+            t.Start();
         }
-
-        private void checkBoxShoweRain_CheckedChanged(object sender, EventArgs e)
-        {
-            if ((sender as CheckBox).Checked)
-            {
-                try
-                {
-                    int size = 24;
-                    symbolsRainCount = 0;
-                    string path = Util.pathSource["symbol_rain"];
-                    if (File.Exists(path))
-                    {
-                        Util.ShowLoading("Načítání symbolů...");
-                        foreach (var point in Util.rainRegion)
-                        {
-                            PictureBox symbol = new PictureBox();
-                            symbol.Width = size;
-                            symbol.Height = size;
-                            symbol.Name = "rain" + symbolsRainCount;
-                            symbol.Tag = point.Key;
-                            symbol.BackColor = Color.Transparent;
-                            symbol.BackgroundImage = Image.FromFile(path);
-                            symbol.BackgroundImageLayout = ImageLayout.Stretch;
-                            this.Controls.Add(symbol);
-                            this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X)-size/2, (pictureBoxMap.Location.Y + point.Value.Y)-size/2);
-                            this.Controls["rain" + symbolsRainCount].BringToFront();
-                            this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);
-                            symbolsRainCount++;
-                        }
-                    }
-                    else
-                    {
-                        Util.l($"Program nemůže načíst obrázek {path}.|Chybí symbol srážek");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Util.l(ex);
-                }
-            }
-            else
-            {
-                if(symbolsRainCount>0)
-                    for (int i = 0; i < symbolsRainCount; i++)
-                    {
-                        this.Controls.Remove(this.Controls["rain" + i]);
-                    }
-            }
-        }
-
-        private void pictureBoxSymbol_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip tt = new ToolTip();
-            tt.BackColor = Color.Yellow;
-            //tt.Tag = (sender as PictureBox).Tag.ToString();
-            tt.SetToolTip((sender as PictureBox), (sender as PictureBox).Tag.ToString());
-            tt.OwnerDraw = true;
-            tt.Popup += new PopupEventHandler(tooltip_Popup);
-            tt.Draw += new DrawToolTipEventHandler(toolTip_Draw);
-        }
-
-        private void tooltip_Popup(object sender, PopupEventArgs e)
-        {
-            e.ToolTipSize = TextRenderer.MeasureText((sender as ToolTip).GetToolTip(e.AssociatedControl), new Font("Arial", 18.0f));
-        }
-        private void toolTip_Draw(object sender, DrawToolTipEventArgs e)
-        {
-            Font f = new Font("Arial", 18.0f);
-            e.DrawBackground();
-            //e.DrawBorder();
-            e.Graphics.DrawString(e.ToolTipText, f, Brushes.Black, new PointF(2, 2));
-        }
-
-        private void LoadSymbol(int id,string path, Point point)
-        {
-            int size = 24;
-            using (PictureBox symbol = new PictureBox())
-            {
-                symbol.Width = size;
-                symbol.Height = size;
-                symbol.Name = "rain"+id;
-                symbol.Image = Image.FromFile(path);
-                this.Controls.Add(symbol);
-                /*
-                this.Controls.BeginInvoke((Action)(() =>
-                {
-                    this.Controls["rain" + id].Location = new Point(pictureBoxMap.Location.X + point.X, pictureBoxMap.Location.Y + point.Y);
-                    this.Controls["rain" + id].BringToFront();
-                }));*/
-                symbols.Add(symbol);
-            }
-        }
-
     }
 }

@@ -99,13 +99,13 @@ namespace Meteo
                     }
                 }
 
-                //Chu.data = data;
+                Chu.data = data;
                 foreach (var map in data)
                 {
                     string regionName = GetRegionNameByColor("#" + map.Key.Substring(2, 6));
                     //Util.l(regionName+JsonConvert.SerializeObject("#"+map.Key.Substring(2,6))+": "+JsonConvert.SerializeObject(map.Value));
-                    //Chu.color = JsonConvert.SerializeObject(map.Key);
-                    //Chu.coords = JsonConvert.SerializeObject(map.Value);
+                    Chu.color = JsonConvert.SerializeObject(map.Key);
+                    Chu.coords = JsonConvert.SerializeObject(map.Value);
                     if (regionName != "")
                         Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, "#" + map.Key.Substring(2, 6), JsonConvert.SerializeObject(map.Value)));
                     

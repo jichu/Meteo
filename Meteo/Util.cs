@@ -14,13 +14,12 @@ namespace Meteo
     {
         //public static Dictionary<Color, List<Point>> mapCR = new Dictionary<Color, List<Point>>();
         public static List<string> spektrumRadar = new List<string>() { "fffcfcfc", "ffa00000", "fffc0000", "fffc5800", "fffc8400", "fffcb000", "ffe0dc00", "ff9cdc00", "ff34d800", "ff00bc00", "ff00a000", "ff006cc0", "ff0000fc", "ff3000a8", "ff380070" };
-        public static Dictionary<string, string> pathSource = new Dictionary<string, string>
+        public static Dictionary<string, float> spektrumSrazky = new Dictionary<string, float>
         {
-            { "models", @".\models\" },
-            { "symbol_rain", @".\images\symbol_rain.png" }
+            { "ffffb200", 8 },
+            { "ffe3df00", 10 }
         };
         public static Dictionary<int, string> palette = new Dictionary<int, string>();
-        public static Dictionary<string, Point> rainRegion = new Dictionary<string, Point>();
 
         public static bool Develop = true;
 
