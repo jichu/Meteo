@@ -65,17 +65,24 @@ namespace Meteo
             }
         }
 
+        public bool MODELSInsertOrUpdateParent(string name)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                CloudModels item = new CloudModels(name);
+                List<CloudModels> records = new List<CloudModels>();
+                records.Add(item);
+                conn.Execute("dbo.MODELS_InsertOrUpdateData @name, @id_parent, @options", records);
+
+                return true;
+            }
+        }
+
         public int MODELSGetIDFromName(string nam)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudModels>("dbo.MODELS_GetIDFromName @NAME", new { name = nam }).ToList();
-
-                int id = 0;
-                foreach (var o in output)
-                {
-                    id = o.id;
-                }
+                int id = conn.Query<CloudModels>("dbo.MODELS_GetIDFromName @NAME", new { name = nam }).ToList().First().id;
                 return id;
             }
 
@@ -85,14 +92,20 @@ namespace Meteo
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudModels>("dbo.MODELS_GetSubmodelIDFromName @NMODEL, @NSUBMODEL", new { nmodel = namModel, nsubmodel = namSubmodel }).ToList();
+                int id = conn.Query<CloudModels>("dbo.MODELS_GetSubmodelIDFromName @NMODEL, @NSUBMODEL", new { nmodel = namModel, nsubmodel = namSubmodel }).ToList().First().id;
 
-                int id = 0;
-                foreach (var o in output)
-                {
-                    id = o.id;
-                }
                 return id;
+            }
+
+        }
+
+        public string MODELSGetModelOptions(string namModel, string namSubmodel)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                string options = conn.Query<CloudModels>("dbo.MODELS_GetModel @NMODEL, @NSUBMODEL", new { nmodel = namModel, nsubmodel = namSubmodel }).ToList().First().options;
+
+                return options;
             }
 
         }
@@ -123,13 +136,7 @@ namespace Meteo
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudORPS>("dbo.ORPS_GetIDFromName @NAME",new {name =  nam}).ToList();
-
-                int id = 0;
-                foreach (var o in output)
-                {
-                    id = o.id;
-                }
+                int id = conn.Query<CloudORPS>("dbo.ORPS_GetIDFromName @NAME",new {name =  nam}).ToList().First().id;
                 return id;
             }
             

@@ -19,7 +19,13 @@ namespace Meteo
         public CloudModels(string name, string nameParent = null, string options = null)
         {
             this.name = name;
-            if (nameParent!=null) this.id_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
+            if (nameParent != null) {
+                id_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
+                if (id_parent == 0) {
+                    Model.Cloud.MODELSInsertOrUpdateParent(nameParent);
+                    id_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
+                };
+            }
             if (options != null) this.options = options;
         }
     }

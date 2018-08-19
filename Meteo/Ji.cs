@@ -34,6 +34,7 @@ namespace Meteo
             //MODELS_InsertOrUpdate();
             //MODELS_GetIDFromName();
             //MODELS_GetSubmodelIDFromName();
+            //MODELS_GetModelOptions();
             //REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
@@ -130,7 +131,13 @@ namespace Meteo
         public void MODELS_GetSubmodelIDFromName()
         {
             Util.l(Model.Cloud.MODELSGetSubmodelIDFromName("Model_ALADIN_CZ", "Srážky_MAIN"));
-        } 
+        }
+
+        public void MODELS_GetModelOptions() {
+            string options = Model.Cloud.MODELSGetModelOptions("Model_ALADIN_CZ", "Srážky_MAIN");
+            Util.l(options);
+
+        }
 
         public void ORP_COLOR_GetORPColors()
         {
