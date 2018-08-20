@@ -19,8 +19,6 @@ namespace Meteo
         private PreImage mapORP;
         public Bitmap bmp;
         private List<CloudModelSpectrum> cloudModelSpectrum;
-        private List<CloudORPS> ORPSGetORPNames;
-        private List<CloudORPColor> ORPColorGetORPColors;
 
         public Images() {
             /*
@@ -38,19 +36,8 @@ namespace Meteo
             LoadPointsOfColorsInMap();
         }
 
-        private string GetRegionNameByColor(string regioncolor)
-        {
-            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
-                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
-            else
-                return regioncolor;
-        }
-
-
         private void LoadPointsOfColorsInMap()
         {
-            ORPSGetORPNames = Model.Cloud.ORPSGetORPNames();
-            ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
 
             JObject jo = JObject.Parse(Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName));
             var p = jo.Property("countMethod");
@@ -61,7 +48,7 @@ namespace Meteo
             {
                 Util.rainRegion.Clear();
                 Util.curModelOutput = "";
-                foreach (var map in ORPColorGetORPColors)
+                foreach (var map in Util.ORPColorGetORPColors)
                 {
                     List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(map.color.Trim());
                     string coods = cms.Count > 0 ? cms.First().coods : "";
@@ -72,7 +59,7 @@ namespace Meteo
                     }
                     else
                     {
-                        string regionName = GetRegionNameByColor(map.color);
+                        string regionName = Util.GetRegionNameByColor(map.color);
                         Util.curModelOutput += regionName + Environment.NewLine;
                         List<Color> colors = new List<Color>();
                         int sizeRegion = 0;
@@ -95,6 +82,11 @@ namespace Meteo
                                     value = GetValueFromSpectrumBarAvarage(colors, sizeRegion);
                                     break;
                             }
+                        }
+                        else
+                        {
+                            Util.l($"Chybí specifikace metody, nastavte v {Util.curModelName}/{Util.pathSource["model_cfg"]}|Chyba modelu");
+                            return; 
                         }
 
                         if (value == 1)
@@ -176,20 +168,7 @@ namespace Meteo
             Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion}" + Environment.NewLine+Environment.NewLine;
             return sumValues;
         }
-
-        private void LoadORP()
-        {
-            /*
-            View.FormMain.pictureBoxModel.Image = Properties.Resources.ORP;
-            View.FormMain.pictureBoxModel.Width = Properties.Resources.ORP.Width;
-            View.FormMain.pictureBoxModel.Height = Properties.Resources.ORP.Height;
-            View.FormMain.pictureBoxModel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseDown);
-            View.FormMain.pictureBoxModel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseMove);
-            View.FormMain.pictureBoxModel.MouseUp+= new System.Windows.Forms.MouseEventHandler(this.pictureBoxORP_MouseUp);
-            */
-            
-        }
-        
+                
         private void pictureBoxORP_MouseDown(object sender, MouseEventArgs e)
         {
             isDragging = true;
@@ -197,20 +176,6 @@ namespace Meteo
             currentY = e.Y;
         }
 
-        private void pictureBoxORP_MouseMove(object sender, MouseEventArgs e)
-        {
-            /*
-            if (isDragging)
-            {
-                View.FormMain.pictureBoxModel.Top = View.FormMain.pictureBoxModel.Top + (e.Y - currentY);
-                View.FormMain.pictureBoxModel.Left = View.FormMain.pictureBoxModel.Left + (e.X - currentX);
-            }*/
-        }
-        private void pictureBoxORP_MouseUp(object sender, MouseEventArgs e)
-        {
-            isDragging = false;
-        }
-        
         private void LoadImage(string path)
         {
             try
@@ -242,7 +207,7 @@ namespace Meteo
             }));
             (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
             {
-                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = false;
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Checked = false;
             }));
         }

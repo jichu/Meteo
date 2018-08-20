@@ -15,6 +15,7 @@ namespace Meteo
         private string curImage;
         private List<PictureBox> symbols = new List<PictureBox>();
         private int symbolsRainCount = 0;
+        private string curColorRegion="";
 
         public static UserControlModel Instance
         {
@@ -124,6 +125,7 @@ namespace Meteo
                         this.Controls.Add(symbol);
                         this.Controls["pictureBoxMask"].Location = new Point(pictureBoxMap.Location.X, pictureBoxMap.Location.Y);
                         this.Controls["pictureBoxMask"].BringToFront();
+                        this.Controls["pictureBoxMask"].MouseMove+=new MouseEventHandler(this.pictureBoxMask_MouseMove);
                     }
                     else Util.l($"V adresáři chybí maska {orpMask}.|Chybí maska");
                 }
@@ -135,11 +137,26 @@ namespace Meteo
             else
             {
                 this.Controls.Remove(this.Controls["pictureBoxMask"]);
+                labelRegionName.Text = "";
             }
+        }
+
+        private void pictureBoxMask_MouseMove(object sender, MouseEventArgs e)
+        {
+            Bitmap b = new Bitmap((sender as PictureBox).BackgroundImage);
+            string c = "#"+b.GetPixel(e.X, e.Y).Name.Substring(2,6);
+            if (!(curColorRegion == c||c=="#ffffff"||c=="#000000"))
+            {
+                curColorRegion = c;
+                labelRegionName.Text="Název regionu: "+(Util.GetRegionNameByColor(curColorRegion));
+            }
+            if (c == "#ffffff" || c == "#000000")
+                labelRegionName.Text = "";
         }
 
         private void checkBoxShoweRain_CheckedChanged(object sender, EventArgs e)
         {
+            labelRegionName.Text = "";
             if ((sender as CheckBox).Checked)
             {
                 LoadSymbols();
@@ -163,6 +180,7 @@ namespace Meteo
             tt.OwnerDraw = true;
             tt.Popup += new PopupEventHandler(tooltip_Popup);
             tt.Draw += new DrawToolTipEventHandler(toolTip_Draw);
+            //labelRegionName.Text = "Název regionu: " + (sender as PictureBox).Tag.ToString();
         }
 
         private void tooltip_Popup(object sender, PopupEventArgs e)
@@ -227,5 +245,6 @@ namespace Meteo
                 richTextBoxOutput.Visible = false;
             }
         }
+
     }
 }

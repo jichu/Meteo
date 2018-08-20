@@ -20,6 +20,10 @@ namespace Meteo
             { "model_cfg", @"model.cfg" },
             { "symbol_rain", @".\images\symbol_rain.png" }
         };
+
+        public static List<CloudORPS> ORPSGetORPNames { get; set; }
+        public static List<CloudORPColor> ORPColorGetORPColors { get; set; }
+
         public static Dictionary<int, string> palette = new Dictionary<int, string>();
         public static Dictionary<string, Point> rainRegion = new Dictionary<string, Point>();
 
@@ -49,6 +53,14 @@ namespace Meteo
         {
             Application.Idle -= OnLoaded;
             View.FormLoader.Close();
+        }
+        
+        public static string GetRegionNameByColor(string regioncolor)
+        {
+            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
+                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+            else
+                return regioncolor;
         }
 
         public static void l(object obj, Dictionary<string, object> logOptions = null )

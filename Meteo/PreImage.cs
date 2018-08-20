@@ -15,8 +15,6 @@ namespace Meteo
     class PreImage
     {
         private Dictionary<string, List<Point>> mapORP=new Dictionary<string, List<Point>>();
-        private List<CloudORPS> ORPSGetORPNames;
-        private List<CloudORPColor> ORPColorGetORPColors;
 
         public PreImage()
         {
@@ -31,8 +29,6 @@ namespace Meteo
         {
             try
             {
-                ORPSGetORPNames = Model.Cloud.ORPSGetORPNames();
-                ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
                 string dirPath = Util.pathSource["models"];
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 foreach (var dir in dirs)
@@ -63,15 +59,7 @@ namespace Meteo
                 Util.l(e);
             }
         }
-
-        private string GetRegionNameByColor(string regioncolor)
-        {
-            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
-                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
-            else
-                return "";
-        }
-
+        
         private void LoadORP(Bitmap orp, string modelName)
         {
             try
@@ -110,7 +98,7 @@ namespace Meteo
                 //Chu.data = data;
                 foreach (var map in data)
                 {
-                    string regionName = GetRegionNameByColor("#" + map.Key.Substring(2, 6));
+                    string regionName = Util.GetRegionNameByColor("#" + map.Key.Substring(2, 6));
                     //Util.l(regionName+JsonConvert.SerializeObject("#"+map.Key.Substring(2,6))+": "+JsonConvert.SerializeObject(map.Value));
                     //Chu.color = JsonConvert.SerializeObject(map.Key);
                     //Chu.coords = JsonConvert.SerializeObject(map.Value);

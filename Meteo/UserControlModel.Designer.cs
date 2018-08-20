@@ -35,6 +35,7 @@
             this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
             this.checkBoxShoweRain = new System.Windows.Forms.CheckBox();
             this.checkBoxShowOutput = new System.Windows.Forms.CheckBox();
+            this.labelRegionName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,10 +115,19 @@
             this.checkBoxShowOutput.UseVisualStyleBackColor = true;
             this.checkBoxShowOutput.CheckedChanged += new System.EventHandler(this.checkBoxShowOutput_CheckedChanged);
             // 
+            // labelRegionName
+            // 
+            this.labelRegionName.AutoSize = true;
+            this.labelRegionName.Location = new System.Drawing.Point(191, 71);
+            this.labelRegionName.Name = "labelRegionName";
+            this.labelRegionName.Size = new System.Drawing.Size(0, 13);
+            this.labelRegionName.TabIndex = 9;
+            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelRegionName);
             this.Controls.Add(this.checkBoxShowOutput);
             this.Controls.Add(this.checkBoxShoweRain);
             this.Controls.Add(this.richTextBoxOutput);
@@ -141,5 +151,6 @@
         public System.Windows.Forms.RichTextBox richTextBoxOutput;
         public System.Windows.Forms.CheckBox checkBoxShoweRain;
         public System.Windows.Forms.CheckBox checkBoxShowOutput;
+        private System.Windows.Forms.Label labelRegionName;
     }
 }
