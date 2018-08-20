@@ -28,7 +28,7 @@ namespace Meteo
             //Pomocné nahrávání dat do DB z CSV souborů
             //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv"); //Zde se používá ORPSInsertOrUpdate().
             //ReadCSVFileORPColor(@"PaletaBarev.csv"); //Zde se používá  ORPColorInsertOrUpdate().
-
+            //ReadCSVFileModelSpectrum(@"Barvy_stupnice.csv");//Využívá ModelSpectrumInsertOrUpdate()
             //NEW
 
             //MODELS_InsertOrUpdate();
@@ -85,7 +85,7 @@ namespace Meteo
         }
 
         public void ModelSpectrumGetScaleForModel() {
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN"); //Nebo pro model bez podmodelů lze využít zápis ("MAIN","Sumarizace_srazek")
             foreach (var r in records)
             {
                 Util.l($"Barva: {r.color} Rank: {r.rank}");
@@ -230,6 +230,29 @@ namespace Meteo
                 {
                     Util.l($"{r.id_orp}:{r.color}");
                     Model.Cloud.ORPColorInsertOrUpdate(r);
+                }
+            }
+        }
+
+        public void ReadCSVFileModelSpectrum(string filename)
+        {
+            using (var reader = new StreamReader(filename))
+            {
+                List<CloudModelSpectrum> listOfRecords = new List<CloudModelSpectrum>();
+                var header = reader.ReadLine(); //načte hlavičku
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(';');
+
+                    CloudModelSpectrum record = new CloudModelSpectrum(values[0], values[1], values[2]);
+                    listOfRecords.Add(record);
+                }
+                Util.l(header);
+                foreach (var r in listOfRecords)
+                {
+                    Util.l($"{r.id_model} : {r.rank} : {r.color}");
+                    Model.Cloud.ModelSpectrumInsertOrUpdate(r);
                 }
             }
         }

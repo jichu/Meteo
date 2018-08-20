@@ -53,6 +53,18 @@ namespace Meteo
             }
         }
 
+        public bool ModelSpectrumInsertOrUpdate(CloudModelSpectrum item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudModelSpectrum> records = new List<CloudModelSpectrum>();
+                records.Add(item);
+                conn.Execute("dbo.MODEL_SPECTRUM_InsertOrUpdateData @ID_MODEL, @RANK, @COLOR", records);
+
+                return true;
+            }
+        }
+
         public bool MODELSInsertOrUpdate(CloudModels item)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
