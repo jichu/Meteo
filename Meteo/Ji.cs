@@ -20,7 +20,7 @@ namespace Meteo
             //MaskSpectrumGetCoodsByColor();
             //MaskSpectrumGetAllColorsForModel();
             //MaskSpectrumInsertOrUpdate();
-            //ModelSpectrumScaleForModel();
+            //ModelSpectrumGetScaleForModel();
             //ORP_COLOR_GetORPColors()
             //ORPS_GetORPNames();
             //ORPS_GetIDFromName();
@@ -84,7 +84,7 @@ namespace Meteo
 
         }
 
-        public void ModelSpectrumScaleForModel() {
+        public void ModelSpectrumGetScaleForModel() {
             List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN");
             foreach (var r in records)
             {
