@@ -156,7 +156,6 @@ namespace Meteo
 
         private void checkBoxShoweRain_CheckedChanged(object sender, EventArgs e)
         {
-            labelRegionName.Text = "";
             if ((sender as CheckBox).Checked)
             {
                 LoadSymbols();
