@@ -30,8 +30,10 @@ namespace Meteo
         public UserControlModel()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             ShowModels();
-            treeViewModel.ExpandAll();
+            //treeViewModel.ExpandAll();
         }
 
         public void ShowModels()
@@ -216,6 +218,7 @@ namespace Meteo
                         symbol.BackgroundImageLayout = ImageLayout.Stretch;
                         this.Controls.Add(symbol);
                         this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X) - size / 2, (pictureBoxMap.Location.Y + point.Value.Y) - size / 2);
+                        this.Controls["rain" + symbolsRainCount].BackColor = Color.Transparent;
                         this.Controls["rain" + symbolsRainCount].BringToFront();
                         this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);
                         symbolsRainCount++;

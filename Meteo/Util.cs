@@ -60,7 +60,7 @@ namespace Meteo
             if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
                 return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
             else
-                return regioncolor;
+                return "";
         }
 
         public static void l(object obj, Dictionary<string, object> logOptions = null )

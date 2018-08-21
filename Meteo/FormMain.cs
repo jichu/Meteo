@@ -17,6 +17,7 @@ namespace Meteo
         public FormMain()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             View.FormMain = this;
         }
 

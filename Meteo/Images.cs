@@ -50,17 +50,12 @@ namespace Meteo
                 Util.curModelOutput = "";
                 foreach (var map in Util.ORPColorGetORPColors)
                 {
+                    string regionName = Util.GetRegionNameByColor(map.color);
+                    Util.curModelOutput += regionName == "" ? map.color : regionName + Environment.NewLine;
                     List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(map.color.Trim());
                     string coods = cms.Count > 0 ? cms.First().coods : "";
-                    if (coods == "")
+                    if (coods != "")
                     {
-                        //Util.l("Nemáte načtenou ORP masku.|Debug mode");
-                        // return;
-                    }
-                    else
-                    {
-                        string regionName = Util.GetRegionNameByColor(map.color);
-                        Util.curModelOutput += regionName + Environment.NewLine;
                         List<Color> colors = new List<Color>();
                         int sizeRegion = 0;
                         foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
@@ -89,7 +84,7 @@ namespace Meteo
                             return; 
                         }
 
-                        if (value == 1)
+                        if (value == 1.0)
                         {
                             int x = 0, y =0, count=0;
                             foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
