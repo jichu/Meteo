@@ -145,8 +145,8 @@ namespace Meteo
             List<CloudModelEntity> modelStructure = Model.Cloud.MODELSGetModelStructure();
             foreach (var ms in modelStructure) {
                 string dirPath = Util.pathSource["models"];
-                //string modelPath = ms.modelName + @"\" + ms.submodelName +@"\";
-                string modelPath = @"Model_ALADIN_CZ\Srážky_MAIN\";
+                string modelPath = ms.modelName + @"\" + ms.submodelName +@"\";
+                //string modelPath = @"Model_ALADIN_CZ\Srážky_MAIN\";
                 string filename = @"Barvy_stupnice.csv";
                 string filePath = dirPath + modelPath + filename;
                 Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName)} ");
