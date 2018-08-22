@@ -38,6 +38,7 @@ namespace Meteo
             //REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
+            //MODELS_GetModelStructure();
 
 
         }
@@ -137,6 +138,46 @@ namespace Meteo
             string options = Model.Cloud.MODELSGetModelOptions("Model_ALADIN_CZ", "Srážky_MAIN");
             Util.l(options);
 
+        }
+
+        public void MODELS_GetModelStructure()
+        {
+            List<CloudModelEntity> modelStructure = Model.Cloud.MODELSGetModelStructure();
+            foreach (var ms in modelStructure) {
+                string dirPath = Util.pathSource["models"];
+                //string modelPath = ms.modelName + @"\" + ms.submodelName +@"\";
+                string modelPath = @"Model_ALADIN_CZ\Srážky_MAIN\";
+                string filename = @"Barvy_stupnice.csv";
+                string filePath = dirPath + modelPath + filename;
+                Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName)} ");
+                
+                try
+                {
+                    using (var reader = new StreamReader(filePath))
+                    {
+                        List<CloudModelSpectrum> listOfRecords = new List<CloudModelSpectrum>();
+                        var header = reader.ReadLine(); //načte hlavičku
+                        while (!reader.EndOfStream)
+                        {
+                            var line = reader.ReadLine();
+                            var values = line.Split(';');
+                            CloudModelSpectrum record = new CloudModelSpectrum(Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName),values[0], values[1], values[2]);
+                            listOfRecords.Add(record);
+                        }
+
+                        foreach (var r in listOfRecords)
+                        {
+                            Util.l($"{r.id_model}:{r.rank}:{r.color}:{r.type} ");
+                            Model.Cloud.ModelSpectrumInsertOrUpdate(r);
+                        }
+                        
+                    }
+                }
+                catch (Exception e) {
+                    Util.l(e);
+                }
+                
+            }
         }
 
         public void ORP_COLOR_GetORPColors()

@@ -20,6 +20,7 @@ namespace Meteo
                 return output;
             }
         }
+
         public List<CloudMaskSpectrum> MaskSpectrumGetAllColorsForModel(string mod)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
@@ -59,7 +60,7 @@ namespace Meteo
             {
                 List<CloudModelSpectrum> records = new List<CloudModelSpectrum>();
                 records.Add(item);
-                conn.Execute("dbo.MODEL_SPECTRUM_InsertOrUpdateData @ID_MODEL, @RANK, @COLOR", records);
+                conn.Execute("dbo.MODEL_SPECTRUM_InsertOrUpdateData @ID_MODEL, @RANK, @COLOR, @TYPE", records);
 
                 return true;
             }
@@ -120,6 +121,15 @@ namespace Meteo
                 return options;
             }
 
+        }
+
+        public List<CloudModelEntity> MODELSGetModelStructure()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudModelEntity>("dbo.MODELS_GetModelStructure").ToList();
+                return output;
+            }
         }
 
         public bool ORPColorInsertOrUpdate(CloudORPColor item)
