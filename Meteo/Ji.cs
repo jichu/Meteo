@@ -21,6 +21,7 @@ namespace Meteo
             //MaskSpectrumGetAllColorsForModel();
             //MaskSpectrumInsertOrUpdate();
             //ModelSpectrumGetScaleForModel();
+            //ModelSpectrumTypeGetIdFroName();
             //ORP_COLOR_GetORPColors()
             //ORPS_GetORPNames();
             //ORPS_GetIDFromName();
@@ -86,11 +87,19 @@ namespace Meteo
         }
 
         public void ModelSpectrumGetScaleForModel() {
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Srážky_MAIN"); //Nebo pro model bez podmodelů lze využít zápis ("MAIN","Sumarizace_srazek")
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový", "CONVECTIVE");//Jako třetí parametr lze využít: DEFAULT (nemusí se zadávat, je nastaven jako defaultní), CONVECTIVE, RASTER 
             foreach (var r in records)
             {
                 Util.l($"Barva: {r.color} Rank: {r.rank}");
             }
+        }
+
+        public void ModelSpectrumTypeGetIdFroName() {
+
+            Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("DEFAULT"));
+            Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("CONVECTIVE"));
+            Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("RASTER"));
+
         }
 
         public void MODELS_InsertOrUpdate()

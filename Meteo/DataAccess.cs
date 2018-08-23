@@ -43,12 +43,13 @@ namespace Meteo
             }
         }
 
-        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModels(string mod, string submod)
+        public List<CloudModelSpectrum> ModelSpectrumGetScaleForModels(string mod, string submod, string typeName = "DEFAULT")
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
                 int id = MODELSGetSubmodelIDFromName(mod, submod);
-                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model", new { model = id }).ToList();
+                int typeId = Model.Cloud.ModelSpectrumTypeGetIDForName(typeName);
+                var output = conn.Query<CloudModelSpectrum>("dbo.MODEL_SPECTRUM_GetScaleForModel @Model, @type", new { model = id, type=typeId }).ToList();
 
                 return output;
             }
@@ -64,6 +65,17 @@ namespace Meteo
 
                 return true;
             }
+        }
+
+        public int ModelSpectrumTypeGetIDForName(string typeName)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int id = conn.Query<CloudModels>("dbo.MODEL_SPECTRUM_TYPE_GetIdForName @name", new { name = typeName}).ToList().First().id;
+
+                return id;
+            }
+
         }
 
         public bool MODELSInsertOrUpdate(CloudModels item)
