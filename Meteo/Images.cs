@@ -52,7 +52,7 @@ namespace Meteo
                 {
                     string regionName = Util.GetRegionNameByColor(map.color);
                     Util.curModelOutput += regionName == "" ? map.color : regionName + Environment.NewLine;
-                    List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(map.color.Trim());
+                    List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(map.color.Trim(), Util.curModelName);
                     string coods = cms.Count > 0 ? cms.First().coods : "";
                     if (coods != "")
                     {
@@ -73,8 +73,8 @@ namespace Meteo
                                 case "sum":
                                     value = (float)GetValueFromSpectrumBar(colors, sizeRegion);
                                     break;
-                                case "avarage":
-                                    value = GetValueFromSpectrumBarAvarage(colors, sizeRegion);
+                                case "average":
+                                    value = GetValueFromSpectrumBarAverage(colors, sizeRegion);
                                     break;
                             }
                         }
@@ -84,7 +84,7 @@ namespace Meteo
                             return; 
                         }
 
-                        if (value == 1.0)
+                        if (value >= 1.0)
                         {
                             int x = 0, y =0, count=0;
                             foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
@@ -137,10 +137,13 @@ namespace Meteo
             return n;
         }
 
-        private float GetValueFromSpectrumBarAvarage(List<Color> list, int sizeRegion)
+        private float GetValueFromSpectrumBarAverage(List<Color> list, int sizeRegion)
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
+
+            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName);
+
             float sumValues = 0;            
             foreach (var c in list)
                 foreach (var r in cloudModelSpectrum) {
@@ -153,7 +156,7 @@ namespace Meteo
                             sumValues += r.rank;
                         }
                 }
-
+            Util.l(sumValues);
             foreach (var c in counts)
             {
                 //Util.l($" + nalezeno {c.Key}: {c.Value}x");

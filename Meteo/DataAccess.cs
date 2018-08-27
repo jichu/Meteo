@@ -11,11 +11,12 @@ namespace Meteo
 {
     public class DataAccess
     {
-       public List<CloudMaskSpectrum> MaskSpectrumGetCoodsByColor(string col)
+       public List<CloudMaskSpectrum> MaskSpectrumGetCoodsByColor(string col, string model)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color", new { color = col }).ToList();
+                int idModel = Model.Cloud.MODELSGetIDFromName(model);
+                var output = conn.Query<CloudMaskSpectrum>("dbo.MASK_SPECTRUM_GetCoodsByColor @Color, @ID", new { color = col, id = idModel }).ToList();
                                
                 return output;
             }

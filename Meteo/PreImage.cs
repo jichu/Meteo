@@ -36,9 +36,11 @@ namespace Meteo
                     string model = dir.Substring(dir.LastIndexOf("\\") + 1);
                     string orpMask = dir+@"\"+ model + ".bmp";
                     Util.ShowLoading("Načítání a ukládání ORP masek do databáze...");
+
                     if (File.Exists(orpMask))
                     {
                         Util.l("Load mask: " + orpMask);
+                        //LoadORP((Bitmap)Image.FromFile(orpMask), model);
                         Thread t = new Thread(() => LoadORP((Bitmap)Image.FromFile(orpMask),model));
                         t.Start();
                     }
@@ -101,7 +103,7 @@ namespace Meteo
                     string regionName = Util.GetRegionNameByColor("#" + map.Key.Substring(2, 6));
                     //Util.l(regionName+JsonConvert.SerializeObject("#"+map.Key.Substring(2,6))+": "+JsonConvert.SerializeObject(map.Value));
                     //Chu.color = JsonConvert.SerializeObject(map.Key);
-                    //Chu.coords = JsonConvert.SerializeObject(map.Value);
+                    //Util.l(regionName + JsonConvert.SerializeObject(map.Key) + JsonConvert.SerializeObject(map.Value));
                     if (regionName != "")
                         Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, "#" + map.Key.Substring(2, 6), JsonConvert.SerializeObject(map.Value)));
                     

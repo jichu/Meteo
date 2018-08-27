@@ -46,7 +46,7 @@ namespace Meteo
 
 
         public void MaskSpectrumGetCoodsByColor() {
-            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff");
+            List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff", "Model_ALADIN_CZ");
 
             foreach (var ll in l)
             {
@@ -272,6 +272,7 @@ namespace Meteo
                     var values = line.Split(';');
 
                     //CloudORPColor record = new CloudORPColor(values[0], $"#{values[1].Substring(2,6)}");
+                    Util.l(values[0]);
                     CloudORPColor record = new CloudORPColor(values[0],values[1]);
                     listOfRecords.Add(record);
                 }
@@ -301,7 +302,7 @@ namespace Meteo
                 Util.l(header);
                 foreach (var r in listOfRecords)
                 {
-                    Util.l($"{r.id_model} : {r.rank} : {r.color}");
+                    Util.l($"{r.id_model} : {r.rank} : {r.color}: {r.type}");
                     Model.Cloud.ModelSpectrumInsertOrUpdate(r);
                 }
             }
