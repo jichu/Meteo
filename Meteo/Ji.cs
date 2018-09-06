@@ -128,8 +128,8 @@ namespace Meteo
             //Model.Cloud.MODELSInsertOrUpdate(recordWithOptions);
 
             //Příklady použití s reálnými daty
-
-            Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_CZ"));
+            
+            Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_SK", "KJHKDJ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ", "{countMethod = sum}"));
         }

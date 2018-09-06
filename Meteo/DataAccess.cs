@@ -85,7 +85,7 @@ namespace Meteo
             {
                 List<CloudModels> records = new List<CloudModels>();
                 records.Add(item);
-                conn.Execute("dbo.MODELS_InsertOrUpdateData @name, @id_parent, @options", records);
+                conn.Execute("dbo.MODELS_InsertOrUpdateData @name, @ID_parent, @options", records);
 
                 return true;
             }

@@ -10,7 +10,7 @@ namespace Meteo
     {
         public int id { get; set; }
         public string name { get; set; }
-        public int id_parent { get; set; }
+        public int ID_parent { get; set; }
         public string options { get; set; }
 
         public CloudModels() {
@@ -20,11 +20,11 @@ namespace Meteo
         {
             this.name = name;
             if (nameParent != null) {
-                id_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
-                if (id_parent == 0) {
+                ID_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
+                /*if (ID_parent == 0) {
                     Model.Cloud.MODELSInsertOrUpdateParent(nameParent);
-                    id_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
-                };
+                    ID_parent = Model.Cloud.MODELSGetIDFromName(nameParent);
+                };*/
             }
             if (options != null) this.options = options;
         }
