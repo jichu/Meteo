@@ -16,6 +16,7 @@ namespace Meteo
         public static List<string> spektrumRadar = new List<string>() { "fffcfcfc", "ffa00000", "fffc0000", "fffc5800", "fffc8400", "fffcb000", "ffe0dc00", "ff9cdc00", "ff34d800", "ff00bc00", "ff00a000", "ff006cc0", "ff0000fc", "ff3000a8", "ff380070" };
         public static Dictionary<string, string> pathSource = new Dictionary<string, string>
         {
+            { "config", @".\config\" },
             { "models", @".\models\" },
             { "model_cfg", @"model.cfg" },
             { "symbol_rain", @".\images\symbol_rain.png" }

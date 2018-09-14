@@ -50,8 +50,17 @@ namespace Meteo
                     foreach (var subdir in subdirs)
                     {
                         string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
-                        //Util.l(model + " " + submodel);
-                        Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, JsonConvert.SerializeObject(LoadConfig(dir+@"\"+ Util.pathSource["model_cfg"]))));
+                        string options = Model.Cloud.MODELSGetModelOptions(model, submodel);
+                        JObject jo = JObject.Parse(options);
+                        var p = jo.Property("countMethod");
+                        if (p == null)
+                        {
+                            FormSetOptions f = new FormSetOptions(model, submodel,options);
+                            f.ShowDialog(View.FormMain);
+                            options = f.options;
+                            Util.l(model + " " + options);
+                        }
+                        Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, options));
                     }
                 }
                 //View.FormMain.Close();
@@ -138,6 +147,33 @@ namespace Meteo
                     reader.Close();
                 }
             } catch(Exception e) { Util.l(e); }
+            return jo;
+        }
+
+        private JObject LoadConfigJson(string fileName)
+        {
+            JObject jo = new JObject();
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    StreamReader reader = new StreamReader(fileName);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line == null) continue;
+                        if (line[0].ToString() == "#") continue;
+                        if (line.IndexOf('=') == -1) continue;
+                        string[] item = line.Split('=');
+                        if (item.Length > 2) continue;
+                        string value = item[1];
+                        string key = item[0];
+                        jo.Add(new JProperty(key, value));
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception e) { Util.l(e); }
             return jo;
         }
 

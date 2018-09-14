@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -39,12 +41,14 @@ namespace Meteo
         public void ShowModels()
         {
             string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpeg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff";
+            JObject jOptionTemp = JObject.Parse(@"{'option': {}}");
 
             try
             {
                 string dirPath = AppDomain.CurrentDomain.BaseDirectory + @"models";
                 int nodeModel = 0;
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
+                JObject jModels = new JObject();
                 foreach (var dir in dirs)
                 {
                     string model = dir.Substring(dir.LastIndexOf("\\") + 1);
@@ -59,9 +63,11 @@ namespace Meteo
                     }
                     List<string> subdirs = new List<string>(Directory.EnumerateDirectories(dirPath+"\\"+model));
                     int nodeSubModel = 0;
+                    JObject jSubmodels = new JObject();
                     foreach (var subdir in subdirs)
                     {
                         string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
+                        jSubmodels.Add(submodel, jOptionTemp);
                         treeViewModel.Nodes[nodeModel].Nodes.Add(submodel);
                         var files = Directory.GetFiles(dirPath+"\\"+model+"\\"+submodel, "*.*",SearchOption.TopDirectoryOnly)
                             .Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
@@ -75,7 +81,9 @@ namespace Meteo
                         nodeSubModel++;
                     }
                     nodeModel++;
+                    jModels.Add(model, jSubmodels);
                 }
+                File.WriteAllText(Util.pathSource["config"]+Util.pathSource["model_cfg"]+".tmp", JsonConvert.SerializeObject(jModels));
                 this.treeViewModel.AfterSelect += new TreeViewEventHandler(treeViewModel_AfterSelect);
             }
             catch (Exception e)
