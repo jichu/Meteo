@@ -40,7 +40,7 @@ namespace Meteo
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
             //MODELS_GetModelStructure();
-
+            //REGIONS_GetNameFromColor();
 
         }
 
@@ -70,7 +70,7 @@ namespace Meteo
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetAllColorsForModel("Model_ALADIN_CZ");
             foreach (var ll in l)
             {
-                Util.l("Barvy pro zvolený model: "+ ll.color);
+                Util.l("Barvy pro zvolený model: " + ll.color);
                 //ll.ShowRecord();
             }
         }
@@ -128,7 +128,7 @@ namespace Meteo
             //Model.Cloud.MODELSInsertOrUpdate(recordWithOptions);
 
             //Příklady použití s reálnými daty
-            
+
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_SK", "KJHKDJ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ", "{countMethod = sum}"));
@@ -154,12 +154,12 @@ namespace Meteo
             List<CloudModelEntity> modelStructure = Model.Cloud.MODELSGetModelStructure();
             foreach (var ms in modelStructure) {
                 string dirPath = Util.pathSource["models"];
-                string modelPath = ms.modelName + @"\" + ms.submodelName +@"\";
+                string modelPath = ms.modelName + @"\" + ms.submodelName + @"\";
                 //string modelPath = @"Model_ALADIN_CZ\Srážky_MAIN\";
                 string filename = @"Barvy_stupnice.csv";
                 string filePath = dirPath + modelPath + filename;
                 Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName)} ");
-                
+
                 try
                 {
                     using (var reader = new StreamReader(filePath))
@@ -170,7 +170,7 @@ namespace Meteo
                         {
                             var line = reader.ReadLine();
                             var values = line.Split(';');
-                            CloudModelSpectrum record = new CloudModelSpectrum(Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName),values[0], values[1], values[2]);
+                            CloudModelSpectrum record = new CloudModelSpectrum(Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName), values[0], values[1], values[2]);
                             listOfRecords.Add(record);
                         }
 
@@ -179,13 +179,13 @@ namespace Meteo
                             Util.l($"{r.id_model}:{r.rank}:{r.color}:{r.type} ");
                             Model.Cloud.ModelSpectrumInsertOrUpdate(r);
                         }
-                        
+
                     }
                 }
                 catch (Exception e) {
                     Util.l(e);
                 }
-                
+
             }
         }
 
@@ -210,6 +210,10 @@ namespace Meteo
         public void ORPS_GetIDFromName()
         {
             Util.l(Model.Cloud.ORPSGetIDFromName("Hlavní město Praha"));
+        }
+
+        public void REGIONS_GetNameFromColor() {
+            Util.l(Model.Cloud.REGIONSGetNameFromColor("#ff0000"));
         }
 
         public void REGIONS_GetRegionCities()

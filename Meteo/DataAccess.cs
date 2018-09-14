@@ -199,6 +199,14 @@ namespace Meteo
             }
         }
 
+        public string REGIONSGetNameFromColor(string col) {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                string name = conn.Query<CloudRegions>("dbo.REGIONS_GetNameFromColor @COLOR", new { color = col }).ToList().First().Region_name;
+                return name;
+            }
+        }
+
         public List<CloudORPS> REGIONSGetRegionCities()
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))

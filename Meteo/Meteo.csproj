@@ -80,6 +80,7 @@
     <Compile Include="CloudModelSpectrum.cs" />
     <Compile Include="CloudORPColor.cs" />
     <Compile Include="CloudORPS.cs" />
+    <Compile Include="CloudRegions.cs" />
     <Compile Include="CloudSettings.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="FormLoader.cs">

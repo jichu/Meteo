@@ -53,3 +53,4 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlM
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlPaletteForMask.resources
 C:\Users\Jaromir\source\repos\Meteo\Meteo\obj\Debug\Meteo.UserControlPaletteForMask.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormSetOptions.resources
+C:\Users\Jaromir\source\repos\Meteo\Meteo\obj\Debug\Meteo.FormSetOptions.resources
