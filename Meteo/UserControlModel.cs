@@ -18,6 +18,7 @@ namespace Meteo
         private List<PictureBox> symbols = new List<PictureBox>();
         private int symbolsRainCount = 0;
         private string curColorRegion="";
+        private string map;
 
         public static UserControlModel Instance
         {
@@ -83,7 +84,8 @@ namespace Meteo
                     nodeModel++;
                     jModels.Add(model, jSubmodels);
                 }
-                File.WriteAllText(Util.pathSource["config"]+Util.pathSource["model_cfg"]+".tmp", JsonConvert.SerializeObject(jModels));
+                if(Directory.Exists(Util.pathSource["config"]))
+                    File.WriteAllText(Util.pathSource["config"]+Util.pathSource["model_cfg"]+".tmp", JsonConvert.SerializeObject(jModels));
                 this.treeViewModel.AfterSelect += new TreeViewEventHandler(treeViewModel_AfterSelect);
             }
             catch (Exception e)
@@ -256,5 +258,16 @@ namespace Meteo
             }
         }
 
+        private void labelCountMethod_DoubleClick(object sender, EventArgs e)
+        {
+            string options = Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName);
+            FormSetOptions f = new FormSetOptions(Util.curModelName, Util.curSubmodelName, options);
+            f.ShowDialog(View.FormMain);
+            options = f.options;
+            Util.l(options);
+            Model.Cloud.MODELSInsertOrUpdate(new CloudModels(Util.curSubmodelName, Util.curModelName, options));
+            Thread t = new Thread(() => LoadMap(curImage));
+            t.Start();
+        }
     }
 }

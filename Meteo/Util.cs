@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -32,6 +33,7 @@ namespace Meteo
 
         public static string curModelName { get; set; }
         public static string curSubmodelName { get; set; }
+        public static string curCountMethod { get; set; }
         public static string curModelOutput { get; set; }
 
         public static string ExceptionText = "Exception";
@@ -97,5 +99,29 @@ namespace Meteo
                 MessageBox.Show(obj.ToString().Split(logMessageDelimiter)[0], obj.ToString().Split(logMessageDelimiter)[1], MessageBoxButtons.OK, (MessageBoxIcon) options["messageBoxIcon"]);
         }
 
+        private static void LoadSetting(string fileName)
+        {
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    StreamReader reader = new StreamReader(fileName);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line == null) continue;
+                        if (line[0].ToString() == "#") continue;
+                        if (line.IndexOf('=') == -1) continue;
+                        string[] item = line.Split('=');
+                        if (item.Length > 2) continue;
+                        string value = item[1];
+                        string key = item[0];
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception e) { Util.l(e); }
+        }
     }
+
 }

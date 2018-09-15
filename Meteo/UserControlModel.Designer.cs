@@ -36,6 +36,7 @@
             this.checkBoxShowOutput = new System.Windows.Forms.CheckBox();
             this.labelRegionName = new System.Windows.Forms.Label();
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
+            this.labelCountMethod = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,10 +125,21 @@
             this.pictureBoxMap.TabIndex = 4;
             this.pictureBoxMap.TabStop = false;
             // 
+            // labelCountMethod
+            // 
+            this.labelCountMethod.AutoSize = true;
+            this.labelCountMethod.Location = new System.Drawing.Point(450, 16);
+            this.labelCountMethod.Name = "labelCountMethod";
+            this.labelCountMethod.Size = new System.Drawing.Size(80, 13);
+            this.labelCountMethod.TabIndex = 10;
+            this.labelCountMethod.Text = "CountMethod: -";
+            this.labelCountMethod.DoubleClick += new System.EventHandler(this.labelCountMethod_DoubleClick);
+            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelCountMethod);
             this.Controls.Add(this.labelRegionName);
             this.Controls.Add(this.checkBoxShowOutput);
             this.Controls.Add(this.checkBoxShoweRain);
@@ -153,5 +165,6 @@
         public System.Windows.Forms.CheckBox checkBoxShoweRain;
         public System.Windows.Forms.CheckBox checkBoxShowOutput;
         private System.Windows.Forms.Label labelRegionName;
+        public System.Windows.Forms.Label labelCountMethod;
     }
 }

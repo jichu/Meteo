@@ -47,7 +47,11 @@ namespace Meteo
             else
             {
                 JObject jo = JObject.Parse(options);
-                jo.Add("countMethod", sel);
+                var p = jo.Property("countMethod");
+                if (p == null)
+                    jo.Add("countMethod", sel);
+                else
+                    jo["countMethod"] = sel;
                 options = JsonConvert.SerializeObject(jo);
             }
             this.Close();

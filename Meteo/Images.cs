@@ -71,9 +71,11 @@ namespace Meteo
                             switch (p.Value.ToString()) {
                                 default:
                                 case "sum":
+                                    Util.curCountMethod = "suma";
                                     value = (float)GetValueFromSpectrumBar(colors, sizeRegion);
                                     break;
                                 case "average":
+                                    Util.curCountMethod = "průměr";
                                     value = GetValueFromSpectrumBarAverage(colors, sizeRegion);
                                     break;
                             }
@@ -208,6 +210,10 @@ namespace Meteo
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = false;
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Checked = false;
             }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["labelCountMethod"] as Label).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["labelCountMethod"] as Label).Text = "CountMethod: -";
+            }));
         }
 
         private void DefaultUserControlModelReady()
@@ -223,6 +229,10 @@ namespace Meteo
             (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).BeginInvoke((Action)(() =>
             {
                 (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["checkBoxShowOutput"] as CheckBox).Enabled = true;
+            }));
+            (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["labelCountMethod"] as Label).BeginInvoke((Action)(() =>
+            {
+                (View.FormMain.panelLayout.Controls["UserControlModel"].Controls["labelCountMethod"] as Label).Text = "CountMethod: "+ Util.curCountMethod;
             }));
         }
 

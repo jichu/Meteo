@@ -124,58 +124,6 @@ namespace Meteo
             }
         }
 
-        private JObject LoadConfig(string fileName)
-        {
-            JObject jo = new JObject();
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    StreamReader reader = new StreamReader(fileName);
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (line == null) continue;
-                        if (line[0].ToString() == "#") continue;
-                        if (line.IndexOf('=') == -1) continue;
-                        string[] item = line.Split('=');
-                        if (item.Length > 2) continue;
-                        string value = item[1];
-                        string key = item[0];
-                        jo.Add(new JProperty(key, value));
-                    }
-                    reader.Close();
-                }
-            } catch(Exception e) { Util.l(e); }
-            return jo;
-        }
-
-        private JObject LoadConfigJson(string fileName)
-        {
-            JObject jo = new JObject();
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    StreamReader reader = new StreamReader(fileName);
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (line == null) continue;
-                        if (line[0].ToString() == "#") continue;
-                        if (line.IndexOf('=') == -1) continue;
-                        string[] item = line.Split('=');
-                        if (item.Length > 2) continue;
-                        string value = item[1];
-                        string key = item[0];
-                        jo.Add(new JProperty(key, value));
-                    }
-                    reader.Close();
-                }
-            }
-            catch (Exception e) { Util.l(e); }
-            return jo;
-        }
 
 
 
