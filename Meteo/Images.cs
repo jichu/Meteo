@@ -47,6 +47,7 @@ namespace Meteo
             try
             {
                 Util.rainRegion.Clear();
+                Util.rainRegionValue.Clear();
                 Util.curModelOutput = "";
                 foreach (var map in Util.ORPColorGetORPColors)
                 {
@@ -78,6 +79,10 @@ namespace Meteo
                                     Util.curCountMethod = "průměr";
                                     value = GetValueFromSpectrumBarAverage(colors, sizeRegion);
                                     break;
+                                case "majority":
+                                    Util.curCountMethod = "majorita";
+                                    value = GetValueFromSpectrumBarMajority(colors, sizeRegion);
+                                    break;
                             }
                         }
                         else
@@ -96,6 +101,7 @@ namespace Meteo
                                 count++;
                             }
                             Util.rainRegion.Add(regionName,(new Point((int)Math.Round((float)x/count), (int)Math.Round((float)y / count))));
+                            Util.rainRegionValue.Add(value);
                         }
 
                     }
@@ -158,17 +164,59 @@ namespace Meteo
                             sumValues += r.rank;
                         }
                 }
-            Util.l(sumValues);
             foreach (var c in counts)
             {
                 //Util.l($" + nalezeno {c.Key}: {c.Value}x");
                 Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
             }
-
-            Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion}" + Environment.NewLine+Environment.NewLine;
-            return sumValues;
+            float value = sumValues / sizeRegion;
+            Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {Math.Round(value)}" + Environment.NewLine+Environment.NewLine;
+            return sumValues/sizeRegion;
         }
-                
+
+        private float GetValueFromSpectrumBarMajority(List<Color> list, int sizeRegion)
+        {
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+
+            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName);
+
+            float max = 0;
+            string maxColor = "";
+            foreach (var c in list)
+                foreach (var r in cloudModelSpectrum)
+                {
+                    if (r.color.Replace("#", "ff") == c.Name)
+                    {
+                        if (counts.ContainsKey(c.Name))
+                            counts[c.Name]++;
+                        else
+                            counts[c.Name] = 1;
+                    }
+                }
+            foreach (var c in counts)
+            {
+                //Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                if (c.Value > max)
+                {
+                    max = c.Value;
+                    maxColor = c.Key;
+                }
+                Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x" + Environment.NewLine;
+            }
+            float rank = 0;
+            foreach (var r in cloudModelSpectrum)
+            {
+                if (r.color.Replace("#", "ff") == maxColor)
+                {
+                    rank = r.rank;
+                    break;
+                }
+            }
+
+            Util.curModelOutput += $" - majoritní hodnota regionu [{maxColor}]: {rank}" + Environment.NewLine + Environment.NewLine;
+            return rank;
+        }
+
         private void pictureBoxORP_MouseDown(object sender, MouseEventArgs e)
         {
             isDragging = true;

@@ -20,7 +20,9 @@ namespace Meteo
             { "config", @".\config\" },
             { "models", @".\models\" },
             { "model_cfg", @"model.cfg" },
-            { "symbol_rain", @".\images\symbol_rain.png" }
+            { "symbol_rain", @".\images\symbol_rain.png" },
+            { "symbol_storm", @".\images\symbol_storm.png" },
+            { "symbol_cloud", @".\images\symbol_cloud.png" }
         };
 
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
@@ -28,6 +30,7 @@ namespace Meteo
 
         public static Dictionary<int, string> palette = new Dictionary<int, string>();
         public static Dictionary<string, Point> rainRegion = new Dictionary<string, Point>();
+        public static List<float> rainRegionValue = new List<float>();
 
         public static bool Develop = true;
 

@@ -33,6 +33,7 @@
             this.radioButtonAvarage = new System.Windows.Forms.RadioButton();
             this.groupBoxCountMethod = new System.Windows.Forms.GroupBox();
             this.buttonSave = new System.Windows.Forms.Button();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBoxCountMethod.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +72,7 @@
             // 
             // groupBoxCountMethod
             // 
+            this.groupBoxCountMethod.Controls.Add(this.radioButton1);
             this.groupBoxCountMethod.Controls.Add(this.radioButtonSum);
             this.groupBoxCountMethod.Controls.Add(this.radioButtonAvarage);
             this.groupBoxCountMethod.Location = new System.Drawing.Point(12, 38);
@@ -89,6 +91,18 @@
             this.buttonSave.Text = "Uložit";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(98, 24);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(62, 17);
+            this.radioButton1.TabIndex = 5;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Tag = "majority";
+            this.radioButton1.Text = "Majorita";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // FormSetOptions
             // 
@@ -119,5 +133,6 @@
         private System.Windows.Forms.RadioButton radioButtonAvarage;
         private System.Windows.Forms.GroupBox groupBoxCountMethod;
         private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }

@@ -212,11 +212,20 @@ namespace Meteo
             {
                 int size = 24;
                 symbolsRainCount = 0;
-                string path = Util.pathSource["symbol_rain"];
-                if (File.Exists(path))
+                Util.ShowLoading("Načítání symbolů...");
+                foreach (var point in Util.rainRegion)
                 {
-                    Util.ShowLoading("Načítání symbolů...");
-                    foreach (var point in Util.rainRegion)
+                    string path = "";
+                    float value = Util.rainRegionValue[symbolsRainCount];
+                    if(value>=1&&value<2)
+                        path = Util.pathSource["symbol_cloud"];
+                    else if (value >= 2 && value < 3)
+                        path = Util.pathSource["symbol_rain"];
+                    else if (value >= 3)
+                        path = Util.pathSource["symbol_storm"];
+                    if (path == "")
+                        continue;
+                    if (File.Exists(path))
                     {
                         PictureBox symbol = new PictureBox();
                         symbol.Width = size;
@@ -231,12 +240,12 @@ namespace Meteo
                         this.Controls["rain" + symbolsRainCount].BackColor = Color.Transparent;
                         this.Controls["rain" + symbolsRainCount].BringToFront();
                         this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);
-                        symbolsRainCount++;
                     }
-                }
-                else
-                {
-                    Util.l($"Program nemůže načíst obrázek {path}.|Chybí symbol srážek");
+                    else
+                    {
+                        Util.l($"Program nemůže načíst obrázek {path}.|Chybí symbol srážek");
+                    }
+                    symbolsRainCount++;
                 }
             }
             catch (Exception ex)
