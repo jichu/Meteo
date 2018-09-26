@@ -79,6 +79,14 @@ namespace Meteo
 
         }
 
+        public int MODELSGetNumberOfAreasForModel(string modelName) {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int count = conn.Query<CloudModels>("dbo.MODELS_GetNumberOfAreasForModel @NAME", new { name = modelName }).ToList().First().id;
+                return count;
+            }
+        }
+
         public bool MODELSInsertOrUpdate(CloudModels item)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
