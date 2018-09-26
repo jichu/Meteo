@@ -9,6 +9,7 @@ namespace Meteo
     public class CloudModels
     {
         public int id { get; set; }
+        public int pocet { get; set; }
         public string name { get; set; }
         public int ID_parent { get; set; }
         public string options { get; set; }

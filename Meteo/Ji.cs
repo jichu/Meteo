@@ -41,6 +41,7 @@ namespace Meteo
             //SETTING_InsertOrUpdateSettings();
             //MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
+            //MODELS_GetNumberOfAreasForModel();
 
         }
 
@@ -132,6 +133,9 @@ namespace Meteo
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Model_ALADIN_SK", "KJHKDJ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ"));
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels("Srážky_MAIN", "Model_ALADIN_CZ", "{countMethod = sum}"));
+        }
+        public void MODELS_GetNumberOfAreasForModel(){
+            Util.l(Model.Cloud.MODELSGetNumberOfAreasForModel("Model_ALADIN_CZ"));
         }
 
         public void MODELS_GetIDFromName() {

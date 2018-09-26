@@ -32,7 +32,7 @@ namespace Meteo
         public static Dictionary<string, Point> rainRegion = new Dictionary<string, Point>();
         public static List<float> rainRegionValue = new List<float>();
 
-        public static bool Develop = true;
+        public static bool Develop = false;
 
         public static string curModelName { get; set; }
         public static string curSubmodelName { get; set; }
@@ -63,10 +63,15 @@ namespace Meteo
         
         public static string GetRegionNameByColor(string regioncolor)
         {
-            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
-                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+            if (Model.Cloud.MODELSGetNumberOfAreasForModel(curModelName) > 14)
+            {
+                if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
+                    return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+                else
+                    return "";
+            }
             else
-                return "";
+                return Model.Cloud.REGIONSGetNameFromColor(regioncolor);
         }
 
         public static void l(object obj, Dictionary<string, object> logOptions = null )
