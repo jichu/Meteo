@@ -48,6 +48,7 @@ namespace Meteo
             {
                 Util.rainRegion.Clear();
                 Util.rainRegionValue.Clear();
+                Util.curDataOutputs.Clear();
                 Util.curModelOutput = "";
                 foreach (var map in Util.ORPColorGetORPColors)
                 {
@@ -103,7 +104,12 @@ namespace Meteo
                             Util.rainRegion.Add(regionName,(new Point((int)Math.Round((float)x/count), (int)Math.Round((float)y / count))));
                             Util.rainRegionValue.Add(value);
                         }
-
+                        Util.curDataOutputs.Add(new DataOutput()
+                        {
+                            RegionName = regionName,
+                            Value = value,
+                            Color =ColorTranslator.FromHtml(map.color)
+                        });
                     }
                 }
 
@@ -170,8 +176,22 @@ namespace Meteo
                 Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x"+Environment.NewLine;
             }
             float value = sumValues / sizeRegion;
-            Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {Math.Round(value)}" + Environment.NewLine+Environment.NewLine;
-            return sumValues/sizeRegion;
+            if (value < 0.25)
+                value = 0;
+            if (value>=0.25 && value < 0.75)
+                value = 0.5f;
+            if (value >= 0.75 && value <1.25)
+                value = 1;
+            if (value >= 1.25 && value < 1.75)
+                value = 1.5f;
+            if (value >= 1.75 && value < 2.25)
+                value = 2;
+            if (value >= 2.25 && value < 2.75)
+                value = 2.5f;
+            if (value >= 2.75 && value <=3)
+                value = 3;
+            Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {value}" + Environment.NewLine+Environment.NewLine;
+            return value;
         }
 
         private float GetValueFromSpectrumBarMajority(List<Color> list, int sizeRegion)

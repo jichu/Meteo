@@ -35,6 +35,11 @@ namespace Meteo
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
+            dgv.Columns.Add("Color", "Maska");
+            ////
+            dgv.Columns.Add("Region", "Region");
+            dgv.Columns.Add("Value", "Hodnota");
+
             ShowModels();
             //treeViewModel.ExpandAll();
         }
@@ -260,9 +265,30 @@ namespace Meteo
             {
                 richTextBoxOutput.Visible = true;
                 richTextBoxOutput.Text = Util.curModelOutput;
+                dgv.Visible = true;
+                DataGridViewRow row;
+                DataGridViewCell CellByName(string columnName)
+                {
+                    var column = dgv.Columns[columnName];
+                    if (column == null)
+                        throw new InvalidOperationException("Unknown column name: " + columnName);
+                    return row.Cells[column.Index];
+                }
+                dgv.Rows.Clear(); 
+                foreach (DataOutput data in Util.curDataOutputs)
+                {
+                    row = new DataGridViewRow();
+                    row.CreateCells(dgv);
+                    CellByName("Color").Style.BackColor = data.Color;
+                    CellByName("Region").Value = data.RegionName;
+                    CellByName("Value").Value = data.Value;
+                    dgv.Rows.Add(row);    
+                }
+                dgv.BringToFront();
             }
             else
             {
+                dgv.Visible = false;
                 richTextBoxOutput.Visible = false;
             }
         }

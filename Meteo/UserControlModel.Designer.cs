@@ -37,7 +37,9 @@
             this.labelRegionName = new System.Windows.Forms.Label();
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
             this.labelCountMethod = new System.Windows.Forms.Label();
+            this.dgv = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -72,11 +74,10 @@
             // 
             // richTextBoxOutput
             // 
-            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxOutput.Location = new System.Drawing.Point(514, 16);
+            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxOutput.Location = new System.Drawing.Point(451, 204);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
-            this.richTextBoxOutput.Size = new System.Drawing.Size(153, 270);
+            this.richTextBoxOutput.Size = new System.Drawing.Size(216, 82);
             this.richTextBoxOutput.TabIndex = 6;
             this.richTextBoxOutput.Text = "";
             this.richTextBoxOutput.Visible = false;
@@ -128,17 +129,35 @@
             // labelCountMethod
             // 
             this.labelCountMethod.AutoSize = true;
-            this.labelCountMethod.Location = new System.Drawing.Point(450, 16);
+            this.labelCountMethod.Location = new System.Drawing.Point(321, 43);
             this.labelCountMethod.Name = "labelCountMethod";
             this.labelCountMethod.Size = new System.Drawing.Size(80, 13);
             this.labelCountMethod.TabIndex = 10;
             this.labelCountMethod.Text = "CountMethod: -";
             this.labelCountMethod.DoubleClick += new System.EventHandler(this.labelCountMethod_DoubleClick);
             // 
+            // dgv
+            // 
+            this.dgv.AllowUserToAddRows = false;
+            this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv.BackgroundColor = System.Drawing.Color.White;
+            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv.GridColor = System.Drawing.Color.Black;
+            this.dgv.Location = new System.Drawing.Point(451, 0);
+            this.dgv.Name = "dgv";
+            this.dgv.ShowCellErrors = false;
+            this.dgv.ShowEditingIcon = false;
+            this.dgv.Size = new System.Drawing.Size(216, 198);
+            this.dgv.TabIndex = 11;
+            this.dgv.Visible = false;
+            // 
             // UserControlModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.dgv);
             this.Controls.Add(this.labelCountMethod);
             this.Controls.Add(this.labelRegionName);
             this.Controls.Add(this.checkBoxShowOutput);
@@ -151,6 +170,7 @@
             this.Name = "UserControlModel";
             this.Size = new System.Drawing.Size(670, 289);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,5 +186,6 @@
         public System.Windows.Forms.CheckBox checkBoxShowOutput;
         private System.Windows.Forms.Label labelRegionName;
         public System.Windows.Forms.Label labelCountMethod;
+        public System.Windows.Forms.DataGridView dgv;
     }
 }

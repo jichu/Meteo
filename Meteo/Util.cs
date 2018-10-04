@@ -38,6 +38,7 @@ namespace Meteo
         public static string curSubmodelName { get; set; }
         public static string curCountMethod { get; set; }
         public static string curModelOutput { get; set; }
+        public static List<DataOutput> curDataOutputs = new List<DataOutput>();
 
         public static string ExceptionText = "Exception";
         public static char logMessageDelimiter = '|';

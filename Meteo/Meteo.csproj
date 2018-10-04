@@ -83,6 +83,7 @@
     <Compile Include="CloudRegions.cs" />
     <Compile Include="CloudSettings.cs" />
     <Compile Include="DataAccess.cs" />
+    <Compile Include="DataOutput.cs" />
     <Compile Include="FormLoader.cs">
       <SubType>Form</SubType>
     </Compile>
