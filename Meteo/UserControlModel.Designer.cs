@@ -75,9 +75,9 @@
             // richTextBoxOutput
             // 
             this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxOutput.Location = new System.Drawing.Point(451, 204);
+            this.richTextBoxOutput.Location = new System.Drawing.Point(428, 204);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
-            this.richTextBoxOutput.Size = new System.Drawing.Size(216, 82);
+            this.richTextBoxOutput.Size = new System.Drawing.Size(239, 82);
             this.richTextBoxOutput.TabIndex = 6;
             this.richTextBoxOutput.Text = "";
             this.richTextBoxOutput.Visible = false;
@@ -145,11 +145,13 @@
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv.GridColor = System.Drawing.Color.Black;
-            this.dgv.Location = new System.Drawing.Point(451, 0);
+            this.dgv.Location = new System.Drawing.Point(428, 0);
             this.dgv.Name = "dgv";
+            this.dgv.RowHeadersVisible = false;
+            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgv.ShowCellErrors = false;
             this.dgv.ShowEditingIcon = false;
-            this.dgv.Size = new System.Drawing.Size(216, 198);
+            this.dgv.Size = new System.Drawing.Size(239, 198);
             this.dgv.TabIndex = 11;
             this.dgv.Visible = false;
             // 

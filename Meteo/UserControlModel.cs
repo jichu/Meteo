@@ -36,7 +36,7 @@ namespace Meteo
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
             dgv.Columns.Add("Color", "Maska");
-            ////
+            dgv.Columns["Color"].Width = 10;////
             dgv.Columns.Add("Region", "Region");
             dgv.Columns.Add("Value", "Hodnota");
 
