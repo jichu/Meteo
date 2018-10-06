@@ -32,7 +32,7 @@ namespace Meteo
         public static Dictionary<string, Point> rainRegion = new Dictionary<string, Point>();
         public static List<float> rainRegionValue = new List<float>();
 
-        public static bool Develop = false;
+        public static bool Develop = true;
 
         public static string curModelName { get; set; }
         public static string curSubmodelName { get; set; }
