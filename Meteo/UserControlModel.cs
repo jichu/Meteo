@@ -119,6 +119,22 @@ namespace Meteo
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
             }));
             new Images(map);
+            ResizeMap(pictureBoxMap);
+        }
+
+        private void ResizeMap(PictureBox pb)
+        {
+            if (pb != null)
+            {
+                float ratio = (float)pb.Image.Height / (float)pb.Image.Width;
+                int size = this.ClientSize.Width - (treeViewModel.Width + (dgv.Visible ? dgv.Width : 0) + 15);
+                BeginInvoke(new MethodInvoker(delegate
+                {
+                    pb.Width = size;
+                    pb.Height = (int)((float)size * ratio);
+                    pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                }));
+            }
         }
 
         private void checkBoxShowORP_CheckedChanged(object sender, EventArgs e)
@@ -137,12 +153,13 @@ namespace Meteo
                         symbol.Height = bmp1.Height;
                         symbol.Name = "pictureBoxMask";
                         symbol.BackColor = Color.Transparent;
-                        symbol.BackgroundImage = (Image)bmp1;
-                        symbol.BackgroundImageLayout = ImageLayout.Stretch;
+                        symbol.Image = (Image)bmp1;
+                        symbol.SizeMode = PictureBoxSizeMode.StretchImage;
                         this.Controls.Add(symbol);
                         this.Controls["pictureBoxMask"].Location = new Point(pictureBoxMap.Location.X, pictureBoxMap.Location.Y);
                         this.Controls["pictureBoxMask"].BringToFront();
-                        this.Controls["pictureBoxMask"].MouseMove+=new MouseEventHandler(this.pictureBoxMask_MouseMove);
+                        this.Controls["pictureBoxMask"].MouseMove += new MouseEventHandler(this.pictureBoxMask_MouseMove);
+                        ResizeMap(this.Controls["pictureBoxMask"] as PictureBox);
                     }
                     else Util.l($"V adresáři chybí maska {orpMask}.|Chybí maska");
                 }
@@ -160,8 +177,10 @@ namespace Meteo
 
         private void pictureBoxMask_MouseMove(object sender, MouseEventArgs e)
         {
-            Bitmap b = new Bitmap((sender as PictureBox).BackgroundImage);
-            string c = "#"+b.GetPixel(e.X, e.Y).Name.Substring(2,6);
+            Bitmap img = (Bitmap)(sender as PictureBox).Image;
+            float sX = img.Width / (float)(sender as PictureBox).Width;
+            float sY = img.Height / (float)(sender as PictureBox).Height;
+            string c = "#"+img.GetPixel((int)(e.X*sX), (int)(e.Y*sY)).Name.Substring(2,6);
             if (!(curColorRegion == c||c=="#ffffff"||c=="#000000"))
             {
                 curColorRegion = c;
@@ -218,6 +237,7 @@ namespace Meteo
                 int size = 24;
                 symbolsRainCount = 0;
                 Util.ShowLoading("Načítání symbolů...");
+                Bitmap symbols;
                 foreach (var point in Util.rainRegion)
                 {
                     string path = "";
@@ -241,7 +261,10 @@ namespace Meteo
                         symbol.BackgroundImage = Image.FromFile(path);
                         symbol.BackgroundImageLayout = ImageLayout.Stretch;
                         this.Controls.Add(symbol);
-                        this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X) - size / 2, (pictureBoxMap.Location.Y + point.Value.Y) - size / 2);
+                        Bitmap img = (Bitmap)pictureBoxMap.Image;
+                        float sX = img.Width / (float)pictureBoxMap.Width;
+                        float sY = img.Height / (float)pictureBoxMap.Height;
+                        this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X) - size / 2, (pictureBoxMap.Location.Y + (int)(point.Value.Y*sY)) - size / 2);
                         this.Controls["rain" + symbolsRainCount].BackColor = Color.Transparent;
                         this.Controls["rain" + symbolsRainCount].BringToFront();
                         this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);
@@ -285,11 +308,15 @@ namespace Meteo
                     dgv.Rows.Add(row);    
                 }
                 dgv.BringToFront();
+                ResizeMap(pictureBoxMap);
+                ResizeMap(this.Controls["pictureBoxMask"] as PictureBox);
             }
             else
             {
                 dgv.Visible = false;
                 richTextBoxOutput.Visible = false;
+                ResizeMap(pictureBoxMap);
+                ResizeMap(this.Controls["pictureBoxMask"] as PictureBox);
             }
         }
 

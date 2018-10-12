@@ -38,6 +38,7 @@
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
             this.labelCountMethod = new System.Windows.Forms.Label();
             this.dgv = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
@@ -122,7 +123,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxMap.Location = new System.Drawing.Point(194, 75);
             this.pictureBoxMap.Name = "pictureBoxMap";
-            this.pictureBoxMap.Size = new System.Drawing.Size(473, 211);
+            this.pictureBoxMap.Size = new System.Drawing.Size(228, 62);
             this.pictureBoxMap.TabIndex = 4;
             this.pictureBoxMap.TabStop = false;
             // 
@@ -159,6 +160,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.dgv);
             this.Controls.Add(this.labelCountMethod);
             this.Controls.Add(this.labelRegionName);
@@ -166,7 +168,6 @@
             this.Controls.Add(this.checkBoxShoweRain);
             this.Controls.Add(this.richTextBoxOutput);
             this.Controls.Add(this.checkBoxShowORP);
-            this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.treeViewModel);
             this.Controls.Add(this.label1);
             this.Name = "UserControlModel";
@@ -189,5 +190,6 @@
         private System.Windows.Forms.Label labelRegionName;
         public System.Windows.Forms.Label labelCountMethod;
         public System.Windows.Forms.DataGridView dgv;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
