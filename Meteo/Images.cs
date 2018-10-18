@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,13 @@ namespace Meteo
                 Util.rainRegionValue.Clear();
                 Util.curDataOutputs.Clear();
                 Util.curModelOutput = "";
+                //Util.curSymbols = new Bitmap(bmp);
+                Util.curSymbols = new Bitmap(bmp.Width, bmp.Height, PixelFormat.Format32bppArgb);
+                using (Graphics g = Graphics.FromImage(Util.curSymbols))
+                {
+                    g.DrawImage(bmp, 0,0);
+                   
+                };
                 foreach (var map in Util.ORPColorGetORPColors)
                 {
                     string regionName = Util.GetRegionNameByColor(map.color);
@@ -101,6 +109,26 @@ namespace Meteo
                                 y += (int)point[1];
                                 count++;
                             }
+
+                            string path = "";
+                            if (value >= 1 && value < 2)
+                                path = Util.pathSource["symbol_cloud"];
+                            else if (value >= 2 && value < 3)
+                                path = Util.pathSource["symbol_rain"];
+                            else if (value >= 3)
+                                path = Util.pathSource["symbol_storm"];
+
+                            //Util.curSymbols = new Bitmap(Image.FromFile(Util.pathSource["symbol_canvas"]));
+                            Image symbol = Image.FromFile(path);
+                            //Rectangle rect = new Rectangle(x/count, y/count, 20, 20);
+
+                            using (Graphics g = Graphics.FromImage(Util.curSymbols)) {
+                                g.DrawImage(symbol, x/count-symbol.Width/2, y/count-symbol.Height/2);
+                                /*using (Pen myPen = new Pen(Color.Black, 6))
+                                {
+                                    g.DrawRectangle(myPen, rect);
+                                }*/
+                            };
                             Util.rainRegion.Add(regionName,(new Point((int)Math.Round((float)x/count), (int)Math.Round((float)y / count))));
                             Util.rainRegionValue.Add(value);
                         }

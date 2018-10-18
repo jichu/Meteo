@@ -198,11 +198,13 @@ namespace Meteo
             }
             else
             {
-                if(symbolsRainCount>0)
+                this.Controls.Remove(this.Controls["mapSymbols"]);
+                /*if(symbolsRainCount>0)
                     for (int i = 0; i < symbolsRainCount; i++)
                     {
                         this.Controls.Remove(this.Controls["rain" + i]);
-                    }
+
+                    }*/
             }
         }
 
@@ -236,8 +238,24 @@ namespace Meteo
             {
                 int size = 24;
                 symbolsRainCount = 0;
+                
+                
+                //Util.curSymbols.MakeTransparent(backColor);                
                 Util.ShowLoading("Načítání symbolů...");
-                Bitmap symbols;
+                PictureBox mapSymbols = new PictureBox();
+                
+                //mapSymbols.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+                mapSymbols.Image = Util.curSymbols;
+                mapSymbols.Width = Util.curSymbols.Width;
+                mapSymbols.Height = Util.curSymbols.Height;
+                mapSymbols.BackColor = Color.Transparent;
+                mapSymbols.Name = "mapSymbols";
+                this.Controls.Add(mapSymbols);
+                mapSymbols.Location = new Point(pictureBoxMap.Location.X, pictureBoxMap.Location.Y);
+                mapSymbols.BringToFront();
+                ResizeMap(mapSymbols);
+                
+                /*
                 foreach (var point in Util.rainRegion)
                 {
                     string path = "";
@@ -274,7 +292,7 @@ namespace Meteo
                         Util.l($"Program nemůže načíst obrázek {path}.|Chybí symbol srážek");
                     }
                     symbolsRainCount++;
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -317,6 +335,7 @@ namespace Meteo
                 richTextBoxOutput.Visible = false;
                 ResizeMap(pictureBoxMap);
                 ResizeMap(this.Controls["pictureBoxMask"] as PictureBox);
+                ResizeMap(this.Controls["mapSymbols"] as PictureBox);
             }
         }
 
