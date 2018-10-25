@@ -62,6 +62,12 @@ namespace SortModelsDirectory
                     foreach (var subdir in subdirs)
                     {
                         string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
+                        if (submodel == "Srážky_MAIN" || submodel=="Srážky")
+                        {
+                            Log.add($"Hledám Srážky v {model}:");
+                            DirSearch(dirPathSource+"/Srážky", model, "Srážky", subdir.Replace(baseDir, ""));
+                            continue;
+                        }
                         Log.add($"Hledám {model}/{submodel} :");
                         DirSearch(dirPathSource, model, submodel, subdir.Replace(baseDir,""));
                     }
@@ -107,7 +113,7 @@ namespace SortModelsDirectory
                 {
                     Console.WriteLine(file);
                     Log.add($"\t\tkopíruji {Path.GetFileName(file)} do {target}");
-                    System.IO.File.Copy(file, Path.Combine(target, Path.GetFileName(file)), true);
+//                    File.Copy(file, Path.Combine(target, Path.GetFileName(file)), true);
                     copied++;
                 }
                 foreach (string d in Directory.GetDirectories(sDir))
