@@ -36,15 +36,20 @@ namespace Meteo
             //MODELS_GetIDFromName();
             //MODELS_GetSubmodelIDFromName();
             //MODELS_GetModelOptions();
-            //REGIONS_GetRegionCities();
+            REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
             //MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
+            InputDataInsertOrUpdate();
 
         }
 
+        public void InputDataInsertOrUpdate() {
+            CloudInputData input = new CloudInputData("Model_ALADIN_CZ", "Srážky_MAIN", "Beroun", "01", 2);
+            Util.l($"{input.id_model}:{input.id_orp}:{input.sample_name}:{input.value}");
+        } 
 
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff", "Model_ALADIN_CZ");
