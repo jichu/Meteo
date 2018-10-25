@@ -63,7 +63,7 @@ namespace SortModelsDirectory
                     {
                         string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
                         Log.add($"Hledám {model}/{submodel} :");
-                        DirSearch(dirPathSource, model, submodel, subdir.Replace(baseDir,""));
+                        DirSearch(dirPathSource, model, submodel.Replace("_MAIN", ""), subdir.Replace(baseDir,""));
                     }
                     nodeModel++;
                 }
@@ -106,7 +106,7 @@ namespace SortModelsDirectory
                 foreach (var file in files)
                 {
                     Console.WriteLine(file);
-                    Log.add($"\t\tkopíruji {Path.GetFileName(file)} do {target}");
+                    Log.add($"\t\tkopíruji {file.Replace(baseDir,"")} do {target}");
                     System.IO.File.Copy(file, Path.Combine(target, Path.GetFileName(file)), true);
                     copied++;
                 }
