@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudInputData.cs" />
     <Compile Include="CloudModelEntity.cs" />
     <Compile Include="CloudModels.cs" />
     <Compile Include="CloudModelSpectrum.cs" />
