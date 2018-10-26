@@ -17,6 +17,8 @@ namespace SortModelsDirectory
 
         string dirPath = AppDomain.CurrentDomain.BaseDirectory + @"models";
         string dirPathSource = AppDomain.CurrentDomain.BaseDirectory + @"source";
+        string fileCSV = AppDomain.CurrentDomain.BaseDirectory + @"copy.csv";
+        List<string> dirSkip = new List<string>();
         int copied = 0;
 
         public Dir(Form1 form)
@@ -33,6 +35,7 @@ namespace SortModelsDirectory
               {
                   try
                   {
+                      RunCopyByCSV();
                       RunSearch();
                   }
                   finally
@@ -49,10 +52,41 @@ namespace SortModelsDirectory
             thread.Start();
         }
 
+        private void RunCopyByCSV()
+        {
+            Log.clear();
+            Log.add($"načítám {fileCSV.Replace(baseDir, "")}");
+            if (File.Exists(fileCSV))
+            {
+                using (var reader = new StreamReader(fileCSV))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (line.IndexOf(';') != -1)
+                        {
+                            string kam = line.Split(';')[0].ToString();
+                            string co = line.Split(';')[1].ToString();
+                            if (Directory.Exists(co) && Directory.Exists(kam))
+                            {
+                                FilesSearch(co,kam);
+                                dirSkip.Add(kam.Replace(baseDir, ""));
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            else
+                Log.add($"\tups, {fileCSV.Replace(baseDir,"")} neexistuje");
+         }
+
         private void RunSearch()
         {
             try
             {
+                Log.add("=====");
                 int nodeModel = 0;
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 foreach (var dir in dirs)
@@ -105,10 +139,12 @@ namespace SortModelsDirectory
                     .Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
                 foreach (var file in files)
                 {
-                    Console.WriteLine(file);
-                    Log.add($"\t\tkopíruji {file.Replace(baseDir,"")} do {target}");
-                    System.IO.File.Copy(file, Path.Combine(target, Path.GetFileName(file)), true);
-                    copied++;
+                    if (!dirSkip.Contains(target+"\\"))
+                    {
+                        Log.add($"\t\tkopíruji {file.Replace(baseDir, "")} do {target}");
+                        System.IO.File.Copy(file, Path.Combine(target, Path.GetFileName(file)), true);
+                        copied++;
+                    }
                 }
                 foreach (string d in Directory.GetDirectories(sDir))
                 {

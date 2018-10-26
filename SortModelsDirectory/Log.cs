@@ -23,7 +23,10 @@ namespace SortModelsDirectory
 
         public static void clear()
         {
-            log.Clear();
+            log.BeginInvoke((Action)(() =>
+            {
+                log.Clear();
+            }));
         }
     }
 }
