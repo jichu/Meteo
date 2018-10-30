@@ -42,9 +42,12 @@ namespace Meteo
             //MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
-
+            InputData_InsertOrUpdateData();
         }
-
+        public void InputData_InsertOrUpdateData() {
+            CloudInputData input = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", 2);
+            Util.l($"{input.id_model}:{input.id_orp}:{input.sample_name}:{input.value}");
+        }
 
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff", "Model_ALADIN_CZ");
