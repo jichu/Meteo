@@ -42,7 +42,7 @@ namespace Meteo
             //MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
-            InputData_InsertOrUpdateData();
+            //InputData_InsertOrUpdateData();
             //ORPS_GetORPSForRegion();
         }
         public void InputData_InsertOrUpdateData() {
