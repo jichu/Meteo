@@ -207,6 +207,26 @@ namespace Meteo
             }
         }
 
+        public List<CloudORPS> ORPSGetORPSForRegion(int id_reg)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var output = conn.Query<CloudORPS>("dbo.ORPS_GetORPSForRegion @id_region", new {id_region =  id_reg}).ToList();
+
+                return output;
+            }
+        }
+
+        public int REGIONSGetIDFromName(string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int id = conn.Query<CloudORPS>("dbo.REGIONS_GetIDFromName @NAME", new { name = nam }).ToList().First().id;
+                return id;
+            }
+
+        }
+
         public string REGIONSGetNameFromColor(string col) {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
@@ -222,6 +242,32 @@ namespace Meteo
                 var output = conn.Query<CloudORPS>("dbo.REGIONS_GetRegionCities").ToList();
 
                 return output;
+            }
+        }
+
+        public bool InputDataInsertOrUpdate(CloudInputData item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudInputData> records = new List<CloudInputData>();
+                if (!item.region)
+                {
+                    records.Add(item);
+                }
+                else
+                {
+                    //CloudInputData regionInput = new CloudInputData(item);
+                    List<CloudORPS> ORPSList = Model.Cloud.ORPSGetORPSForRegion(item.id_orp);
+                    foreach (var ORP in ORPSList)
+                    {
+                        CloudInputData regionInput = new CloudInputData(item);
+                        regionInput.id_orp = ORP.id;
+                        records.Add(regionInput);
+                    }
+                    
+                }
+                conn.Execute("dbo.INPUT_DATA_InsertOrUpdateData @ID_MODEL, @ID_ORP, @SAMPLE_NAME, @VALUE", records);
+                return true;
             }
         }
 
