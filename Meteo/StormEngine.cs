@@ -24,12 +24,15 @@ namespace Meteo
                 ForecastAreaParameters fap = new ForecastAreaParameters(ORP, this.sampleName);
                 fapList.Add(fap);
             }
+            Algorithm();
 
 
         }
         //Zde se bude počítat předpověď na základě parametrů
         public void Algorithm() {
-
+            float value;
+            fapList.First().Parameters.TryGetValue("MLCAPE", out value);
+            Util.l($"{value}");
         }
 
 
