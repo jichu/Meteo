@@ -42,9 +42,22 @@ namespace Meteo
             MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
-
+            //InputData_InsertOrUpdateData();
+            //ORPS_GetORPSForRegion();
         }
+        public void InputData_InsertOrUpdateData() {
+            //Ukázka přidání dat pro ORP
+            CloudInputData inputORP = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", 2);
+            Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}");
+            Model.Cloud.InputDataInsertOrUpdate(inputORP);
 
+            //Ukázka přidání dat pro Region
+            CloudInputData inputREGION = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Zlínský kraj", "02", 2);
+            Util.l($"inputREGION:{inputREGION.id_model}:{inputREGION.id_orp}:{inputREGION.sample_name}:{inputREGION.value}:{inputREGION.region}");
+            Model.Cloud.InputDataInsertOrUpdate(inputREGION);
+            /*CloudInputData inputNOEXIST = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Neexistující oblast", "02", 2);
+            Util.l($"inputNOEXIST:{inputNOEXIST.id_model}:{inputNOEXIST.id_orp}:{inputNOEXIST.sample_name}:{inputNOEXIST.value}:{inputNOEXIST.region}");*/
+        }
 
         public void MaskSpectrumGetCoodsByColor() {
             List<CloudMaskSpectrum> l = Model.Cloud.MaskSpectrumGetCoodsByColor("#fff", "Model_ALADIN_CZ");
@@ -214,6 +227,15 @@ namespace Meteo
         public void ORPS_GetIDFromName()
         {
             Util.l(Model.Cloud.ORPSGetIDFromName("Hlavní město Praha"));
+        }
+
+        public void ORPS_GetORPSForRegion()
+        {
+            List<CloudORPS> l = Model.Cloud.ORPSGetORPSForRegion(21);
+            foreach (var ll in l)
+            {
+                Util.l($"ID: {ll.id} Název Okresu: {ll.name}");
+            }
         }
 
         public void REGIONS_GetNameFromColor() {

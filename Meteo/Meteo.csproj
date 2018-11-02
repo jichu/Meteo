@@ -75,6 +75,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForecastAreaParameters.cs" />
+    <Compile Include="CloudInputData.cs" />
     <Compile Include="CloudModelEntity.cs" />
     <Compile Include="CloudModels.cs" />
     <Compile Include="CloudModelSpectrum.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="StormEngine.cs" />
     <Compile Include="UserControlModel.cs">
       <SubType>UserControl</SubType>
     </Compile>
