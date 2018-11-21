@@ -70,7 +70,8 @@ namespace SortModelsDirectory
                             if (Directory.Exists(co) && Directory.Exists(kam))
                             {
                                 FilesSearch(co,kam);
-                                dirSkip.Add(kam.Replace(baseDir, ""));
+                                Console.WriteLine($"kam: {kam}, basedir: {baseDir}");
+                                dirSkip.Add(kam.ToLower().Replace(baseDir.ToLower(), ""));
                             }
                         }
 
@@ -139,7 +140,7 @@ namespace SortModelsDirectory
                     .Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
                 foreach (var file in files)
                 {
-                    if (!dirSkip.Contains(target+"\\"))
+                    if (!dirSkip.Contains(target.ToLower()+"\\"))
                     {
                         Log.add($"\t\tkopíruji {file.Replace(baseDir, "")} do {target}");
                         System.IO.File.Copy(file, Path.Combine(target, Path.GetFileName(file)), true);

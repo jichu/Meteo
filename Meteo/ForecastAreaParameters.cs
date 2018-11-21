@@ -13,8 +13,10 @@ namespace Meteo
         public string SampleName { get; set; }
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
-        private List<float> RHLevels = new List<float>() {0.25f, 0.5f, 0.75f, 1.0f };
-        private const int RHRatio = 3;
+        private List<float> LevelScale = new List<float>() {0.25f, 0.5f, 0.75f, 1.0f };
+        private List<float> OroKonvScale = new List<float>() { 0.17f, 0.33f, 0.66f, 1.0f };
+        private List<float> RHLevelsAlternative = new List<float>() { 0.1f, 0.3f, 0.4f, 1.0f }; //??? Není jisté, zda je tato stupnice dobře
+        private const int RATIO = 3;
 
         public ForecastAreaParameters() {
                 
@@ -32,6 +34,8 @@ namespace Meteo
             LoadParameters();
             PrecipitationPlace();
             RelativeHumidity();
+            DayInstability();
+            TriggeringConvection();
             WriteOutputLog();
 
         }
@@ -113,24 +117,55 @@ namespace Meteo
             Parameters.Add("Srážky WRF-NMM", 0);
             Parameters.Add("Srážky WRF-ARW", 0);
         }
+        //Spouštění konvekce
+        private void TriggeringConvection() {
+            List<float> values = new List<float>() {Parameters["Tlak MSLP"], Parameters["FRONTOGENEZE 850 hPa"]};
+            List<float> orographicSupportValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR"] };
+            List<float> konvDivValues = new List<float>() { Parameters["MOCON"], Parameters["MFDIV 0-1 km"] };
+            List<float> oroOutputValues = new List<float>() { Parameters["MTV VECTOR"], Parameters["POTENTIAL OROGRAPHIC LIFITING"] };
+            int KonvDiv = ValueToLevel(OroKonvScale, SumArray(konvDivValues) / (konvDivValues.Count * RATIO));
+            orographicSupportValues.Add(KonvDiv);
+            int OrographicLift = ValueToLevel(OroKonvScale,SumArray(oroOutputValues) / (oroOutputValues.Count * RATIO));
+            orographicSupportValues.Add(OrographicLift);
+            int OrographicSupport = ValueToLevel(LevelScale, SumArray(orographicSupportValues) / (orographicSupportValues.Count * RATIO));
+            values.Add(OrographicSupport);
+            values.Add(Output["RH 1000-300 hPa"]);
+            int triggeringConv = ValueToLevel(LevelScale, SumArray(values) / (values.Count * RATIO));
+            Output.Add("SPOUŠTĚNÍ KONVEKCE",triggeringConv);
+        }
 
-        private void RelativeHumidity() {
-            List<float> values = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"]
-                , Parameters["RH 700 hPa"], Parameters["RH 500 hPa"], Parameters["RH 300 hPa"] };
-            float probability = SumArray(values) / (values.Count* RHRatio);
-            int level = ValueToLevel(RHLevels, probability);
-            Output.Add("RH 1000-300 hPa", level);
 
-            probability = SumArray(values,2) / ((values.Count-2) * RHRatio);
-            level = ValueToLevel(RHLevels, probability);
-            Output.Add("RH 850-300 hPa", level);
-
-            probability = SumArray(values,0,3) / ((values.Count-3) * RHRatio);
-            level = ValueToLevel(RHLevels, probability);
-            Output.Add("RH 1000-850 hPa", level);
+        //Denní instabilita
+        private void DayInstability() {
+            List<float> values = new List<float>() {Parameters["MLCAPE"], Parameters["LI"], Parameters["MLCIN"]
+                , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]  };
+            float probabilityMLCAPELI = SumArray(values,0,2) / (2 * RATIO);
+            int MLCAPELI = ValueToLevel(LevelScale, probabilityMLCAPELI);
+            float probability = (SumArray(values, 2) + MLCAPELI) / ((values.Count - 1) * RATIO);
+            int level = ValueToLevel(LevelScale, probability);
+            Output.Add("DENNÍ INSTABILITA ATMOSFÉRY", level);
 
         }
 
+        //Relativní vlhkost
+        private void RelativeHumidity() {
+            List<float> values = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"]
+                , Parameters["RH 700 hPa"], Parameters["RH 500 hPa"], Parameters["RH 300 hPa"] };
+            float probability = SumArray(values) / (values.Count* RATIO);
+            int level = ValueToLevel(LevelScale, probability);
+            Output.Add("RH 1000-300 hPa", level);
+
+            probability = SumArray(values,2) / ((values.Count-2) * RATIO);
+            level = ValueToLevel(LevelScale, probability);
+            Output.Add("RH 850-300 hPa", level);
+
+            probability = SumArray(values,0,3) / ((values.Count-3) * RATIO);
+            level = ValueToLevel(LevelScale, probability);
+            Output.Add("RH 1000-850 hPa", level);
+            //Na základě nějaké podmínky, se bude lišit RHLevels
+
+        }
+        //Pravděpodobnost srážek
         private void PrecipitationPlace() {
             float probability=0;
             List<float> values = new List<float>(){Parameters["Srážky ALADIN"], Parameters["Srážky GDPS"], Parameters["Srážky EURO4"]
@@ -138,6 +173,8 @@ namespace Meteo
             probability = SumArray(values) / values.Count;
             Output.Add("Pravděpodobnost Srážek", probability);
         }
+
+        //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
         private int ValueToLevel(List<float> levels, float value) {
             int level=-1;
             foreach (var l in levels) {
@@ -148,6 +185,7 @@ namespace Meteo
             return level;
         }
 
+        //Suma prvků v poli
         private float SumArray(List<float> arr, int start = 0, int end = -1) {
             float sum = 0;
             end = (end > arr.Count) ? arr.Count : end;
@@ -160,6 +198,7 @@ namespace Meteo
             return sum;
         }
 
+        //Výpis výstupu
         private void WriteOutputLog() {
             foreach(var item in Output)
             {
