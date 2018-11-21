@@ -39,7 +39,7 @@ namespace Meteo
             //REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
-            //MODELS_GetModelStructure();
+            MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
             //InputData_InsertOrUpdateData();

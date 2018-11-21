@@ -22,8 +22,7 @@ namespace Meteo
             { "model_cfg", @"model.cfg" },
             { "symbol_rain", @".\images\symbol_rain.png" },
             { "symbol_storm", @".\images\symbol_storm.png" },
-            { "symbol_cloud", @".\images\symbol_cloud.png" },
-            { "symbol_canvas", @".\images\symbol_canvas.png" }
+            { "symbol_cloud", @".\images\symbol_cloud.png" }
         };
 
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
@@ -39,8 +38,6 @@ namespace Meteo
         public static string curSubmodelName { get; set; }
         public static string curCountMethod { get; set; }
         public static string curModelOutput { get; set; }
-        public static Bitmap curSymbols { get; internal set; }
-
         public static List<DataOutput> curDataOutputs = new List<DataOutput>();
 
         public static string ExceptionText = "Exception";
