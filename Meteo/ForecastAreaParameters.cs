@@ -14,7 +14,7 @@ namespace Meteo
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         private List<float> LevelScale = new List<float>() {0.25f, 0.5f, 0.75f, 1.0f };
-        private List<float> OroKonvScale = new List<float>() { 0.17f, 0.33f, 0.66f, 1.0f };
+        private List<float> OroKonvScale = new List<float>() { 0.17f, 0.33f, 0.67f, 1.0f };
         private List<float> RHLevelsAlternative = new List<float>() { 0.1f, 0.3f, 0.4f, 1.0f }; //??? Není jisté, zda je tato stupnice dobře
         private const int RATIO = 3;
 
@@ -29,16 +29,7 @@ namespace Meteo
             DoCountOperations();  
             
         }
-        private void DoCountOperations() {
-            Util.l("Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
-            LoadParameters();
-            PrecipitationPlace();
-            RelativeHumidity();
-            DayInstability();
-            TriggeringConvection();
-            WriteOutputLog();
-
-        }
+        
 
         private void LoadParameters() {
             //Hodnoty parametrů - zatím sebrané ze vzorové předpovědi (hodnoty pro uherské hradiště), posléze se bude tahat z DB (Input_DATA)
@@ -117,6 +108,74 @@ namespace Meteo
             Parameters.Add("Srážky WRF-NMM", 0);
             Parameters.Add("Srážky WRF-ARW", 0);
         }
+
+        private void DoCountOperations()
+        {
+            Util.l("Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            LoadParameters();
+            PrecipitationPlace();
+            RelativeHumidity();
+            DayInstability();
+            TriggeringConvection();
+            SupportOfConvection();
+            WindCut();
+            SupportOfDangerousPhenomenaCreation();
+            ConvectiveStormOrganization();
+            StormMoving();
+            IntensityOfStrongStormsDay();
+            WriteOutputLog();
+
+        }
+
+        //Intenzita silných bouřek přes den
+        private void IntensityOfStrongStormsDay()
+        {
+            List<float> values = new List<float>() { Output["DENNÍ INSTABILITA ATMOSFÉRY"], Output["STŘIH VĚTRU"], Output["POHYB BOUŘE"] };
+            List<float> complexSupportTriggeringConvectionValues = new List<float>() { Output["SPOUŠTĚNÍ KONVEKCE"], Output["PODPORA KONVEKCE"], Output["PODPORA VZNIKU NEBEZPEČNÝCH JEVŮ"], Output["ORGANIZACE KONV. BOUŘE"], Output["POHYB BOUŘE"] };
+            int complexSupportTriggeringConvection = ValueToLevel(LevelScale, Probability(complexSupportTriggeringConvectionValues));
+            values.Add(complexSupportTriggeringConvection);
+            int stormIntensityDay = ValueToLevel(LevelScale, Probability(values));
+            int stormIntensityDay2 = ValueTest(values);
+            Output.Add("INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN)", stormIntensityDay);
+            Output.Add("INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2", stormIntensityDay2);
+        }
+
+
+        //Pohyb bouře
+        //Zatím se nepočítá, protože z obrazového vstupu tuto zatím nelze zjistit požadovaná data.
+        private void StormMoving()
+        {            
+            Output.Add("POHYB BOUŘE", 0);
+        }
+
+        //Organizace konv. bouře
+        private void ConvectiveStormOrganization()
+        {
+            List<float> values = new List<float>() { Parameters["Rychlost větru v 300 hPa"], Parameters["Rychlost větru v 850 hPa"] };
+            int convStormOrg = ValueToLevel(OroKonvScale, Probability(values));
+            //Output.Add("DEBUG", Probability(values));
+            Output.Add("ORGANIZACE KONV. BOUŘE", convStormOrg);
+        }
+
+
+
+        //Podpora vzniku nebezpečných jevů
+        private void SupportOfDangerousPhenomenaCreation()
+        {
+            List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"] };
+            int supDanPhenCreat = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("PODPORA VZNIKU NEBEZPEČNÝCH JEVŮ", supDanPhenCreat);
+        }
+
+
+        //Střih větru
+        private void WindCut()
+        {
+            List<float> values = new List<float>() { Parameters["DLS"]};
+            int windCut = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("STŘIH VĚTRU", windCut);
+        }
+
         //Podpora konvekce
         private void SupportOfConvection() {
             List<float> values = new List<float>() { Parameters["Pwater"], Parameters["T 850 hPa"] };
@@ -125,8 +184,6 @@ namespace Meteo
             values.Add(relVor);
             int supCon = ValueToLevel(LevelScale, Probability(values));
             Output.Add("PODPORA KONVEKCE", supCon);
-
-
         }
 
 
@@ -213,6 +270,17 @@ namespace Meteo
                 //Util.l(a);
             }
             return sum;
+        }
+
+        private int ValueTest(List<float> list)
+        {
+            int result=1;
+            foreach (var item in list)
+            {
+                result = (item < 1) ? 0 : 1;
+                if (result==0) break;
+            }
+            return result;
         }
 
         //Výpis výstupu
