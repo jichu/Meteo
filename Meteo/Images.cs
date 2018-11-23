@@ -16,33 +16,29 @@ namespace Meteo
         private bool isDragging;
         private int currentX;
         private int currentY;
+        private string path;
         private PreImage mapORP;
         public Bitmap bmp;
         private List<CloudModelSpectrum> cloudModelSpectrum;
 
         public Images() {
-            /*
-            mapORP = new PreImage();
-            mapORP.LoadORPfromModels();
-            LoadModel();
-            LoadORP();
-            LoadPointsOfColorsInMap();*/
-
         }
 
-        public Images(string path)
+        public Images(string path, bool onlyEnumeration = false)
         {
+            this.path = path;
             LoadImage(path);
-            LoadPointsOfColorsInMap();
+            LoadPointsOfColorsInMap(onlyEnumeration);
         }
 
-        private void LoadPointsOfColorsInMap()
+        private void LoadPointsOfColorsInMap(bool onlyEnumeration=false)
         {
 
             JObject jo = JObject.Parse(Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName));
             var p = jo.Property("countMethod");
 
-            DefaultUserControlModel();
+            if(!onlyEnumeration)
+                DefaultUserControlModel();
 
             try
             {
@@ -89,31 +85,53 @@ namespace Meteo
                         else
                         {
                             Util.l($"Chybí specifikace metody, nastavte v {Util.curModelName}/{Util.pathSource["model_cfg"]}|Chyba modelu");
-                            return; 
+                            return;
                         }
 
-                        if (value >= 1.0)
+                        // TODO
+                        /*
+                         * ORP
+                         * IF dont click
+            CloudInputData inputORP = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", value);
+                        Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}");
+                        Model.Cloud.InputDataInsertOrUpdate(inputORP);
+
+
+                        else
+    */
+
+                        if (onlyEnumeration)
                         {
-                            int x = 0, y =0, count=0;
-                            foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
-                            {
-                                x += (int)point[0];
-                                y += (int)point[1];
-                                count++;
-                            }
-                            Util.rainRegion.Add(regionName,(new Point((int)Math.Round((float)x/count), (int)Math.Round((float)y / count))));
-                            Util.rainRegionValue.Add(value);
+                            Util.l($"CloudInputData({Util.curModelName},{Util.curSubmodelName},{regionName},{Path.GetFileNameWithoutExtension(path)},{value})");
+
                         }
-                        Util.curDataOutputs.Add(new DataOutput()
+                        else
                         {
-                            RegionName = regionName,
-                            Value = value,
-                            Color =ColorTranslator.FromHtml(map.color)
-                        });
+                            if (value >= 1.0)
+                            {
+                                int x = 0, y = 0, count = 0;
+                                foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
+                                {
+                                    x += (int)point[0];
+                                    y += (int)point[1];
+                                    count++;
+                                }
+                                Util.rainRegion.Add(regionName, (new Point((int)Math.Round((float)x / count), (int)Math.Round((float)y / count))));
+                                Util.rainRegionValue.Add(value);
+                            }
+                            Util.curDataOutputs.Add(new DataOutput()
+                            {
+                                RegionName = regionName,
+                                Value = value,
+                                Color = ColorTranslator.FromHtml(map.color)
+                            });
+                        }
                     }
                 }
 
-                DefaultUserControlModelReady();
+
+                if (!onlyEnumeration)
+                    DefaultUserControlModelReady();
 
             } catch(Exception e) { Util.l(e); }
 
