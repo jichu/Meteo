@@ -12,12 +12,14 @@ namespace Meteo
         public string Name_orp { get; set; }
         public string SampleName { get; set; }
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
+        public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
         private List<float> OroKonvScale = new List<float>() { 0.17f, 0.33f, 0.67f, 1.0f };
         private List<float> DangerousPhenomenaScale = new List<float>() { 0.33f, 0.5f, 0.75f, 1.0f };
         private List<float> RHLevelsAlternative = new List<float>() { 0.1f, 0.3f, 0.4f, 1.0f }; //??? Není jisté, zda je tato stupnice dobře
         private const int RATIO = 3;
+        
 
         public ForecastAreaParameters() {
 
@@ -108,6 +110,23 @@ namespace Meteo
             Parameters.Add("Srážky HIRLAM", 0);
             Parameters.Add("Srážky WRF-NMM", 0);
             Parameters.Add("Srážky WRF-ARW", 0);
+            Parameters.Add("Srážky GFS", 0);
+
+
+
+            List<CloudInputData> precipitationData = new List<CloudInputData>();
+            CloudInputData oneInterval = new CloudInputData();
+            precipitationData.Add(oneInterval);
+
+            PrecipitationModels.Add("Srážky ALADIN", precipitationData);
+            PrecipitationModels.Add("Srážky GDPS", precipitationData);
+            PrecipitationModels.Add("Srážky EURO4", precipitationData);
+            PrecipitationModels.Add("Srážky HIRLAM", precipitationData);
+            PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);
+            PrecipitationModels.Add("Srážky WRF-NMM", precipitationData);
+            PrecipitationModels.Add("Srážky WRF-ARW", precipitationData);
+            PrecipitationModels.Add("Srážky GFS", precipitationData);
+            PrecipitationModels.Add("Srážky GFS Starý", precipitationData);
         }
 
         private void DoCountOperations()
@@ -302,6 +321,9 @@ namespace Meteo
             probability = SumArray(values) / values.Count;
             Output.Add("Pravděpodobnost Srážek", probability);
         }
+
+
+        //Pomocné výpočetní funkce
 
         //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
         private int ValueToLevel(List<float> levels, float value) {

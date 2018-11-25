@@ -14,7 +14,9 @@ namespace Meteo
         public float value { get; set; }
         public bool region { get; set; }
 
-        public CloudInputData() { }
+        public CloudInputData() {
+            value = 0;
+        }
 
         public CloudInputData(CloudInputData item) {
             id_model = item.id_model;
