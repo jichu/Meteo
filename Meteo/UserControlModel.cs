@@ -40,7 +40,12 @@ namespace Meteo
             dgv.Columns.Add("Region", "Region");
             dgv.Columns.Add("Value", "Hodnota");
 
+            Util.curModelName = "Model_ALADIN_CZ";
+            Util.curSubmodelName = "Teplota";
+            new Images(@"D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\models\Model_ALADIN_CZ\Teplota\15.png",true);
+
             ShowModels();
+
             //treeViewModel.ExpandAll();
         }
 
