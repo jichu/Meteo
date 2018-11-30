@@ -42,7 +42,7 @@ namespace Meteo
 
             Util.curModelName = "Model_ALADIN_CZ";
             Util.curSubmodelName = "Teplota";
-            new Images(@"D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\models\Model_ALADIN_CZ\Teplota\15.png",true);
+            //new Images(@"D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\models\Model_ALADIN_CZ\Teplota\15.png",true);
 
             ShowModels();
 
