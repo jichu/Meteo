@@ -36,6 +36,7 @@
             this.menuItemExplore = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
+            this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +71,8 @@
             this.modelyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemLoadModels,
             this.menuItemExplore,
-            this.menuItemPalette});
+            this.menuItemPalette,
+            this.menuItemOutput});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";
@@ -87,14 +89,14 @@
             // 
             this.menuItemExplore.Name = "menuItemExplore";
             this.menuItemExplore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.menuItemExplore.Size = new System.Drawing.Size(234, 22);
+            this.menuItemExplore.Size = new System.Drawing.Size(277, 22);
             this.menuItemExplore.Text = "Prohlídnout";
             this.menuItemExplore.Click += new System.EventHandler(this.menuItemExplore_Click);
             // 
             // menuItemPalette
             // 
             this.menuItemPalette.Name = "menuItemPalette";
-            this.menuItemPalette.Size = new System.Drawing.Size(234, 22);
+            this.menuItemPalette.Size = new System.Drawing.Size(277, 22);
             this.menuItemPalette.Text = "Paleta masky";
             this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
             // 
@@ -107,6 +109,14 @@
             this.panelLayout.Name = "panelLayout";
             this.panelLayout.Size = new System.Drawing.Size(983, 681);
             this.panelLayout.TabIndex = 3;
+            // 
+            // menuItemOutput
+            // 
+            this.menuItemOutput.Name = "menuItemOutput";
+            this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.menuItemOutput.Size = new System.Drawing.Size(277, 22);
+            this.menuItemOutput.Text = "Výstup";
+            this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
             // 
             // FormMain
             // 
@@ -139,6 +149,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemExplore;
         public System.Windows.Forms.Panel panelLayout;
         private System.Windows.Forms.ToolStripMenuItem menuItemPalette;
+        private System.Windows.Forms.ToolStripMenuItem menuItemOutput;
     }
 }
 

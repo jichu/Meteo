@@ -79,6 +79,18 @@ namespace Meteo
                 UserControlModel.Instance.BringToFront();
         }
 
+        private void menuItemOutput_Click(object sender, EventArgs e)
+        {
+            if (!panelLayout.Controls.Contains(UserControlOutput.Instance))
+            {
+                panelLayout.Controls.Add(UserControlOutput.Instance);
+                UserControlOutput.Instance.Dock = DockStyle.Fill;
+                UserControlOutput.Instance.BringToFront();
+            }
+            else
+                UserControlOutput.Instance.BringToFront();
+        }
+
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F12)

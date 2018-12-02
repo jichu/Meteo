@@ -122,6 +122,12 @@
     <Compile Include="UserControlModel.Designer.cs">
       <DependentUpon>UserControlModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControlOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControlOutput.Designer.cs">
+      <DependentUpon>UserControlOutput.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControlPaletteForMask.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -151,6 +157,9 @@
     </Compile>
     <EmbeddedResource Include="UserControlModel.resx">
       <DependentUpon>UserControlModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControlOutput.resx">
+      <DependentUpon>UserControlOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlPaletteForMask.resx">
       <DependentUpon>UserControlPaletteForMask.cs</DependentUpon>
