@@ -113,26 +113,61 @@ namespace Meteo
             Parameters.Add("Srážky GFS", 0);
 
 
-
+            //Pokusná data pro výpočet času srážek
             List<CloudInputData> precipitationData = new List<CloudInputData>();
-            CloudInputData oneInterval = new CloudInputData();
-            precipitationData.Add(oneInterval);
+            CloudInputData firstInterval = new CloudInputData();
+            CloudInputData secondInterval = new CloudInputData(1);
+            CloudInputData thirdInterval = new CloudInputData();
+            CloudInputData fourthInterval = new CloudInputData(1);
+            CloudInputData fifthInterval = new CloudInputData();
+            CloudInputData sixthInterval = new CloudInputData();
+            CloudInputData seventhInterval = new CloudInputData(1);
+            CloudInputData eighthInterval = new CloudInputData();
+
+            precipitationData.Add(firstInterval);
+            precipitationData.Add(secondInterval);
+            precipitationData.Add(thirdInterval);
+            precipitationData.Add(fourthInterval);
+            precipitationData.Add(fifthInterval);
+            precipitationData.Add(sixthInterval);
+            precipitationData.Add(seventhInterval);
+            precipitationData.Add(eighthInterval);
+
+            List<CloudInputData> precipitationData2 = new List<CloudInputData>();
+            CloudInputData firstInterval2 = new CloudInputData(1);
+            CloudInputData secondInterval2 = new CloudInputData(1);
+            CloudInputData thirdInterval2 = new CloudInputData(1);
+            CloudInputData fourthInterval2 = new CloudInputData(1);
+            CloudInputData fifthInterval2 = new CloudInputData(1);
+            CloudInputData sixthInterval2 = new CloudInputData(1);
+            CloudInputData seventhInterval2 = new CloudInputData(1);
+            CloudInputData eighthInterval2 = new CloudInputData(1);
+
+            precipitationData2.Add(firstInterval2);
+            precipitationData2.Add(secondInterval2);
+            precipitationData2.Add(thirdInterval2);
+            precipitationData2.Add(fourthInterval2);
+            precipitationData2.Add(fifthInterval2);
+            precipitationData2.Add(sixthInterval2);
+            precipitationData2.Add(seventhInterval2);
+            precipitationData2.Add(eighthInterval2);
 
             PrecipitationModels.Add("Srážky ALADIN", precipitationData);
-            PrecipitationModels.Add("Srážky GDPS", precipitationData);
+            PrecipitationModels.Add("Srážky GDPS", precipitationData2);
             PrecipitationModels.Add("Srážky EURO4", precipitationData);
-            PrecipitationModels.Add("Srážky HIRLAM", precipitationData);
+            PrecipitationModels.Add("Srážky HIRLAM", precipitationData2);
             PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);
-            PrecipitationModels.Add("Srážky WRF-NMM", precipitationData);
+            PrecipitationModels.Add("Srážky WRF-NMM", precipitationData2);
             PrecipitationModels.Add("Srážky WRF-ARW", precipitationData);
-            PrecipitationModels.Add("Srážky GFS", precipitationData);
+            PrecipitationModels.Add("Srážky GFS", precipitationData2);
             PrecipitationModels.Add("Srážky GFS Starý", precipitationData);
         }
 
         private void DoCountOperations()
         {
-            Util.l("Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
+            PrecipitationTime();
             PrecipitationPlace();
             RelativeHumidity();
             DayInstability();
@@ -150,6 +185,9 @@ namespace Meteo
             WriteOutputLog();
 
         }
+
+
+
 
         //Riziko výskytu nebezpečných jevů
         private int DangerousPhenomenaCount(List<float> weights, List<float> values) {
@@ -297,6 +335,9 @@ namespace Meteo
 
         //Relativní vlhkost - potřebuje přidat podmínku pro suchý downburst
         private void RelativeHumidity() {
+            //Suchý downburst
+            
+
             List<float> values = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"]
                 , Parameters["RH 700 hPa"], Parameters["RH 500 hPa"], Parameters["RH 300 hPa"] };
             float probability = SumArray(values) / (values.Count * RATIO);
@@ -313,6 +354,7 @@ namespace Meteo
             //Na základě nějaké podmínky, se bude lišit RHLevels
 
         }
+
         //Pravděpodobnost srážek
         private void PrecipitationPlace() {
             float probability = 0;
@@ -321,6 +363,24 @@ namespace Meteo
             probability = SumArray(values) / values.Count;
             Output.Add("Pravděpodobnost Srážek", probability);
         }
+
+        //Čas výskytu srážek
+        private void PrecipitationTime()
+        {
+            List<float> hi = new List<float>() {0, 0, 0, 0, 0, 0, 0, 0};
+            foreach (KeyValuePair<string, List<CloudInputData>> kvp in PrecipitationModels) {
+                for (int i = 0; i < kvp.Value.Count; i++)
+                {
+                    hi[i] += kvp.Value.ElementAt(i).value;
+                }              
+            }
+
+            for (int i = 0; i < hi.Count; i++) {
+                hi[i] /= PrecipitationModels.Count;
+                Output.Add((i * 3).ToString(), hi[i]);
+            }
+        } 
+
 
 
         //Pomocné výpočetní funkce
@@ -385,7 +445,7 @@ namespace Meteo
 
         //Výpis výstupu
         private void WriteOutputLog() {
-            Util.l("\n-----------------\n"+ this.Name_orp);
+            Util.l(this.Name_orp);
             foreach(var item in Output)
             {
                 Util.l(item.Key + ":" + item.Value);

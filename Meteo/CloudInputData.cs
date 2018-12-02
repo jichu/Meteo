@@ -18,6 +18,11 @@ namespace Meteo
             value = 0;
         }
 
+        public CloudInputData(float value)
+        {
+            this.value = value;
+        }
+
         public CloudInputData(CloudInputData item) {
             id_model = item.id_model;
             id_orp = item.id_orp;
