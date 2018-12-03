@@ -24,9 +24,18 @@ namespace Meteo
         public Images() {
         }
 
-        public Images(string path, bool onlyEnumeration = false)
+        public Images(string path)
         {
             this.path = path;
+            LoadImage(path);
+            LoadPointsOfColorsInMap();
+        }
+
+        public Images(SourceImage si, bool onlyEnumeration = false)
+        {
+            this.path = si.Path;
+            Util.curModelName = si.Model;
+            Util.curSubmodelName = si.Submodel;
             LoadImage(path);
             LoadPointsOfColorsInMap(onlyEnumeration);
         }
@@ -88,22 +97,12 @@ namespace Meteo
                             return;
                         }
 
-                        // TODO
-                        /*
-                         * ORP
-                         * IF dont click
-            CloudInputData inputORP = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", value);
-                        Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}");
-                        Model.Cloud.InputDataInsertOrUpdate(inputORP);
-
-
-                        else
-    */
-
                         if (onlyEnumeration)
                         {
-                            Util.l($"CloudInputData({Util.curModelName},{Util.curSubmodelName},{regionName},{Path.GetFileNameWithoutExtension(path)},{value})");
+                            //Util.l($"CloudInputData({Util.curModelName},{Util.curSubmodelName},{regionName},{Path.GetFileNameWithoutExtension(path)},{value})");
 
+                            CloudInputData inputORP = new CloudInputData(Util.curModelName, Util.curSubmodelName, regionName, Path.GetFileNameWithoutExtension(path), value);
+                         // DON'T TOUCH!!!!   Model.Cloud.InputDataInsertOrUpdate(inputORP);
                         }
                         else
                         {

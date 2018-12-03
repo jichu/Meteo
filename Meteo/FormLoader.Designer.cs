@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.labelMessage = new System.Windows.Forms.Label();
+            this.labelInfo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelMessage
@@ -43,12 +44,24 @@
             this.labelMessage.Text = "Zpracování...";
             this.labelMessage.UseWaitCursor = true;
             // 
+            // labelInfo
+            // 
+            this.labelInfo.AutoSize = true;
+            this.labelInfo.BackColor = System.Drawing.Color.Transparent;
+            this.labelInfo.ForeColor = System.Drawing.Color.White;
+            this.labelInfo.Location = new System.Drawing.Point(16, 59);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(16, 13);
+            this.labelInfo.TabIndex = 1;
+            this.labelInfo.Text = "...";
+            // 
             // FormLoader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(479, 56);
+            this.ClientSize = new System.Drawing.Size(479, 109);
+            this.Controls.Add(this.labelInfo);
             this.Controls.Add(this.labelMessage);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -67,5 +80,6 @@
         #endregion
 
         private System.Windows.Forms.Label labelMessage;
+        private System.Windows.Forms.Label labelInfo;
     }
 }

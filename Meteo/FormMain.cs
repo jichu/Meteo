@@ -27,6 +27,8 @@ namespace Meteo
             new Controller();
             this.menuItemExplore.PerformClick();
 
+
+            backgroundWorkerEnumerationModels.RunWorkerAsync();
         }
 
 
@@ -77,6 +79,7 @@ namespace Meteo
             }
             else
                 UserControlModel.Instance.BringToFront();
+
         }
 
         private void menuItemOutput_Click(object sender, EventArgs e)
@@ -114,6 +117,11 @@ namespace Meteo
             }
             else
                 UserControlPaletteForMask.Instance.BringToFront();
+        }
+
+        private void backgroundWorkerEnumerationModels_DoWork(object sender, DoWorkEventArgs e)
+        {
+            UserControlModel.Instance.EnumerationModels();
         }
     }
 }

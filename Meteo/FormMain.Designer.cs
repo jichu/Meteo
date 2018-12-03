@@ -35,8 +35,9 @@
             this.menuItemLoadModels = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExplore = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelLayout = new System.Windows.Forms.Panel();
             this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelLayout = new System.Windows.Forms.Panel();
+            this.backgroundWorkerEnumerationModels = new System.ComponentModel.BackgroundWorker();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,6 +101,14 @@
             this.menuItemPalette.Text = "Paleta masky";
             this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
             // 
+            // menuItemOutput
+            // 
+            this.menuItemOutput.Name = "menuItemOutput";
+            this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.menuItemOutput.Size = new System.Drawing.Size(277, 22);
+            this.menuItemOutput.Text = "Výstup";
+            this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
+            // 
             // panelLayout
             // 
             this.panelLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -110,13 +119,9 @@
             this.panelLayout.Size = new System.Drawing.Size(983, 681);
             this.panelLayout.TabIndex = 3;
             // 
-            // menuItemOutput
+            // backgroundWorkerEnumerationModels
             // 
-            this.menuItemOutput.Name = "menuItemOutput";
-            this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuItemOutput.Size = new System.Drawing.Size(277, 22);
-            this.menuItemOutput.Text = "Výstup";
-            this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
+            this.backgroundWorkerEnumerationModels.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerEnumerationModels_DoWork);
             // 
             // FormMain
             // 
@@ -150,6 +155,7 @@
         public System.Windows.Forms.Panel panelLayout;
         private System.Windows.Forms.ToolStripMenuItem menuItemPalette;
         private System.Windows.Forms.ToolStripMenuItem menuItemOutput;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerEnumerationModels;
     }
 }
 

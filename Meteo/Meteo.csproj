@@ -115,6 +115,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="SourceImage.cs" />
     <Compile Include="StormEngine.cs" />
     <Compile Include="UserControlModel.cs">
       <SubType>UserControl</SubType>

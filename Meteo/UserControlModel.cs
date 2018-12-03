@@ -16,6 +16,7 @@ namespace Meteo
         private static UserControlModel uc;
         private string curImage;
         private List<PictureBox> symbols = new List<PictureBox>();
+        public static List<SourceImage> sourceImages = new List<SourceImage>();
         private int symbolsRainCount = 0;
         private string curColorRegion="";
         private string map;
@@ -46,13 +47,32 @@ namespace Meteo
 
             ShowModels();
 
+            /*
+            Thread t = new Thread(() => EnumerationModels());
+            t.Start();
+            */
             //treeViewModel.ExpandAll();
+        }
+        
+        public void EnumerationModels()
+        {
+            if (sourceImages.Count > 0)
+            {
+                foreach (var si in sourceImages)
+                {
+                    Util.ShowLoading($"Předzpracovávám ...", $"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}",false);
+                    new Images(si, true);
+                    Util.HideLoading();
+                }
+            }
+
         }
 
         public void ShowModels()
         {
             string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpeg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff";
             JObject jOptionTemp = JObject.Parse(@"{'option': {}}");
+            sourceImages.Clear();
 
             try
             {
@@ -87,6 +107,12 @@ namespace Meteo
                         {
                             treeViewModel.Nodes[nodeModel].Nodes[nodeSubModel].Nodes.Add(Path.GetFileName(file));
                             treeViewModel.Nodes[nodeModel].Nodes[nodeSubModel].Nodes[nodeFile].Name=file;
+                            sourceImages.Add(new SourceImage()
+                            {
+                                Path = file,
+                                Model = model,
+                                Submodel=submodel
+                            });
                             nodeFile++;
                         }
                         nodeSubModel++;
@@ -336,5 +362,6 @@ namespace Meteo
             Thread t = new Thread(() => LoadMap(curImage));
             t.Start();
         }
+
     }
 }

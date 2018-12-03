@@ -43,18 +43,33 @@ namespace Meteo
         public static string ExceptionText = "Exception";
         public static char logMessageDelimiter = '|';
 
-        public static void ShowLoading(string message)
+        public static void ShowLoading(string message, string info="", bool selfClose=true)
         {
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)
+            {
+                    View.FormLoader.UpdateInfo(info);
                 return;
-            View.FormLoader = new FormLoader(message);
+            }
+            View.FormLoader = new FormLoader(message,info);
             View.FormLoader.TopMost = true;
             View.FormLoader.StartPosition = FormStartPosition.CenterScreen;
             View.FormLoader.Show();
             View.FormLoader.Refresh();
-            Thread.Sleep(500);
-            Application.Idle += OnLoaded;
+            if (selfClose)
+            {
+                Thread.Sleep(100);
+                Application.Idle += OnLoaded;
+            }
         }
+        public static void HideLoading()
+        {
+            if (View.FormLoader != null && !View.FormLoader.IsDisposed)
+            {
+                Application.Idle -= OnLoaded;
+                View.FormLoader.Close();
+            }
+        }
+
 
         private static void OnLoaded(object sender, EventArgs e)
         {
