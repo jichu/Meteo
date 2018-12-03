@@ -78,3 +78,4 @@ C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplet
 C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\obj\Debug\Meteo.exe
 C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\obj\Debug\Meteo.pdb
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlOutput.resources
+C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\obj\Debug\Meteo.UserControlOutput.resources

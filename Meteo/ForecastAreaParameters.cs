@@ -15,6 +15,7 @@ namespace Meteo
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
+        private List<float> HumidityInfluencesScale = new List<float>() { 0.22f, 0.33f, 0.67f, 1.0f };
         private List<float> OroKonvScale = new List<float>() { 0.17f, 0.33f, 0.67f, 1.0f };
         private List<float> DangerousPhenomenaScale = new List<float>() { 0.33f, 0.5f, 0.75f, 1.0f };
         private List<float> RHLevelsAlternative = new List<float>() { 0.1f, 0.3f, 0.4f, 1.0f }; //??? Není jisté, zda je tato stupnice dobře
@@ -182,10 +183,59 @@ namespace Meteo
             DayHailStorm();
             StrongWindImpact();
             SupercelarTornados();
+            TemperatureInfluencesOfEarthSurface();
+            WindInfluences();
+            WindEffect();
             WriteOutputLog();
 
         }
 
+        //7. Lokální předpověď
+        //Teplotní vlivy zemského povrchu
+        private void TemperatureInfluencesOfEarthSurface() {
+            List<float> values = new List<float>() { Parameters["Oblačnost"] };
+            int level = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU", level);
+        }
+
+        //Větrné vlivy
+        private void WindInfluences()
+        {
+            List<float> values = new List<float>() { Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
+            int level = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("VĚTRNÉ VLIVY", level);
+        }
+
+        //Vlhkostní vlivy
+        private void HumidityInfluences()
+        {
+            List<float> values = new List<float>() { Parameters["RH 2 m (%)"], Parameters["KONV+/DIV- (0-1 km)"] };
+            List<float> previousDayValues = new List<float>() { Parameters["Intenzita bouřek (SIVS) Staniční srážkoměry"], Parameters["Staniční srážkoměry CHMU+interpolace stanic"], Parameters["Interpolace (radary+srážkoměry)"] };
+            int previousDayLevel = ValueToLevel(HumidityInfluencesScale, Probability(previousDayValues));
+            values.Add(previousDayLevel);
+            int level = ValueToLevel(HumidityInfluencesScale, Probability(values));
+            Output.Add("VLHKOSTNÍ VLIVY", level);
+        }
+
+        //Návětrný + závětrný efekt
+        private void WindEffect()
+        {
+            List<float> windwardValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR (Směšovací poměr)"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
+            int windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
+
+            List<float> leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
+            int leeLevel = ValueToLevel(LevelScale, Probability(leeValues));
+
+            List<float> windEffectValues = new List<float>();
+            windEffectValues.Add(windwardLevel);
+            windEffectValues.Add(leeLevel);
+            int windEffectLevel = ValueToLevel(OroKonvScale, Probability(windEffectValues));
+
+            Output.Add("JZ,J,JV proudění", windEffectLevel);
+
+        }
+
+        //Návětrný efekt
 
 
 
@@ -257,11 +307,35 @@ namespace Meteo
 
 
         //Pohyb bouře
-        //Zatím se nepočítá, protože z obrazového vstupu tuto zatím nelze zjistit požadovaná data.
+        //Zatím se nepočítá ze všeho, protože z obrazového vstupu tuto zatím nelze zjistit požadovaná data.
         private void StormMoving()
         {
-            Output.Add("POHYB BOUŘE", 0);
-            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", 1);
+            
+
+            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", 1); //
+
+            //Vektor pohybu bouře
+            List<float> windSpeedValues = new List<float>() { Parameters["850 hPa"], Parameters["700 hPa"], Parameters["600 hPa"], Parameters["500 hPa"], Parameters["400 hPa"], Parameters["300 hPa"] };
+            float avg=0;
+            foreach (var item in windSpeedValues) {
+                avg += item;
+            }
+            avg /= windSpeedValues.Count;
+            float stormVector = 2 * avg - windSpeedValues.First();
+
+            float stormVectorLevel = 0;
+            if (stormVector <= 3) stormVectorLevel = 3;
+            else if (stormVector <= 9) stormVectorLevel = 2;
+            else if (stormVector <= 15) stormVectorLevel = 1;
+            else stormVectorLevel = 0;
+
+            List<float> values = new List<float>() { Parameters["MCS VEKTOR"]};
+            values.Add(stormVectorLevel);
+
+            int stormMovement = ValueToLevel(LevelScale, Probability(values));
+            stormMovement = (stormMovement == 0 || stormMovement == 1) ? 0 : 1;
+
+            Output.Add("POHYB BOUŘE", stormMovement);
         }
 
         //Organizace konv. bouře
