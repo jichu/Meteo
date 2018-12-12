@@ -15,7 +15,7 @@ namespace Meteo
         public StormEngine()
         {
             Util.l("Algoritmus pro výpočet bouřek");
-            //
+            
         }
 
         public StormEngine(string sampleName) {

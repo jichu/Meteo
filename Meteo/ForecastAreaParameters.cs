@@ -276,6 +276,23 @@ namespace Meteo
         private void StrongWindImpact()
         {
             List<float> weights = new List<float>() { 3, 2, 2, 3, 3, 2, 2, 1, 1, 2, 3 };
+            //Podmínka pro suchý downburst
+            if (Output[this.SampleName] < 0.57 && Output["RH 1000-850 hPa Value"] < 0.4 && Parameters["LCL"] == 0) {
+                //Nastal suchý downburst - do analýzy se dostanou KOEFICIENTY - jak získat konkrétní fyzikální hodnotu?
+
+                float[] boundariesLCL = new float[3] { 1500, 2000, 2500};
+                float[] boundariesRH = new float[3] { 20, 30, 40};
+                Parameters["LCL"] = ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL"]);
+                Parameters["RH 1000 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 1000 hPa"]);
+                Parameters["RH 925 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 925 hPa"]);
+                Parameters["RH 850 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 850 hPa"]);
+                
+
+                List<float> valuesDryDownburst = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"] };
+                Output["RH 1000-850 hPa"] = ValueToLevel(LevelScale, Probability(valuesDryDownburst));
+                
+            }
+
             List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
                 Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
             Output.Add("DEN - SILNÉ NÁRAZY VĚTRU", DangerousPhenomenaCount(weights, values));
@@ -310,7 +327,6 @@ namespace Meteo
         //Zatím se nepočítá ze všeho, protože z obrazového vstupu tuto zatím nelze zjistit požadovaná data.
         private void StormMoving()
         {
-            
 
             Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", 1); //
 
@@ -424,6 +440,7 @@ namespace Meteo
 
             probability = SumArray(values, 0, 3) / ((values.Count - 3) * RATIO);
             level = ValueToLevel(LevelScale, probability);
+            Output.Add("RH 1000-850 hPa Value", probability);
             Output.Add("RH 1000-850 hPa", level);
             //Na základě nějaké podmínky, se bude lišit RHLevels
 
@@ -453,6 +470,7 @@ namespace Meteo
                 hi[i] /= PrecipitationModels.Count;
                 Output.Add((i * 3).ToString(), hi[i]);
             }
+            Output.Add(this.SampleName, hi[0]);
         } 
 
 
@@ -517,6 +535,31 @@ namespace Meteo
             return result;
         }
 
+        private float ChangeValueOfParameterLCL(float [] boundaries, float param) {
+            float temp = 0;
+            switch (param)
+            {
+                case float val when val < boundaries[0]: temp = 0; break;
+                case float val when val < boundaries[1]: temp = 1; break;
+                case float val when val < boundaries[2]: temp = 2; break;
+                case float val when val >= boundaries[2]: temp = 3; break;
+            }
+            return temp;
+        }
+
+
+        private float ChangeValueOfParameterRH(float[] boundaries, float param)
+        {
+            float temp = 0;
+            switch (param)
+            {
+                case float val when val > boundaries[2]: temp = 0; break;
+                case float val when val > boundaries[1]: temp = 1; break;
+                case float val when val > boundaries[0]: temp = 2; break;
+                case float val when val < boundaries[0]: temp = 3; break;
+            }
+            return temp;
+        }
         //Výpis výstupu
         private void WriteOutputLog() {
             Util.l(this.Name_orp);
