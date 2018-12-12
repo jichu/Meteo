@@ -157,11 +157,11 @@ namespace Meteo
             PrecipitationModels.Add("Srážky GDPS", precipitationData2);
             PrecipitationModels.Add("Srážky EURO4", precipitationData);
             PrecipitationModels.Add("Srážky HIRLAM", precipitationData2);
-            PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);
+            //PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);//pro historické události - přepínatko
             PrecipitationModels.Add("Srážky WRF-NMM", precipitationData2);
             PrecipitationModels.Add("Srážky WRF-ARW", precipitationData);
             PrecipitationModels.Add("Srážky GFS", precipitationData2);
-            PrecipitationModels.Add("Srážky GFS Starý", precipitationData);
+            //PrecipitationModels.Add("Srážky GFS Starý", precipitationData);//pro historické události - přepínatko
         }
 
         private void DoCountOperations()
