@@ -146,6 +146,19 @@ namespace Meteo
             }
             catch (Exception e) { Util.l(e); }
         }
+
+        public static string GetSettings(string item)
+        {
+            foreach (var s in Model.Cloud.SETTINGSGetSettings())
+                if (s.option_name == item)
+                    return s.option_value;
+            return null;
+        }
+
+        public static void SetSettings(string key, string value)
+        {
+            Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings(key, value));
+        }
     }
 
 }
