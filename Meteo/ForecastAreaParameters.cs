@@ -298,15 +298,25 @@ namespace Meteo
                 Output.Add("NASTAL SUCHÝ DOWNBURST", 1);
                 float[] boundariesLCL = new float[3] { 1500, 2000, 2500};
                 float[] boundariesRH = new float[3] { 20, 30, 40};
-                Parameters["LCL"] = ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL Real"]);
+                /*Parameters["LCL"] = ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL Real"]);
                 Parameters["RH 1000 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 1000 hPa Real"]);
                 Parameters["RH 925 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 925 hPa Real"]);
                 Parameters["RH 850 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 850 hPa Real"]);
                 
-
                 List<float> valuesDryDownburst = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"] };
-                Output["RH 1000-850 hPa"] = ValueToLevel(LevelScale, Probability(valuesDryDownburst));
-                
+                Output["RH 1000-850 hPa"] = ValueToLevel(LevelScale, Probability(valuesDryDownburst));*/
+
+                Parameters.Add("LCL SD", ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL Real"]));
+                Parameters.Add("RH 1000 hPa SD", ChangeValueOfParameterLCL(boundariesLCL, Parameters["RH 1000 hPa Real"]));
+                Parameters.Add("RH 925 hPa SD", ChangeValueOfParameterLCL(boundariesLCL, Parameters["RH 925 hPa Real"]));
+                Parameters.Add("RH 850 hPa SD", ChangeValueOfParameterLCL(boundariesLCL, Parameters["RH 850 hPa Real"]));
+
+                List<float> valuesDryDownburst = new List<float>() { Parameters["RH 1000 hPa SD"], Parameters["RH 925 hPa SD"], Parameters["RH 850 hPa SD"] };
+                Output.Add("RH 1000-850 hPa SD", ValueToLevel(LevelScale, Probability(valuesDryDownburst)));
+
+                List<float> valuesSD = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Output.Add("DEN - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
             }
 
             List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
