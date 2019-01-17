@@ -48,8 +48,10 @@ namespace Meteo
         }
 
         public void ORPNameToColor() {
-            string color = Model.Cloud.ORPNameToColor("Hlavní město Praha");
+            string color = Model.Cloud.ORPNameToColor("TAchov");
+            List<CloudMaskSpectrum> output = Model.Cloud.MaskSpectrumGetCoodsByColor(color, "Model_ALADIN_CZ");
             Util.l($"Barva zadaného města je:{color}");
+            Util.l($"Barva zadaného města je:{output.First().coods}");
         }
         public void InputData_InsertOrUpdateData() {
             //Ukázka přidání dat pro ORP
@@ -70,6 +72,7 @@ namespace Meteo
 
             foreach (var ll in l)
             {
+                Util.l(ll.coods);
                 //string json = @"{'coods':[[11,21],[12,22]]}";
                 ll.ShowRecord();
                 /*string jsonString = ll.coods;
