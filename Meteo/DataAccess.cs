@@ -301,7 +301,7 @@ namespace Meteo
             string color = "#000000";
 
             foreach (var item in orpcolor) {
-                if (item.id_orp == id) color = item.color;
+                if (item.id_orp == id) { color = item.color; break; };
             }
                    
             return color;
