@@ -217,6 +217,7 @@ namespace Meteo
             }
         }
 
+
         public int REGIONSGetIDFromName(string nam)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
@@ -291,6 +292,19 @@ namespace Meteo
 
                 return true;
             }
+        }
+
+        public string ORPNameToColor(string name) {
+
+            int id = ORPSGetIDFromName(name);
+            List<CloudORPColor> orpcolor = ORPColorGetORPColors();
+            string color = "#000000";
+
+            foreach (var item in orpcolor) {
+                if (item.id_orp == id) color = item.color;
+            }
+                   
+            return color;
         }
 
     }

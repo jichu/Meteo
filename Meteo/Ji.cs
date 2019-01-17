@@ -44,6 +44,12 @@ namespace Meteo
             //MODELS_GetNumberOfAreasForModel();
             //InputData_InsertOrUpdateData();
             //ORPS_GetORPSForRegion();
+            ORPNameToColor();
+        }
+
+        public void ORPNameToColor() {
+            string color = Model.Cloud.ORPNameToColor("Zlín");
+            Util.l($"Barva zadaného města je:{color}");
         }
         public void InputData_InsertOrUpdateData() {
             //Ukázka přidání dat pro ORP
