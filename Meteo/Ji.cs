@@ -48,7 +48,7 @@ namespace Meteo
         }
 
         public void ORPNameToColor() {
-            string color = Model.Cloud.ORPNameToColor("Zlín");
+            string color = Model.Cloud.ORPNameToColor("Hlavní město Praha");
             Util.l($"Barva zadaného města je:{color}");
         }
         public void InputData_InsertOrUpdateData() {
