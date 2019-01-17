@@ -113,6 +113,11 @@ namespace Meteo
             Parameters.Add("Srážky WRF-ARW", 0);
             Parameters.Add("Srážky GFS", 0);
 
+            //Parametry pro suchý downburst
+            Parameters.Add("RH 1000 hPa Real", 75); //75
+            Parameters.Add("RH 925 hPa Real", 60); //60
+            Parameters.Add("RH 850 hPa Real", 75); //75
+            Parameters.Add("LCL Real", 1200); //1200
 
             //Pokusná data pro výpočet času srážek
             List<CloudInputData> precipitationData = new List<CloudInputData>();
@@ -134,6 +139,7 @@ namespace Meteo
             precipitationData.Add(seventhInterval);
             precipitationData.Add(eighthInterval);
 
+            //Testovací data. V ostré verz může být precipitationData2 vymazáno
             List<CloudInputData> precipitationData2 = new List<CloudInputData>();
             CloudInputData firstInterval2 = new CloudInputData(1);
             CloudInputData secondInterval2 = new CloudInputData(1);
@@ -154,7 +160,7 @@ namespace Meteo
             precipitationData2.Add(eighthInterval2);
 
             PrecipitationModels.Add("Srážky ALADIN", precipitationData);
-            PrecipitationModels.Add("Srážky GDPS", precipitationData2);
+            PrecipitationModels.Add("Srážky GDPS", precipitationData);
             PrecipitationModels.Add("Srážky EURO4", precipitationData);
             PrecipitationModels.Add("Srážky HIRLAM", precipitationData2);
             //PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);//pro historické události - přepínatko
@@ -259,7 +265,15 @@ namespace Meteo
         private void TorrentialRain()
         {
             List<float> weights = new List<float>() { 3, 2, 1, 2, 1, 2, 3, 3, 3 };
-            List<float> values = new List<float>() { Parameters["Pwater"], Output["RH 1000-850 hPa"], Parameters["MXR"], Parameters["LCL"], Parameters["Rychlost větru v 850 hPa"], Parameters["Hloubka teplé fáze oblaku (km)"], Parameters["MCS VEKTOR"], Parameters["DLS"], Output["ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa"] };
+            List<float> values = new List<float>() { Parameters["Pwater"],
+                Output["RH 1000-850 hPa"],
+                Parameters["MXR"],
+                Parameters["LCL"],
+                Parameters["Rychlost větru v 850 hPa"],
+                Parameters["Hloubka teplé fáze oblaku (km)"],
+                Parameters["MCS VEKTOR"],
+                Parameters["DLS"],
+                Output["ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa"] };
             Output.Add("PŘÍVALOVÉ SRÁŽKY", DangerousPhenomenaCount(weights, values));
         }
 
@@ -276,16 +290,18 @@ namespace Meteo
         private void StrongWindImpact()
         {
             List<float> weights = new List<float>() { 3, 2, 2, 3, 3, 2, 2, 1, 1, 2, 3 };
+            List<float> RHReal = new List<float>() { Parameters["RH 1000 hPa Real"] , Parameters["RH 925 hPa Real"] , Parameters["RH 850 hPa Real"] };
+            
             //Podmínka pro suchý downburst
-            if (Output[this.SampleName] < 0.57 && Output["RH 1000-850 hPa Value"] < 0.4 && Parameters["LCL"] == 0) {
-                //Nastal suchý downburst - do analýzy se dostanou KOEFICIENTY - jak získat konkrétní fyzikální hodnotu?
-
+            if (Output[this.SampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] >1500) {
+                //Nastal suchý downburst - do analýzy se dostanou nové KOEFICIENTY.
+                Output.Add("NASTAL SUCHÝ DOWNBURST", 1);
                 float[] boundariesLCL = new float[3] { 1500, 2000, 2500};
                 float[] boundariesRH = new float[3] { 20, 30, 40};
-                Parameters["LCL"] = ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL"]);
-                Parameters["RH 1000 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 1000 hPa"]);
-                Parameters["RH 925 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 925 hPa"]);
-                Parameters["RH 850 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 850 hPa"]);
+                Parameters["LCL"] = ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL Real"]);
+                Parameters["RH 1000 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 1000 hPa Real"]);
+                Parameters["RH 925 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 925 hPa Real"]);
+                Parameters["RH 850 hPa"] = ChangeValueOfParameterRH(boundariesRH, Parameters["RH 850 hPa Real"]);
                 
 
                 List<float> valuesDryDownburst = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"] };
@@ -508,6 +524,13 @@ namespace Meteo
             }
 
             return (float) Math.Round((double)(new decimal(sum / sumWeights)), 2);
+        }
+
+        //Aritmetický průměr hodnot
+        private float Average(List<float> arr) {
+            float avg = 0;
+            avg = SumArray(arr) / arr.Count;
+            return avg;
         }
 
         //Suma prvků v poli
