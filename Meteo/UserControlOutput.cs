@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Meteo
 {
@@ -45,6 +46,16 @@ namespace Meteo
             return ColorTranslator.FromHtml(colorStr);
         }
 
+        private bool SetOutputColor(string color, int v)
+        {
+            if (CheckValidFormatHexColor(color))
+            {
+                Util.SetSettings($"output_result{v}_color", color);
+                return true;
+            }
+            return false;
+        }
+
         private void CreateCanvas()
         {
             PictureBox pb = new PictureBox();
@@ -60,10 +71,10 @@ namespace Meteo
 
         private void CreateTable()
         {
-            dgv.Columns.Add("Id", "");
-            dgv.Columns["Id"].Width = 0;
+            dgv.Columns.Add("Id", "id");
+            dgv.Columns["Id"].Width = 15;
             dgv.Columns.Add("Color", "");
-            dgv.Columns["Color"].Width = 15;
+            dgv.Columns["Color"].Width = 20;
             dgv.Columns.Add("Region", "Region");
             dgv.Columns.Add("Value", "Hodnota");
             dgv.Rows.Clear();
@@ -75,13 +86,14 @@ namespace Meteo
         private void dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             FormPromt promt = new FormPromt(new PromtData() {
-                Title="Barva výstupní hodnoty pro "+ (sender as DataGridView).Rows[e.RowIndex].Cells["Value"].Value,
-                Value= Color.FromName((sender as DataGridView).Rows[e.RowIndex].Cells["Color"].Style.BackColor.Name).ToArgb().ToString(),
+                Title="Barva pro výstupní hodnoty "+ (sender as DataGridView).Rows[e.RowIndex].Cells["Value"].Value,
+                Value= Color2hex((sender as DataGridView).Rows[e.RowIndex].Cells["Color"].Style.BackColor),
                 OK="Uložit",
                 Width=200
             });
             promt.ShowDialog();
-            Util.l(promt.Value);
+            if(SetOutputColor(promt.Value, int.Parse((sender as DataGridView).Rows[e.RowIndex].Cells["Value"].Value.ToString())))
+                Render();
         }
 
         private void AddTable(DataOutput data)
@@ -99,6 +111,8 @@ namespace Meteo
             DataGridViewCellStyle cellStyle = new DataGridViewCellStyle();
             cellStyle.SelectionBackColor = Color.Purple;
             cellStyle.SelectionForeColor = Color.White;
+            CellByName("Id").Value = dgv.Rows.Count+1;
+            CellByName("Id").Style.BackColor = Color.Gray;
             CellByName("Color").Style.BackColor = data.Color;
             CellByName("Region").Value = data.RegionName;
             CellByName("Value").Value = data.Value;
@@ -109,6 +123,7 @@ namespace Meteo
 
         internal void Render()
         {
+            dgv.Rows.Clear();
             Draw(new Dictionary<string, float>()
             {
                 { "Aš", 0 },
@@ -116,7 +131,6 @@ namespace Meteo
                 { "Kraslice",2 },
                 { "Ostrov",3}
             });
-            DataGridViewSelectionMode oldmode = dgv.SelectionMode;
             canvas.Invalidate();
         }
 
@@ -153,6 +167,21 @@ namespace Meteo
             }
         }
 
+        private bool CheckValidFormatHexColor(string inputColor)
+        {
+            if (Regex.Match(inputColor, "^#(?:[0-9a-fA-F]{3}){1,2}$").Success)
+                return true;
+            return false;
+            /*
+            var result = System.Drawing.Color.FromName(inputColor);
+            return result.IsKnownColor;
+            */
+        }
+
+        private String Color2hex(Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
 
     }
 }
