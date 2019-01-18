@@ -114,7 +114,7 @@ namespace Meteo
                     //Chu.color = JsonConvert.SerializeObject(map.Key);
                     //Util.l(regionName + JsonConvert.SerializeObject(map.Key) + JsonConvert.SerializeObject(map.Value));
                     if (regionName != "")
-                        Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, "#" + map.Key.Substring(2, 6), JsonConvert.SerializeObject(map.Value)));
+                        Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, JsonConvert.SerializeObject(map.Value)));
                     
                 }
             }

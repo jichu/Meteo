@@ -63,6 +63,7 @@ namespace Meteo
                     Util.ShowLoading($"Předzpracovávám ...", $"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}",false);
                     new Images(si, true);
                     Util.HideLoading();
+                    break;////
                 }
             }
 
