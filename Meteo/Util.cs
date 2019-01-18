@@ -22,7 +22,8 @@ namespace Meteo
             { "model_cfg", @"model.cfg" },
             { "symbol_rain", @".\images\symbol_rain.png" },
             { "symbol_storm", @".\images\symbol_storm.png" },
-            { "symbol_cloud", @".\images\symbol_cloud.png" }
+            { "symbol_cloud", @".\images\symbol_cloud.png" },
+            { "map_output_background", @".\images\map_output_background.png" }
         };
 
         public static List<CloudORPS> ORPSGetORPNames { get; set; }

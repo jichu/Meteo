@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Meteo
 {
@@ -35,7 +36,6 @@ namespace Meteo
             CreateCanvas();
             CreateTable();
             Render();
-            //Util.SetSettings("pokus", "kk");
         }
 
         private Color GetOutputColor(int v)
@@ -66,6 +66,8 @@ namespace Meteo
             this.Controls.Add(pb);
             canvas = (this.Controls["canvas"] as PictureBox);
             canvas.Image = new Bitmap(canvas.Width, canvas.Height);
+            if(File.Exists(Util.pathSource["map_output_background"]))
+                canvas.Image = Image.FromFile(Util.pathSource["map_output_background"]);
             canvas.Paint += Canvas_Paint;
         }
 
