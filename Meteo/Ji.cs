@@ -39,7 +39,7 @@ namespace Meteo
             //REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
-            MODELS_GetModelStructure();
+            //MODELS_GetModelStructure();
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
             //InputData_InsertOrUpdateData();
@@ -114,7 +114,7 @@ namespace Meteo
         }
 
         public void ModelSpectrumGetScaleForModel() {
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový", "CONVECTIVE");//Jako třetí parametr lze využít: DEFAULT (nemusí se zadávat, je nastaven jako defaultní), CONVECTIVE, RASTER 
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový", "CONVECTIVE");//Jako třetí parametr lze využít: DEFAULT (nemusí se zadávat, je nastaven jako defaultní), CONVECTIVE, RASTER, REAL 
             foreach (var r in records)
             {
                 Util.l($"Barva: {r.color} Rank: {r.rank}");
@@ -126,6 +126,7 @@ namespace Meteo
             Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("DEFAULT"));
             Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("CONVECTIVE"));
             Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("RASTER"));
+            Util.l(Model.Cloud.ModelSpectrumTypeGetIDForName("REAL"));
 
         }
 
@@ -185,7 +186,7 @@ namespace Meteo
             foreach (var ms in modelStructure) {
                 string dirPath = Util.pathSource["models"];
                 string modelPath = ms.modelName + @"\" + ms.submodelName + @"\";
-                //string modelPath = @"Model_ALADIN_CZ\Srážky_MAIN\";
+                //string modelPath = @"Model_WRF_ARW\LCL_Výška_základny_oblaku\";
                 string filename = @"Barvy_stupnice.csv";
                 string filePath = dirPath + modelPath + filename;
                 Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName)} ");
