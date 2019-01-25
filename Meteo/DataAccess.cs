@@ -228,6 +228,16 @@ namespace Meteo
 
         }
 
+        public int REGIONSGetORPFromName(string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int reference = conn.Query<CloudORPS>("dbo.REGIONS_GetIDFromName @NAME", new { name = nam }).ToList().First().region_referenece;
+                return reference;
+            }
+
+        }
+
         public string REGIONSGetNameFromColor(string col) {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {

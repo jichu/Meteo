@@ -172,7 +172,7 @@ namespace Meteo
 
         private void DoCountOperations()
         {
-            Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
             PrecipitationPlace();
@@ -192,7 +192,7 @@ namespace Meteo
             TemperatureInfluencesOfEarthSurface();
             WindInfluences();
             WindEffect();
-            WriteOutputLog();
+            //WriteOutputLog();
 
         }
 

@@ -48,10 +48,14 @@ namespace Meteo
         }
 
         public void ORPNameToColor() {
-            string color = Model.Cloud.ORPNameToColor("TAchov");
+            /*string color = Model.Cloud.ORPNameToColor("Tachov");
             List<CloudMaskSpectrum> output = Model.Cloud.MaskSpectrumGetCoodsByColor(color, "Model_ALADIN_CZ");
             Util.l($"Barva zadaného města je:{color}");
-            Util.l($"Barva zadaného města je:{output.First().coods}");
+            Util.l($"Barva zadaného města je:{output.First().coods}");*/
+            string regionName = Util.GetRegionNameByColor("#ff0000");
+            Util.l(regionName);
+            Util.l(regionName== "Hlavní město Praha");
+            Util.l(Model.Cloud.ORPSGetIDFromName(regionName));
         }
         public void InputData_InsertOrUpdateData() {
             //Ukázka přidání dat pro ORP
@@ -235,7 +239,10 @@ namespace Meteo
 
         public void ORPS_GetIDFromName()
         {
-            Util.l(Model.Cloud.ORPSGetIDFromName("Hlavní město Praha"));
+            string name = "Zlín";
+            Util.l($"{name.Contains("kraj")}");
+            Util.l(Model.Cloud.ORPSGetIDFromName("Zlín"));
+            Util.l(Model.Cloud.REGIONSGetORPFromName("Zlínský kraj"));
         }
 
         public void ORPS_GetORPSForRegion()

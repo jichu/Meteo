@@ -29,7 +29,8 @@ namespace Meteo
         public CloudMaskSpectrum(string id, string id_orp, string coods)
         {
             this.coods = coods;
-            this.id_orp = Model.Cloud.ORPSGetIDFromName(id_orp);
+            if (id_orp.Contains("kraj")) { this.id_orp = Model.Cloud.REGIONSGetORPFromName(id_orp); }
+            else { this.id_orp = Model.Cloud.ORPSGetIDFromName(id_orp); }
             this.id = Model.Cloud.MODELSGetIDFromName(id);
         }
 
