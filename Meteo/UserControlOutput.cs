@@ -171,6 +171,7 @@ namespace Meteo
 
         private bool CheckValidFormatHexColor(string inputColor)
         {
+
             if (Regex.Match(inputColor, "^#(?:[0-9a-fA-F]{3}){1,2}$").Success)
                 return true;
             return false;
