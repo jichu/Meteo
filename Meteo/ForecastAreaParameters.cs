@@ -15,6 +15,10 @@ namespace Meteo
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
+        private List<float> TorrentialFloodRiscScale = new List<float>() { 0.22f, 0.39f, 0.67f, 1.0f };
+        private List<float> TorrentialFloodRiscScale2 = new List<float>() { 0.39f, 1.0f };
+        private List<float> StormIntensityScale = new List<float>() { 0.33f, 0.5f, 0.83f, 1.0f };
+        private List<float> StormIntensityDangerousPhenScale = new List<float>() { 0.33f, 0.5f, 0.67f, 1.0f };
         private List<float> HumidityInfluencesScale = new List<float>() { 0.22f, 0.33f, 0.67f, 1.0f };
         private List<float> OroKonvScale = new List<float>() { 0.17f, 0.33f, 0.67f, 1.0f };
         private List<float> DangerousPhenomenaScale = new List<float>() { 0.33f, 0.5f, 0.75f, 1.0f };
@@ -36,6 +40,14 @@ namespace Meteo
 
 
         private void LoadParameters() {
+            
+            //Orografické vlastnosti oblasti
+            Parameters.Add("Proudění větru J", 1);
+            Parameters.Add("Proudění větru S", 1);
+            Parameters.Add("Proudění větru V", 1);
+            Parameters.Add("Proudění větru Z", 1);
+            
+
             //Hodnoty parametrů - zatím sebrané ze vzorové předpovědi (hodnoty pro uherské hradiště), posléze se bude tahat z DB (Input_DATA)
             Parameters.Add("MLCAPE", 1);
             Parameters.Add("LI", 1);
@@ -113,6 +125,7 @@ namespace Meteo
             Parameters.Add("Srážky WRF-ARW", 0);
             Parameters.Add("Srážky GFS", 0);
 
+
             //Parametry pro suchý downburst
             Parameters.Add("RH 1000 hPa Real", 75); //75
             Parameters.Add("RH 925 hPa Real", 60); //60
@@ -172,7 +185,7 @@ namespace Meteo
 
         private void DoCountOperations()
         {
-            //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
             PrecipitationPlace();
@@ -191,15 +204,52 @@ namespace Meteo
             SupercelarTornados();
             TemperatureInfluencesOfEarthSurface();
             WindInfluences();
+            HumidityInfluences();
             WindEffect();
-            //WriteOutputLog();
+            MergeB();
+            WriteOutputLog();
 
         }
+
+        //8. Sloučení A (DEN) - Intenzita bouřek a Nebezpečné doporovodné jevy 
+        //Zjistit podrobnosti o tomto sloučení!
+
+        //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
+        private void MergeB() {
+            List<float> values = new List<float>() { Output["TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU"], Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění"] };
+            int level = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("LOKÁLNÍ PŘEDPOVĚĎ", level);
+
+            values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"]};
+            level = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("MÍSTO VÝSKYTU BOUŘEK", level);
+
+
+            //8)Nebezpečné doprovodné jevy (6.krok+Sloučení A)
+            values = new List<float>() { Output["PODPORA VZNIKU NEBEZPEČNÝCH JEVŮ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["MÍSTO VÝSKYTU BOUŘEK"] };
+            level = ValueToLevel(StormIntensityDangerousPhenScale, Probability(values));
+            Output.Add("MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY", level);
+
+            //Přívalové srážky
+            values = new List<float>() { Output["PŘÍVALOVÉ SRÁŽKY"], Output["POHYB BOUŘE"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
+            level = ValueToLevel(StormIntensityScale, Probability(values));
+            Output.Add("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", level);
+
+
+            values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"] };
+            level = ValueToLevel(TorrentialFloodRiscScale, Probability(values));
+            Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
+            level = ValueToLevel(TorrentialFloodRiscScale2, Probability(values));
+            Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
+            //Zjistit co je to ta suchá varianta!
+        }
+
+
 
         //7. Lokální předpověď
         //Teplotní vlivy zemského povrchu
         private void TemperatureInfluencesOfEarthSurface() {
-            List<float> values = new List<float>() { Parameters["Oblačnost"] };
+            List<float> values = new List<float>() { Parameters["Oblačnost"] }; ///+ Charakteristiky reliéfu
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU", level);
         }
@@ -207,7 +257,7 @@ namespace Meteo
         //Větrné vlivy
         private void WindInfluences()
         {
-            List<float> values = new List<float>() { Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
+            List<float> values = new List<float>() { Parameters["Rychlost větru v 10 m nad terénem v m/s"] }; //+ Charakteristiky reliéfu
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("VĚTRNÉ VLIVY", level);
         }
@@ -224,9 +274,10 @@ namespace Meteo
         }
 
         //Návětrný + závětrný efekt
+        //Zjistit jak konkrétně budou vypočtené parametry využívána a počítány! 
         private void WindEffect()
         {
-            List<float> windwardValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR (Směšovací poměr)"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
+            List<float> windwardValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR (Směšovací poměr)"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] }; // + Charakteristiky reliéfu
             int windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
 
             List<float> leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
@@ -237,7 +288,10 @@ namespace Meteo
             windEffectValues.Add(leeLevel);
             int windEffectLevel = ValueToLevel(OroKonvScale, Probability(windEffectValues));
 
-            Output.Add("JZ,J,JV proudění", windEffectLevel);
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění", windEffectLevel);
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; SZ,S,SV proudění", windEffectLevel);
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; Z proudění", windEffectLevel);
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; V proudění", windEffectLevel);
 
         }
 
@@ -245,7 +299,7 @@ namespace Meteo
 
 
 
-        //Riziko výskytu nebezpečných jevů
+        //6. Riziko výskytu nebezpečných jevů
         private int DangerousPhenomenaCount(List<float> weights, List<float> values) {
             List<float> parameterValues = new List<float>();
             //Multikriteriální hodnocení
