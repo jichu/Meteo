@@ -233,6 +233,21 @@ namespace Meteo
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", level);
 
+            //Silné nárazy větru
+            values = new List<float>() { Output["DEN - SILNÉ NÁRAZY VĚTRU"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
+            level = ValueToLevel(StormIntensityScale, Probability(values));
+            Output.Add("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", level);
+
+            //Krupobití
+            values = new List<float>() { Output["DEN - KRUPOBITÍ"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
+            level = ValueToLevel(StormIntensityScale, Probability(values));
+            Output.Add("MÍSTO VÝSKYTU - KRUPOBITÍ", level);
+
+            //Supercelární tornáda
+            values = new List<float>() { Output["DEN - SUPERCELÁRNÍ TORNÁDA"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
+            level = ValueToLevel(StormIntensityScale, Probability(values));
+            Output.Add("MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA", level);
+
             Output.Add("NEBEZPEČNÉ JEVY", 0);
 
 
