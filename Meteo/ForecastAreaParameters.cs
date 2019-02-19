@@ -211,8 +211,6 @@ namespace Meteo
 
         }
 
-        //8. Sloučení A (DEN) - Intenzita bouřek a Nebezpečné doporovodné jevy 
-        //Zjistit podrobnosti o tomto sloučení!
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
         private void MergeB() {
@@ -235,13 +233,33 @@ namespace Meteo
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", level);
 
+            Output.Add("NEBEZPEČNÉ JEVY", 0);
 
-            values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"] };
+
+            values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(TorrentialFloodRiscScale, Probability(values));
             Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
             level = ValueToLevel(TorrentialFloodRiscScale2, Probability(values));
             Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
-            //Zjistit co je to ta suchá varianta!
+
+           
+
+            values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["MÍSTO VÝSKYTU BOUŘEK"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
+            if (Parameters["Stupeň nasycení"] <= 1.5){
+                List<float> weights = new List<float>() { 1, 1, 3, 3, 3, 2 };
+                level = ValueToLevel(TorrentialFloodRiscScale, ProbabilityWeights(values, weights));
+                Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ", level);
+                level = ValueToLevel(TorrentialFloodRiscScale2, ProbabilityWeights(values, weights));
+                Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ", level);
+            }
+            else {
+                List<float> weights = new List<float>() { 3, 3, 3, 3, 2, 1 };
+                level = ValueToLevel(TorrentialFloodRiscScale, ProbabilityWeights(values, weights));
+                Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ", level);
+                level = ValueToLevel(TorrentialFloodRiscScale2, ProbabilityWeights(values, weights));
+                Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ", level);
+            }
+            
         }
 
 
