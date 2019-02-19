@@ -15,6 +15,7 @@ namespace Meteo
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
+        private List<float> FinalScale = new List<float>() { 0.08f, 0.33f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale = new List<float>() { 0.22f, 0.39f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale2 = new List<float>() { 0.39f, 1.0f };
         private List<float> StormIntensityScale = new List<float>() { 0.33f, 0.5f, 0.83f, 1.0f };
@@ -248,8 +249,10 @@ namespace Meteo
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA", level);
 
-            Output.Add("NEBEZPEČNÉ JEVY", 0);
-
+            //Sumarizace výstupů
+            values = new List<float>() { Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"], Output["MÍSTO VÝSKYTU - KRUPOBITÍ"], Output["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"] };
+            level = ValueToLevel(FinalScale, Probability(values));
+            Output.Add("NEBEZPEČNÉ JEVY", level);
 
             values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(TorrentialFloodRiscScale, Probability(values));
