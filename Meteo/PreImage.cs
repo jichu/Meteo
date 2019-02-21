@@ -109,7 +109,7 @@ namespace Meteo
                 //Chu.data = data;
                 foreach (var map in data)
                 {
-                    string regionName = Util.GetRegionNameByColor("#" + map.Key.Substring(2, 6));
+                    string regionName = Util.GetRegionNameByColorForLoading("#" + map.Key.Substring(2, 6));
                     //Util.l(regionName+JsonConvert.SerializeObject("#"+map.Key.Substring(2,6))+": "+JsonConvert.SerializeObject(map.Value));
                     //Chu.color = JsonConvert.SerializeObject(map.Key);
                     //Util.l(regionName + JsonConvert.SerializeObject(map.Key) + JsonConvert.SerializeObject(map.Value));

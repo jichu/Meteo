@@ -77,24 +77,31 @@ namespace Meteo
             Application.Idle -= OnLoaded;
             View.FormLoader.Close();
         }
-        
-        public static string GetRegionNameByColor(string regioncolor)
-        {
-            /*if (Model.Cloud.MODELSGetNumberOfAreasForModel(curModelName) > 14)
-            {
-                if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
-                    return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
-                else
-                    return "";
-            }
-            else
-                return Model.Cloud.REGIONSGetNameFromColor(regioncolor);*/
 
+        public static string GetRegionNameByColorForLoading(string regioncolor) {
             if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
                 return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
             else
             {
-                Util.l($"{curModelName}: {regioncolor}");
+                //Util.l($"{curModelName}: {regioncolor}");
+                return "";
+            }
+        }
+
+
+        public static string GetRegionNameByColor(string regioncolor)
+        {
+            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
+                if (Model.Cloud.MODELSGetNumberOfAreasForModel(curModelName) > 14)
+                {
+                    return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+                }
+                else
+                {
+                    return Model.Cloud.REGIONSGetNameFromColor(regioncolor);
+                }
+            else
+            {
                 return "";
             }
 
