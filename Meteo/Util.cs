@@ -80,7 +80,7 @@ namespace Meteo
         
         public static string GetRegionNameByColor(string regioncolor)
         {
-            if (Model.Cloud.MODELSGetNumberOfAreasForModel(curModelName) > 14)
+            /*if (Model.Cloud.MODELSGetNumberOfAreasForModel(curModelName) > 14)
             {
                 if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
                     return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
@@ -88,7 +88,13 @@ namespace Meteo
                     return "";
             }
             else
-                return Model.Cloud.REGIONSGetNameFromColor(regioncolor);
+                return Model.Cloud.REGIONSGetNameFromColor(regioncolor);*/
+
+            if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
+                return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;
+            else
+                return "";
+
         }
 
         public static void l(object obj, Dictionary<string, object> logOptions = null )

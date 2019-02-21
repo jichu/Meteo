@@ -22,7 +22,7 @@ namespace WRF
             bmpNew = BreakeToShapes(bmpNew);
         }
         
-        private Bitmap PreprocessDoFilterMask(Bitmap bmp, Bitmap mask, int cutTop=60, int cutBotton=40)
+        private Bitmap PreprocessDoFilterMask(Bitmap bmp, Bitmap mask, int cutTop=0, int cutBotton=0)
         {
             for (int x = 0; x < mask.Width; x++)
             {

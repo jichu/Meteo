@@ -186,7 +186,7 @@ namespace Meteo
 
         private void DoCountOperations()
         {
-            Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
             PrecipitationPlace();
@@ -208,7 +208,7 @@ namespace Meteo
             HumidityInfluences();
             WindEffect();
             MergeB();
-            WriteOutputLog();
+            //WriteOutputLog();
 
         }
 
@@ -254,13 +254,12 @@ namespace Meteo
             level = ValueToLevel(FinalScale, Probability(values));
             Output.Add("NEBEZPEČNÉ JEVY", level);
 
+            //Hlavní výstup algoritmu
             values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(TorrentialFloodRiscScale, Probability(values));
             Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
             level = ValueToLevel(TorrentialFloodRiscScale2, Probability(values));
             Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
-
-           
 
             values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["MÍSTO VÝSKYTU BOUŘEK"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
             if (Parameters["Stupeň nasycení"] <= 1.5){

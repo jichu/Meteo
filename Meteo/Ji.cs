@@ -45,6 +45,16 @@ namespace Meteo
             //InputData_InsertOrUpdateData();
             //ORPS_GetORPSForRegion();
             //ORPNameToColor();
+            //Test();
+        }
+        public void Test() {
+            List<CloudORPColor> colors = Model.Cloud.ORPColorGetORPColors();
+            foreach (var c in colors)
+            {
+                Util.l(c.color);
+                Util.l(Util.GetRegionNameByColor(c.color));
+            }
+            Util.l(Util.GetRegionNameByColor("#abcdff"));
         }
 
         public void ORPNameToColor() {
