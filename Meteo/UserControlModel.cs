@@ -47,10 +47,10 @@ namespace Meteo
 
             ShowModels();
 
-            /*
-            Thread t = new Thread(() => EnumerationModels());
-            t.Start();
-            */
+            
+            Thread t = new Thread(() => EnumerationModels()); //INPUT_DATA
+            t.Start(); //INPUT_DATA
+            
             //treeViewModel.ExpandAll();
         }
         
