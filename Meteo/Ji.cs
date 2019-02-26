@@ -46,6 +46,8 @@ namespace Meteo
             //ORPS_GetORPSForRegion();
             //ORPNameToColor();
             //Test();
+            //OutputData_GetDataForSample();
+            //InputData_GetData();
         }
         public void Test() {
             List<CloudORPColor> colors = Model.Cloud.ORPColorGetORPColors();
@@ -55,6 +57,15 @@ namespace Meteo
                 Util.l(Util.GetRegionNameByColor(c.color));
             }
             Util.l(Util.GetRegionNameByColor("#abcdff"));
+        }
+
+        public void OutputData_GetDataForSample() {
+            Dictionary<string, float> data = Model.Cloud.OUTPUTDATAGetDataForSample("06");
+
+            foreach (var item in data)
+            {
+                Util.l(item.Key + ":" + item.Value);
+            }
         }
 
         public void ORPNameToColor() {
@@ -67,6 +78,12 @@ namespace Meteo
             Util.l(regionName== "Hlavní město Praha");
             Util.l(Model.Cloud.ORPSGetIDFromName(regionName));
         }
+
+        public void InputData_GetData()
+        {
+            Util.l(Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName("Model_ALADIN_CZ", "Oblačnost"),"06", 0));
+        }
+
         public void InputData_InsertOrUpdateData() {
             //Ukázka přidání dat pro ORP
             CloudInputData inputORP = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", 2);

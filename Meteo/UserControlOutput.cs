@@ -126,13 +126,14 @@ namespace Meteo
         internal void Render()
         {
             dgv.Rows.Clear();
-            Draw(new Dictionary<string, float>()
+            /*Draw(new Dictionary<string, float>()
             {
                 { "Aš", 0 },
                 { "Tachov",1 },
                 { "Kraslice",2 },
                 { "Ostrov",3}
-            });
+            });*/
+            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("06"));
             canvas.Invalidate();
         }
 

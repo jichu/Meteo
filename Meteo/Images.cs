@@ -99,11 +99,11 @@ namespace Meteo
 
                         if (onlyEnumeration)
                         {
-                            Util.l($"CloudInputData({Util.curModelName},{Util.curSubmodelName},{regionName},{Path.GetFileNameWithoutExtension(path)},{value})");
+                            //Util.l($"CloudInputData({Util.curModelName},{Util.curSubmodelName},{regionName},{Path.GetFileNameWithoutExtension(path)},{value})");
 
                             CloudInputData inputORP = new CloudInputData(Util.curModelName, Util.curSubmodelName, regionName, Path.GetFileNameWithoutExtension(path), value);
                          
-                               Model.Cloud.InputDataInsertOrUpdate(inputORP); //INPUT_DATA - DON'T TOUCH!!!! 
+                            Model.Cloud.InputDataInsertOrUpdate(inputORP); //INPUT_DATA - DON'T TOUCH!!!! 
                         }
                         else
                         {

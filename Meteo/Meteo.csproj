@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudOutputData.cs" />
     <Compile Include="ForecastAreaParameters.cs" />
     <Compile Include="CloudInputData.cs" />
     <Compile Include="CloudModelEntity.cs" />

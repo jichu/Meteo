@@ -8,9 +8,10 @@ namespace Meteo
 {
     public class ForecastAreaParameters
     {
-        public int Id_orp { get; set; }
+        public int id_orp { get; set; }
         public string Name_orp { get; set; }
-        public string SampleName { get; set; }
+        public string sampleName { get; set; }
+
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
@@ -33,8 +34,8 @@ namespace Meteo
 
         public ForecastAreaParameters(CloudORPS ORP, string sampleName) {
             Name_orp = ORP.name;
-            Id_orp = ORP.id;
-            this.SampleName = sampleName;
+            id_orp = ORP.id;
+            this.sampleName = sampleName;
             DoCountOperations();
 
         }
@@ -107,7 +108,7 @@ namespace Meteo
             Parameters.Add("STP", 0);
             Parameters.Add("Tlak MSLP", 1);
             Parameters.Add("Teplota (MAX)", 2);
-            Parameters.Add("Oblačnost", 1);
+            Parameters.Add("Oblačnost", GetParameter("Model_ALADIN_CZ", "Oblačnost"));
             Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", 1);
             Parameters.Add("RH 2 m (%)", 2);
             Parameters.Add("MXR (Směšovací poměr)", 1);
@@ -186,7 +187,7 @@ namespace Meteo
 
         private void DoCountOperations()
         {
-            //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
             PrecipitationPlace();
@@ -208,10 +209,15 @@ namespace Meteo
             HumidityInfluences();
             WindEffect();
             MergeB();
-            //WriteOutputLog();
+            WriteToDatabase();
+            WriteOutputLog();
 
         }
 
+        private void WriteToDatabase() {
+            CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
+        }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
         private void MergeB() {
@@ -257,7 +263,7 @@ namespace Meteo
             //Hlavní výstup algoritmu
             values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(TorrentialFloodRiscScale, Probability(values));
-            Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
+            Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);//
             level = ValueToLevel(TorrentialFloodRiscScale2, Probability(values));
             Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
 
@@ -382,7 +388,7 @@ namespace Meteo
             List<float> RHReal = new List<float>() { Parameters["RH 1000 hPa Real"] , Parameters["RH 925 hPa Real"] , Parameters["RH 850 hPa Real"] };
             
             //Podmínka pro suchý downburst
-            if (Output[this.SampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] >1500) {
+            if (Output[this.sampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] >1500) {
                 //Nastal suchý downburst - do analýzy se dostanou nové KOEFICIENTY.
                 Output.Add("NASTAL SUCHÝ DOWNBURST", 1);
                 float[] boundariesLCL = new float[3] { 1500, 2000, 2500};
@@ -585,7 +591,7 @@ namespace Meteo
                 hi[i] /= PrecipitationModels.Count;
                 Output.Add((i * 3).ToString(), hi[i]);
             }
-            Output.Add(this.SampleName, hi[0]);
+            Output.Add(this.sampleName, hi[0]);
         } 
 
 
@@ -689,6 +695,11 @@ namespace Meteo
             {
                 Util.l(item.Key + ":" + item.Value);
             }
+        }
+
+        private float GetParameter(string model, string submodel) {
+            float value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp);
+            return value;
         }
     }
 }

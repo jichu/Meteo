@@ -15,8 +15,8 @@ namespace Meteo
             Util.ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
 
             new Images();
-            new Ji();
             new StormEngine("06");//Přes parametr se předává, pro který čas se má výpočet provést //Zatím jen pro testování 06
+            new Ji();
         }
     }
 }

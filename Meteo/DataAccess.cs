@@ -216,7 +216,35 @@ namespace Meteo
                 return output;
             }
         }
+        
+        public Dictionary<string, float> OUTPUTDATAGetDataForSample(string sample)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudORPS> orps = Model.Cloud.ORPSGetORPNames();
+                Dictionary<string, float> dataDict = new Dictionary<string, float>();
 
+                var output = conn.Query<CloudOutputData>("dbo.OUTPUT_DATA_GetDataForSample @SAMPLE_NAME", new { SAMPLE_NAME = sample }).ToList();
+
+                foreach (var item in output)
+                {
+                    dataDict.Add((from o in orps where o.id == item.id_orp select o).First().name, item.value);
+                }
+
+                return dataDict;
+            }
+        }
+        public bool OUTPUTDATAInsertOrUpdate(CloudOutputData item)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                List<CloudOutputData> records = new List<CloudOutputData>();
+                records.Add(item);
+                conn.Execute("dbo.OUTPUT_DATA_InsertOrUpdateData @ID_ORP, @SAMPLE_NAME, @VALUE, @ID_OUT", records);
+
+                return true;
+            }
+        }
 
         public int REGIONSGetIDFromName(string nam)
         {
@@ -254,6 +282,25 @@ namespace Meteo
 
                 return output;
             }
+        }
+
+        public float InputDataGetData(int id_m, string sample, int id_o)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                float value;
+                try
+                {
+                    value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetData @ID_ORP, @SAMPLE_NAME, @ID_MODEL", new { id_orp = id_o, sample_name = sample, id_model = id_m }).ToList().First().value;
+                }
+                catch (Exception e) {
+                    Util.l($"DATA PRO MODEL {id_m} NEJSOU V DATABÁZI K DISPOZICI!!! Výpočty nemusí být správné.");
+                    value = -1;
+                }
+
+                return value;
+            }
+
         }
 
         public bool InputDataInsertOrUpdate(CloudInputData item)

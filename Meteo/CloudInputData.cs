@@ -49,7 +49,7 @@ namespace Meteo
                     id_orp = Model.Cloud.REGIONSGetIDFromName(namORP);
                 }
                 catch (InvalidOperationException e) {
-                    Util.l("Neexistující obce nebo region"+e);
+                    Util.l("Neexistující obec nebo region"+e);
                     id_orp = -1;
                 }
             }
