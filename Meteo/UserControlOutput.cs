@@ -61,7 +61,7 @@ namespace Meteo
             PictureBox pb = new PictureBox();
             pb.Width = 600;
             pb.Height = 370;
-            pb.BackColor = Color.Khaki;
+            pb.BackColor = Color.White;
             pb.Name = "canvas";
             this.Controls.Add(pb);
             canvas = (this.Controls["canvas"] as PictureBox);

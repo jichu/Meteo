@@ -48,91 +48,125 @@ namespace Meteo
             Parameters.Add("Proudění větru S", 1);
             Parameters.Add("Proudění větru V", 1);
             Parameters.Add("Proudění větru Z", 1);
+
+            //Nezařazené parametry z adresářové struktury
+            //Model_GFS_FLYMET_50km Vítr_300 Vítr_400
+            //Model_GFS_Austria_50km SI_index_GFS_MAIN
+            //Model_GFS_Meteomodel_PL_25km	MUCAPE_GFS
+            //Model_GFS_Meteomodel_PL_25km	Vítr_925
+            //Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
+            //Model_Nasycenost_pud	Nasycenost_pud_1_typ
+            //Model_Nasycenost_pud	Nasycenost_pud_2_typ
+            //Model_Radarové_snímky	Radarové_snímky
+
+            //Zbývá přiřadit
+            /*Model_Sumarizace_srazek Sumarizace_srazek
+            Model_Synoptická_předpověď Synoptická_předpověď
+            Model_Výstrahy_chmu Výstrahy_chmu
+            Model_Výstrahy_estofex Výstrahy_estofex
+            Model_WRF_ARW LCL_Výška_základny_oblaku
+            Model_WRF_ARW MFDIV_0-1km
+            Model_WRF_ARW   Potential_Orographic_Lift
+            Model_WRF_ARW   Pwater
+            Model_WRF_ARW   Relativni_vorticita_850 - 300_hPa_WRF
+            Model_WRF_ARW   Relativní_vlhkost_300
+            Model_WRF_ARW   Relativní_vlhkost_500
+            Model_WRF_ARW   Relativní_vlhkost_700
+            Model_WRF_ARW   SRH_3km_WRF_ARW
+            Model_WRF_ARW   Srážky_MAIN
+            Model_WRF_ARW   Tlaková_tendence_MSLP
+            Model_WRF_ARW_Balearsmeteo  TT_Totals_Totals_index_Aladin_HR
+            Model_WRF_NMM_FLYMET_Srážky Srážky_MAIN
+            Model_WRF_NMM_FLYMET    Vítr_10m
+            Model_WRF_NMM_FLYMET    Vítr_500
+            Model_WRF_NMM_FLYMET    Vítr_600
+            Model_WRF_NMM_FLYMET    Vítr_700
+            Model_WRF_NMM_FLYMET    Vítr_850*/
             
 
             //Hodnoty parametrů - zatím sebrané ze vzorové předpovědi (hodnoty pro uherské hradiště), posléze se bude tahat z DB (Input_DATA)
-            Parameters.Add("MLCAPE", 1);
-            Parameters.Add("LI", 1);
-            Parameters.Add("MLCIN", 0);
-            Parameters.Add("TT index", 1);
-            Parameters.Add("KI", 1);
-            Parameters.Add("GRAD 850-500 hPa", 1);
-            Parameters.Add("WETBULB", 1);
-            Parameters.Add("FRONTOGENEZE 850 hPa", 1);
-            Parameters.Add("GRAD 925-700 hPa", 1);
-            Parameters.Add("MXR", 1);
-            Parameters.Add("MOCON", 1);
-            Parameters.Add("MFDIV 0-1 km", 1);
-            Parameters.Add("MTV VECTOR", 1);
-            Parameters.Add("POTENTIAL OROGRAPHIC LIFITING", 1);
-            Parameters.Add("RH 1000 hPa", 2);
-            Parameters.Add("RH 925 hPa", 1);
-            Parameters.Add("RH 850 hPa", 2);
-            Parameters.Add("RH 700 hPa", 1.5f);
-            Parameters.Add("RH 500 hPa", 0);
-            Parameters.Add("RH 300 hPa", 0);
-            Parameters.Add("RV 850 hPa", 1);
-            Parameters.Add("RV 500 hPa", 1);
-            Parameters.Add("RV 300 hPa", 1);
-            Parameters.Add("Pwater", 1);
-            Parameters.Add("T 850 hPa", 1);
-            Parameters.Add("DLS", 1);
-            Parameters.Add("LLS", 1);
-            Parameters.Add("SREH 3 km", 0);
-            Parameters.Add("SREH 1 km", 0);
-            Parameters.Add("SWEAT", 1);
-            Parameters.Add("Rychlost větru v 300 hPa", 0);
-            Parameters.Add("Rychlost větru v 850 hPa", 1);
-            Parameters.Add("MCS VEKTOR", 2);
-            //Parameters.Add("1000 hPa", JV);
-            //Parameters.Add("925 hPa", JZ);
-            //Parameters.Add("850 hPa", JZ);
-            //Parameters.Add("700 hPa", JZ);
-            //Parameters.Add("600 hPa", JZ);
-            //Parameters.Add("500 hPa", JZ);
-            //Parameters.Add("400 hPa", JZ);
-            //Parameters.Add("300 hPa", JZ);
-            //Parameters.Add("Směr větru v hladině 700 hPa", JZ);
-            Parameters.Add("850 hPa", 8);
-            Parameters.Add("700 hPa", 7);
-            Parameters.Add("600 hPa", 10);
-            Parameters.Add("500 hPa", 8);
-            Parameters.Add("400 hPa", 8);
-            Parameters.Add("300 hPa", 18);
-            Parameters.Add("LCL", 1);
-            Parameters.Add("Nulová izoterma (km)", 1);
-            Parameters.Add("Hloubka teplé fáze oblaku (km)", 1);
-            Parameters.Add("SHIP", 1);
-            Parameters.Add("DTHE", 0);
-            Parameters.Add("SBCAPE 0-2 km (J/kg) - den", 1);
-            Parameters.Add("STP", 0);
-            Parameters.Add("Tlak MSLP", 1);
-            Parameters.Add("Teplota (MAX)", 2);
+            Parameters.Add("MLCAPE", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS")
+            Parameters.Add("LI", 1);  //GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN")
+            Parameters.Add("MLCIN", 0); //GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de") //MLCIN_Wetter_3_de_MAIN
+            Parameters.Add("TT index", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("KI", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index")
+            Parameters.Add("GRAD 850-500 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Instabilita_GRAD_850-500")
+            Parameters.Add("WETBULB", 1); //GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp")
+            Parameters.Add("FRONTOGENEZE 850 hPa", 1); //GetParameter("Model_GFS_Wetter3_DE_50km", "Frontogeneze_parametr_850_hPa")
+            Parameters.Add("GRAD 925-700 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "GRAD_925-700hPa")
+            Parameters.Add("MXR", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("MOCON", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("MFDIV 0-1 km", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("MTV VECTOR", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa")
+            Parameters.Add("POTENTIAL OROGRAPHIC LIFITING", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RH 1000 hPa", 2); //GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000")
+            Parameters.Add("RH 925 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925")
+            Parameters.Add("RH 850 hPa", 2); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850")
+            Parameters.Add("RH 700 hPa", 1.5f); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RH 500 hPa", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RH 300 hPa", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RV 850 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RV 500 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RV 300 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Pwater", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("T 850 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Teplota_850")
+            Parameters.Add("DLS", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km")
+            Parameters.Add("LLS", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_LLS_Střih_větru_0-1_km")
+            Parameters.Add("SREH 3 km", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("SREH 1 km", 0); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SRH_1km")
+            Parameters.Add("SWEAT", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Rychlost větru v 300 hPa", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Rychlost větru v 850 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("MCS VEKTOR", 2); //GetParameter("Model_GFS_Lightning_Wizard_50km", "MCS_vektor_pohybu_bouří")
+            //Parameters.Add("1000 hPa", JV); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("925 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("850 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("700 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("600 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("500 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("400 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("300 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            //Parameters.Add("Směr větru v hladině 700 hPa", JZ); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("850 hPa", 8); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("700 hPa", 7); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("600 hPa", 10); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("500 hPa", 8); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("400 hPa", 8); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("300 hPa", 18); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("LCL", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Nulová izoterma (km)", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "0_izoterma_výška")
+            Parameters.Add("Hloubka teplé fáze oblaku (km)", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("SHIP", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SHIP")
+            Parameters.Add("DTHE", 0); //GetParameter("Model_GFS_Lightning_Wizard_50km", "DTHE_MAIN")
+            Parameters.Add("SBCAPE 0-2 km (J/kg) - den", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km")
+            Parameters.Add("STP", 0); //GetParameter("Model_GFS_Meteomodel_PL_25km", "EHI,STP_MAIN")
+            Parameters.Add("Tlak MSLP", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Teplota (MAX)", 2); //GetParameter("Model_ALADIN_CZ", "Teplota")
             Parameters.Add("Oblačnost", GetParameter("Model_ALADIN_CZ", "Oblačnost"));
-            Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", 1);
-            Parameters.Add("RH 2 m (%)", 2);
-            Parameters.Add("MXR (Směšovací poměr)", 1);
-            Parameters.Add("KONV+/DIV- (0-1 km)", 2);
-            Parameters.Add("OROGRAPHIC LIFT", 2);
-            Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", 0);
-            Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", 0);
-            Parameters.Add("Interpolace (radary+srážkoměry)", 0);
-            Parameters.Add("Stupeň nasycení", 0);
-            Parameters.Add("Suma srážek (1.hod.)", 0);
-            Parameters.Add("Srážky ALADIN", 0);
-            Parameters.Add("Srážky GDPS", 0);
-            Parameters.Add("Srážky EURO4", 0);
-            Parameters.Add("Srážky HIRLAM", 0);
-            Parameters.Add("Srážky WRF-NMM", 0);
-            Parameters.Add("Srážky WRF-ARW", 0);
-            Parameters.Add("Srážky GFS", 0);
+            Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RH 2 m (%)", 2); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("MXR (Směšovací poměr)", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "Mixing_Ratio_0-1km")
+            Parameters.Add("KONV+/DIV- (0-1 km)", 2); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("OROGRAPHIC LIFT", 2); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Interpolace (radary+srážkoměry)", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Stupeň nasycení", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Suma srážek (1.hod.)", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Srážky ALADIN", 0); //GetParameter("Model_ALADIN_CZ", "Srážky_MAIN")
+            Parameters.Add("Srážky GDPS", 0); //GetParameter("Model_GDPS", "Srážky_MAIN")
+            Parameters.Add("Srážky EURO4", 0); //GetParameter("Model_EURO4", "Srážky_MAIN")
+            Parameters.Add("Srážky HIRLAM", 0); //GetParameter("Model_HIRLAM_Nový", "Srážky_MAIN_Nový") //Srážky_MAIN_Starý
+            Parameters.Add("Srážky WRF-NMM", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Srážky WRF-ARW", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("Srážky GFS", 0); //GetParameter("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový") //Srážky_MAIN_Starý
 
 
             //Parametry pro suchý downburst
-            Parameters.Add("RH 1000 hPa Real", 75); //75
-            Parameters.Add("RH 925 hPa Real", 60); //60
-            Parameters.Add("RH 850 hPa Real", 75); //75
-            Parameters.Add("LCL Real", 1200); //1200
+            Parameters.Add("RH 1000 hPa Real", 75); //75  //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RH 925 hPa Real", 60); //60 //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("RH 850 hPa Real", 75); //75 //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("LCL Real", 1200); //1200 //GetParameter("Model_ALADIN_CZ", "Oblačnost")
 
             //Pokusná data pro výpočet času srážek
             List<CloudInputData> precipitationData = new List<CloudInputData>();
@@ -187,7 +221,7 @@ namespace Meteo
 
         private void DoCountOperations()
         {
-            Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
+            //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
             PrecipitationPlace();
@@ -210,7 +244,7 @@ namespace Meteo
             WindEffect();
             MergeB();
             WriteToDatabase();
-            WriteOutputLog();
+            //WriteOutputLog();
 
         }
 

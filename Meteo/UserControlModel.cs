@@ -48,8 +48,9 @@ namespace Meteo
             ShowModels();
 
             
-            Thread t = new Thread(() => EnumerationModels()); //INPUT_DATA
+            /*Thread t = new Thread(() => EnumerationModels()); //INPUT_DATA
             t.Start(); //INPUT_DATA
+            */
             
             //treeViewModel.ExpandAll();
         }
@@ -60,10 +61,10 @@ namespace Meteo
             {
                 foreach (var si in sourceImages)
                 {
-                    Util.ShowLoading($"Předzpracovávám ...", $"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}",false);
+                    Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
                     new Images(si, true);
-                    Util.HideLoading();
-                    break;////
+                    //Util.HideLoading();
+                    //break;////
                 }
             }
 

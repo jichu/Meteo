@@ -28,7 +28,7 @@ namespace Meteo
             this.menuItemExplore.PerformClick();
 
 
-            backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
+            //backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 
 
