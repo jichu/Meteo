@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace WRF
 {
     internal class MagicWandForF0ckWRFmodel
     {
         private List<Bitmap> Shapes=new List<Bitmap>();
+        private Dictionary<int,List<Point>> DictLines = new Dictionary<int, List<Point>>();
         private string colorKey = "ff000000";
 
         public bool ShowMetaOutputs { get; set; }
@@ -14,15 +16,63 @@ namespace WRF
         public MagicWandForF0ckWRFmodel()
         {
             ShowMetaOutputs = true;
-
             Bitmap bmpNew = new Bitmap(Map.MapSource.Width, Map.MapSource.Height);
             bmpNew = PreprocessDoFilterMask(bmpNew,Map.MapMask);
             if (ShowMetaOutputs)
                 Show(bmpNew, "PreprocessDoFilterMask");
-            bmpNew = BreakeToShapes(bmpNew);
+
+            GenerateLines();
+
+            //bmpNew = BreakeToShapes(bmpNew);
         }
-        
-        private Bitmap PreprocessDoFilterMask(Bitmap bmp, Bitmap mask, int cutTop=0, int cutBotton=0)
+
+        private void GenerateLines(int size=100, int angleStep=5)
+        {
+            // IV. kv
+            for (int i = 0; i < 90; i+=angleStep)
+            {
+                DictLines.Add(i, DrawLine(i,size));
+            }
+
+            Bitmap bmp = new Bitmap(size, size);
+            foreach (var item in DictLines)
+            {
+                foreach (var points in item.Value)
+                    bmp.SetPixel(points.X, points.Y, Color.Black);
+            }
+            Show(bmp);
+            /*
+
+            if (!dictionary.TryGetValue(shape.Name, out bm))
+            {
+                bm = (Bitmap)Properties.Resources.ResourceManager.GetObject(shape.Name);
+                dictionary.Add(shape.Name, bm);
+            }*/
+
+            // III. kv
+            /*
+            Dictionary<int, List<Point>> DictLinesNew = new Dictionary<int, List<Point>>();
+            int step = angleStep;
+            foreach (var item in DictLines)
+            {
+                List<Point> line = new List<Point>();
+                foreach (var points in item.Value)
+                {
+                    line.Add(new Point(-points.X, points.Y));
+                }
+                DictLinesNew.Add(90 + step, line);
+                step += angleStep;
+            }
+
+            bmp = new Bitmap(size, size);
+            foreach (var item in DictLinesNew)
+                foreach (var points in item.Value)
+                    bmp.SetPixel(points.X, points.Y, Color.Black);
+            Show(bmp);
+            */
+        }
+
+        private Bitmap PreprocessDoFilterMask(Bitmap bmp, Bitmap mask, int cutTop=60, int cutBotton=100)
         {
             for (int x = 0; x < mask.Width; x++)
             {
@@ -59,13 +109,6 @@ namespace WRF
             bmp = ColorChange(bmp,startPoint);
             FindAroundPoint(bmp,startPoint);
             CreateShape(tmpMaxX - startPoint.X + 1, tmpMaxY - startPoint.Y + 1);
-            /*
-            for (int x = 0; x < bmp.Width; x++)
-            {
-                for (int y = 0; y < bmp.Height; y++)
-                {
-                }
-            }*/
             Console.WriteLine(tmpMinX);
             Console.WriteLine(tmpMinY);
             Console.WriteLine(tmpMaxX-startPoint.X+1);
@@ -126,6 +169,37 @@ namespace WRF
                 }
             }
             return new Point();
+        }
+
+        private double Radian(int angle) { return (Math.PI / 180.0) * angle; }
+
+        private List<Point> DrawLine(int angle=30, int length = 100)
+        {
+            Bitmap bmp = new Bitmap(length, length,PixelFormat.Format32bppPArgb);
+            var myPen = new Pen(Color.Black);
+            int x = 0;
+            int y = 0;
+            double x2 = x + (Math.Cos(Radian(angle)) * length);
+            double y2 = y + (Math.Sin(Radian(angle)) * length);
+            int intX1 = Convert.ToInt32(x);
+            int intY1 = Convert.ToInt32(y);
+            int intX2 = Convert.ToInt32(x2);
+            int intY2 = Convert.ToInt32(y2);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+                g.DrawLine(myPen, new Point(intX1, intY1), new Point(intX2, intY2));
+            }
+            List<Point> line = new List<Point>();
+            for (x = 0; x < bmp.Width; x++)
+            {
+                for (y = 0; y < bmp.Height; y++)
+                {
+                    if (bmp.GetPixel(x, y).Name == "ff000000")
+                        line.Add(new Point(x, y));
+                }
+            }
+            return line;
         }
 
         private void Show(Bitmap bmpNew,string title="")
