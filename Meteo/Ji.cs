@@ -46,7 +46,7 @@ namespace Meteo
             //ORPS_GetORPSForRegion();
             //ORPNameToColor();
             //Test();
-            OutputData_GetDataForSample();
+            //OutputData_GetDataForSample();
             //InputData_GetData();
         }
         public void Test() {
