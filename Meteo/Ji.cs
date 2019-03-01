@@ -46,7 +46,7 @@ namespace Meteo
             //ORPS_GetORPSForRegion();
             //ORPNameToColor();
             //Test();
-            //OutputData_GetDataForSample();
+            OutputData_GetDataForSample();
             //InputData_GetData();
         }
         public void Test() {
@@ -60,7 +60,7 @@ namespace Meteo
         }
 
         public void OutputData_GetDataForSample() {
-            Dictionary<string, float> data = Model.Cloud.OUTPUTDATAGetDataForSample("06");
+            Dictionary<string, float> data = Model.Cloud.OUTPUTDATAGetDataForSample("06", Util.algorithmOutput["INTENZITA BOUŘÍ"]);
 
             foreach (var item in data)
             {

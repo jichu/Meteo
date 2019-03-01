@@ -27,6 +27,18 @@ namespace Meteo
             { "output_legend", @".\images\output_legend.png" }
         };
 
+        public static Dictionary<string, int> algorithmOutput = new Dictionary<string, int>
+        {
+            { "RIZIKO PŘÍVALOVÉ POVODNĚ", 0 },
+            { "INTENZITA BOUŘÍ", 1 },
+            { "PRAVDĚPODOBNOST MÍSTA SRÁŽEK", 2 },
+            { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK", 3 },
+            { "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", 4 },
+            { "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", 5 },
+            { "MÍSTO VÝSKYTU - KRUPOBITÍ", 6 },
+            { "MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA", 7 }
+        };
+
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
         public static List<CloudORPColor> ORPColorGetORPColors { get; set; }
 

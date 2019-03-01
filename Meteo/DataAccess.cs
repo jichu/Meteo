@@ -217,14 +217,14 @@ namespace Meteo
             }
         }
         
-        public Dictionary<string, float> OUTPUTDATAGetDataForSample(string sample)
+        public Dictionary<string, float> OUTPUTDATAGetDataForSample(string sample, int id_o = 0)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
                 List<CloudORPS> orps = Model.Cloud.ORPSGetORPNames();
                 Dictionary<string, float> dataDict = new Dictionary<string, float>();
 
-                var output = conn.Query<CloudOutputData>("dbo.OUTPUT_DATA_GetDataForSample @SAMPLE_NAME", new { SAMPLE_NAME = sample }).ToList();
+                var output = conn.Query<CloudOutputData>("dbo.OUTPUT_DATA_GetDataForSample @SAMPLE_NAME, @ID_OUT", new { SAMPLE_NAME = sample, ID_OUT = id_o }).ToList();
 
                 foreach (var item in output)
                 {

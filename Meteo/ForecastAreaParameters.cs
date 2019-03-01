@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,7 +50,7 @@ namespace Meteo
             Parameters.Add("Proudění větru Z", 1);
 
             //Nezařazené parametry z adresářové struktury
-            //Model_GFS_FLYMET_50km Vítr_400
+            
             //Model_GFS_Austria_50km SI_index_GFS_MAIN
             //Model_GFS_Meteomodel_PL_25km	MUCAPE_GFS
             //
@@ -62,24 +62,11 @@ namespace Meteo
             /*
             Model_Synoptická_předpověď Synoptická_předpověď
 
-
             Model_Výstrahy_chmu Výstrahy_chmu
             Model_Výstrahy_estofex Výstrahy_estofex
-            
 
             Model_WRF_ARW   Relativni_vorticita_850 - 300_hPa_WRF
-            
-            
-            
-            
-            
-            
-            
-
-            
-           
-            
-            
+          
             */
             
 
@@ -248,8 +235,22 @@ namespace Meteo
         }
 
         private void WriteToDatabase() {
-            CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"]);
+            CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"],Util.algorithmOutput["RIZIKO PŘÍVALOVÉ POVODNĚ"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
+            CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["INTENZITA BOUŘÍ"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
+            CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA SRÁŽEK"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
+            CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
+            CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
+            CloudOutputData strongWindscreensOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"], Util.algorithmOutput["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutput);
+            CloudOutputData hailOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - KRUPOBITÍ"], Util.algorithmOutput["MÍSTO VÝSKYTU - KRUPOBITÍ"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(hailOutput);
+            CloudOutputData supercelarTornadosOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"], Util.algorithmOutput["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"]);
+            Model.Cloud.OUTPUTDATAInsertOrUpdate(supercelarTornadosOutput);
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
@@ -606,7 +607,10 @@ namespace Meteo
             List<float> values = new List<float>(){Parameters["Srážky ALADIN"], Parameters["Srážky GDPS"], Parameters["Srážky EURO4"]
                 , Parameters["Srážky HIRLAM"], Parameters["Srážky WRF-NMM"], Parameters["Srážky WRF-ARW"] };
             probability = SumArray(values) / values.Count;
-            Output.Add("Pravděpodobnost Srážek", probability);
+            int level = ValueToLevel(LevelScale, probability);
+            Output.Add("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK", probability);
+            Output.Add("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT", level);
+            
         }
 
         //Čas výskytu srážek
