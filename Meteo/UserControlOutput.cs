@@ -18,6 +18,7 @@ namespace Meteo
     {
         private static UserControlOutput uc;
         private PictureBox canvas;
+        private PictureBox legend;
         private List<string> settingOutputVarriableNames = new List<string>();
 
         public static UserControlOutput Instance
@@ -34,6 +35,7 @@ namespace Meteo
         {
             InitializeComponent();
             CreateCanvas();
+            CreateLegend();
             CreateTable();
             Render();
         }
@@ -69,6 +71,21 @@ namespace Meteo
             if(File.Exists(Util.pathSource["map_output_background"]))
                 canvas.Image = Image.FromFile(Util.pathSource["map_output_background"]);
             canvas.Paint += Canvas_Paint;
+        }
+
+        private void CreateLegend()
+        {
+            if (File.Exists(Util.pathSource["output_legend"]))
+            {
+                PictureBox pb = new PictureBox();
+                pb.Name = "legend";
+                Image img = Image.FromFile(Util.pathSource["output_legend"]);
+                pb.Image = img;
+                pb.Width = img.Width;
+                pb.Height = img.Height;
+                pb.Location = new Point(0,canvas.Height+20);
+                this.Controls.Add(pb);
+            }
         }
 
         private void CreateTable()
