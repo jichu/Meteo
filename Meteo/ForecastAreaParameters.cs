@@ -94,7 +94,7 @@ namespace Meteo
             Parameters.Add("FRONTOGENEZE 850 hPa", 1); //GetParameter("Model_GFS_Wetter3_DE_50km", "Frontogeneze_parametr_850_hPa")
             Parameters.Add("GRAD 925-700 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "GRAD_925-700hPa")
             Parameters.Add("MXR", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "Mixing_Ratio_0-1km")
-            //Parameters.Add("MOCON", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
+            Parameters.Add("MOCON", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost") //Parametr není, nepoužívá se
             Parameters.Add("MFDIV 0-1 km", 1); //GetParameter("Model_WRF_ARW", "MFDIV_0-1km")
             Parameters.Add("MTV VECTOR", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa")
             Parameters.Add("POTENTIAL OROGRAPHIC LIFITING", 1); //GetParameter("Model_WRF_ARW", "Potential_Orographic_Lift")
