@@ -230,7 +230,7 @@ namespace Meteo
             WindEffect();
             MergeB();
             WriteToDatabase();
-            //WriteOutputLog();
+            WriteOutputLog();
 
         }
 
@@ -727,11 +727,20 @@ namespace Meteo
         }
         //Výpis výstupu
         private void WriteOutputLog() {
+            
+            Util.l("\n\nVSTUPNÍ PARAMETRY\n--------------------\n");
             Util.l(this.Name_orp);
-            foreach(var item in Output)
+            foreach (var item in Parameters)
             {
                 Util.l(item.Key + ":" + item.Value);
             }
+            /*
+            Util.l("PRŮBĚŽNÉ VÝSLEDKY");
+            
+            foreach(var item in Output)
+            {
+                Util.l(item.Key + ":" + item.Value);
+            }*/
         }
 
         private float GetParameter(string model, string submodel) {
