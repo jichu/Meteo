@@ -19,6 +19,7 @@ namespace Meteo
         private static UserControlOutput uc;
         private PictureBox canvas;
         private PictureBox legend;
+        private ComboBox comboAlgorithmOutput;
         private List<string> settingOutputVarriableNames = new List<string>();
 
         public static UserControlOutput Instance
@@ -34,9 +35,29 @@ namespace Meteo
         public UserControlOutput()
         {
             InitializeComponent();
-            CreateCanvas();
-            CreateLegend();
-            CreateTable();
+            CreateComboAlgorithmOutput();
+            Render();
+        }
+
+        private void CreateComboAlgorithmOutput()
+        {
+            ComboBox cb = new ComboBox();
+            cb.Name = "comboAlgorithmOutput";
+            cb.Width = 350;
+            this.Controls.Add(cb);
+            comboAlgorithmOutput = (this.Controls["comboAlgorithmOutput"] as ComboBox);
+            comboAlgorithmOutput.DisplayMember = "Text";
+            comboAlgorithmOutput.ValueMember = "Value";
+            foreach (var item in Util.algorithmOutput)
+            {
+                comboAlgorithmOutput.Items.Add(new {Text = item.Key.ToString(), Value = item.Value });
+            }
+            comboAlgorithmOutput.SelectedIndex = 0;
+            comboAlgorithmOutput.SelectedIndexChanged += new EventHandler(ComboAlgorithmOutput_SelectedIndexChanged);
+        }
+
+        private void ComboAlgorithmOutput_SelectedIndexChanged(object sender, EventArgs e)
+        {
             Render();
         }
 
@@ -65,6 +86,7 @@ namespace Meteo
             pb.Height = 370;
             pb.BackColor = Color.White;
             pb.Name = "canvas";
+            pb.Location = new Point(0, comboAlgorithmOutput.Height+20);
             this.Controls.Add(pb);
             canvas = (this.Controls["canvas"] as PictureBox);
             canvas.Image = new Bitmap(canvas.Width, canvas.Height);
@@ -83,7 +105,7 @@ namespace Meteo
                 pb.Image = img;
                 pb.Width = img.Width;
                 pb.Height = img.Height;
-                pb.Location = new Point(0,canvas.Height+20);
+                pb.Location = new Point(0,canvas.Height+comboAlgorithmOutput.Height+20);
                 this.Controls.Add(pb);
             }
         }
@@ -142,7 +164,11 @@ namespace Meteo
 
         internal void Render()
         {
+            Util.l(comboAlgorithmOutput.SelectedIndex);
             dgv.Rows.Clear();
+            CreateCanvas();
+            CreateLegend();
+            CreateTable();
             /*Draw(new Dictionary<string, float>()
             {
                 { "Aš", 0 },
@@ -150,7 +176,8 @@ namespace Meteo
                 { "Kraslice",2 },
                 { "Ostrov",3}
             });*/
-            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("09"));
+            //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("09"));
+            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("09", comboAlgorithmOutput.SelectedIndex));
             canvas.Invalidate();
         }
 
