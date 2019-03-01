@@ -294,7 +294,7 @@ namespace Meteo
                     value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetData @ID_ORP, @SAMPLE_NAME, @ID_MODEL", new { id_orp = id_o, sample_name = sample, id_model = id_m }).ToList().First().value;
                 }
                 catch (Exception e) {
-                    Util.l($"DATA PRO MODEL {id_m} NEJSOU V DATABÁZI K DISPOZICI!!! Výpočty nemusí být správné.");
+                    Util.l($"{id_o}: DATA PRO MODEL {id_m} NEJSOU V DATABÁZI K DISPOZICI!!! Výpočty nemusí být správné.");
                     value = -1;
                 }
 

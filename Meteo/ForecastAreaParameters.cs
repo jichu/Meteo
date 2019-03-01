@@ -217,7 +217,8 @@ namespace Meteo
             WindEffect();
             MergeB();
             WriteToDatabase();
-            WriteOutputLog();
+
+            //WriteOutputLog();
 
         }
 

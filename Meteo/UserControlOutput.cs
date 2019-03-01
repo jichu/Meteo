@@ -150,7 +150,7 @@ namespace Meteo
                 { "Kraslice",2 },
                 { "Ostrov",3}
             });*/
-            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("06"));
+            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("09"));
             canvas.Invalidate();
         }
 
