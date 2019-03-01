@@ -42,111 +42,103 @@ namespace Meteo
 
 
         private void LoadParameters() {
-            
-            //Orografické vlastnosti oblasti
+
+            //Zatím vynechané parametry
+            //Parameters.Add("MOCON", 1); // prozatím vynechat
+            //Parameters.Add("RV 850 hPa", 1); prozatím vynechat
+            //Parameters.Add("RV 500 hPa", 1); prozatím vynechat
+            //Parameters.Add("RV 300 hPa", 1); prozatím vynechat
+            //Parameters.Add("SWEAT", 1); // prozatím vynechat
+            //Parameters.Add("1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")); // prozatím vynechat
+            //Parameters.Add("925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")); // prozatím vynechat
+            //Parameters.Add("850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); // prozatím vynechat
+            //Parameters.Add("700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
+            //Parameters.Add("600 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600")); // prozatím vynechat
+            //Parameters.Add("500 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500")); // prozatím vynechat
+            //Parameters.Add("400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400")); // prozatím vynechat
+            //Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); // prozatím vynechat
+            //Parameters.Add("Směr větru v hladině 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
+            //Parameters.Add("Teplota (MAX)", 2); // prozatím vynechat
+
+
+            /*Orografické vlastnosti oblasti
             Parameters.Add("Proudění větru J", 1);
             Parameters.Add("Proudění větru S", 1);
             Parameters.Add("Proudění větru V", 1);
-            Parameters.Add("Proudění větru Z", 1);
+            Parameters.Add("Proudění větru Z", 1);*/
 
-            //Nezařazené parametry z adresářové struktury
-            
-            //Model_GFS_Austria_50km SI_index_GFS_MAIN
-            //Model_GFS_Meteomodel_PL_25km	MUCAPE_GFS
-            //
-            
-            
-            //Model_Radarové_snímky	Radarové_snímky
 
-            //Zbývá přiřadit
-            /*
+            /*Nezařazené parametry z adresářové struktury
+            Model_GFS_Austria_50km SI_index_GFS_MAIN
+            Model_GFS_Meteomodel_PL_25km	MUCAPE_GFS
+            Model_Radarové_snímky	Radarové_snímky
             Model_Synoptická_předpověď Synoptická_předpověď
-
             Model_Výstrahy_chmu Výstrahy_chmu
             Model_Výstrahy_estofex Výstrahy_estofex
-
             Model_WRF_ARW   Relativni_vorticita_850 - 300_hPa_WRF
-          
             */
-            
 
-            //Hodnoty parametrů - zatím sebrané ze vzorové předpovědi (hodnoty pro uherské hradiště), posléze se bude tahat z DB (Input_DATA)
-            Parameters.Add("MLCAPE", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS") //Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
-            Parameters.Add("LI", 1);  //GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN")
-            Parameters.Add("MLCIN", 0); //GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de") //MLCIN_Wetter_3_de_MAIN
-            Parameters.Add("TT index", 1); //GetParameter("Model_WRF_ARW_Balearsmeteo", "TT_Totals_Totals_index_Aladin_HR")
-            Parameters.Add("KI", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index")
-            Parameters.Add("GRAD 850-500 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Instabilita_GRAD_850-500")
-            Parameters.Add("WETBULB", 1); //GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp")
-            Parameters.Add("FRONTOGENEZE 850 hPa", 1); //GetParameter("Model_GFS_Wetter3_DE_50km", "Frontogeneze_parametr_850_hPa")
-            Parameters.Add("GRAD 925-700 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "GRAD_925-700hPa")
-            Parameters.Add("MXR", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "Mixing_Ratio_0-1km")
-            Parameters.Add("MOCON", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost") //Parametr není, nepoužívá se
-            Parameters.Add("MFDIV 0-1 km", 1); //GetParameter("Model_WRF_ARW", "MFDIV_0-1km")
-            Parameters.Add("MTV VECTOR", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa")
-            Parameters.Add("POTENTIAL OROGRAPHIC LIFITING", 1); //GetParameter("Model_WRF_ARW", "Potential_Orographic_Lift")
-            Parameters.Add("RH 1000 hPa", 2); //GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000")
-            Parameters.Add("RH 925 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925")
-            Parameters.Add("RH 850 hPa", 2); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850")
-            Parameters.Add("RH 700 hPa", 1.5f); //GetParameter("Model_WRF_ARW", "Relativní_vlhkost_700")
-            Parameters.Add("RH 500 hPa", 0); //GetParameter("Model_WRF_ARW", "Relativní_vlhkost_500")
-            Parameters.Add("RH 300 hPa", 0); //GetParameter("Model_WRF_ARW", "Relativní_vlhkost_300")
-            Parameters.Add("RV 850 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")//vynechat zatím
-            Parameters.Add("RV 500 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")//vynechat zatím
-            Parameters.Add("RV 300 hPa", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost")//vynechat zatím
-            Parameters.Add("Pwater", 1); //GetParameter("Model_WRF_ARW", "Pwater")
-            Parameters.Add("T 850 hPa", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Teplota_850")
-            Parameters.Add("DLS", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km")
-            Parameters.Add("LLS", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_LLS_Střih_větru_0-1_km")
-            Parameters.Add("SREH 3 km", 0); //GetParameter("Model_WRF_ARW", "SRH_3km_WRF_ARW")
-            Parameters.Add("SREH 1 km", 0); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SRH_1km")
-            Parameters.Add("SWEAT", 1); //GetParameter("Model_ALADIN_CZ", "Oblačnost") //vynechat ze všech výpočtů zatím
-            Parameters.Add("Rychlost větru v 300 hPa", 0); //GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")
-            Parameters.Add("Rychlost větru v 850 hPa", 1); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")
-            Parameters.Add("MCS VEKTOR", 2); //GetParameter("Model_GFS_Lightning_Wizard_50km", "MCS_vektor_pohybu_bouří")
-            //Parameters.Add("1000 hPa", JV); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")
-            //Parameters.Add("925 hPa", JZ); //GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")
-            //Parameters.Add("850 hPa", JZ); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")
-            //Parameters.Add("700 hPa", JZ); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")
-            //Parameters.Add("600 hPa", JZ); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600")
-            //Parameters.Add("500 hPa", JZ); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500")
-            //Parameters.Add("400 hPa", JZ); //GetParameter("Model_GFS_FLYMET_50km", "Vítr_400")
-            //Parameters.Add("300 hPa", JZ); //GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")
-            //Parameters.Add("Směr větru v hladině 700 hPa", JZ); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")
-            Parameters.Add("850 hPa", 8); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")
-            Parameters.Add("700 hPa", 7); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")
-            Parameters.Add("600 hPa", 10); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600")
-            Parameters.Add("500 hPa", 8); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500")
-            Parameters.Add("400 hPa", 8); //GetParameter("Model_GFS_FLYMET_50km", "Vítr_400")
-            Parameters.Add("300 hPa", 18); //GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")
-            Parameters.Add("LCL", 1); //GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku")
-            Parameters.Add("Nulová izoterma (km)", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "0_izoterma_výška")
-            Parameters.Add("Hloubka teplé fáze oblaku (km)", 1); //Dopočítat:  Parameters.Add("Nulová izoterma (km)", 1) -Parameters.Add("LCL", 1); 
-            Parameters.Add("SHIP", 1); //GetParameter("Model_GFS_Meteomodel_PL_25km", "SHIP")
-            Parameters.Add("DTHE", 0); //GetParameter("Model_GFS_Lightning_Wizard_50km", "DTHE_MAIN")
-            Parameters.Add("SBCAPE 0-2 km (J/kg) - den", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km")
-            Parameters.Add("STP", 0); //GetParameter("Model_GFS_Meteomodel_PL_25km", "EHI,STP_MAIN")
-            Parameters.Add("Tlak MSLP", 1); //GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP")
-            Parameters.Add("Teplota (MAX)", 2); //GetParameter("Model_ALADIN_CZ", "Teplota") //Nepočítat s ní
+            Parameters.Add("MLCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS")); // Alternace: Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
+            Parameters.Add("LI", GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN"));
+            Parameters.Add("MLCIN", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de")); // Alternace: MLCIN_Wetter_3_de_MAIN
+            Parameters.Add("TT index", GetParameter("Model_WRF_ARW_Balearsmeteo", "TT_Totals_Totals_index_Aladin_HR"));
+            Parameters.Add("KI", GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index"));
+            Parameters.Add("GRAD 850-500 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Instabilita_GRAD_850-500"));
+            Parameters.Add("WETBULB", GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp"));
+            Parameters.Add("FRONTOGENEZE 850 hPa", GetParameter("Model_GFS_Wetter3_DE_50km", "Frontogeneze_parametr_850_hPa"));
+            Parameters.Add("GRAD 925-700 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "GRAD_925-700hPa"));
+            Parameters.Add("MXR", GetParameter("Model_GFS_Lightning_Wizard_50km", "Mixing_Ratio_0-1km"));          
+            Parameters.Add("MFDIV 0-1 km", GetParameter("Model_WRF_ARW", "MFDIV_0-1km"));
+            Parameters.Add("MTV VECTOR", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));
+            Parameters.Add("POTENTIAL OROGRAPHIC LIFITING", GetParameter("Model_WRF_ARW", "Potential_Orographic_Lift"));
+            Parameters.Add("RH 1000 hPa", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000"));
+            Parameters.Add("RH 925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925"));
+            Parameters.Add("RH 850 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850"));
+            Parameters.Add("RH 700 hPa", GetParameter("Model_WRF_ARW", "Relativní_vlhkost_700")); 
+            Parameters.Add("RH 500 hPa", GetParameter("Model_WRF_ARW", "Relativní_vlhkost_500")); 
+            Parameters.Add("RH 300 hPa", GetParameter("Model_WRF_ARW", "Relativní_vlhkost_300"));
+            Parameters.Add("Pwater", GetParameter("Model_WRF_ARW", "Pwater")); 
+            Parameters.Add("T 850 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Teplota_850")); 
+            Parameters.Add("DLS", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km")); 
+            Parameters.Add("LLS", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_LLS_Střih_větru_0-1_km"));
+            Parameters.Add("SREH 3 km", GetParameter("Model_WRF_ARW", "SRH_3km_WRF_ARW")); 
+            Parameters.Add("SREH 1 km", GetParameter("Model_GFS_Meteomodel_PL_25km", "SRH_1km"));
+            Parameters.Add("Rychlost větru v 300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300"));
+            Parameters.Add("Rychlost větru v 850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); 
+            Parameters.Add("MCS VEKTOR", GetParameter("Model_GFS_Lightning_Wizard_50km", "MCS_vektor_pohybu_bouří"));
+            Parameters.Add("850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); 
+            Parameters.Add("700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); 
+            Parameters.Add("600 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600")); 
+            Parameters.Add("500 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500")); 
+            Parameters.Add("400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400")); 
+            Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); 
+            Parameters.Add("LCL", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku"));
+            Parameters.Add("Nulová izoterma (km)", GetParameter("Model_GFS_Meteomodel_PL_25km", "0_izoterma_výška"));
+            //Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["Nulová izoterma (km)"] - Parameters["LCL"]); 
+            Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["LCL"] - Parameters["Nulová izoterma (km)"]); 
+            Parameters.Add("SHIP", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHIP")); 
+            Parameters.Add("DTHE", GetParameter("Model_GFS_Lightning_Wizard_50km", "DTHE_MAIN")); 
+            Parameters.Add("SBCAPE 0-2 km (J/kg) - den", GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km"));
+            Parameters.Add("STP", GetParameter("Model_GFS_Meteomodel_PL_25km", "EHI,STP_MAIN")); 
+            Parameters.Add("Tlak MSLP", GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP"));
             Parameters.Add("Oblačnost", GetParameter("Model_ALADIN_CZ", "Oblačnost"));
-            Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", 1); //GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")
-            Parameters.Add("RH 2 m (%)", 2); //GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000")
-            Parameters.Add("MXR (Směšovací poměr)", 1); //GetParameter("Model_GFS_Lightning_Wizard_50km", "Mixing_Ratio_0-1km") //jedno MXR vymazat
-            Parameters.Add("KONV+/DIV- (0-1 km)", 2); //GetParameter("Model_WRF_ARW", "MFDIV_0-1km")
-            Parameters.Add("OROGRAPHIC LIFT", 2); //GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa")
-            Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", 0); //GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek")
-            Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", 0); //GetParameter("Model_ALADIN_CZ", "Oblačnost")
-            Parameters.Add("Interpolace (radary+srážkoměry)", 0); // POHLEDAT
-            Parameters.Add("Stupeň nasycení", 0); //GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")
-            Parameters.Add("Suma srážek (1.hod.)", 0); //GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")
-            Parameters.Add("Srážky ALADIN", 0); //GetParameter("Model_ALADIN_CZ", "Srážky_MAIN")
-            Parameters.Add("Srážky GDPS", 0); //GetParameter("Model_GDPS", "Srážky_MAIN")
-            Parameters.Add("Srážky EURO4", 0); //GetParameter("Model_EURO4", "Srážky_MAIN")
-            Parameters.Add("Srážky HIRLAM", 0); //GetParameter("Model_HIRLAM_Nový", "Srážky_MAIN_Nový") //Srážky_MAIN_Starý
-            Parameters.Add("Srážky WRF-NMM", 0); //GetParameter(" Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN")
-            Parameters.Add("Srážky WRF-ARW", 0); //GetParameter("Model_WRF_ARW", "Srážky_MAIN")
-            Parameters.Add("Srážky GFS", 0); //GetParameter("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový") //Srážky_MAIN_Starý
-
+            Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m"));
+            Parameters.Add("RH 2 m (%)", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000"));
+            Parameters.Add("KONV+/DIV- (0-1 km)", GetParameter("Model_WRF_ARW", "MFDIV_0-1km")); 
+            Parameters.Add("OROGRAPHIC LIFT", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));
+            Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek"));
+            //Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", 0); //prozatím vynechat, vyrešit mezi prvnimi
+            //Parameters.Add("Interpolace (radary+srážkoměry)", 0); //prozatím vynechat, vyrešit mezi prvnimi
+            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")); 
+            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")); 
+            Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
+            Parameters.Add("Srážky GDPS", GetParameter("Model_GDPS", "Srážky_MAIN")); 
+            Parameters.Add("Srážky EURO4", GetParameter("Model_EURO4", "Srážky_MAIN")); 
+            Parameters.Add("Srážky HIRLAM", GetParameter("Model_HIRLAM_Nový", "Srážky_MAIN_Nový")); //Alternace: Model_HIRLAM_Starý Srážky_MAIN_Starý
+            Parameters.Add("Srážky WRF-NMM", GetParameter("Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN")); 
+            Parameters.Add("Srážky WRF-ARW", GetParameter("Model_WRF_ARW", "Srážky_MAIN"));
+            Parameters.Add("Srážky GFS", GetParameter("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový")); // Alternace: Srážky_MAIN_Starý
+            
 
             //Parametry pro suchý downburst
             Parameters.Add("RH 1000 hPa Real", 75); //75  //GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000")
@@ -154,54 +146,49 @@ namespace Meteo
             Parameters.Add("RH 850 hPa Real", 75); //75 //GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850")
             Parameters.Add("LCL Real", 1200); //1200 //GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku")
 
-            //Pokusná data pro výpočet času srážek
-            List<CloudInputData> precipitationData = new List<CloudInputData>();
-            CloudInputData firstInterval = new CloudInputData();
-            CloudInputData secondInterval = new CloudInputData(1);
-            CloudInputData thirdInterval = new CloudInputData();
-            CloudInputData fourthInterval = new CloudInputData(1);
-            CloudInputData fifthInterval = new CloudInputData();
-            CloudInputData sixthInterval = new CloudInputData();
-            CloudInputData seventhInterval = new CloudInputData(1);
-            CloudInputData eighthInterval = new CloudInputData();
+            //data pro ALADIN
+            List<CloudInputData> aladinData = new List<CloudInputData>();
+            CloudInputData firstInterval = new CloudInputData(Parameters["Srážky ALADIN"]);
+            aladinData.Add(firstInterval);
 
-            precipitationData.Add(firstInterval);
-            precipitationData.Add(secondInterval);
-            precipitationData.Add(thirdInterval);
-            precipitationData.Add(fourthInterval);
-            precipitationData.Add(fifthInterval);
-            precipitationData.Add(sixthInterval);
-            precipitationData.Add(seventhInterval);
-            precipitationData.Add(eighthInterval);
+            //data pro GDPS
+            List<CloudInputData> gdpsData = new List<CloudInputData>();
+            firstInterval = new CloudInputData(Parameters["Srážky GDPS"]);
+            gdpsData.Add(firstInterval);
 
-            //Testovací data. V ostré verz může být precipitationData2 vymazáno
-            List<CloudInputData> precipitationData2 = new List<CloudInputData>();
-            CloudInputData firstInterval2 = new CloudInputData(1);
-            CloudInputData secondInterval2 = new CloudInputData(1);
-            CloudInputData thirdInterval2 = new CloudInputData(1);
-            CloudInputData fourthInterval2 = new CloudInputData(1);
-            CloudInputData fifthInterval2 = new CloudInputData(1);
-            CloudInputData sixthInterval2 = new CloudInputData(1);
-            CloudInputData seventhInterval2 = new CloudInputData(1);
-            CloudInputData eighthInterval2 = new CloudInputData(1);
+            //data pro EURO4
+            List<CloudInputData> euro4Data = new List<CloudInputData>();
+            firstInterval = new CloudInputData(Parameters["Srážky EURO4"]);
+            euro4Data.Add(firstInterval);
 
-            precipitationData2.Add(firstInterval2);
-            precipitationData2.Add(secondInterval2);
-            precipitationData2.Add(thirdInterval2);
-            precipitationData2.Add(fourthInterval2);
-            precipitationData2.Add(fifthInterval2);
-            precipitationData2.Add(sixthInterval2);
-            precipitationData2.Add(seventhInterval2);
-            precipitationData2.Add(eighthInterval2);
+            //data pro HIRLAM
+            List<CloudInputData> hirlamData = new List<CloudInputData>();
+            firstInterval = new CloudInputData(Parameters["Srážky HIRLAM"]);
+            hirlamData.Add(firstInterval);
 
-            PrecipitationModels.Add("Srážky ALADIN", precipitationData);
-            PrecipitationModels.Add("Srážky GDPS", precipitationData);
-            PrecipitationModels.Add("Srážky EURO4", precipitationData);
-            PrecipitationModels.Add("Srážky HIRLAM", precipitationData2);
+            //data pro WRF-NMM
+            List<CloudInputData> wrfnmmData = new List<CloudInputData>();
+            firstInterval = new CloudInputData(Parameters["Srážky WRF-NMM"]);
+            wrfnmmData.Add(firstInterval);
+
+            //data pro WRF-ARW
+            List<CloudInputData> wrfarwData = new List<CloudInputData>();
+            firstInterval = new CloudInputData(Parameters["Srážky WRF-ARW"]);
+            wrfarwData.Add(firstInterval);
+
+            //data pro GFS
+            List<CloudInputData> gfsData = new List<CloudInputData>();
+            firstInterval = new CloudInputData(Parameters["Srážky GFS"]);
+            gfsData.Add(firstInterval);
+
+            PrecipitationModels.Add("Srážky ALADIN", aladinData);
+            PrecipitationModels.Add("Srážky GDPS", gdpsData);
+            PrecipitationModels.Add("Srážky EURO4", euro4Data);
+            PrecipitationModels.Add("Srážky HIRLAM", hirlamData);
             //PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);//pro historické události - přepínatko
-            PrecipitationModels.Add("Srážky WRF-NMM", precipitationData2);
-            PrecipitationModels.Add("Srážky WRF-ARW", precipitationData);
-            PrecipitationModels.Add("Srážky GFS", precipitationData2);
+            PrecipitationModels.Add("Srážky WRF-NMM", wrfnmmData);
+            PrecipitationModels.Add("Srážky WRF-ARW", wrfarwData);
+            PrecipitationModels.Add("Srážky GFS", gfsData);
             //PrecipitationModels.Add("Srážky GFS Starý", precipitationData);//pro historické události - přepínatko
         }
 
@@ -341,7 +328,8 @@ namespace Meteo
         private void HumidityInfluences()
         {
             List<float> values = new List<float>() { Parameters["RH 2 m (%)"], Parameters["KONV+/DIV- (0-1 km)"] };
-            List<float> previousDayValues = new List<float>() { Parameters["Intenzita bouřek (SIVS) Staniční srážkoměry"], Parameters["Staniční srážkoměry CHMU+interpolace stanic"], Parameters["Interpolace (radary+srážkoměry)"] };
+            //List<float> previousDayValues = new List<float>() { Parameters["Intenzita bouřek (SIVS) Staniční srážkoměry"], Parameters["Staniční srážkoměry CHMU+interpolace stanic"], Parameters["Interpolace (radary+srážkoměry)"] };
+            List<float> previousDayValues = new List<float>() { Parameters["Intenzita bouřek (SIVS) Staniční srážkoměry"]};
             int previousDayLevel = ValueToLevel(HumidityInfluencesScale, Probability(previousDayValues));
             values.Add(previousDayLevel);
             int level = ValueToLevel(HumidityInfluencesScale, Probability(values));
@@ -352,7 +340,7 @@ namespace Meteo
         //Zjistit jak konkrétně budou vypočtené parametry využívána a počítány! 
         private void WindEffect()
         {
-            List<float> windwardValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR (Směšovací poměr)"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] }; // + Charakteristiky reliéfu
+            List<float> windwardValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] }; // + Charakteristiky reliéfu
             int windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
 
             List<float> leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
@@ -410,8 +398,10 @@ namespace Meteo
         private void DayHailStorm()
         {
             List<float> weights = new List<float>() { 3, 1, 2, 3, 3, 3, 1, 2, 3, 2, 3};
+            /*List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Parameters["Pwater"], Output["RH 1000-850 hPa"], Parameters["DLS"],
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };*/
             List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Parameters["Pwater"], Output["RH 1000-850 hPa"], Parameters["DLS"],
-                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };
+                Parameters["SREH 3 km"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };
             Output.Add("DEN - KRUPOBITÍ", DangerousPhenomenaCount(weights, values));
         }
 
@@ -443,13 +433,17 @@ namespace Meteo
                 List<float> valuesDryDownburst = new List<float>() { Parameters["RH 1000 hPa SD"], Parameters["RH 925 hPa SD"], Parameters["RH 850 hPa SD"] };
                 Output.Add("RH 1000-850 hPa SD", ValueToLevel(LevelScale, Probability(valuesDryDownburst)));
 
+                /*List<float> valuesSD = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};*/
                 List<float> valuesSD = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Parameters["SREH 3 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                 Output.Add("DEN - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
             }
 
+            /*List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};*/
             List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Parameters["SREH 3 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
             Output.Add("DEN - SILNÉ NÁRAZY VĚTRU", DangerousPhenomenaCount(weights, values));
         }
 
@@ -457,7 +451,9 @@ namespace Meteo
         private void SupercelarTornados()
         {
             List<float> weights = new List<float>() { 3, 3, 2, 2, 2, 3, 1, 3};
-            List<float> values = new List<float>() { Parameters["SBCAPE 0-2 km (J/kg) - den"], Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["LCL"],
+            /*List<float> values = new List<float>() { Parameters["SBCAPE 0-2 km (J/kg) - den"], Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["LCL"],
+                Parameters["STP"]};*/
+            List<float> values = new List<float>() { Parameters["SBCAPE 0-2 km (J/kg) - den"], Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["LCL"],
                 Parameters["STP"]};
             Output.Add("DEN - SUPERCELÁRNÍ TORNÁDA", DangerousPhenomenaCount(weights, values));
         }
@@ -523,7 +519,8 @@ namespace Meteo
         //Podpora vzniku nebezpečných jevů
         private void SupportOfDangerousPhenomenaCreation()
         {
-            List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"] };
+            //List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"] };
+            List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"] };
             int supDanPhenCreat = ValueToLevel(LevelScale, Probability(values));
             Output.Add("PODPORA VZNIKU NEBEZPEČNÝCH JEVŮ", supDanPhenCreat);
         }
@@ -540,9 +537,11 @@ namespace Meteo
         //Podpora konvekce
         private void SupportOfConvection() {
             List<float> values = new List<float>() { Parameters["Pwater"], Parameters["T 850 hPa"] };
-            List<float> relativeVorticityValues = new List<float>() { Parameters["RV 850 hPa"], Parameters["RV 500 hPa"], Parameters["RV 300 hPa"] };
+
+            /*List<float> relativeVorticityValues = new List<float>() { Parameters["RV 850 hPa"], Parameters["RV 500 hPa"], Parameters["RV 300 hPa"] };
             int relVor = ValueToLevel(LevelScale, Probability(relativeVorticityValues));
-            values.Add(relVor);
+            values.Add(relVor);*/
+
             int supCon = ValueToLevel(LevelScale, Probability(values));
             Output.Add("PODPORA KONVEKCE", supCon);
         }
@@ -552,8 +551,10 @@ namespace Meteo
         private void TriggeringConvection() {
             List<float> values = new List<float>() { Parameters["Tlak MSLP"], Parameters["FRONTOGENEZE 850 hPa"] };
             List<float> orographicSupportValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR"] };
-            List<float> konvDivValues = new List<float>() { Parameters["MOCON"], Parameters["MFDIV 0-1 km"] };
+            //List<float> konvDivValues = new List<float>() { Parameters["MOCON"], Parameters["MFDIV 0-1 km"] };
+            List<float> konvDivValues = new List<float>() { Parameters["MFDIV 0-1 km"] };
             List<float> oroOutputValues = new List<float>() { Parameters["MTV VECTOR"], Parameters["POTENTIAL OROGRAPHIC LIFITING"] };
+
             int KonvDiv = ValueToLevel(OroKonvScale, SumArray(konvDivValues) / (konvDivValues.Count * RATIO));
             orographicSupportValues.Add(KonvDiv);
             int OrographicLift = ValueToLevel(OroKonvScale, SumArray(oroOutputValues) / (oroOutputValues.Count * RATIO));

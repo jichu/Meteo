@@ -30,7 +30,11 @@ namespace Meteo
         }
         //Zde se bude počítat předpověď na základě parametrů
         public void Algorithm() {
-            //Util.l($"{fapList.First().Parameters["MLCAPE"]}");
+            foreach (var f in fapList)
+            {
+                //Util.l($"{fapList.First().Parameters["MLCAPE"]}");
+            }
+
         }
 
 
