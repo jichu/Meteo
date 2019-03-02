@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace Meteo
 {
@@ -81,12 +82,16 @@ namespace Meteo
 
         private void CreateCanvas()
         {
+            ClearControl("canvas");
             PictureBox pb = new PictureBox();
             pb.Width = 600;
             pb.Height = 370;
             pb.BackColor = Color.White;
             pb.Name = "canvas";
             pb.Location = new Point(0, comboAlgorithmOutput.Height+20);
+            ContextMenu cm = new ContextMenu();
+            cm.MenuItems.Add("Uložit jako...", new EventHandler(PictureSave_Click));
+            pb.ContextMenu = cm;
             this.Controls.Add(pb);
             canvas = (this.Controls["canvas"] as PictureBox);
             canvas.Image = new Bitmap(canvas.Width, canvas.Height);
@@ -95,19 +100,52 @@ namespace Meteo
             canvas.Paint += Canvas_Paint;
         }
 
+        private void PictureSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Images|*.png;*.bmp;*.jpg";
+            ImageFormat format = ImageFormat.Png;
+            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string ext = System.IO.Path.GetExtension(sfd.FileName);
+                switch (ext)
+                {
+                    case ".jpg":
+                        format = ImageFormat.Jpeg;
+                        break;
+                    case ".bmp":
+                        format = ImageFormat.Bmp;
+                        break;
+                }
+                canvas.Image.Save(sfd.FileName, format);
+            }
+        }
+
         private void CreateLegend()
         {
-            if (File.Exists(Util.pathSource["output_legend"]))
+            string path = Util.pathSource["output_legend"].Replace("[ID]", comboAlgorithmOutput.SelectedIndex.ToString());
+            ClearControl("legend");
+            if (File.Exists(path))
             {
                 PictureBox pb = new PictureBox();
                 pb.Name = "legend";
-                Image img = Image.FromFile(Util.pathSource["output_legend"]);
+                Image img = Image.FromFile(path);
                 pb.Image = img;
                 pb.Width = img.Width;
                 pb.Height = img.Height;
                 pb.Location = new Point(0,canvas.Height+comboAlgorithmOutput.Height+20);
                 this.Controls.Add(pb);
             }
+        }
+
+        private void ClearControl(string v)
+        {
+            foreach (Control item in this.Controls.OfType<Control>())
+            {
+                if (item.Name == v)
+                    this.Controls.Remove(item);
+            }
+
         }
 
         private void CreateTable()

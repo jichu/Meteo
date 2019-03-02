@@ -157,6 +157,9 @@ namespace Meteo
 
         private void ResizeMap(PictureBox pb)
         {
+            // disable resize
+            return;
+
             if (pb != null)
             {
                 float ratio = (float)pb.Image.Height / (float)pb.Image.Width;
@@ -297,7 +300,7 @@ namespace Meteo
                         Bitmap img = (Bitmap)pictureBoxMap.Image;
                         float sX = img.Width / (float)pictureBoxMap.Width;
                         float sY = img.Height / (float)pictureBoxMap.Height;
-                        this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X) - size / 2, (pictureBoxMap.Location.Y + (int)(point.Value.Y*sY)) - size / 2);
+                        this.Controls["rain" + symbolsRainCount].Location = new Point((pictureBoxMap.Location.X + point.Value.X) - size / 2, (pictureBoxMap.Location.Y + point.Value.Y) - size / 2);
                         this.Controls["rain" + symbolsRainCount].BackColor = Color.Transparent;
                         this.Controls["rain" + symbolsRainCount].BringToFront();
                         this.Controls["rain" + symbolsRainCount].MouseHover += new EventHandler(this.pictureBoxSymbol_MouseHover);

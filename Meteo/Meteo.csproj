@@ -281,6 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\images\map_output_background.png" />
+    <Content Include="bin\Debug\images\output_legend_0.png" />
     <Content Include="bin\Debug\images\symbol_cloud.png" />
     <Content Include="bin\Debug\images\symbol_rain.png" />
     <Content Include="bin\Debug\images\symbol_storm.png" />
