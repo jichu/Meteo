@@ -214,8 +214,9 @@ namespace Meteo
                 { "Kraslice",2 },
                 { "Ostrov",3}
             });*/
-            //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("09"));
-            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("09", comboAlgorithmOutput.SelectedIndex));
+            
+            //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("21", comboAlgorithmOutput.SelectedIndex));
+            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("18", comboAlgorithmOutput.SelectedIndex));
             canvas.Invalidate();
         }
 

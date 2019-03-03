@@ -24,7 +24,7 @@ namespace Meteo
             { "symbol_storm", @".\images\symbol_storm.png" },
             { "symbol_cloud", @".\images\symbol_cloud.png" },
             { "map_output_background", @".\images\map_output_background.png" },
-            { "output_legend", @".\images\output_legend.png" }
+            { "output_legend", @".\images\output_legend_0.png" }
         };
 
         public static Dictionary<string, int> algorithmOutput = new Dictionary<string, int>

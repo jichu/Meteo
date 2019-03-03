@@ -129,16 +129,16 @@ namespace Meteo
             Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek"));
             //Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", 0); //prozatím vynechat, vyrešit mezi prvnimi
             //Parameters.Add("Interpolace (radary+srážkoměry)", 0); //prozatím vynechat, vyrešit mezi prvnimi
-            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")); 
-            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")); 
+            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")); 
+            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")); 
             Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
             Parameters.Add("Srážky GDPS", GetParameter("Model_GDPS", "Srážky_MAIN")); 
             Parameters.Add("Srážky EURO4", GetParameter("Model_EURO4", "Srážky_MAIN")); 
             Parameters.Add("Srážky HIRLAM", GetParameter("Model_HIRLAM_Nový", "Srážky_MAIN_Nový")); //Alternace: Model_HIRLAM_Starý Srážky_MAIN_Starý
             Parameters.Add("Srážky WRF-NMM", GetParameter("Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN")); 
             Parameters.Add("Srážky WRF-ARW", GetParameter("Model_WRF_ARW", "Srážky_MAIN"));
-            Parameters.Add("Srážky GFS", GetParameter("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový")); // Alternace: Srážky_MAIN_Starý
-            
+            Parameters.Add("Srážky GFS", GetParameter("Model_GFS_Wetterzentrale_DE_25km_STARY", "Srážky_MAIN_Starý")); // Alternace: Srážky_MAIN_Nový
+
 
             //Parametry pro suchý downburst
             Parameters.Add("RH 1000 hPa Real", 75); //75  //GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000")
@@ -180,11 +180,11 @@ namespace Meteo
             List<CloudInputData> gfsData = new List<CloudInputData>();
             firstInterval = new CloudInputData(Parameters["Srážky GFS"]);
             gfsData.Add(firstInterval);
-
+            
             PrecipitationModels.Add("Srážky ALADIN", aladinData);
-            PrecipitationModels.Add("Srážky GDPS", gdpsData);
+            //PrecipitationModels.Add("Srážky GDPS", gdpsData);
             PrecipitationModels.Add("Srážky EURO4", euro4Data);
-            PrecipitationModels.Add("Srážky HIRLAM", hirlamData);
+            //PrecipitationModels.Add("Srážky HIRLAM", hirlamData);
             //PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);//pro historické události - přepínatko
             PrecipitationModels.Add("Srážky WRF-NMM", wrfnmmData);
             PrecipitationModels.Add("Srážky WRF-ARW", wrfarwData);
@@ -630,7 +630,7 @@ namespace Meteo
                 hi[i] /= PrecipitationModels.Count;
                 Output.Add((i * 3).ToString(), hi[i]);
             }
-            Output.Add(this.sampleName, hi[0]);
+            //Output.Add(this.sampleName, hi[0]);
         } 
 
 
@@ -736,13 +736,13 @@ namespace Meteo
             {
                 Util.l(item.Key + ":" + item.Value);
             }
-            /*
+            
             Util.l("PRŮBĚŽNÉ VÝSLEDKY");
             
             foreach(var item in Output)
             {
                 Util.l(item.Key + ":" + item.Value);
-            }*/
+            }
         }
 
         private float GetParameter(string model, string submodel) {
