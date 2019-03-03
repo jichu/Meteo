@@ -38,6 +38,7 @@
             this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
             this.backgroundWorkerEnumerationModels = new System.ComponentModel.BackgroundWorker();
+            this.menuItemLoadInputs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,6 +74,7 @@
             this.menuItemLoadModels,
             this.menuItemExplore,
             this.menuItemPalette,
+            this.menuItemLoadInputs,
             this.menuItemOutput});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
@@ -106,7 +108,7 @@
             this.menuItemOutput.Name = "menuItemOutput";
             this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.menuItemOutput.Size = new System.Drawing.Size(277, 22);
-            this.menuItemOutput.Text = "Výstup";
+            this.menuItemOutput.Text = "Zobrazit výstup";
             this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
             // 
             // panelLayout
@@ -122,6 +124,14 @@
             // backgroundWorkerEnumerationModels
             // 
             this.backgroundWorkerEnumerationModels.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerEnumerationModels_DoWork);
+            // 
+            // menuItemLoadInputs
+            // 
+            this.menuItemLoadInputs.Name = "menuItemLoadInputs";
+            this.menuItemLoadInputs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.menuItemLoadInputs.Size = new System.Drawing.Size(277, 22);
+            this.menuItemLoadInputs.Text = "Načíst vstupy";
+            this.menuItemLoadInputs.Click += new System.EventHandler(this.menuItemLoadInputs_Click);
             // 
             // FormMain
             // 
@@ -156,6 +166,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemPalette;
         private System.Windows.Forms.ToolStripMenuItem menuItemOutput;
         private System.ComponentModel.BackgroundWorker backgroundWorkerEnumerationModels;
+        private System.Windows.Forms.ToolStripMenuItem menuItemLoadInputs;
     }
 }
 

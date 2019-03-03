@@ -28,7 +28,6 @@ namespace Meteo
             this.menuItemExplore.PerformClick();
 
 
-            //backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 
 
@@ -82,6 +81,11 @@ namespace Meteo
 
         }
 
+        private void menuItemLoadInputs_Click(object sender, EventArgs e)
+        {
+            backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
+        }
+
         private void menuItemOutput_Click(object sender, EventArgs e)
         {
             if (!panelLayout.Controls.Contains(UserControlOutput.Instance))
@@ -123,5 +127,6 @@ namespace Meteo
         {
             UserControlModel.Instance.EnumerationModels();
         }
+
     }
 }
