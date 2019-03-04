@@ -124,6 +124,12 @@
     <Compile Include="Controller.cs" />
     <Compile Include="SourceImage.cs" />
     <Compile Include="StormEngine.cs" />
+    <Compile Include="Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControlModel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +172,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControlModel.resx">
       <DependentUpon>UserControlModel.cs</DependentUpon>
     </EmbeddedResource>
