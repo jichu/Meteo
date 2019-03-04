@@ -223,21 +223,21 @@ namespace Meteo
         }
 
         private void WriteToDatabase() {
-            CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"],Util.algorithmOutput["RIZIKO PŘÍVALOVÉ POVODNĚ"]);
+            CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"],Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
-            CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["INTENZITA BOUŘÍ"]);
+            CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
-            CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA SRÁŽEK"]);
+            CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
-            CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK"]);
+            CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
-            CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"]);
+            CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
-            CloudOutputData strongWindscreensOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"], Util.algorithmOutput["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"]);
+            CloudOutputData strongWindscreensOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutput);
-            CloudOutputData hailOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - KRUPOBITÍ"], Util.algorithmOutput["MÍSTO VÝSKYTU - KRUPOBITÍ"]);
+            CloudOutputData hailOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - KRUPOBITÍ"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA KRUPOBITÍ"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(hailOutput);
-            CloudOutputData supercelarTornadosOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"], Util.algorithmOutput["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"]);
+            CloudOutputData supercelarTornadosOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD"]);
             Model.Cloud.OUTPUTDATAInsertOrUpdate(supercelarTornadosOutput);
         }
 

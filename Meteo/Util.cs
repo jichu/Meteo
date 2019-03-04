@@ -24,19 +24,19 @@ namespace Meteo
             { "symbol_storm", @".\images\symbol_storm.png" },
             { "symbol_cloud", @".\images\symbol_cloud.png" },
             { "map_output_background", @".\images\map_output_background.png" },
-            { "output_legend", @".\images\output_legend_0.png" }
+            { "output_legend", @".\images\output_legend_[ID].png" }
         };
 
         public static Dictionary<string, int> algorithmOutput = new Dictionary<string, int>
         {
-            { "RIZIKO PŘÍVALOVÉ POVODNĚ", 0 },
-            { "INTENZITA BOUŘÍ", 1 },
-            { "PRAVDĚPODOBNOST MÍSTA SRÁŽEK", 2 },
-            { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK", 3 },
-            { "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", 4 },
-            { "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", 5 },
-            { "MÍSTO VÝSKYTU - KRUPOBITÍ", 6 },
-            { "MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA", 7 }
+            { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", 0 },
+            { "PŘEDPOVĚĎ INTENZITY BOUŘÍ", 1 },
+            { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", 2 },
+            { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", 3 },
+            { "PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ", 4 },
+            { "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU", 5 },
+            { "PŘEDPOVĚD RIZIKA KRUPOBITÍ", 6 },
+            { "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD", 7 }
         };
 
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
