@@ -29,31 +29,15 @@ namespace Meteo
             sample_name = item.sample_name;
             value = item.value;
             region = item.region;
-
         }
 
         public CloudInputData(string namModel, string namSubmodel, string namORP, string sample_name, float value) {
             id_model = Model.Cloud.MODELSGetSubmodelIDFromName(namModel,namSubmodel);
             this.sample_name = sample_name;
             this.value = value;
-
-            try { id_orp = Model.Cloud.ORPSGetIDFromName(namORP);
-                    region = false;
-            }
-            catch (InvalidOperationException e) {
-                region = true;
-            }
-
-            if (region) {
-                try {
-                    id_orp = Model.Cloud.REGIONSGetIDFromName(namORP);
-                }
-                catch (InvalidOperationException e) {
-                    Util.l("Neexistující obec nebo region"+e);
-                    id_orp = -1;
-                }
-            }
-
+            id_orp = Model.Cloud.ORPSGetIDFromName(namORP);
+            region = (id_orp == -1) ? true : false;           
+            if (region) id_orp = Model.Cloud.REGIONSGetIDFromName(namORP);
         }
     }
 }

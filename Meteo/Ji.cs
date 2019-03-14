@@ -45,18 +45,20 @@ namespace Meteo
             //InputData_InsertOrUpdateData();
             //ORPS_GetORPSForRegion();
             //ORPNameToColor();
-            //Test();
+            Test();
             //OutputData_GetDataForSample();
             //InputData_GetData();
         }
         public void Test() {
+            Util.l(Model.Cloud.REGIONSGetIDFromName("Zlínský kraj"));
+            /*
             List<CloudORPColor> colors = Model.Cloud.ORPColorGetORPColors();
             foreach (var c in colors)
             {
                 Util.l(c.color);
                 Util.l(Util.GetRegionNameByColor(c.color));
             }
-            Util.l(Util.GetRegionNameByColor("#abcdff"));
+            Util.l(Util.GetRegionNameByColor("#abcdff"));*/
         }
 
         public void OutputData_GetDataForSample() {

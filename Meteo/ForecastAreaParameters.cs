@@ -59,7 +59,7 @@ namespace Meteo
             //Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); // prozatím vynechat
             //Parameters.Add("Směr větru v hladině 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
             //Parameters.Add("Teplota (MAX)", 2); // prozatím vynechat
-
+            //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu"));
 
             /*Orografické vlastnosti oblasti
             Parameters.Add("Proudění větru J", 1);
@@ -114,8 +114,11 @@ namespace Meteo
             Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); 
             Parameters.Add("LCL", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku"));
             Parameters.Add("Nulová izoterma (km)", GetParameter("Model_GFS_Meteomodel_PL_25km", "0_izoterma_výška"));
-            //Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["Nulová izoterma (km)"] - Parameters["LCL"]); 
-            Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["LCL"] - Parameters["Nulová izoterma (km)"]); 
+
+            //Který je správně? odkomentovaný vrací kladný výsledek
+            Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["Nulová izoterma (km)"] - Parameters["LCL"]); 
+            //Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["LCL"] - Parameters["Nulová izoterma (km)"]); 
+
             Parameters.Add("SHIP", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHIP")); 
             Parameters.Add("DTHE", GetParameter("Model_GFS_Lightning_Wizard_50km", "DTHE_MAIN")); 
             Parameters.Add("SBCAPE 0-2 km (J/kg) - den", GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km"));
@@ -126,9 +129,8 @@ namespace Meteo
             Parameters.Add("RH 2 m (%)", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000"));
             Parameters.Add("KONV+/DIV- (0-1 km)", GetParameter("Model_WRF_ARW", "MFDIV_0-1km")); 
             Parameters.Add("OROGRAPHIC LIFT", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));
-            Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek"));
-            //Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", 0); //prozatím vynechat, vyrešit mezi prvnimi
-            //Parameters.Add("Interpolace (radary+srážkoměry)", 0); //prozatím vynechat, vyrešit mezi prvnimi
+            Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "srážkoměry"));
+            Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "radary_srážkoměry"));
             Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")); 
             Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")); 
             Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
@@ -218,7 +220,7 @@ namespace Meteo
             MergeB();
             WriteToDatabase();
 
-            //WriteOutputLog();
+            WriteOutputLog();
 
         }
 
@@ -330,7 +332,7 @@ namespace Meteo
         {
             List<float> values = new List<float>() { Parameters["RH 2 m (%)"], Parameters["KONV+/DIV- (0-1 km)"] };
             //List<float> previousDayValues = new List<float>() { Parameters["Intenzita bouřek (SIVS) Staniční srážkoměry"], Parameters["Staniční srážkoměry CHMU+interpolace stanic"], Parameters["Interpolace (radary+srážkoměry)"] };
-            List<float> previousDayValues = new List<float>() { Parameters["Intenzita bouřek (SIVS) Staniční srážkoměry"]};
+            List<float> previousDayValues = new List<float>() { Parameters["Staniční srážkoměry CHMU+interpolace stanic"], Parameters["Interpolace (radary+srážkoměry)"] };
             int previousDayLevel = ValueToLevel(HumidityInfluencesScale, Probability(previousDayValues));
             values.Add(previousDayLevel);
             int level = ValueToLevel(HumidityInfluencesScale, Probability(values));
@@ -745,8 +747,16 @@ namespace Meteo
             }
         }
 
-        private float GetParameter(string model, string submodel) {
-            float value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp);
+        private float GetParameter(string model, string submodel, string sample = "") {
+            float value;
+
+            if (sample == "")
+            {
+                value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp);
+            }
+            else {
+                value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sample, id_orp);
+            }
             return value;
         }
     }
