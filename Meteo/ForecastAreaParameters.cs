@@ -218,10 +218,18 @@ namespace Meteo
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
         private void MergeB() {
-            List<float> values = new List<float>() { Output["TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU"], Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění"] };
+            List<float> values;
+            if (IsDay())
+            {
+                values = new List<float>() { Output["TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU"], Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění"] };
+
+            }
+            else {
+                values = new List<float>() { Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění"] };
+            }
+
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("LOKÁLNÍ PŘEDPOVĚĎ", level);
-
             values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"]};
             level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU BOUŘEK", level);
