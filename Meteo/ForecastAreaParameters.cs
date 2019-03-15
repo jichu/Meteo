@@ -15,6 +15,7 @@ namespace Meteo
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
+        private List<float> PrecipitationPlaceModels = new List<float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
         private List<float> FinalScale = new List<float>() { 0.08f, 0.33f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale = new List<float>() { 0.22f, 0.39f, 0.67f, 1.0f };
@@ -59,7 +60,7 @@ namespace Meteo
             //Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); // prozatím vynechat
             //Parameters.Add("Směr větru v hladině 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
             //Parameters.Add("Teplota (MAX)", 2); // prozatím vynechat
-            //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu"));
+            //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu")); //nakonec se nebude používat
 
             /*Orografické vlastnosti oblasti
             Parameters.Add("Proudění větru J", 1);
@@ -69,8 +70,6 @@ namespace Meteo
 
 
             /*Nezařazené parametry z adresářové struktury
-            Model_GFS_Austria_50km SI_index_GFS_MAIN
-            Model_GFS_Meteomodel_PL_25km	MUCAPE_GFS
             Model_Radarové_snímky	Radarové_snímky
             Model_Synoptická_předpověď Synoptická_předpověď
             Model_Výstrahy_chmu Výstrahy_chmu
@@ -80,6 +79,8 @@ namespace Meteo
 
             Parameters.Add("MLCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS")); // Alternace: Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
             Parameters.Add("LI", GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN"));
+            Parameters.Add("MUCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MUCAPE_GFS")); 
+            Parameters.Add("SI", GetParameter("Model_GFS_Austria_50km", "SI_index_GFS_MAIN"));
             Parameters.Add("MLCIN", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de")); // Alternace: MLCIN_Wetter_3_de_MAIN
             Parameters.Add("TT index", GetParameter("Model_WRF_ARW_Balearsmeteo", "TT_Totals_Totals_index_Aladin_HR"));
             Parameters.Add("KI", GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index"));
@@ -136,10 +137,13 @@ namespace Meteo
             Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
             Parameters.Add("Srážky GDPS", GetParameter("Model_GDPS", "Srážky_MAIN")); 
             Parameters.Add("Srážky EURO4", GetParameter("Model_EURO4", "Srážky_MAIN")); 
-            Parameters.Add("Srážky HIRLAM", GetParameter("Model_HIRLAM_Nový", "Srážky_MAIN_Nový")); //Alternace: Model_HIRLAM_Starý Srážky_MAIN_Starý
+            Parameters.Add("Srážky HIRLAM", GetParameter("Model_HIRLAM_Nový", "Srážky_MAIN_Nový"));
+            Parameters.Add("Srážky HIRLAM Starý", GetParameter("Model_HIRLAM_Starý", "Srážky_MAIN_Starý"));
             Parameters.Add("Srážky WRF-NMM", GetParameter("Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN")); 
             Parameters.Add("Srážky WRF-ARW", GetParameter("Model_WRF_ARW", "Srážky_MAIN"));
-            Parameters.Add("Srážky GFS", GetParameter("Model_GFS_Wetterzentrale_DE_25km_STARY", "Srážky_MAIN_Starý")); // Alternace: Srážky_MAIN_Nový
+            Parameters.Add("Srážky GFS", GetParameter("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový"));
+            Parameters.Add("Srážky GFS Starý", GetParameter("Model_GFS_Wetterzentrale_DE_25km_STARY", "Srážky_MAIN_Starý"));
+            
 
 
             //Parametry pro suchý downburst
@@ -148,50 +152,19 @@ namespace Meteo
             Parameters.Add("RH 850 hPa Real", 75); //75 //GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850")
             Parameters.Add("LCL Real", 1200); //1200 //GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku")
 
-            //data pro ALADIN
-            List<CloudInputData> aladinData = new List<CloudInputData>();
-            CloudInputData firstInterval = new CloudInputData(Parameters["Srážky ALADIN"]);
-            aladinData.Add(firstInterval);
+            //Příprava dat pro předpověď času výskytu srážek
+            PrecipitationModels.Add("Srážky ALADIN", GetPrecipitationData(Parameters["Srážky ALADIN"]));
+            PrecipitationModels.Add("Srážky GDPS", GetPrecipitationData(Parameters["Srážky GDPS"]));
+            PrecipitationModels.Add("Srážky EURO4", GetPrecipitationData(Parameters["Srážky EURO4"]));
+            PrecipitationModels.Add("Srážky HIRLAM", GetPrecipitationData(Parameters["Srážky HIRLAM"]));
+            PrecipitationModels.Add("Srážky HIRLAM Starý", GetPrecipitationData(Parameters["Srážky HIRLAM Starý"])); //pro historické události - přepínatko
+            PrecipitationModels.Add("Srážky WRF-NMM", GetPrecipitationData(Parameters["Srážky WRF-NMM"]));
+            PrecipitationModels.Add("Srážky WRF-ARW", GetPrecipitationData(Parameters["Srážky WRF-ARW"]));
+            PrecipitationModels.Add("Srážky GFS", GetPrecipitationData(Parameters["Srážky GFS"]));
+            PrecipitationModels.Add("Srážky GFS Starý", GetPrecipitationData(Parameters["Srážky GFS Starý"])); //pro historické události - přepínatko
 
-            //data pro GDPS
-            List<CloudInputData> gdpsData = new List<CloudInputData>();
-            firstInterval = new CloudInputData(Parameters["Srážky GDPS"]);
-            gdpsData.Add(firstInterval);
-
-            //data pro EURO4
-            List<CloudInputData> euro4Data = new List<CloudInputData>();
-            firstInterval = new CloudInputData(Parameters["Srážky EURO4"]);
-            euro4Data.Add(firstInterval);
-
-            //data pro HIRLAM
-            List<CloudInputData> hirlamData = new List<CloudInputData>();
-            firstInterval = new CloudInputData(Parameters["Srážky HIRLAM"]);
-            hirlamData.Add(firstInterval);
-
-            //data pro WRF-NMM
-            List<CloudInputData> wrfnmmData = new List<CloudInputData>();
-            firstInterval = new CloudInputData(Parameters["Srážky WRF-NMM"]);
-            wrfnmmData.Add(firstInterval);
-
-            //data pro WRF-ARW
-            List<CloudInputData> wrfarwData = new List<CloudInputData>();
-            firstInterval = new CloudInputData(Parameters["Srážky WRF-ARW"]);
-            wrfarwData.Add(firstInterval);
-
-            //data pro GFS
-            List<CloudInputData> gfsData = new List<CloudInputData>();
-            firstInterval = new CloudInputData(Parameters["Srážky GFS"]);
-            gfsData.Add(firstInterval);
-            
-            PrecipitationModels.Add("Srážky ALADIN", aladinData);
-            //PrecipitationModels.Add("Srážky GDPS", gdpsData);
-            PrecipitationModels.Add("Srážky EURO4", euro4Data);
-            //PrecipitationModels.Add("Srážky HIRLAM", hirlamData);
-            //PrecipitationModels.Add("Srážky HIRLAM Starý", precipitationData);//pro historické události - přepínatko
-            PrecipitationModels.Add("Srážky WRF-NMM", wrfnmmData);
-            PrecipitationModels.Add("Srážky WRF-ARW", wrfarwData);
-            PrecipitationModels.Add("Srážky GFS", gfsData);
-            //PrecipitationModels.Add("Srážky GFS Starý", precipitationData);//pro historické události - přepínatko
+            //Přídání dostupných srážkových modelů
+            AddPrecipitationModel(new List<float>() { Parameters["Srážky ALADIN"], Parameters["Srážky GDPS"], Parameters["Srážky EURO4"], Parameters["Srážky HIRLAM"], Parameters["Srážky WRF-NMM"], Parameters["Srážky WRF-ARW"], Parameters["Srážky HIRLAM Starý"], Parameters["Srážky GFS Starý"] });
         }
 
         private void DoCountOperations()
@@ -572,8 +545,16 @@ namespace Meteo
 
         //Denní instabilita
         private void DayInstability() {
-            List<float> values = new List<float>() {Parameters["MLCAPE"], Parameters["LI"], Parameters["MLCIN"]
+            List<float> values;
+            if (IsDay())
+            {
+                values = new List<float>() {Parameters["MLCAPE"], Parameters["LI"], Parameters["MLCIN"]
                 , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]  };
+            }
+            else {
+                values = new List<float>() {Parameters["MUCAPE"], Parameters["SI"], Parameters["MLCIN"]
+                , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]  };
+            }
             float probabilityMLCAPELI = SumArray(values, 0, 2) / (2 * RATIO);
             int MLCAPELI = ValueToLevel(LevelScale, probabilityMLCAPELI);
             float probability = (SumArray(values, 2) + MLCAPELI) / ((values.Count - 1) * RATIO);
@@ -608,9 +589,7 @@ namespace Meteo
         //Pravděpodobnost srážek
         private void PrecipitationPlace() {
             float probability = 0;
-            List<float> values = new List<float>(){Parameters["Srážky ALADIN"], Parameters["Srážky GDPS"], Parameters["Srážky EURO4"]
-                , Parameters["Srážky HIRLAM"], Parameters["Srážky WRF-NMM"], Parameters["Srážky WRF-ARW"] };
-            probability = SumArray(values) / values.Count;
+            probability = SumArray(PrecipitationPlaceModels) / PrecipitationPlaceModels.Count;
             int level = ValueToLevel(LevelScale, probability);
             Output.Add("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK", probability);
             Output.Add("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT", level);
@@ -621,15 +600,23 @@ namespace Meteo
         private void PrecipitationTime()
         {
             List<float> hi = new List<float>() {0, 0, 0, 0, 0, 0, 0, 0};
+            List<int> modelsUnavailable = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0};
             foreach (KeyValuePair<string, List<CloudInputData>> kvp in PrecipitationModels) {
                 for (int i = 0; i < kvp.Value.Count; i++)
                 {
-                    hi[i] += kvp.Value.ElementAt(i).value;
+                    if (kvp.Value.ElementAt(i).value == -1)
+                    {
+                        modelsUnavailable[i]++;
+
+                    }
+                    else {
+                        hi[i] += kvp.Value.ElementAt(i).value;
+                    }
                 }              
             }
 
             for (int i = 0; i < hi.Count; i++) {
-                hi[i] /= PrecipitationModels.Count;
+                hi[i] /= (PrecipitationModels.Count-modelsUnavailable[i]);
                 Output.Add((i * 3).ToString(), hi[i]);
             }
             //Output.Add(this.sampleName, hi[0]);
@@ -732,14 +719,20 @@ namespace Meteo
         //Výpis výstupu
         private void WriteOutputLog() {
             
-            Util.l("\n\nVSTUPNÍ PARAMETRY\n--------------------\n");
+            Util.l("\n\nDOSTUPNÉ VSTUPNÍ PARAMETRY\n--------------------\n");
             Util.l(this.Name_orp);
+            Util.l("Počet dostupných srážkových modelů: " + PrecipitationPlaceModels.Count);
             foreach (var item in Parameters)
             {
-                Util.l(item.Key + ":" + item.Value);
+                if(item.Value!=-1) Util.l(item.Key + ":" + item.Value);
             }
-            
-            Util.l("PRŮBĚŽNÉ VÝSLEDKY");
+
+            Util.l("\n\nNEDOSTUPNÉ VSTUPNÍ PARAMETRY\n--------------------\n");
+            foreach (var item in Parameters) {
+                if (item.Value == -1) Util.l(item.Key);
+            }
+
+            Util.l("\n\nPRŮBĚŽNÉ VÝSLEDKY\n--------------------\n");
             
             foreach(var item in Output)
             {
@@ -747,6 +740,7 @@ namespace Meteo
             }
         }
 
+        //Vytažení parametru z databáze
         private float GetParameter(string model, string submodel, string sample = "") {
             float value;
 
@@ -758,6 +752,32 @@ namespace Meteo
                 value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sample, id_orp);
             }
             return value;
+        }
+
+        //Načtení dat ze srážkových modelů
+        private List<CloudInputData> GetPrecipitationData(float value)
+        {
+            List<CloudInputData> data = new List<CloudInputData>();
+            CloudInputData firstInterval = new CloudInputData(value);
+            data.Add(firstInterval);
+
+            return data;
+        }
+
+        //Přidání srážkového modelu do precipitationPlaceModels
+        private void AddPrecipitationModel(List<float> value) {
+            foreach (var v in value)
+            {
+                if (v != -1)
+                    PrecipitationPlaceModels.Add(v);
+            }
+        }
+
+        private bool IsDay() {
+            if (sampleName == "21" || sampleName == "00" || sampleName == "03" || sampleName == "06")
+                return false;
+            else
+                return true;
         }
     }
 }
