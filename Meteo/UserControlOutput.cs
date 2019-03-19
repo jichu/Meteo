@@ -215,8 +215,8 @@ namespace Meteo
                 { "Ostrov",3}
             });*/
             
-            //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("21", comboAlgorithmOutput.SelectedIndex));
-            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("18", comboAlgorithmOutput.SelectedIndex));
+            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("21", comboAlgorithmOutput.SelectedIndex));
+            //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("18", comboAlgorithmOutput.SelectedIndex));
             canvas.Invalidate();
         }
 

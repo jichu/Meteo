@@ -124,6 +124,12 @@
     <Compile Include="Controller.cs" />
     <Compile Include="SourceImage.cs" />
     <Compile Include="StormEngine.cs" />
+    <Compile Include="Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControlModel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +172,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControlModel.resx">
       <DependentUpon>UserControlModel.cs</DependentUpon>
     </EmbeddedResource>
@@ -282,6 +291,13 @@
   <ItemGroup>
     <Content Include="bin\Debug\images\map_output_background.png" />
     <Content Include="bin\Debug\images\output_legend_0.png" />
+    <Content Include="bin\Debug\images\output_legend_1.png" />
+    <Content Include="bin\Debug\images\output_legend_2.png" />
+    <Content Include="bin\Debug\images\output_legend_3.png" />
+    <Content Include="bin\Debug\images\output_legend_4.png" />
+    <Content Include="bin\Debug\images\output_legend_5.png" />
+    <Content Include="bin\Debug\images\output_legend_6.png" />
+    <Content Include="bin\Debug\images\output_legend_7.png" />
     <Content Include="bin\Debug\images\symbol_cloud.png" />
     <Content Include="bin\Debug\images\symbol_rain.png" />
     <Content Include="bin\Debug\images\symbol_storm.png" />

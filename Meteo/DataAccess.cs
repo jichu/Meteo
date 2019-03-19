@@ -289,14 +289,8 @@ namespace Meteo
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
                 float value;
-                try
-                {
-                    value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetData @ID_ORP, @SAMPLE_NAME, @ID_MODEL", new { id_orp = id_o, sample_name = sample, id_model = id_m }).ToList().First().value;
-                }
-                catch (Exception e) {
-                    //Util.l($"{id_o}: DATA PRO MODEL {id_m} NEJSOU V DATABÁZI K DISPOZICI!!! Výpočty nemusí být správné.");
-                    value = -1;
-                }
+                
+                    value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetDataValue @ID_ORP, @SAMPLE_NAME, @ID_MODEL", new { id_orp = id_o, sample_name = sample, id_model = id_m }).ToList().First().value;
 
                 return value;
             }
