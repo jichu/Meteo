@@ -71,7 +71,7 @@ namespace Meteo
                             colors.Add(c);
                             sizeRegion++;
                         }
-
+                        
                         float value = 0;
                         if (p != null)
                         {
@@ -207,6 +207,8 @@ namespace Meteo
             if (value >= 2.25 && value < 2.75)
                 value = 2.5f;
             if (value >= 2.75 && value <=3)
+                value = 3;
+            if (value >= 3)
                 value = 3;
             Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {value}" + Environment.NewLine+Environment.NewLine;
             return value;

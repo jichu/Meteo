@@ -2,12 +2,12 @@
 Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/nebul_public_00.png;[yyyy][MM][dd][cc]/nebul_public_00.png;12.png;text;Označení výstupu
 Model_ALADIN_CZ;Relativní_vlhkost_1000;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/RH2m_public_00.png;[yyyy][MM][dd][cc]/RH2m_public_00.png;12.png;;
 Model_ALADIN_CZ;Srážky;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/prec_public_rd_03.png;2019031312/prec_public_rd_03.png;15.png;;
-Model_EURO4;Srážky;https://expert-images.images-weatheronline.com/daten/proficharts/web/en/2019/03/13/basis12/dldl/prec/19031315_1312.gif;2019/03/13/basis12/dldl/prec/19031315_1312.gif;15.gif;;
+Model_EURO4;Srážky;https://expert-images.images-weatheronline.com/daten/proficharts/web/en/[yyyy]/[MM]/[dd]/basis12/dldl/prec/[yy][MM][dd][cc]_1312.gif;2019/03/13/basis12/dldl/prec/19031315_1312.gif;15.gif;;
 Model_GDPS;Srážky;http://img.meteocentre.com/models/gemglb_eur_fr_00/P6_GZ_D5_PN_003_0000.gif;gemglb_eur_fr_00/P6_GZ_D5_PN_003_0000.gif;03.gif;;
 Model_GFS_Austria_50km;LI_index_GFS_MAIN;http://www.cscaustria.at/roland/gfs/20190313/t12z/images/gfs_ceu_capelftx_2019031312f00.png;20190313/t12z/images/gfs_ceu_capelftx_2019031312f00.png;12.png;12 hod. aktualizace+00 hod.;
 Model_GFS_Austria_50km;SI_index_GFS_MAIN;http://www.cscaustria.at/roland/gfs/20190313/t12z/images/gfs_ceu_showalter_2019031312f00.png;20190313/t12z/images/gfs_ceu_showalter_2019031312f00.png;12.png;12 hod. aktualizace+00 hod.;
-Model_GFS_FLYMET_50km;Vítr_300__MAIN;http://flymet.meteopress.cz/gfs/vitrg[c].png;gfs/vitrg[c].png;00.png;;
-Model_GFS_FLYMET_50km;Vítr_400__MAIN;http://flymet.meteopress.cz/gfs/vitrf[c].png;gfs/vitrf[c].png;00.png;;
+Model_GFS_FLYMET_50km;Vítr_300__MAIN;http://flymet.meteopress.cz/gfs/vitrg[sc:0:8:6].png;gfs/vitrg[c].png;00.png;;
+Model_GFS_FLYMET_50km;Vítr_400__MAIN;http://flymet.meteopress.cz/gfs/vitrf[sc:0:8:6].png;gfs/vitrf[c].png;00.png;;
 Model_GFS_Lightning_Wizard_50km;DTHE_MAIN;http://www.lightningwizard.com/maps/Europe/gfs_gusts_eur0.png;gfs_gusts_eur0.png;12.png;plus 0 hod. (závisí na času aktualizace modelu GFS podle LI indexu se např. řídit, tzn. Aktualizace je v  12 hod. + 0 hod. = 12 hod.);
 Model_GFS_Lightning_Wizard_50km;MCS_vektor_pohybu_bouří;http://www.lightningwizard.com/maps/Europe/gfs_pw_eur0.png;gfs_pw_eur0.png;12.png;;
 Model_GFS_Lightning_Wizard_50km;Mixing_Ratio_0-1km;http://www.lightningwizard.com/maps/Europe/gfs_mixr_eur0.png;gfs_mixr_eur0.png;12.png;;
@@ -17,9 +17,9 @@ Model_GFS_Meteomodel_PL_25km;0_izoterma_výška;https://meteomodel.pl/gfs-para/H
 Model_GFS_Meteomodel_PL_25km;EHI,STP_MAIN;https://meteomodel.pl/gfs-para/STP/STP_01.png;gfs-para/STP/STP_01.png;18.png;;
 Model_GFS_Meteomodel_PL_25km;GRAD_925-700hPa;https://meteomodel.pl/gfs-para/GRD700/GRD700_01.png;gfs-para/GRD700/GRD700_01.png;18.png;;
 Model_GFS_Meteomodel_PL_25km;Instabilita_GRAD_850-500;https://meteomodel.pl/gfs-para/GRD500/GRD500_01.png;gfs-para/GRD500/GRD500_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;KI_Whiting_index;https://meteomodel.pl/gfs-para/KI/KI_01.png;gfs-para/KI/KI_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;MLCAPE_GFS;https://meteomodel.pl/gfs-para/MLCAPE/MLCAPE_01.png;gfs-para/MLCAPE/MLCAPE_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;MUCAPE_GFS;https://meteomodel.pl/gfs-para/MUCAPE/MUCAPE_01.png;gfs-para/MUCAPE/MUCAPE_01.png;18.png;;
+Model_GFS_Meteomodel_PL_25km;KI_Whiting_index;https://meteomodel.pl/gfs-para/KI/KI_[scc:1:8:6].png;gfs-para/KI/KI_[c][scc:1:8].png;18.png;;
+Model_GFS_Meteomodel_PL_25km;MLCAPE_GFS;https://meteomodel.pl/gfs-para/MLCAPE/MLCAPE_[scc:1:8:6].png;gfs-para/MLCAPE/MLCAPE_01.png;18.png;;
+Model_GFS_Meteomodel_PL_25km;MUCAPE_GFS;https://meteomodel.pl/gfs-para/MUCAPE/MUCAPE_[scc:1:8:6].png;gfs-para/MUCAPE/MUCAPE_01.png;18.png;;
 Model_GFS_Meteomodel_PL_25km;Relativní_vlhkost_850;https://meteomodel.pl/gfs-para/RH850/RH850_01.png;gfs-para/RH850/RH850_01.png;18.png;;
 Model_GFS_Meteomodel_PL_25km;Relativní_vlhkost_925;https://meteomodel.pl/gfs-para/RH925/RH925_01.png;gfs-para/RH925/RH925_01.png;18.png;;
 Model_GFS_Meteomodel_PL_25km;SHEAR_DLS_Střih_větru_0-6_km;https://meteomodel.pl/gfs-para/DLS/DLS_01.png;gfs-para/DLS/DLS_01.png;18.png;;

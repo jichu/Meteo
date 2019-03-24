@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,12 +19,15 @@ namespace DownloaderImagesModels
         private Dictionary<string, string> rulesReplace = new Dictionary<string, string>
             {
                 { "[yyyy]", DateTime.Now.Year.ToString() },
+                { "[yy]", DateTime.Now.ToString("yy") },
                 { "[MM]", DateTime.Now.ToString("MM") },
                 { "[dd]", DateTime.Now.ToString("dd") }
             };
 
         private string ruleCounter = "[cc]";
         private string ruleCounterShort = "[c]";
+        private string ruleCounterNow = "[scc:";
+        private string ruleCounterNowShort = "[sc:";
 
         private int stepHour=3;
 
@@ -41,15 +45,22 @@ namespace DownloaderImagesModels
             {
                 Util.ProcessReady("Prosím čekejte...");
                 int i = 0;
+                int skip = 14;
                 foreach (var item in LoadSetting.listOfRecords)
                 {
+                    i++;
+                    /*
+                    if (i < skip)
+                        continue;
+
+    */
 
                     AutoCounter($"./models/{item.Model}/{item.Submodel}/", ReplaceDate(item.URL));
                     /*
-                    if(i>2)
+                    if(i>skip-1)
                         break;
-                    i++;
-                    */
+                        */
+                        
 
                 }
 
@@ -82,7 +93,19 @@ namespace DownloaderImagesModels
 
         private void AutoCounter(string path, string url)
         {
-            for (int i = 0; i <= 24; i+= stepHour)
+            if (url.IndexOf(ruleCounter) != -1 | url.IndexOf(ruleCounterShort) != -1)
+                Counter24(path, url);
+
+            if (url.IndexOf(ruleCounterNow) != -1)
+                CounterNow(path, url, ruleCounterNow);
+
+            if (url.IndexOf(ruleCounterNowShort) != -1)
+                CounterNow(path, url, ruleCounterNowShort);
+        }
+        
+        private void Counter24(string path, string url)
+        {
+            for (int i = 0; i <= 24; i += stepHour)
             {
                 string cc = "";
                 string link = "";
@@ -98,7 +121,6 @@ namespace DownloaderImagesModels
                 }
                 if (cc != "")
                 {
-                    Util.l($"Načítám/ukládám do: {path} {link}");
                     cc = i < 10 ? "0" + i.ToString() : i.ToString();
                     if (SaveImage(path, link, cc + ".png"))
                     {
@@ -106,6 +128,60 @@ namespace DownloaderImagesModels
                     }
                 }
             }
+        }
+
+        private void CounterNow(string path, string url, string rc="[scc")
+        {
+            var regex = new Regex(@"\"+rc+@"\d+:\d+:\d\]");
+            char sep = ':';
+            int hour = 0;
+            int.TryParse(DateTime.Now.ToString("HH"),out hour);
+            foreach (Match match in regex.Matches(url))
+            {
+                string rule = match.Value.Replace("[","").Replace("]", "");
+                if (rule.IndexOf(sep)!=-1)
+                {
+                    string[] counter = rule.Split(sep);
+                    if(counter.Length==4)
+                    {
+                        int from = 0;
+                        int to = 0;
+                        int update = 6;
+                        int.TryParse(counter[1], out from);
+                        int.TryParse(counter[2], out to);
+                        int.TryParse(counter[3], out update);
+
+                        int startHour = FindHourByUpdate(hour, update);
+                        int counterHour = 0;
+
+                        if (to>=from)
+                            for (int i= from; i <= to; i++)
+                            {
+                                string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()):i.ToString();
+                                string link = url.Replace(match.Value, index);
+                                string c = (startHour + counterHour).ToString();
+                                if (startHour + counterHour > 24)
+                                    break;
+                                counterHour += stepHour;
+                                string cc = c.Length < 2 ? "0" + c : c;
+                                if (SaveImage(path, link, cc+".png"))
+                                {
+                                    counterSuccess++;
+                                }
+                            }
+                    }
+                }
+            }
+        }
+
+        private int FindHourByUpdate(int hour, int update)
+        {
+            for (int i = 0; i <= 24; i += update)
+            {
+                if (Enumerable.Range(i, update).Contains(hour))
+                    return i;
+            }
+            return 0;
         }
 
         private string ReplaceDate(string url)
@@ -132,6 +208,7 @@ namespace DownloaderImagesModels
                         using (var img = Image.FromStream(mem))
                         {
                             DirectoryInfo di = Directory.CreateDirectory(path);
+                            Util.l($"Načítám/ukládám do: {path+filename} {url}");
                             img.Save(path + filename, ImageFormat.Png);
                             return true;
                         }
