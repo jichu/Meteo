@@ -284,13 +284,13 @@ namespace Meteo
             }
         }
 
-        public float InputDataGetData(int id_m, string sample, int id_o)
+        public float InputDataGetData(int id_m, string sample, int id_o, int typeVal = 0)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
                 float value;
                 
-                    value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetDataValue @ID_ORP, @SAMPLE_NAME, @ID_MODEL", new { id_orp = id_o, sample_name = sample, id_model = id_m }).ToList().First().value;
+                    value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetDataValue @ID_ORP, @SAMPLE_NAME, @ID_MODEL, @TYPE", new { id_orp = id_o, sample_name = sample, id_model = id_m, type=typeVal }).ToList().First().value;
 
                 return value;
             }

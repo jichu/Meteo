@@ -13,6 +13,7 @@ namespace Meteo
         public string sample_name { get; set; }
         public float value { get; set; }
         public bool region { get; set; }
+        public int type { get; set; }
 
         public CloudInputData() {
             value = 0;
@@ -29,10 +30,12 @@ namespace Meteo
             sample_name = item.sample_name;
             value = item.value;
             region = item.region;
+            type = item.type;
         }
 
-        public CloudInputData(string namModel, string namSubmodel, string namORP, string sample_name, float value) {
+        public CloudInputData(string namModel, string namSubmodel, string namORP, string sample_name, float value, string type = "DEFAULT") {
             id_model = Model.Cloud.MODELSGetSubmodelIDFromName(namModel,namSubmodel);
+            this.type = Model.Cloud.ModelSpectrumTypeGetIDForName(type);
             this.sample_name = sample_name;
             this.value = value;
             id_orp = Model.Cloud.ORPSGetIDFromName(namORP);

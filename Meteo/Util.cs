@@ -34,9 +34,10 @@ namespace Meteo
             { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", 2 },
             { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", 3 },
             { "PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ", 4 },
-            { "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU", 5 },
-            { "PŘEDPOVĚD RIZIKA KRUPOBITÍ", 6 },
-            { "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD", 7 }
+            { "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST", 5 },
+            { "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST", 6 },
+            { "PŘEDPOVĚD RIZIKA KRUPOBITÍ",  7},
+            { "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD", 8 }
         };
 
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
