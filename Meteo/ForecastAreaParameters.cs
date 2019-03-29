@@ -193,7 +193,7 @@ namespace Meteo
             MergeB();
             WriteToDatabase();
 
-            WriteOutputLog();
+            //WriteOutputLog();
 
         }
 
@@ -444,6 +444,7 @@ namespace Meteo
                     Output.Add("SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
                 }
             }
+
             List<float> values;
             if (IsDay())
             {
