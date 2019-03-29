@@ -11,6 +11,7 @@ namespace Meteo
         public int id_orp { get; set; }
         public string Name_orp { get; set; }
         public string sampleName { get; set; }
+        private int precision = 10;
 
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
@@ -52,11 +53,11 @@ namespace Meteo
         private void LoadParameters() {
 
             //Zatím vynechané parametry
-            //Parameters.Add("MOCON", 1); // prozatím vynechat
-            //Parameters.Add("RV 850 hPa", 1); prozatím vynechat
-            //Parameters.Add("RV 500 hPa", 1); prozatím vynechat
-            //Parameters.Add("RV 300 hPa", 1); prozatím vynechat
-            //Parameters.Add("SWEAT", 1); // prozatím vynechat
+            Parameters.Add("MOCON", -1); // prozatím vynechat
+            Parameters.Add("RV 850 hPa", -1); 
+            Parameters.Add("RV 500 hPa", -1);
+            Parameters.Add("RV 300 hPa", -1); 
+            Parameters.Add("SWEAT", -1);
             //Parameters.Add("1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")); // prozatím vynechat
             //Parameters.Add("925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")); // prozatím vynechat
             //Parameters.Add("850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); // prozatím vynechat
@@ -122,7 +123,10 @@ namespace Meteo
             Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); 
             Parameters.Add("LCL", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku"));
             Parameters.Add("Nulová izoterma (km)", GetParameter("Model_GFS_Meteomodel_PL_25km", "0_izoterma_výška"));
-            Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["LCL"] - Parameters["Nulová izoterma (km)"]); 
+
+            //Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["LCL"] - Parameters["Nulová izoterma (km)"]); 
+            Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["Nulová izoterma (km)"] - Parameters["LCL"]);
+            
             Parameters.Add("SHIP", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHIP")); 
             Parameters.Add("DTHE", GetParameter("Model_GFS_Lightning_Wizard_50km", "DTHE_MAIN")); 
             Parameters.Add("SBCAPE 0-2 km (J/kg) - den", GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km"));
@@ -186,20 +190,20 @@ namespace Meteo
             WindCut();
             SupportOfDangerousPhenomenaCreation();
             ConvectiveStormOrganization();
-            StormMoving();
-            IntensityOfStrongStormsDay();
-            TorrentialRain();
-            DayHailStorm();
-            StrongWindImpact();
-            SupercelarTornados();
-            TemperatureInfluencesOfEarthSurface();
-            WindInfluences();
-            HumidityInfluences();
+            StormMoving();   
+            IntensityOfStrongStormsDay();  
+            TorrentialRain();      
+            DayHailStorm();         
+            StrongWindImpact();           
+            SupercelarTornados();           
+            TemperatureInfluencesOfEarthSurface();         
+            WindInfluences();           
+            HumidityInfluences();            
             WindEffect();
             MergeB();
             WriteToDatabase();
 
-            WriteOutputLog();
+            //WriteOutputLog();
 
         }
 
@@ -359,8 +363,6 @@ namespace Meteo
 
         //Návětrný efekt
 
-
-
         //6. Riziko výskytu nebezpečných jevů
         private int DangerousPhenomenaCount(List<float> weights, List<float> values) {
             List<float> parameterValues = new List<float>();
@@ -400,16 +402,14 @@ namespace Meteo
             List<float> values;
             if (IsDay())
             {
-                /*List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Parameters["Pwater"], Output["RH 1000-850 hPa"], Parameters["DLS"],
-                    Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };*/
                 values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Parameters["Pwater"], Output["RH 1000-850 hPa"], Parameters["DLS"],
-                Parameters["SREH 3 km"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };
+                Parameters["SREH 3 km"],Parameters["SWEAT"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };
                 
             }
             else
             {
                 values = new List<float>() { Parameters["MUCAPE"], Parameters["SI"], Parameters["GRAD 850-500 hPa"], Parameters["Pwater"], Output["RH 1000-850 hPa"], Parameters["DLS"],
-                Parameters["SREH 3 km"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 300 hPa"], Parameters["MXR"], Parameters["SHIP"] };
                 
             }
             Output.Add("KRUPOBITÍ", DangerousPhenomenaCount(weights, values));
@@ -440,15 +440,13 @@ namespace Meteo
                 List<float> valuesSD;
                 if (IsDay())
                 {
-                    /*List<float> valuesSD = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};*/
                     valuesSD = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                     Output.Add("SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
                 }
                 else {
                     valuesSD = new List<float>() { Parameters["MUCAPE"], Parameters["SI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                     Output.Add("SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
                 }
             }
@@ -456,15 +454,13 @@ namespace Meteo
             List<float> values;
             if (IsDay())
             {
-                /*List<float> values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
-                    Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};*/
                 values = new List<float>() { Parameters["MLCAPE"], Parameters["LI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                 Output.Add("SILNÉ NÁRAZY VĚTRU", DangerousPhenomenaCount(weights, values));
             }
             else {
                 values = new List<float>() { Parameters["MUCAPE"], Parameters["SI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa"], Parameters["LCL"], Parameters["DLS"], Parameters["LLS"],
-                Parameters["SREH 3 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
+                Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                 Output.Add("SILNÉ NÁRAZY VĚTRU", DangerousPhenomenaCount(weights, values));
             }
         }
@@ -473,9 +469,7 @@ namespace Meteo
         private void SupercelarTornados()
         {
             List<float> weights = new List<float>() { 3, 3, 2, 2, 2, 3, 1, 3};
-            /*List<float> values = new List<float>() { Parameters["SBCAPE 0-2 km (J/kg) - den"], Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["LCL"],
-                Parameters["STP"]};*/
-            List<float> values = new List<float>() { Parameters["SBCAPE 0-2 km (J/kg) - den"], Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["Rychlost větru v 850 hPa"], Parameters["LCL"],
+            List<float> values = new List<float>() { Parameters["SBCAPE 0-2 km (J/kg) - den"], Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["LCL"],
                 Parameters["STP"]};
             Output.Add("DEN - SUPERCELÁRNÍ TORNÁDA", DangerousPhenomenaCount(weights, values));
         }
@@ -532,7 +526,6 @@ namespace Meteo
         {
             List<float> values = new List<float>() { Parameters["Rychlost větru v 300 hPa"], Parameters["Rychlost větru v 850 hPa"] };
             int convStormOrg = ValueToLevel(OroKonvScale, Probability(values));
-            //Output.Add("DEBUG", Probability(values));
             Output.Add("ORGANIZACE KONV. BOUŘE", convStormOrg);
         }
 
@@ -541,8 +534,7 @@ namespace Meteo
         //Podpora vzniku nebezpečných jevů
         private void SupportOfDangerousPhenomenaCreation()
         {
-            //List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"] };
-            List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"] };
+            List<float> values = new List<float>() { Parameters["LLS"], Parameters["SREH 3 km"], Parameters["SREH 1 km"], Parameters["SWEAT"] };
             int supDanPhenCreat = ValueToLevel(LevelScale, Probability(values));
             Output.Add("PODPORA VZNIKU NEBEZPEČNÝCH JEVŮ", supDanPhenCreat);
         }
@@ -560,9 +552,9 @@ namespace Meteo
         private void SupportOfConvection() {
             List<float> values = new List<float>() { Parameters["Pwater"], Parameters["T 850 hPa"] };
 
-            /*List<float> relativeVorticityValues = new List<float>() { Parameters["RV 850 hPa"], Parameters["RV 500 hPa"], Parameters["RV 300 hPa"] };
+            List<float> relativeVorticityValues = new List<float>() { Parameters["RV 850 hPa"], Parameters["RV 500 hPa"], Parameters["RV 300 hPa"] };
             int relVor = ValueToLevel(LevelScale, Probability(relativeVorticityValues));
-            values.Add(relVor);*/
+            values.Add(relVor);
 
             int supCon = ValueToLevel(LevelScale, Probability(values));
             Output.Add("PODPORA KONVEKCE", supCon);
@@ -573,37 +565,38 @@ namespace Meteo
         private void TriggeringConvection() {
             List<float> values = new List<float>() { Parameters["Tlak MSLP"], Parameters["FRONTOGENEZE 850 hPa"] };
             List<float> orographicSupportValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR"] };
-            //List<float> konvDivValues = new List<float>() { Parameters["MOCON"], Parameters["MFDIV 0-1 km"] };
-            List<float> konvDivValues = new List<float>() { Parameters["MFDIV 0-1 km"] };
+            List<float> konvDivValues = new List<float>() { Parameters["MOCON"], Parameters["MFDIV 0-1 km"] };
             List<float> oroOutputValues = new List<float>() { Parameters["MTV VECTOR"], Parameters["POTENTIAL OROGRAPHIC LIFITING"] };
 
-            int KonvDiv = ValueToLevel(OroKonvScale, SumArray(konvDivValues) / (konvDivValues.Count * RATIO));
+            int KonvDiv = ValueToLevel(OroKonvScale, Probability(konvDivValues));            
             orographicSupportValues.Add(KonvDiv);
-            int OrographicLift = ValueToLevel(OroKonvScale, SumArray(oroOutputValues) / (oroOutputValues.Count * RATIO));
+            int OrographicLift = ValueToLevel(OroKonvScale, Probability(oroOutputValues));
             orographicSupportValues.Add(OrographicLift);
-            int OrographicSupport = ValueToLevel(LevelScale, SumArray(orographicSupportValues) / (orographicSupportValues.Count * RATIO));
+            int OrographicSupport = ValueToLevel(LevelScale, Probability(orographicSupportValues));
             values.Add(OrographicSupport);
             values.Add(Output["RH 1000-300 hPa"]);
-            int triggeringConv = ValueToLevel(LevelScale, SumArray(values) / (values.Count * RATIO));
+            int triggeringConv = ValueToLevel(LevelScale, Probability(values));
             Output.Add("SPOUŠTĚNÍ KONVEKCE", triggeringConv);
         }
 
 
         //Denní instabilita
         private void DayInstability() {
-            List<float> values;
+            List<float> values = new List<float>() { Parameters["MLCIN"]
+                , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]};
+            List<float> values2;
             if (IsDay())
             {
-                values = new List<float>() {Parameters["MLCAPE"], Parameters["LI"], Parameters["MLCIN"]
-                , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]  };
+                values2 = new List<float>() {Parameters["MLCAPE"], Parameters["LI"]  };
             }
             else {
-                values = new List<float>() {Parameters["MUCAPE"], Parameters["SI"], Parameters["MLCIN"]
-                , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]  };
+                values2 = new List<float>() {Parameters["MUCAPE"], Parameters["SI"]  };
             }
-            float probabilityMLCAPELI = SumArray(values, 0, 2) / (2 * RATIO);
+
+            float probabilityMLCAPELI = Probability(values2);
             int MLCAPELI = ValueToLevel(LevelScale, probabilityMLCAPELI);
-            float probability = (SumArray(values, 2) + MLCAPELI) / ((values.Count - 1) * RATIO);
+            values.Add(MLCAPELI);
+            float probability = Probability(values);
             int level = ValueToLevel(LevelScale, probability);
             Output.Add("DENNÍ INSTABILITA ATMOSFÉRY", level);
 
@@ -612,19 +605,19 @@ namespace Meteo
         //Relativní vlhkost - potřebuje přidat podmínku pro suchý downburst
         private void RelativeHumidity() {
             //Suchý downburst
-            
-
             List<float> values = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"]
                 , Parameters["RH 700 hPa"], Parameters["RH 500 hPa"], Parameters["RH 300 hPa"] };
-            float probability = SumArray(values) / (values.Count * RATIO);
+            float probability = Probability(values);
             int level = ValueToLevel(LevelScale, probability);
             Output.Add("RH 1000-300 hPa", level);
 
-            probability = SumArray(values, 2) / ((values.Count - 2) * RATIO);
+            values = new List<float> (){Parameters["RH 850 hPa"], Parameters["RH 700 hPa"], Parameters["RH 500 hPa"], Parameters["RH 300 hPa"] };
+            probability = Probability(values);
             level = ValueToLevel(LevelScale, probability);
             Output.Add("RH 850-300 hPa", level);
 
-            probability = SumArray(values, 0, 3) / ((values.Count - 3) * RATIO);
+            values = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"]};
+            probability = Probability(values);
             level = ValueToLevel(LevelScale, probability);
             Output.Add("RH 1000-850 hPa Value", probability);
             Output.Add("RH 1000-850 hPa", level);
@@ -667,9 +660,7 @@ namespace Meteo
             }
             //Output.Add(this.sampleName, hi[0]);
         } 
-
-
-
+               
         //Pomocné výpočetní funkce
 
         //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
@@ -677,14 +668,20 @@ namespace Meteo
             int level = -1;
             foreach (var l in levels) {
 
-                level = (value < l) ? levels.IndexOf(l) : -1;
+                level = (value <= l) ? levels.IndexOf(l) : -1;
                 if (level != -1) break;
             }
             return level;
         }
         //Výpočet pravděpodobnosti
         private float Probability(List<float> list) {
-            return (float) Math.Round((double)(new decimal(SumArray(list) / (list.Count * RATIO))), 2);
+            List<float> values = TestParameters(list);
+            /*foreach (var i in values) {
+                Util.l(i);
+            }
+            Util.l("\n");*/
+            if (values.Count!=0) return (float)Math.Round((double)(new decimal(SumArray(values) / (values.Count * RATIO))), precision);
+            else { return -1; }
         }
 
         private float ProbabilityWeights(List<float> arr, List<float> weights)
@@ -693,6 +690,7 @@ namespace Meteo
             float sumWeights = 0;
             for (int i = 0; i < arr.Count; i++)
             {
+                if (arr.ElementAt(i) == -1) { weights[i] = 0; }
                 sum += arr.ElementAt(i) * weights.ElementAt(i);
                 //Util.l($"value: {arr.ElementAt(i)}, weight: {weights.ElementAt(i)}");
             }
@@ -819,11 +817,21 @@ namespace Meteo
             }
         }
 
+        //Test na den/noc
         private bool IsDay() {
             if (sampleName == "21" || sampleName == "00" || sampleName == "03" || sampleName == "06")
                 return false;
             else
                 return true;
+        }
+
+        private List<float> TestParameters(List<float> list) {
+            List<float> values = new List<float>();
+            foreach (var l in list)
+            {
+                if(l!=-1) values.Add(l);
+            }
+            return values;
         }
     }
 }
