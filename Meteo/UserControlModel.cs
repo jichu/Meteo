@@ -109,11 +109,15 @@ namespace Meteo
                         {
                             treeViewModel.Nodes[nodeModel].Nodes[nodeSubModel].Nodes.Add(Path.GetFileName(file));
                             treeViewModel.Nodes[nodeModel].Nodes[nodeSubModel].Nodes[nodeFile].Name=file;
+
+                            AddTypeReal(file, model, submodel);
+
                             sourceImages.Add(new SourceImage()
                             {
                                 Path = file,
                                 Model = model,
-                                Submodel=submodel
+                                Submodel = submodel,
+                                Type = "DEFAULT"
                             });
                             nodeFile++;
                         }
@@ -130,6 +134,22 @@ namespace Meteo
             {
                 Util.l(e);
             }
+        }
+
+        private void AddTypeReal(string file, string model, string submodel)
+        {
+            string options = Model.Cloud.MODELSGetModelOptions(model, submodel);
+            JObject jo = JObject.Parse(options);
+            var p = jo.Property("type");
+            if(p!=null)
+            if (jo["type"].ToString() == "REAL")
+                sourceImages.Add(new SourceImage()
+                            {
+                                Path = file,
+                                Model = model,
+                                Submodel = submodel,
+                                Type = "REAL"
+                            });
         }
 
         private void treeViewModel_AfterSelect(object sender, TreeViewEventArgs e)

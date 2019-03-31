@@ -11,5 +11,6 @@ namespace Meteo
         public string Path { get; set; }
         public string Model { get; set; }
         public string Submodel { get; set; }
+        public string Type { get; set; }
     }
 }

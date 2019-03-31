@@ -19,6 +19,7 @@ namespace Meteo
         private string path;
         private PreImage mapORP;
         public Bitmap bmp;
+        private string typeStupnice;
         private List<CloudModelSpectrum> cloudModelSpectrum;
 
         public Images() {
@@ -27,6 +28,7 @@ namespace Meteo
         public Images(string path)
         {
             this.path = path;
+            this.typeStupnice = "DEFAULT";
             LoadImage(path);
             LoadPointsOfColorsInMap();
         }
@@ -36,6 +38,7 @@ namespace Meteo
             this.path = si.Path;
             Util.curModelName = si.Model;
             Util.curSubmodelName = si.Submodel;
+            this.typeStupnice = si.Type;
             LoadImage(path);
             LoadPointsOfColorsInMap(onlyEnumeration);
         }
@@ -75,6 +78,8 @@ namespace Meteo
                         float value = 0;
                         if (p != null)
                         {
+                            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName, typeStupnice);
+
                             switch (p.Value.ToString()) {
                                 default:
                                 case "sum":
@@ -101,7 +106,7 @@ namespace Meteo
                         {
                             //Util.l($"CloudInputData({Util.curModelName},{Util.curSubmodelName},{regionName},{Path.GetFileNameWithoutExtension(path)},{value})");
 
-                            CloudInputData inputORP = new CloudInputData(Util.curModelName, Util.curSubmodelName, regionName, Path.GetFileNameWithoutExtension(path), value);
+                            CloudInputData inputORP = new CloudInputData(Util.curModelName, Util.curSubmodelName, regionName, Path.GetFileNameWithoutExtension(path), value, typeStupnice);
                          
                             Model.Cloud.InputDataInsertOrUpdate(inputORP); //INPUT_DATA - DON'T TOUCH!!!! 
                         }
@@ -142,10 +147,8 @@ namespace Meteo
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
 
-            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName);
             float sumValues = 0;
-
-
+            
             foreach (var c in list)
                 foreach (var r in cloudModelSpectrum) {
                     if (r.color.Replace("#", "ff") == c.Name)
@@ -173,8 +176,6 @@ namespace Meteo
         {
             Dictionary<string,int> counts = new Dictionary<string, int>();
             Dictionary<string, int> values = new Dictionary<string, int>();
-
-            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName);
 
             float sumValues = 0;            
             foreach (var c in list)
@@ -213,12 +214,10 @@ namespace Meteo
             Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {value}" + Environment.NewLine+Environment.NewLine;
             return value;
         }
-
+        
         private float GetValueFromSpectrumBarMajority(List<Color> list, int sizeRegion)
         {
             Dictionary<string, int> counts = new Dictionary<string, int>();
-
-            cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName);
 
             float max = 0;
             string maxColor = "";
