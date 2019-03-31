@@ -209,7 +209,7 @@ namespace Meteo
             MergeB();
             WriteToDatabase();
 
-            //WriteOutputLog();
+            WriteOutputLog();
 
         }
 
