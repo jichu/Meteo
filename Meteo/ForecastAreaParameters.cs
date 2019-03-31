@@ -157,6 +157,12 @@ namespace Meteo
             Parameters.Add("RH 850 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850", "REAL")); //75 
             Parameters.Add("LCL Real", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku", "REAL")); //1200 
 
+            /*
+            Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Relativní_vlhkost_1000", "REAL");
+            Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925", "REAL");
+            Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850", "REAL");
+            Model.Cloud.ModelSpectrumGetScaleForModels("Model_WRF_ARW", "LCL_Výška_základny_oblaku", "REAL");*/
+
             /*Parameters.Add("RH 1000 hPa Real", 30); //75 
             Parameters.Add("RH 925 hPa Real", 30); //60 
             Parameters.Add("RH 850 hPa Real", 30); //75 

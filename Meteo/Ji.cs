@@ -147,7 +147,13 @@ namespace Meteo
         }
 
         public void ModelSpectrumGetScaleForModel() {
-            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový", "CONVECTIVE");//Jako třetí parametr lze využít: DEFAULT (nemusí se zadávat, je nastaven jako defaultní), CONVECTIVE, RASTER, REAL 
+            /*List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový", "CONVECTIVE");//Jako třetí parametr lze využít: DEFAULT (nemusí se zadávat, je nastaven jako defaultní), CONVECTIVE, RASTER, REAL 
+            foreach (var r in records)
+            {
+                Util.l($"Barva: {r.color} Rank: {r.rank}");
+            }*/
+
+            List<CloudModelSpectrum> records = Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový", "REAL");//Jako třetí parametr lze využít: DEFAULT (nemusí se zadávat, je nastaven jako defaultní), CONVECTIVE, RASTER, REAL 
             foreach (var r in records)
             {
                 Util.l($"Barva: {r.color} Rank: {r.rank}");
