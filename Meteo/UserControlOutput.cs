@@ -21,6 +21,10 @@ namespace Meteo
         private PictureBox canvas;
         private PictureBox legend;
         private ComboBox comboAlgorithmOutput;
+        private TrackBar trackBarHourMove;
+        private Label labelHourMove;
+        private int stepHour=3;
+        private int curHour = 21;
         private List<string> settingOutputVarriableNames = new List<string>();
 
         public static UserControlOutput Instance
@@ -37,9 +41,10 @@ namespace Meteo
         {
             InitializeComponent();
             CreateComboAlgorithmOutput();
+            CreateTrackBarHourMove();
             Render();
         }
-
+        
         private void CreateComboAlgorithmOutput()
         {
             ComboBox cb = new ComboBox();
@@ -55,6 +60,37 @@ namespace Meteo
             }
             comboAlgorithmOutput.SelectedIndex = 0;
             comboAlgorithmOutput.SelectedIndexChanged += new EventHandler(ComboAlgorithmOutput_SelectedIndexChanged);
+        }
+
+        private void CreateTrackBarHourMove()
+        {
+            int space = 10;
+            labelHourMove = new Label();
+            labelHourMove.Location = new Point(comboAlgorithmOutput.Width + space, 0);
+            labelHourMoveTextRefresh();
+            this.Controls.Add(labelHourMove);
+            trackBarHourMove = new TrackBar();
+            trackBarHourMove.Minimum = 0;
+            trackBarHourMove.Maximum = 24/stepHour;
+            trackBarHourMove.SmallChange = 1;
+            trackBarHourMove.LargeChange = 1;
+            trackBarHourMove.Location = new Point(comboAlgorithmOutput.Width+labelHourMove.Width+space,0);
+            trackBarHourMove.Width = 200;
+            trackBarHourMove.Value = curHour/stepHour;
+            trackBarHourMove.Scroll += new EventHandler(trackBarHourMove_Scroll);
+            this.Controls.Add(trackBarHourMove);
+        }
+
+        private void labelHourMoveTextRefresh()
+        {
+            labelHourMove.Text = "Vybrána "+SelectedHour() + ". hodina";
+        }
+
+        private void trackBarHourMove_Scroll(object sender, EventArgs e)
+        {
+            curHour = (sender as TrackBar).Value*stepHour;
+            labelHourMoveTextRefresh();
+            Render();
         }
 
         private void ComboAlgorithmOutput_SelectedIndexChanged(object sender, EventArgs e)
@@ -214,10 +250,15 @@ namespace Meteo
                 { "Kraslice",2 },
                 { "Ostrov",3}
             });*/
-            
-            Draw(Model.Cloud.OUTPUTDATAGetDataForSample("21", comboAlgorithmOutput.SelectedIndex));
+            Util.l(SelectedHour());
+            Draw(Model.Cloud.OUTPUTDATAGetDataForSample(SelectedHour(), comboAlgorithmOutput.SelectedIndex));
             //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("18", comboAlgorithmOutput.SelectedIndex));
             canvas.Invalidate();
+        }
+
+        private string SelectedHour()
+        {
+            return curHour < 10 ? "0" + curHour.ToString() : curHour.ToString();
         }
 
         private void Draw(Dictionary<string, float> output)
