@@ -202,6 +202,7 @@ namespace DownloaderImagesModels
             {
                 using (WebClient webClient = new WebClient())
                 {
+                    webClient.Headers.Add("User-Agent: Other");
                     byte[] data = webClient.DownloadData(url);
                     using (MemoryStream mem = new MemoryStream(data))
                     {
@@ -218,6 +219,7 @@ namespace DownloaderImagesModels
             catch (Exception e)
             {
                 Util.l("Chyba (nelze stáhnout) z "+url);
+                Console.WriteLine(e);
                 Errors.Add(url);
                 return false;
             }
