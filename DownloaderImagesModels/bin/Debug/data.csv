@@ -1,5 +1,6 @@
 ﻿model;parametr;url;
-Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/nebul_public_00.png; do hranatých závorek napsat konkrétní datum?zkoušel jsem a nefunguje
+Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd]00/nebul_public_[mcc:0:12:3:0].png;
+Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd]12/nebul_public_[mcc:0:24:3:12].png;
 Model_ALADIN_CZ;Relativní_vlhkost_1000;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/RH2m_public_00.png;12.png
 Model_ALADIN_CZ;Srážky;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/prec_public_rd_03.png;15.png
 Model_EURO4;Srážky;https://expert-images.images-weatheronline.com/daten/proficharts/web/en/[yyyy]/[MM]/[dd]/basis12/dldl/prec/[yy][MM][dd][cc]_1312.gif;15.gif

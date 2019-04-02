@@ -28,6 +28,7 @@ namespace DownloaderImagesModels
         private string ruleCounterShort = "[c]";
         private string ruleCounterNow = "[scc:";
         private string ruleCounterNowShort = "[sc:";
+        private string ruleCounterMulti = "[mcc:";
 
         private int stepHour=3;
 
@@ -45,23 +46,10 @@ namespace DownloaderImagesModels
             {
                 Util.ProcessReady("Prosím čekejte...");
                 int i = 0;
-                int skip = 14;
                 foreach (var item in LoadSetting.listOfRecords)
                 {
                     i++;
-                    /*
-                    if (i < skip)
-                        continue;
-
-    */
-
                     AutoCounter($"./models/{item.Model}/{item.Submodel}/", ReplaceDate(item.URL));
-                    /*
-                    if(i>skip-1)
-                        break;
-                        */
-                        
-
                 }
 
                 Util.ProcessReady($"Uloženo celkem {counterSuccess} obrázků do adresáře models. Chyb: {Errors.Count}");
@@ -101,6 +89,9 @@ namespace DownloaderImagesModels
 
             if (url.IndexOf(ruleCounterNowShort) != -1)
                 CounterNow(path, url, ruleCounterNowShort);
+
+            if (url.IndexOf(ruleCounterMulti) != -1)
+                CounterMulti(path, url, ruleCounterMulti);
         }
         
         private void Counter24(string path, string url)
@@ -130,9 +121,9 @@ namespace DownloaderImagesModels
             }
         }
 
-        private void CounterNow(string path, string url, string rc="[scc")
+        private void CounterNow(string path, string url, string rc="[scc:")
         {
-            var regex = new Regex(@"\"+rc+@"\d+:\d+:\d\]");
+            var regex = new Regex(@"\"+rc+@"\d+:\d+:\d+\]");
             char sep = ':';
             int hour = 0;
             int.TryParse(DateTime.Now.ToString("HH"),out hour);
@@ -165,6 +156,48 @@ namespace DownloaderImagesModels
                                 counterHour += stepHour;
                                 string cc = c.Length < 2 ? "0" + c : c;
                                 if (SaveImage(path, link, cc+".png"))
+                                {
+                                    counterSuccess++;
+                                }
+                            }
+                    }
+                }
+            }
+        }
+
+        private void CounterMulti(string path, string url, string rc = "[mcc:")
+        {
+            var regex = new Regex(@"\" + rc + @"\d+:\d+:\d+:\d+\]");
+            char sep = ':';
+            foreach (Match match in regex.Matches(url))
+            {
+                string rule = match.Value.Replace("[", "").Replace("]", "");
+                if (rule.IndexOf(sep) != -1)
+                {
+                    string[] counter = rule.Split(sep);
+                    if (counter.Length == 5)
+                    {
+                        int from = 0;
+                        int to = 0;
+                        int step = 0;
+                        int startHour = 0;
+                        int.TryParse(counter[1], out from);
+                        int.TryParse(counter[2], out to);
+                        int.TryParse(counter[3], out step);
+                        int.TryParse(counter[4], out startHour);
+
+                        int counterHour = 0;
+                        if (to >= from)
+                            for (int i = from; i <= to; i+=step)
+                            {
+                                string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()) : i.ToString();
+                                string link = url.Replace(match.Value, index);
+                                string c = (startHour + counterHour).ToString();
+                                if (startHour + counterHour > 24)
+                                    break;
+                                counterHour += stepHour;
+                                string cc = c.Length < 2 ? "0" + c : c;
+                                if (SaveImage(path, link, cc + ".png"))
                                 {
                                     counterSuccess++;
                                 }
