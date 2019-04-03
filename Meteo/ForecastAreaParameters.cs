@@ -207,38 +207,9 @@ namespace Meteo
             HumidityInfluences();            
             WindEffect();
             MergeB();
-            WriteToDatabase();
 
-            WriteOutputLog();
+            //WriteOutputLog();
 
-        }
-
-        private void WriteToDatabase() {
-            CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"],Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
-            CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
-            CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
-            CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
-            CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
-            CloudOutputData strongWindscreensOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutput);
-            CloudOutputData hailOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - KRUPOBITÍ"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA KRUPOBITÍ"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(hailOutput);
-            CloudOutputData supercelarTornadosOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD"]);
-            Model.Cloud.OUTPUTDATAInsertOrUpdate(supercelarTornadosOutput);
-            if (Output.ContainsKey("SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST"))
-            {
-                CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, Output["SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
-                Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
-            }
-            else {
-                CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
-                Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
-            }
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
@@ -664,7 +635,7 @@ namespace Meteo
                 hi[i] /= (PrecipitationModels.Count-modelsUnavailable[i]);
                 Output.Add((i * 3).ToString(), hi[i]);
             }
-            //Output.Add(this.sampleName, hi[0]);
+            
         } 
                
         //Pomocné výpočetní funkce
@@ -682,10 +653,6 @@ namespace Meteo
         //Výpočet pravděpodobnosti
         private float Probability(List<float> list) {
             List<float> values = TestParameters(list);
-            /*foreach (var i in values) {
-                Util.l(i);
-            }
-            Util.l("\n");*/
             if (values.Count!=0) return (float)Math.Round((double)(new decimal(SumArray(values) / (values.Count * RATIO))), precision);
             else { return -1; }
         }
@@ -698,7 +665,6 @@ namespace Meteo
             {
                 if (arr.ElementAt(i) == -1) { weights[i] = 0; }
                 sum += arr.ElementAt(i) * weights.ElementAt(i);
-                //Util.l($"value: {arr.ElementAt(i)}, weight: {weights.ElementAt(i)}");
             }
 
             foreach (var w in weights)
@@ -724,7 +690,6 @@ namespace Meteo
             List<float> array = arr.GetRange(start, (end == -1) ? (arr.Count) - start : end - start);
             foreach (var a in array) {
                 sum += a;
-                //Util.l(a);
             }
             return sum;
         }
