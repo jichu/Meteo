@@ -1,62 +1,63 @@
 ﻿model;parametr;url;
-Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/nebul_public_00.png;[yyyy][MM][dd][cc]/nebul_public_00.png;12.png;text;Označení výstupu
-Model_ALADIN_CZ;Relativní_vlhkost_1000;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/RH2m_public_00.png;[yyyy][MM][dd][cc]/RH2m_public_00.png;12.png;;
-Model_ALADIN_CZ;Srážky;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/prec_public_rd_03.png;2019031312/prec_public_rd_03.png;15.png;;
-Model_EURO4;Srážky;https://expert-images.images-weatheronline.com/daten/proficharts/web/en/[yyyy]/[MM]/[dd]/basis12/dldl/prec/[yy][MM][dd][cc]_1312.gif;2019/03/13/basis12/dldl/prec/19031315_1312.gif;15.gif;;
-Model_GDPS;Srážky;http://img.meteocentre.com/models/gemglb_eur_fr_00/P6_GZ_D5_PN_003_0000.gif;gemglb_eur_fr_00/P6_GZ_D5_PN_003_0000.gif;03.gif;;
-Model_GFS_Austria_50km;LI_index_GFS_MAIN;http://www.cscaustria.at/roland/gfs/20190313/t12z/images/gfs_ceu_capelftx_2019031312f00.png;20190313/t12z/images/gfs_ceu_capelftx_2019031312f00.png;12.png;12 hod. aktualizace+00 hod.;
-Model_GFS_Austria_50km;SI_index_GFS_MAIN;http://www.cscaustria.at/roland/gfs/20190313/t12z/images/gfs_ceu_showalter_2019031312f00.png;20190313/t12z/images/gfs_ceu_showalter_2019031312f00.png;12.png;12 hod. aktualizace+00 hod.;
-Model_GFS_FLYMET_50km;Vítr_300__MAIN;http://flymet.meteopress.cz/gfs/vitrg[sc:0:8:6].png;gfs/vitrg[c].png;00.png;;
-Model_GFS_FLYMET_50km;Vítr_400__MAIN;http://flymet.meteopress.cz/gfs/vitrf[sc:0:8:6].png;gfs/vitrf[c].png;00.png;;
-Model_GFS_Lightning_Wizard_50km;DTHE_MAIN;http://www.lightningwizard.com/maps/Europe/gfs_gusts_eur0.png;gfs_gusts_eur0.png;12.png;plus 0 hod. (závisí na času aktualizace modelu GFS podle LI indexu se např. řídit, tzn. Aktualizace je v  12 hod. + 0 hod. = 12 hod.);
-Model_GFS_Lightning_Wizard_50km;MCS_vektor_pohybu_bouří;http://www.lightningwizard.com/maps/Europe/gfs_pw_eur0.png;gfs_pw_eur0.png;12.png;;
-Model_GFS_Lightning_Wizard_50km;Mixing_Ratio_0-1km;http://www.lightningwizard.com/maps/Europe/gfs_mixr_eur0.png;gfs_mixr_eur0.png;12.png;;
-Model_GFS_Lightning_Wizard_50km;MTV_vector_RH_1000-600 hPa;http://www.lightningwizard.com/maps/Europe/gfs_mtv_eur0.png;gfs_mtv_eur0.png;12.png;;
-Model_GFS_Lightning_Wizard_50km;SBCAPE_2km;http://www.lightningwizard.com/maps/Europe/gfs_spout_eur0.png;gfs_spout_eur0.png;12.png;;
-Model_GFS_Meteomodel_PL_25km;0_izoterma_výška;https://meteomodel.pl/gfs-para/HGT0C/HGT0C_01.png;gfs-para/HGT0C/HGT0C_01.png;18.png;plus 3 hod. (závisí na času aktualizace modelu GFS, který lze odhadnout podle aktuálního času, např. je nyní 22 hodin, tak aktualizace je v 18 hod.+9 hod (platí do 03:00 než se provede nová aktualizace výpočtů v 00 hod.), tzn. Aktualizace je v  18 hod. + 01 (+00 hod.) = 18.png. Příklad aktualizace 18 hod+02=18 hod.+03 hod.=21.png;
-Model_GFS_Meteomodel_PL_25km;EHI,STP_MAIN;https://meteomodel.pl/gfs-para/STP/STP_01.png;gfs-para/STP/STP_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;GRAD_925-700hPa;https://meteomodel.pl/gfs-para/GRD700/GRD700_01.png;gfs-para/GRD700/GRD700_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;Instabilita_GRAD_850-500;https://meteomodel.pl/gfs-para/GRD500/GRD500_01.png;gfs-para/GRD500/GRD500_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;KI_Whiting_index;https://meteomodel.pl/gfs-para/KI/KI_[scc:1:8:6].png;gfs-para/KI/KI_[c][scc:1:8].png;18.png;;
-Model_GFS_Meteomodel_PL_25km;MLCAPE_GFS;https://meteomodel.pl/gfs-para/MLCAPE/MLCAPE_[scc:1:8:6].png;gfs-para/MLCAPE/MLCAPE_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;MUCAPE_GFS;https://meteomodel.pl/gfs-para/MUCAPE/MUCAPE_[scc:1:8:6].png;gfs-para/MUCAPE/MUCAPE_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;Relativní_vlhkost_850;https://meteomodel.pl/gfs-para/RH850/RH850_01.png;gfs-para/RH850/RH850_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;Relativní_vlhkost_925;https://meteomodel.pl/gfs-para/RH925/RH925_01.png;gfs-para/RH925/RH925_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;SHEAR_DLS_Střih_větru_0-6_km;https://meteomodel.pl/gfs-para/DLS/DLS_01.png;gfs-para/DLS/DLS_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;SHEAR_LLS_Střih_větru_0-1_km;https://meteomodel.pl/gfs-para/LLS/LLS_01.png;gfs-para/LLS/LLS_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;SHIP;https://meteomodel.pl/gfs-para/SHIP/SHIP_01.png;gfs-para/SHIP/SHIP_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;SRH_1km;https://meteomodel.pl/gfs-para/SRH1/SRH1_01.png;gfs-para/SRH1/SRH1_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;Teplota_850;https://meteomodel.pl/gfs-para/T850/T850_01.png;gfs-para/T850/T850_01.png;18.png;;
-Model_GFS_Meteomodel_PL_25km;Vítr_925;https://meteomodel.pl/gfs-para/WIND925/WIND925_01.png;gfs-para/WIND925/WIND925_01.png;18.png;;
-Model_GFS_Wetter3_DE_25km;MLCAPE+LI_Wetter_3_de;http://www1.wetter3.de/Animation_18_UTC_025Grad/03_21.gif;Animation_18_UTC_025Grad/03_21.gif;21.gif;plus 3 hod. krok (závisí na času aktualizace modelu GFS, který je uveden za Animation_xx_UTC, tak aktualizace je v xx hod. tzn. Aktualizace je v  xx=18 hod./03 hod = 21.gif. Příklad: aktualizace 18 hod/06 hod.=18 hod.+06 hod.=24.gif. Dále, 21.gif (21)=číselné označení výstupu, také se mění.;
-Model_GFS_Wetter3_DE_25km;MLCIN_Wetter_3_de;http://www1.wetter3.de/Animation_18_UTC_025Grad/03_27.gif;Animation_18_UTC_025Grad/03_27.gif;21.gif;;
-Model_GFS_Wetter3_DE_25km;Wet_bulb_temp;http://www1.wetter3.de/Animation_18_UTC_025Grad/03_5.gif;Animation_18_UTC_025Grad/03_5.gif;21.gif;;
-Model_GFS_Wetter3_DE_50km;Frontogeneze_parametr_850_hPa;http://www1.wetter3.de/Animation_18_UTC/00_46.gif;Animation_18_UTC/00_46.gif;18.gif;plus 0 hod. krok (závisí na času aktualizace modelu GFS, který je uveden za Animation_xx_UTC, tak aktualizace je v xx hod. tzn. Aktualizace je v  xx=18 hod./00 hod = 18.gif. Příklad: aktualizace 18 hod/03 hod.=18 hod.+03 hod.=21.gif. Dále, 46.gif (46)=číselné označení výstupu, také se mění.;
-Model_GFS_Wetterzentrale_DE_25km;Srážky_MAIN;http://old.wetterzentrale.de/pics/Rhgfs033.gif;pics/Rhgfs033.gif;21.gif;plus 3 hod. (závisí na času aktualizace modelu GFS, který lze odhadnout podle aktuálního času, např. je nyní 22 hodin, tak aktualizace je v 18 hod.+9 hod (18 hodina aktualizace platí do 03:00 než se provede nová aktualizace výpočtů v 00 hod.), tzn. Aktualizace je v  18 hod. + 033 (+03 hod.) = 21.gif. Příklad aktualizace 18 hod+063=18 hod.+06 hod.=00.gif;
-Model_HIRLAM;Srážky_MAIN;http://www.wetterzentrale.de/maps/HIROPME18_3_4.png;HIROPME18_3_4.png;21.png;plus 3 hod. (závisí na času aktualizace modelu GFS, který je uveden za HIROPME_xx, tak aktualizace je v xx hod. tzn. Aktualizace je v  xx=18 (hod.)_3 = 18+3=21.png. Příklad: HIROPME18_6_4=18 hod.+06 hod.=00.png;
-Model_Nasycenost_pud;Nasycenost_pud;http://hydro.chmi.cz/hpps/ffg_actual/ffg/nasyc311020181450.png;ffg_actual/ffg/nasyc311020181450.png;14_50.png;;
-Model_Nasycenost_pud;Suma srážek 1 hod.;http://hydro.chmi.cz/hpps/ffg_actual/ffg/ffg_sra1h311020181453.png;ffg_actual/ffg/ffg_sra1h311020181453.png;14_53.png;;
-Model_Radarové_snímky;Radarové_snímky;http://portal.chmi.cz/files/portal/docs/meteo/rad/img/pacz23.scl4_bocni-4x4.png;files/portal/docs/meteo/rad/img/pacz23.scl4_bocni-4x4.png;;;
-Model_Sumarizace_srazek;Radary_srážkoměry;http://hydro.chmi.cz/hpps/tmp/img/srz/r_24_201903132200.png;hpps/tmp/img/srz/r_24_201903132200.png;22.png;mínus 24 hod. Příklad: r_24_201903132200=radary+srážkoměry 22 hod.-24 hod.=22.png;
-Model_Sumarizace_srazek;Srážkoměry;http://hydro.chmi.cz/hpps/tmp/img/srz/s_24_201903132200.png;hpps/tmp/img/srz/s_24_201903132200.png;22.png;mínus 24 hod. Příklad: s_24_201903132200=srážkoměry 22 hod.-24 hod.=22.png;
-Model_Synoptická_předpověď;Synoptická_předpověď;http://portal.chmi.cz/files/portal/docs/meteo/om/evropa/preba/preba.gif;;;;
-Model_Výstrahy;Sivs_chmu_ORP;http://portal.chmi.cz/files/portal/docs/meteo/om/vystrahy/index.html;;;;
-Model_Výstrahy;ESTOFEX;http://www.estofex.org/forecasts/tempmap/2019031006_201903081424_1_stormforecast.xml.png;forecasts/tempmap/2019031006_201903081424_1_stormforecast.xml.png;06.png;plus 24 hod. Příklad: 201931006 06 hod.+24 hod.=06.png;
-Model_WRF_ARW;LCL_Výška_základny_oblaku;http://www.modellzentrale.de/WRF4km/12Z/03h/LCL_eu.png;WRF4km/12Z/03h/LCL_eu.png;15.png;plus 3 hod. (závisí na času aktualizace modelu GFS, který je uveden za WRF4km_xxZ, tak aktualizace je v xx hod. tzn. Aktualizace je v  xx=12 (hod.)/03h = 12+3=15.png. ;
-Model_WRF_ARW;MFDIV_0-1km;http://www.modellzentrale.de/WRF4km/12Z/03h/MFDIV1km_eu.png;WRF4km/12Z/03h/MFDIV1km_eu.png;15.png;;
-Model_WRF_ARW;Potential_Orographic_Lift;http://www.modellzentrale.de/WRF4km/12Z/03h/WORO_eu.png;WRF4km/12Z/03h/WORO_eu.png;15.png;;
-Model_WRF_ARW;Pwater;http://www.modellzentrale.de/WRF4km/12Z/03h/PPW_eu.png;WRF4km/12Z/03h/PPW_eu.png;15.png;;
-Model_WRF_ARW;Relativni_vorticita_850-300_hPa_WRF;http://www.modellzentrale.de/WRF4km/12Z/03h/panel_VORT_nps_eu.png;WRF4km/12Z/03h/panel_VORT_nps_eu.png;15.png;;
-Model_WRF_ARW;Relativní_vlhkost_300;http://www.modellzentrale.de/WRF4km/12Z/03h/rh300_eu.png;WRF4km/12Z/03h/rh300_eu.png;15.png;;
-Model_WRF_ARW;Relativní_vlhkost_500;http://www.modellzentrale.de/WRF4km/12Z/03h/rh500_eu.png;WRF4km/12Z/03h/rh500_eu.png;15.png;;
-Model_WRF_ARW;Relativní_vlhkost_700;http://www.modellzentrale.de/WRF4km/12Z/03h/rh700_eu.png;WRF4km/12Z/03h/rh700_eu.png;15.png;;
-Model_WRF_ARW;SRH_3km_WRF_ARW;http://www.modellzentrale.de/WRF4km/12Z/03h/SREH_SHR_eu.png;WRF4km/12Z/03h/SREH_SHR_eu.png;15.png;;
-Model_WRF_ARW;Srážky_MAIN;http://www.modellzentrale.de/WRF4km/12Z/06h/RR3h_eu.png;WRF4km/12Z/06h/RR3h_eu.png;18.png;;
-Model_WRF_ARW;Tlaková_tendence_MSLP;http://www.modellzentrale.de/WRF4km/12Z/06h/tendencies_eu.png;WRF4km/12Z/06h/tendencies_eu.png;;;
-Model_WRF_ARW_Balearsmeteo;TT_Totals_Totals_index_Aladin_HR;http://www.lamma.rete.toscana.it/models/arw_gfs_12km/last/ttswz1_web_1.png?1391758959229;models/arw_gfs_12km/last/ttswz1_web_1.png?1391758959229;12.png;plus 3 hod. Příklad: _web1.png?=1=00 hod. (12+00=12hod.);
-Model_WRF_NMM_FLYMET;Srážky_MAIN;http://flymet.meteopress.cz/cr/srzk1.png;cr/srzk1.png;01.png;plus 1 hod. Příklad: srzk1=00+1 hod. =01 hod.;
-Model_WRF_NMM_FLYMET;Vítr_10m;http://flymet.meteopress.cz/cr/vitrx1.png;cr/vitrx1.png;;;
-Model_WRF_NMM_FLYMET;Vítr_500;http://flymet.meteopress.cz/cr/vitre1.png;cr/vitre1.png;;;
-Model_WRF_NMM_FLYMET;Vítr_600;http://flymet.meteopress.cz/cr/vitrd1.png;cr/vitrd1.png;;;
-Model_WRF_NMM_FLYMET;Vítr_700;http://flymet.meteopress.cz/cr/vitrc1.png;cr/vitrc1.png;;;
-Model_WRF_NMM_FLYMET;Vítr_850;http://flymet.meteopress.cz/cr/vitra1.png;cr/vitra1.png;;;
+Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd]00/nebul_public_[mcc:0:12:3:0].png;
+Model_ALADIN_CZ;Oblačnost;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd]12/nebul_public_[mcc:0:24:3:12].png;
+Model_ALADIN_CZ;Relativní_vlhkost_1000;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/RH2m_public_00.png;12.png
+Model_ALADIN_CZ;Srážky;http://portal.chmi.cz/files/portal/docs/meteo/ov/aladin/results/public/mapy/data/[yyyy][MM][dd][cc]/prec_public_rd_03.png;15.png
+Model_EURO4;Srážky;https://expert-images.images-weatheronline.com/daten/proficharts/web/en/[yyyy]/[MM]/[dd]/basis12/dldl/prec/[yy][MM][dd][cc]_1312.gif;15.gif
+Model_GDPS;Srážky;http://img.meteocentre.com/models/gemglb_eur_fr_00/P6_GZ_D5_PN_0[c]_0000.gif;
+Model_GFS_Austria_50km;LI_index_GFS_MAIN;http://www.cscaustria.at/roland/gfs/[yyyy][MM][dd]/t12z/images/gfs_ceu_capelftx_[yyyy][MM][dd]f[cc].png;
+Model_GFS_Austria_50km;SI_index_GFS_MAIN;http://www.cscaustria.at/roland/gfs/[yyyy][MM][dd]/t12z/images/gfs_ceu_showalter_[yyyy][MM][dd]f[cc].png;
+Model_GFS_FLYMET_50km;Vítr_300__MAIN;http://flymet.meteopress.cz/gfs/vitrg[c].png;
+Model_GFS_FLYMET_50km;Vítr_400__MAIN;http://flymet.meteopress.cz/gfs/vitrf[c].png;
+Model_GFS_Lightning_Wizard_50km;DTHE_MAIN;http://www.lightningwizard.com/maps/Europe/gfs_gusts_eur[c].png;
+Model_GFS_Lightning_Wizard_50km;MCS_vektor_pohybu_bouří;http://www.lightningwizard.com/maps/Europe/gfs_pw_eur[c].png;
+Model_GFS_Lightning_Wizard_50km;Mixing_Ratio_0-1km;http://www.lightningwizard.com/maps/Europe/gfs_mixr_eur[c].png;
+Model_GFS_Lightning_Wizard_50km;MTV_vector_RH_1000-600 hPa;http://www.lightningwizard.com/maps/Europe/gfs_mtv_eur[c].png;
+Model_GFS_Lightning_Wizard_50km;SBCAPE_2km;http://www.lightningwizard.com/maps/Europe/gfs_spout_eur[c].png;
+Model_GFS_Meteomodel_PL_25km;0_izoterma_výška;https://meteomodel.pl/gfs-para/HGT0C/HGT0C_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;EHI,STP_MAIN;https://meteomodel.pl/gfs-para/STP/STP_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;GRAD_925-700hPa;https://meteomodel.pl/gfs-para/GRD700/GRD700_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;Instabilita_GRAD_850-500;https://meteomodel.pl/gfs-para/GRD500/GRD500_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;KI_Whiting_index;https://meteomodel.pl/gfs-para/KI/KI_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;MLCAPE_GFS;https://meteomodel.pl/gfs-para/MLCAPE/MLCAPE_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;MUCAPE_GFS;https://meteomodel.pl/gfs-para/MUCAPE/MUCAPE_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;Relativní_vlhkost_850;https://meteomodel.pl/gfs-para/RH850/RH850_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;Relativní_vlhkost_925;https://meteomodel.pl/gfs-para/RH925/RH925_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;SHEAR_DLS_Střih_větru_0-6_km;https://meteomodel.pl/gfs-para/DLS/DLS_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;SHEAR_LLS_Střih_větru_0-1_km;https://meteomodel.pl/gfs-para/LLS/LLS_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;SHIP;https://meteomodel.pl/gfs-para/SHIP/SHIP_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;SRH_1km;https://meteomodel.pl/gfs-para/SRH1/SRH1_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;Teplota_850;https://meteomodel.pl/gfs-para/T850/T850_[scc:1:8:6].png;
+Model_GFS_Meteomodel_PL_25km;Vítr_925;https://meteomodel.pl/gfs-para/WIND925/WIND925_[scc:1:8:6].png;
+Model_GFS_Wetter3_DE_25km;MLCAPE+LI_Wetter_3_de;http://www1.wetter3.de/Animation_18_UTC_025Grad/[cc]_21.gif; 18_UTC - čas aktualizace se mění po 6 hodinách (00, 06, 12, 18h) - upravit counterem
+Model_GFS_Wetter3_DE_25km;MLCIN_Wetter_3_de;http://www1.wetter3.de/Animation_18_UTC_025Grad/[cc]_27.gif; 18_UTC - čas aktualizace se mění po 6 hodinách (00, 06, 12, 18h) - upravit counterem
+Model_GFS_Wetter3_DE_25km;Wet_bulb_temp;http://www1.wetter3.de/Animation_18_UTC_025Grad/[cc]_5.gif; 18_UTC - čas aktualizace se mění po 6 hodinách (00, 06, 12, 18h) - upravit counterem
+Model_GFS_Wetter3_DE_50km;Frontogeneze_parametr_850_hPa;http://www1.wetter3.de/Animation_18_UTC/[cc]_46.gif; 18_UTC - čas aktualizace se mění po 6 hodinách (00, 06, 12, 18h) - upravit counterem
+Model_GFS_Wetterzentrale_DE_25km;Srážky_MAIN;http://www.wetterzentrale.de/maps/GFSOPME12_[c]_53.png;
+Model_HIRLAM;Srážky_MAIN;http://www.wetterzentrale.de/maps/HIROPME18_[c]_4.png;
+Model_Nasycenost_pud;Nasycenost_pud;http://hydro.chmi.cz/hpps/ffg_actual/ffg/nasyc311020181450.png; [dd][MM][yyyy][cc][cc]
+Model_Nasycenost_pud;Suma srážek 1 hod.;http://hydro.chmi.cz/hpps/ffg_actual/ffg/ffg_sra1h311020181453.png; [dd][MM][yyyy][cc][cc]
+Model_Radarové_snímky;Radarové_snímky;http://portal.chmi.cz/files/portal/docs/meteo/rad/img/pacz23.scl4_bocni-4x4.png;
+Model_Sumarizace_srazek;Radary_srážkoměry;http://hydro.chmi.cz/hpps/tmp/img/srz/r_24_201903132200.png;[yyyy][MM][dd][cc]
+Model_Sumarizace_srazek;Srážkoměry;http://hydro.chmi.cz/hpps/tmp/img/srz/s_24_201903132200.png;[yyyy][MM][dd][cc]
+Model_Synoptická_předpověď;Synoptická_předpověď;http://portal.chmi.cz/files/portal/docs/meteo/om/evropa/preba/preba.gif; žádný postfix není třeba dávat!!!
+Model_Výstrahy;Sivs_chmu_ORP;http://portal.chmi.cz/files/portal/docs/meteo/om/vystrahy/index.html;
+Model_Výstrahy;ESTOFEX;http://www.estofex.org/forecasts/tempmap/2019031006_201903081424_1_stormforecast.xml.png;[yyyy][MM][dd]f[cc]_[yyyy][MM][dd]f[cc]
+Model_WRF_ARW;LCL_Výška_základny_oblaku;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/LCL_eu.png; - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;MFDIV_0-1km;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/MFDIV1km_eu.png; - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Potential_Orographic_Lift;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/WORO_eu.png; - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Pwater;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/PPW_eu.png; - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Relativni_vorticita_850-300_hPa_WRF;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/panel_VORT_nps_eu.png; - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Relativní_vlhkost_300;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/rh300_eu.png; 12Z - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Relativní_vlhkost_500;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/rh500_eu.png; 12Z - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Relativní_vlhkost_700;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/rh700_eu.png; 12Z - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;SRH_3km_WRF_ARW;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/SREH_SHR_eu.png; 12Z - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Srážky_MAIN;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/RR3h_eu.png; 12Z - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW;Tlaková_tendence_MSLP;http://www.modellzentrale.de/WRF4km/12Z/[cc]h/tendencies_eu.png; 12Z - čas aktualizace se mění po 12 hodinách (vždy pro 00 a 12h.) - upravit counterem
+Model_WRF_ARW_Balearsmeteo;TT_Totals_Totals_index_Aladin_HR;http://www.lamma.rete.toscana.it/models/arw_gfs_12km/last/ttswz1_web_1.png?1391758959229; 1.png - counter upravit na 1 hod. krok (ne 3hodinový)
+Model_WRF_NMM_FLYMET;Srážky_MAIN;http://flymet.meteopress.cz/cr/srzk[c].png;01.png
+Model_WRF_NMM_FLYMET;Vítr_10m;http://flymet.meteopress.cz/cr/vitrx[c].png;
+Model_WRF_NMM_FLYMET;Vítr_500;http://flymet.meteopress.cz/cr/vitre[c].png;
+Model_WRF_NMM_FLYMET;Vítr_600;http://flymet.meteopress.cz/cr/vitrd[c].png;
+Model_WRF_NMM_FLYMET;Vítr_700;http://flymet.meteopress.cz/cr/vitrc[c].png;
+Model_WRF_NMM_FLYMET;Vítr_850;http://flymet.meteopress.cz/cr/vitra[c].png;
