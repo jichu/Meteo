@@ -128,5 +128,16 @@ namespace Meteo
             UserControlModel.Instance.EnumerationModels();
         }
 
+        private void MenuItemAlgorithm_Click(object sender, EventArgs e)
+        {
+            Util.ShowLoading("Algoritmus počítá přepověď....");
+            try
+            {
+                new StormEngine();
+            }
+            catch (Exception ex) {
+                Util.l("Chyba při výpočtu");
+            }
+        }
     }
 }

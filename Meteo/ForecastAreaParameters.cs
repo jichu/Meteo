@@ -399,7 +399,7 @@ namespace Meteo
             List<float> RHReal = new List<float>() { Parameters["RH 1000 hPa Real"] , Parameters["RH 925 hPa Real"] , Parameters["RH 850 hPa Real"] };
             
             //Podmínka pro suchý downburst
-            if (Output[this.sampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] >1500) {
+            if (Output.ContainsKey(this.sampleName) && Output[this.sampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] >1500) {
                 //Nastal suchý downburst - do analýzy se dostanou nové KOEFICIENTY.
                 Output.Add("NASTAL SUCHÝ DOWNBURST", 1);
                 float[] boundariesLCL = new float[3] { 1500, 2000, 2500};
@@ -671,8 +671,8 @@ namespace Meteo
             {
                 sumWeights += w * RATIO;
             }
-
-            return (float) Math.Round((double)(new decimal(sum / sumWeights)), 2);
+            if (sumWeights != 0) return (float)Math.Round((double)(new decimal(sum / sumWeights)), 2);
+            else return 0;
         }
 
         //Aritmetický průměr hodnot

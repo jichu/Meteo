@@ -35,10 +35,11 @@
             this.menuItemLoadModels = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExplore = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemLoadInputs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
             this.backgroundWorkerEnumerationModels = new System.ComponentModel.BackgroundWorker();
-            this.menuItemLoadInputs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemAlgorithm = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,7 +76,8 @@
             this.menuItemExplore,
             this.menuItemPalette,
             this.menuItemLoadInputs,
-            this.menuItemOutput});
+            this.menuItemOutput,
+            this.MenuItemAlgorithm});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";
@@ -84,7 +86,7 @@
             // 
             this.menuItemLoadModels.Name = "menuItemLoadModels";
             this.menuItemLoadModels.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuItemLoadModels.Size = new System.Drawing.Size(277, 22);
+            this.menuItemLoadModels.Size = new System.Drawing.Size(304, 22);
             this.menuItemLoadModels.Text = "Načíst modely a ORP masky ...";
             this.menuItemLoadModels.Click += new System.EventHandler(this.menuItemLoadModels_Click);
             // 
@@ -92,22 +94,30 @@
             // 
             this.menuItemExplore.Name = "menuItemExplore";
             this.menuItemExplore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.menuItemExplore.Size = new System.Drawing.Size(277, 22);
+            this.menuItemExplore.Size = new System.Drawing.Size(304, 22);
             this.menuItemExplore.Text = "Prohlídnout";
             this.menuItemExplore.Click += new System.EventHandler(this.menuItemExplore_Click);
             // 
             // menuItemPalette
             // 
             this.menuItemPalette.Name = "menuItemPalette";
-            this.menuItemPalette.Size = new System.Drawing.Size(277, 22);
+            this.menuItemPalette.Size = new System.Drawing.Size(304, 22);
             this.menuItemPalette.Text = "Paleta masky";
             this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
+            // 
+            // menuItemLoadInputs
+            // 
+            this.menuItemLoadInputs.Name = "menuItemLoadInputs";
+            this.menuItemLoadInputs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.menuItemLoadInputs.Size = new System.Drawing.Size(304, 22);
+            this.menuItemLoadInputs.Text = "Načíst vstupy";
+            this.menuItemLoadInputs.Click += new System.EventHandler(this.menuItemLoadInputs_Click);
             // 
             // menuItemOutput
             // 
             this.menuItemOutput.Name = "menuItemOutput";
             this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuItemOutput.Size = new System.Drawing.Size(277, 22);
+            this.menuItemOutput.Size = new System.Drawing.Size(304, 22);
             this.menuItemOutput.Text = "Zobrazit výstup";
             this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
             // 
@@ -125,13 +135,13 @@
             // 
             this.backgroundWorkerEnumerationModels.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerEnumerationModels_DoWork);
             // 
-            // menuItemLoadInputs
+            // MenuItemAlgorithm
             // 
-            this.menuItemLoadInputs.Name = "menuItemLoadInputs";
-            this.menuItemLoadInputs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.menuItemLoadInputs.Size = new System.Drawing.Size(277, 22);
-            this.menuItemLoadInputs.Text = "Načíst vstupy";
-            this.menuItemLoadInputs.Click += new System.EventHandler(this.menuItemLoadInputs_Click);
+            this.MenuItemAlgorithm.Name = "MenuItemAlgorithm";
+            this.MenuItemAlgorithm.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.MenuItemAlgorithm.Size = new System.Drawing.Size(304, 22);
+            this.MenuItemAlgorithm.Text = "Spustit algoritmus předpovědi bouří";
+            this.MenuItemAlgorithm.Click += new System.EventHandler(this.MenuItemAlgorithm_Click);
             // 
             // FormMain
             // 
@@ -167,6 +177,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemOutput;
         private System.ComponentModel.BackgroundWorker backgroundWorkerEnumerationModels;
         private System.Windows.Forms.ToolStripMenuItem menuItemLoadInputs;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemAlgorithm;
     }
 }
 
