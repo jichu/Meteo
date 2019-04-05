@@ -52,12 +52,26 @@ namespace Meteo
 
         private void LoadParameters() {
 
+            //Charakteristiky reliéfu
+            Parameters.Add("Sklonitost reliéfu (průměrná)", -1);
+            Parameters.Add("Orientace reliéfu (tepelný prohřev)", -1);
+            Parameters.Add("Světelnost od JZ (Z-factor)", -1);
+            Parameters.Add("Vegetace-pokrytí (%)", -1);
+            Parameters.Add("Teplotní gradient (nadmořská výška)", -1);
+            Parameters.Add("IR kontrast", -1);
+            Parameters.Add("Sídelní útvar", -1);
+            Parameters.Add("Šířka údolí", -1);
+            Parameters.Add("Obtékání překážky", -1);
+            Parameters.Add("Polohy nadmořských výšek", -1);
+            Parameters.Add("Hřeben", -1);
+
             //Zatím vynechané parametry
             Parameters.Add("MOCON", -1); // prozatím vynechat
             Parameters.Add("RV 850 hPa", -1); 
             Parameters.Add("RV 500 hPa", -1);
             Parameters.Add("RV 300 hPa", -1); 
             Parameters.Add("SWEAT", -1);
+            Parameters.Add("Teplota (MAX)", -1);
             //Parameters.Add("1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")); // prozatím vynechat
             //Parameters.Add("925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")); // prozatím vynechat
             //Parameters.Add("850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); // prozatím vynechat
@@ -67,7 +81,7 @@ namespace Meteo
             //Parameters.Add("400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400")); // prozatím vynechat
             //Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); // prozatím vynechat
             //Parameters.Add("Směr větru v hladině 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
-            //Parameters.Add("Teplota (MAX)", 2); // prozatím vynechat
+
             //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu")); //nakonec se nebude používat
 
             /*Orografické vlastnosti oblasti
@@ -84,7 +98,7 @@ namespace Meteo
             Model_Výstrahy_estofex Výstrahy_estofex
             Model_WRF_ARW   Relativni_vorticita_850 - 300_hPa_WRF
             */
-
+            //Alternaci parametrů udělat přes settings (tabulka v DB)
             Parameters.Add("MLCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS")); // Alternace: Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
             Parameters.Add("LI", GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN"));
             Parameters.Add("MUCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MUCAPE_GFS")); 
@@ -123,10 +137,7 @@ namespace Meteo
             Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); 
             Parameters.Add("LCL", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku"));
             Parameters.Add("Nulová izoterma (km)", GetParameter("Model_GFS_Meteomodel_PL_25km", "0_izoterma_výška"));
-
-            //Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["LCL"] - Parameters["Nulová izoterma (km)"]); 
             Parameters.Add("Hloubka teplé fáze oblaku (km)", Parameters["Nulová izoterma (km)"] - Parameters["LCL"]);
-            
             Parameters.Add("SHIP", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHIP")); 
             Parameters.Add("DTHE", GetParameter("Model_GFS_Lightning_Wizard_50km", "DTHE_MAIN")); 
             Parameters.Add("SBCAPE 0-2 km (J/kg) - den", GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km"));
@@ -156,17 +167,6 @@ namespace Meteo
             Parameters.Add("RH 925 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925", "REAL")); //60 
             Parameters.Add("RH 850 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850", "REAL")); //75 
             Parameters.Add("LCL Real", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku", "REAL")); //1200 
-
-            /*
-            Model.Cloud.ModelSpectrumGetScaleForModels("Model_ALADIN_CZ", "Relativní_vlhkost_1000", "REAL");
-            Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925", "REAL");
-            Model.Cloud.ModelSpectrumGetScaleForModels("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850", "REAL");
-            Model.Cloud.ModelSpectrumGetScaleForModels("Model_WRF_ARW", "LCL_Výška_základny_oblaku", "REAL");*/
-
-            /*Parameters.Add("RH 1000 hPa Real", 30); //75 
-            Parameters.Add("RH 925 hPa Real", 30); //60 
-            Parameters.Add("RH 850 hPa Real", 30); //75 
-            Parameters.Add("LCL Real", 1600); //1200 */
 
             //Příprava dat pro předpověď času výskytu srážek
             PrecipitationModels.Add("Srážky ALADIN", GetPrecipitationData(Parameters["Srážky ALADIN"]));
@@ -291,7 +291,9 @@ namespace Meteo
         //7. Lokální předpověď
         //Teplotní vlivy zemského povrchu
         private void TemperatureInfluencesOfEarthSurface() {
-            List<float> values = new List<float>() { Parameters["Oblačnost"] }; ///+ Charakteristiky reliéfu
+            List<float> values = new List<float>() { Parameters["Sklonitost reliéfu (průměrná)"], Parameters["Orientace reliéfu (tepelný prohřev)"], Parameters["Světelnost od JZ (Z-factor)"], Parameters["Vegetace-pokrytí (%)"],
+                                                    Parameters["Teplotní gradient (nadmořská výška)"], Parameters["IR kontrast"], Parameters["Teplota (MAX)"], Parameters["Oblačnost"]
+                                                    }; 
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU", level);
         }
@@ -299,7 +301,7 @@ namespace Meteo
         //Větrné vlivy
         private void WindInfluences()
         {
-            List<float> values = new List<float>() { Parameters["Rychlost větru v 10 m nad terénem v m/s"] }; //+ Charakteristiky reliéfu
+            List<float> values = new List<float>() { Parameters["Sídelní útvar"], Parameters["Šířka údolí"], Parameters["Obtékání překážky"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("VĚTRNÉ VLIVY", level);
         }
@@ -320,7 +322,7 @@ namespace Meteo
         //Zjistit jak konkrétně budou vypočtené parametry využívána a počítány! 
         private void WindEffect()
         {
-            List<float> windwardValues = new List<float>() { Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] }; // + Charakteristiky reliéfu
+            List<float> windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] }; // + Charakteristiky reliéfu
             int windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
 
             List<float> leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
