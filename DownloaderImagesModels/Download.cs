@@ -24,6 +24,7 @@ namespace DownloaderImagesModels
                 { "[dd]", DateTime.Now.ToString("dd") }
             };
 
+        private string ruleDownload = "[s:";
         private string ruleCounter = "[cc]";
         private string ruleCounterShort = "[c]";
         private string ruleCounterNow = "[scc:";
@@ -81,9 +82,14 @@ namespace DownloaderImagesModels
 
         private void AutoCounter(string path, string url)
         {
+            if (url.IndexOf(ruleDownload) != -1) {
+                DownloadOne(path, url, ruleDownload);
+                return;
+            }
+
             if (url.IndexOf(ruleCounter) != -1 | url.IndexOf(ruleCounterShort) != -1)
                 Counter24(path, url);
-
+            
             if (url.IndexOf(ruleCounterNow) != -1)
                 CounterNow(path, url, ruleCounterNow);
 
@@ -92,8 +98,31 @@ namespace DownloaderImagesModels
 
             if (url.IndexOf(ruleCounterMulti) != -1)
                 CounterMulti(path, url, ruleCounterMulti);
+
         }
-        
+
+        private void DownloadOne(string path, string url, string rc = "[s:")
+        {
+            var regex = new Regex(@"\" + rc + @"\d+\]");
+            char sep = ':';
+            foreach (Match match in regex.Matches(url))
+            {
+                string rule = match.Value.Replace("[", "").Replace("]", "");
+                if (rule.IndexOf(sep) != -1)
+                {
+                    string[] s = rule.Split(sep);
+                    if (s.Length == 2)
+                    {
+                        string link = url.Replace(match.Value, "");
+                        if(SaveImage(path, link, s[1] + ".png"))
+                        {
+                            counterSuccess++;
+                        }
+                    }
+                }
+            }
+        }
+
         private void Counter24(string path, string url)
         {
             for (int i = 0; i <= 24; i += stepHour)
@@ -151,8 +180,6 @@ namespace DownloaderImagesModels
                                 string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()):i.ToString();
                                 string link = url.Replace(match.Value, index);
                                 string c = (startHour + counterHour).ToString();
-                                if (startHour + counterHour > 24)
-                                    break;
                                 counterHour += stepHour;
                                 string cc = c.Length < 2 ? "0" + c : c;
                                 if (SaveImage(path, link, cc+".png"))
@@ -193,8 +220,6 @@ namespace DownloaderImagesModels
                                 string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()) : i.ToString();
                                 string link = url.Replace(match.Value, index);
                                 string c = (startHour + counterHour).ToString();
-                                if (startHour + counterHour > 24)
-                                    break;
                                 counterHour += stepHour;
                                 string cc = c.Length < 2 ? "0" + c : c;
                                 if (SaveImage(path, link, cc + ".png"))
