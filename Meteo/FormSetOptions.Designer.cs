@@ -32,8 +32,9 @@
             this.radioButtonSum = new System.Windows.Forms.RadioButton();
             this.radioButtonAvarage = new System.Windows.Forms.RadioButton();
             this.groupBoxCountMethod = new System.Windows.Forms.GroupBox();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.groupBoxCountMethod.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +73,7 @@
             // 
             // groupBoxCountMethod
             // 
+            this.groupBoxCountMethod.Controls.Add(this.radioButton4);
             this.groupBoxCountMethod.Controls.Add(this.radioButton1);
             this.groupBoxCountMethod.Controls.Add(this.radioButtonSum);
             this.groupBoxCountMethod.Controls.Add(this.radioButtonAvarage);
@@ -81,6 +83,18 @@
             this.groupBoxCountMethod.TabIndex = 5;
             this.groupBoxCountMethod.TabStop = false;
             this.groupBoxCountMethod.Text = "Specifikujte metodu [countMethod]:";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(121, 24);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(62, 17);
+            this.radioButton1.TabIndex = 5;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Tag = "majority";
+            this.radioButton1.Text = "Majorita";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // buttonSave
             // 
@@ -92,17 +106,17 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // radioButton1
+            // radioButton4
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(98, 24);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(62, 17);
-            this.radioButton1.TabIndex = 5;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Tag = "majority";
-            this.radioButton1.Text = "Majorita";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(121, 47);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(84, 17);
+            this.radioButton4.TabIndex = 6;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Tag = "average_raw";
+            this.radioButton4.Text = "Průměr (raw)";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // FormSetOptions
             // 
@@ -134,5 +148,6 @@
         private System.Windows.Forms.GroupBox groupBoxCountMethod;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }

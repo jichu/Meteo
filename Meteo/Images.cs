@@ -90,6 +90,10 @@ namespace Meteo
                                     Util.curCountMethod = "průměr";
                                     value = GetValueFromSpectrumBarAverage(colors, sizeRegion);
                                     break;
+                                case "average_raw":
+                                    Util.curCountMethod = "průměr (raw)";
+                                    value = (float)GetValueFromSpectrumBarAverageRaw(colors, sizeRegion);
+                                    break;
                                 case "majority":
                                     Util.curCountMethod = "majorita";
                                     value = GetValueFromSpectrumBarMajority(colors, sizeRegion);
@@ -215,7 +219,35 @@ namespace Meteo
             Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {value}" + Environment.NewLine+Environment.NewLine;
             return value;
         }
-        
+
+        private float GetValueFromSpectrumBarAverageRaw(List<Color> list, int sizeRegion)
+        {
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+            Dictionary<string, int> values = new Dictionary<string, int>();
+
+            float sumValues = 0;
+            foreach (var c in list)
+                foreach (var r in cloudModelSpectrum)
+                {
+                    if (r.color.Replace("#", "ff") == c.Name)
+                    {
+                        if (counts.ContainsKey(c.Name))
+                            counts[c.Name]++;
+                        else
+                            counts[c.Name] = 1;
+                        sumValues += r.rank;
+                    }
+                }
+            foreach (var c in counts)
+            {
+                //Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x" + Environment.NewLine;
+            }
+            float value = sumValues / sizeRegion;
+            Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {value}" + Environment.NewLine + Environment.NewLine;
+            return value;
+        }
+
         private float GetValueFromSpectrumBarMajority(List<Color> list, int sizeRegion)
         {
             Dictionary<string, int> counts = new Dictionary<string, int>();
