@@ -29,7 +29,7 @@ namespace Meteo
             //Pomocné nahrávání dat do DB z CSV souborů
             //ReadCSVFileORPS(@"ObceSRozsirenouPusobnosti_CR.csv"); //Zde se používá ORPSInsertOrUpdate().
             //ReadCSVFileORPColor(@"PaletaBarev.csv"); //Zde se používá  ORPColorInsertOrUpdate().
-            //ReadCSVFileModelSpectrum(@"Barvy_stupnice.csv");//Využívá ModelSpectrumInsertOrUpdate()
+            //ReadCSVFileModelSpectrum(@"Barvy_stupnice.csv");//Využívá ModelSpectrumInsertOrUpdate()//tot pustit pro načítání stupnic
             //NEW
 
             //MODELS_InsertOrUpdate();
