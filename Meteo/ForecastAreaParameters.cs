@@ -49,7 +49,6 @@ namespace Meteo
 
         }
 
-
         private void LoadParameters() {
 
             //Charakteristiky reliéfu
@@ -64,6 +63,7 @@ namespace Meteo
             Parameters.Add("Obtékání překážky", -1);
             Parameters.Add("Polohy nadmořských výšek", -1);
             Parameters.Add("Hřeben", -1);
+            Parameters.Add("Teplota (MAX)", -1);
 
             //Zatím vynechané parametry
             Parameters.Add("MOCON", -1); // prozatím vynechat
@@ -71,7 +71,6 @@ namespace Meteo
             Parameters.Add("RV 500 hPa", -1);
             Parameters.Add("RV 300 hPa", -1); 
             Parameters.Add("SWEAT", -1);
-            Parameters.Add("Teplota (MAX)", -1);
             //Parameters.Add("1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")); // prozatím vynechat
             //Parameters.Add("925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")); // prozatím vynechat
             //Parameters.Add("850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); // prozatím vynechat
@@ -101,9 +100,10 @@ namespace Meteo
             //Alternaci parametrů udělat přes settings (tabulka v DB)
             Parameters.Add("MLCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS")); // Alternace: Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
             Parameters.Add("LI", GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN"));
+            Parameters.Add("MLCIN", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de")); // Alternace: MLCIN_Wetter_3_de_MAIN
             Parameters.Add("MUCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MUCAPE_GFS")); 
             Parameters.Add("SI", GetParameter("Model_GFS_Austria_50km", "SI_index_GFS_MAIN"));
-            Parameters.Add("MLCIN", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de")); // Alternace: MLCIN_Wetter_3_de_MAIN
+            //Parameters.Add("MUCIN", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de"));
             Parameters.Add("TT index", GetParameter("Model_WRF_ARW_Balearsmeteo", "TT_Totals_Totals_index_Aladin_HR"));
             Parameters.Add("KI", GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index"));
             Parameters.Add("GRAD 850-500 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Instabilita_GRAD_850-500"));
@@ -188,6 +188,7 @@ namespace Meteo
             //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
+            //4 ze 7 modelů musí hlásit srážky, aby mohl výpočet pokračovat dál! Jinak všechny výstupy vrací -1!
             PrecipitationPlace();
             RelativeHumidity();
             DayInstability();
@@ -209,7 +210,6 @@ namespace Meteo
             MergeB();
 
             //WriteOutputLog();
-
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
@@ -226,10 +226,10 @@ namespace Meteo
 
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("LOKÁLNÍ PŘEDPOVĚĎ", level);
+
             values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"]};
             level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU BOUŘEK", level);
-
 
             //8)Nebezpečné doprovodné jevy (6.krok+Sloučení A)
             values = new List<float>() { Output["PODPORA VZNIKU NEBEZPEČNÝCH JEVŮ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["MÍSTO VÝSKYTU BOUŘEK"] };
@@ -241,7 +241,7 @@ namespace Meteo
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", level);
 
-            //Silné nárazy větru
+            //Silné nárazy větru // zkontrolovat suchý downburst!
             values = new List<float>() { Output["SILNÉ NÁRAZY VĚTRU"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", level);
@@ -262,14 +262,14 @@ namespace Meteo
             Output.Add("NEBEZPEČNÉ JEVY", level);
 
             //Hlavní výstup algoritmu
-            values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
+            values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["MÍSTO VÝSKYTU BOUŘEK"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(TorrentialFloodRiscScale, Probability(values));
-            Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);//
+            Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
             level = ValueToLevel(TorrentialFloodRiscScale2, Probability(values));
             Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
-
+                                                        //V--Tady se počítá s průměrem
             values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["MÍSTO VÝSKYTU BOUŘEK"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
-            if (Parameters["Stupeň nasycení"] <= 1.5){
+            if (Parameters["Stupeň nasycení"] <= 1.5){//<---Tady se počítá se sumou
                 List<float> weights = new List<float>() { 1, 1, 3, 3, 3, 2 };
                 level = ValueToLevel(TorrentialFloodRiscScale, ProbabilityWeights(values, weights));
                 Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ", level);
@@ -285,8 +285,6 @@ namespace Meteo
             }
             
         }
-
-
 
         //7. Lokální předpověď
         //Teplotní vlivy zemského povrchu
@@ -322,7 +320,7 @@ namespace Meteo
         //Zjistit jak konkrétně budou vypočtené parametry využívána a počítány! 
         private void WindEffect()
         {
-            List<float> windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] }; // + Charakteristiky reliéfu
+            List<float> windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
             int windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
 
             List<float> leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
@@ -453,8 +451,6 @@ namespace Meteo
             Output.Add("DEN - SUPERCELÁRNÍ TORNÁDA", DangerousPhenomenaCount(weights, values));
         }
 
-
-
         //Intenzita silných bouřek přes den
         private void IntensityOfStrongStormsDay()
         {
@@ -468,13 +464,12 @@ namespace Meteo
             Output.Add("INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2", stormIntensityDay2);
         }
 
-
         //Pohyb bouře
-        //Zatím se nepočítá ze všeho, protože z obrazového vstupu tuto zatím nelze zjistit požadovaná data.
+        //850 hPa musí dávat reálné hdnoty ne koeficienty!
         private void StormMoving()
         {
 
-            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", 1); //
+            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", -1); //
 
             //Vektor pohybu bouře
             List<float> windSpeedValues = new List<float>() { Parameters["850 hPa"], Parameters["700 hPa"], Parameters["600 hPa"], Parameters["500 hPa"], Parameters["400 hPa"], Parameters["300 hPa"] };
@@ -491,7 +486,7 @@ namespace Meteo
             else if (stormVector <= 15) stormVectorLevel = 1;
             else stormVectorLevel = 0;
 
-            List<float> values = new List<float>() { Parameters["MCS VEKTOR"]};
+            List<float> values = new List<float>() { Parameters["MCS VEKTOR"], Output["ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa"]};
             values.Add(stormVectorLevel);
 
             int stormMovement = ValueToLevel(LevelScale, Probability(values));
@@ -503,6 +498,7 @@ namespace Meteo
         //Organizace konv. bouře
         private void ConvectiveStormOrganization()
         {
+            //Převést vstupní parametry na koeficienty podle stupnice viz adr. struktura!
             List<float> values = new List<float>() { Parameters["Rychlost větru v 300 hPa"], Parameters["Rychlost větru v 850 hPa"] };
             int convStormOrg = ValueToLevel(OroKonvScale, Probability(values));
             Output.Add("ORGANIZACE KONV. BOUŘE", convStormOrg);
@@ -561,8 +557,7 @@ namespace Meteo
 
         //Denní instabilita
         private void DayInstability() {
-            List<float> values = new List<float>() { Parameters["MLCIN"]
-                , Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]};
+            List<float> values = new List<float>() { Parameters["MLCIN"], Parameters["TT index"], Parameters["KI"], Parameters["GRAD 850-500 hPa"], Parameters["WETBULB"]};
             List<float> values2;
             if (IsDay())
             {
@@ -589,11 +584,12 @@ namespace Meteo
             float probability = Probability(values);
             int level = ValueToLevel(LevelScale, probability);
             Output.Add("RH 1000-300 hPa", level);
-
+            
+            /*
             values = new List<float> (){Parameters["RH 850 hPa"], Parameters["RH 700 hPa"], Parameters["RH 500 hPa"], Parameters["RH 300 hPa"] };
             probability = Probability(values);
             level = ValueToLevel(LevelScale, probability);
-            Output.Add("RH 850-300 hPa", level);
+            Output.Add("RH 850-300 hPa", level);*/
 
             values = new List<float>(){Parameters["RH 1000 hPa"], Parameters["RH 925 hPa"], Parameters["RH 850 hPa"]};
             probability = Probability(values);
@@ -792,7 +788,7 @@ namespace Meteo
 
         //Test na den/noc
         private bool IsDay() {
-            if (sampleName == "21" || sampleName == "00" || sampleName == "03" || sampleName == "06")
+            if (sampleName == "21" || sampleName == "00" || sampleName == "03" || sampleName == "06" || sampleName == "24")
                 return false;
             else
                 return true;
