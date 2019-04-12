@@ -209,7 +209,7 @@ namespace Meteo
             WindEffect();
             MergeB();
 
-            //WriteOutputLog();
+            WriteOutputLog();
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď

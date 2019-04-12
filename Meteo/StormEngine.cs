@@ -13,12 +13,12 @@ namespace Meteo
         List<ForecastAreaParameters> fapList = new List<ForecastAreaParameters>();
         public string sampleName { get; set; }
         public List<string> sampleNames = new List<string>{
-            "00",
+           /* "00",
             "03",
             "06",
             "09",
             "12",
-            "15",
+            "15",*/
             "18",
             "21",
         };
