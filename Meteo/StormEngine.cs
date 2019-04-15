@@ -13,20 +13,23 @@ namespace Meteo
         List<ForecastAreaParameters> fapList = new List<ForecastAreaParameters>();
         public string sampleName { get; set; }
         public List<string> sampleNames = new List<string>{
-           /* "00",
+            "00",
             "03",
             "06",
             "09",
             "12",
-            "15",*/
+            "15",
             "18",
             "21",
         };
 
         public StormEngine()
         {
-            Thread t = new Thread(() => Run());
-            t.Start();
+            
+            /*Thread t = new Thread(() => Run());
+            t.Start();*/
+            Run();
+            
         }
 
         public StormEngine(string sampleName) {
@@ -38,22 +41,31 @@ namespace Meteo
                     fapList.Add(fap);
                 }
             
-            Output();
+            //Output();
         }
 
         public void Run() {
             foreach (var s in sampleNames)
             {
-                Util.l($"Počítám předpověď pro {s}. hodinu.");
-                foreach (var ORP in ORPS)
-                {
-                    ForecastAreaParameters fap = new ForecastAreaParameters(ORP, s);
-                    fapList.Add(fap);
-                }
+                Thread t = new Thread(() => Algorithm(s));
+                t.Start();
+                //Algorithm(s);
             }
-            Output();
+            //Output();
 
         }
+
+        public void Algorithm(string s) {
+            DateTime start = DateTime.Now;
+            Util.l($"Počítám předpověď pro {s}. hodinu.");
+            foreach (var ORP in ORPS)
+            {
+                /*ForecastAreaParameters fap = new ForecastAreaParameters(ORP, s);
+                fapList.Add(fap);*/
+                new ForecastAreaParameters(ORP, s);
+            }
+            Util.l($"Výpočet pro {s}. hodinu dokončen za {DateTime.Now - start}");
+        } 
 
         //Zde se bude počítat předpověď na základě parametrů
         public void Output() {

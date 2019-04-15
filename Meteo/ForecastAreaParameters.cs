@@ -12,6 +12,7 @@ namespace Meteo
         public string Name_orp { get; set; }
         public string sampleName { get; set; }
         private int precision = 10;
+        private bool drydownburst = false;
 
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
@@ -83,11 +84,11 @@ namespace Meteo
 
             //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu")); //nakonec se nebude používat
 
-            /*Orografické vlastnosti oblasti
+            //Orografické vlastnosti oblasti
             Parameters.Add("Proudění větru J", 1);
             Parameters.Add("Proudění větru S", 1);
             Parameters.Add("Proudění větru V", 1);
-            Parameters.Add("Proudění větru Z", 1);*/
+            Parameters.Add("Proudění větru Z", 1);
 
 
             /*Nezařazené parametry z adresářové struktury
@@ -183,33 +184,88 @@ namespace Meteo
             AddPrecipitationModel(new List<float>() { Parameters["Srážky ALADIN"], Parameters["Srážky GDPS"], Parameters["Srážky EURO4"], Parameters["Srážky HIRLAM"], Parameters["Srážky WRF-NMM"], Parameters["Srážky WRF-ARW"], Parameters["Srážky HIRLAM Starý"], Parameters["Srážky GFS Starý"] });
         }
 
+        private void WriteToDatabase() {
+            if (TestCondition())
+            {
+                CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"], Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
+                CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
+                CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
+                CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
+                CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
+                CloudOutputData strongWindscreensOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutput);
+                CloudOutputData hailOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - KRUPOBITÍ"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA KRUPOBITÍ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(hailOutput);
+                CloudOutputData supercelarTornadosOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(supercelarTornadosOutput);
+                if (drydownburst)
+                {
+                    CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
+                    Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
+                }
+                else
+                {
+                    CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
+                    Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
+                }
+            }
+            else {
+                CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
+                CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
+                CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
+                CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
+                CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
+                CloudOutputData strongWindscreensOutput = new CloudOutputData(id_orp, sampleName,-1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutput);
+                CloudOutputData hailOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA KRUPOBITÍ"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(hailOutput);
+                CloudOutputData supercelarTornadosOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(supercelarTornadosOutput);
+                CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
+                
+            }
+        }
+
         private void DoCountOperations()
         {
-            //Util.l("\n--------------------------------------\n" + "Počítám jednotlivé kroky algoritmu pro: " + Name_orp);
             LoadParameters();
             PrecipitationTime();
-            //4 ze 7 modelů musí hlásit srážky, aby mohl výpočet pokračovat dál! Jinak všechny výstupy vrací -1!
-            PrecipitationPlace();
-            RelativeHumidity();
-            DayInstability();
-            TriggeringConvection();
-            SupportOfConvection();
-            WindCut();
-            SupportOfDangerousPhenomenaCreation();
-            ConvectiveStormOrganization();
-            StormMoving();   
-            IntensityOfStrongStormsDay();  
-            TorrentialRain();      
-            DayHailStorm();         
-            StrongWindImpact();           
-            SupercelarTornados();           
-            TemperatureInfluencesOfEarthSurface();         
-            WindInfluences();           
-            HumidityInfluences();            
-            WindEffect();
-            MergeB();
-
-            WriteOutputLog();
+            //Otestuje jestli většina srážkových modelů hlásí srážky
+            if (TestCondition())
+            {
+                PrecipitationPlace();
+                RelativeHumidity();
+                DayInstability();
+                TriggeringConvection();
+                SupportOfConvection();
+                WindCut();
+                SupportOfDangerousPhenomenaCreation();
+                ConvectiveStormOrganization();
+                StormMoving();
+                IntensityOfStrongStormsDay();
+                TorrentialRain();
+                DayHailStorm();
+                StrongWindImpact();
+                SupercelarTornados();
+                TemperatureInfluencesOfEarthSurface();
+                WindInfluences();
+                HumidityInfluences();
+                WindEffect();
+                MergeB();
+                //WriteOutputLog();
+            }
+            WriteToDatabase();
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
@@ -241,10 +297,17 @@ namespace Meteo
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", level);
 
-            //Silné nárazy větru // zkontrolovat suchý downburst!
+            //Silné nárazy větru
             values = new List<float>() { Output["SILNÉ NÁRAZY VĚTRU"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
             level = ValueToLevel(StormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", level);
+
+            //Silné nárazy větru - suchý downburst
+            if (drydownburst) {
+                values = new List<float>() { Output["SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
+                level = ValueToLevel(StormIntensityScale, Probability(values));
+                Output.Add("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", level);
+            }
 
             //Krupobití
             values = new List<float>() { Output["KRUPOBITÍ"], Output["MÍSTO VÝSKYTU - NEBEZPEČNÉ JEVY"] };
@@ -317,7 +380,7 @@ namespace Meteo
         }
 
         //Návětrný + závětrný efekt
-        //Zjistit jak konkrétně budou vypočtené parametry využívána a počítány! 
+        //Zjistit jak konkrétně budou vypočtené parametry využívány a počítány! 
         private void WindEffect()
         {
             List<float> windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
@@ -397,13 +460,14 @@ namespace Meteo
         {
             List<float> weights = new List<float>() { 3, 2, 2, 3, 3, 2, 2, 1, 1, 2, 3 };
             List<float> RHReal = new List<float>() { Parameters["RH 1000 hPa Real"] , Parameters["RH 925 hPa Real"] , Parameters["RH 850 hPa Real"] };
-            
+
             //Podmínka pro suchý downburst
-            if (Output.ContainsKey(this.sampleName) && Output[this.sampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] >1500) {
+            if (Output.ContainsKey(this.sampleName) && Output[this.sampleName] < 0.57 && Average(RHReal) < 40 && Parameters["LCL Real"] > 1500)
+            {
                 //Nastal suchý downburst - do analýzy se dostanou nové KOEFICIENTY.
-                Output.Add("NASTAL SUCHÝ DOWNBURST", 1);
-                float[] boundariesLCL = new float[3] { 1500, 2000, 2500};
-                float[] boundariesRH = new float[3] { 20, 30, 40};
+                drydownburst = true;
+                float[] boundariesLCL = new float[3] { 1500, 2000, 2500 };
+                float[] boundariesRH = new float[3] { 20, 30, 40 };
 
                 Parameters.Add("LCL SD", ChangeValueOfParameterLCL(boundariesLCL, Parameters["LCL Real"]));
                 Parameters.Add("RH 1000 hPa SD", ChangeValueOfParameterLCL(boundariesLCL, Parameters["RH 1000 hPa Real"]));
@@ -413,7 +477,7 @@ namespace Meteo
                 List<float> valuesDryDownburst = new List<float>() { Parameters["RH 1000 hPa SD"], Parameters["RH 925 hPa SD"], Parameters["RH 850 hPa SD"] };
                 Output.Add("RH 1000-850 hPa SD", ValueToLevel(LevelScale, Probability(valuesDryDownburst)));
 
-                
+
                 List<float> valuesSD;
                 if (IsDay())
                 {
@@ -421,11 +485,15 @@ namespace Meteo
                 Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                     Output.Add("SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
                 }
-                else {
+                else
+                {
                     valuesSD = new List<float>() { Parameters["MUCAPE"], Parameters["SI"], Parameters["GRAD 850-500 hPa"], Output["RH 1000-850 hPa SD"], Parameters["LCL SD"], Parameters["DLS"], Parameters["LLS"],
                 Parameters["SREH 3 km"], Parameters["SWEAT"], Parameters["Rychlost větru v 850 hPa"], Parameters["DTHE"]};
                     Output.Add("SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", DangerousPhenomenaCount(weights, valuesSD));
                 }
+            }
+            else {
+                drydownburst = false;
             }
 
             List<float> values;
@@ -465,7 +533,6 @@ namespace Meteo
         }
 
         //Pohyb bouře
-        //850 hPa musí dávat reálné hdnoty ne koeficienty!
         private void StormMoving()
         {
 
@@ -633,10 +700,13 @@ namespace Meteo
                 hi[i] /= (PrecipitationModels.Count-modelsUnavailable[i]);
                 Output.Add((i * 3).ToString(), hi[i]);
             }
-            
-        } 
-               
+        }
+
         //Pomocné výpočetní funkce
+
+        private bool TestCondition() {
+            return (Output["0"] > 0.5) ? true : false;
+        } 
 
         //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
         private int ValueToLevel(List<float> levels, float value) {

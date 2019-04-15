@@ -290,7 +290,7 @@ namespace Meteo
             {
                 float value;
                 
-                    value = conn.Query<CloudInputData>("dbo.INPUT_DATA_GetDataValue @ID_ORP, @SAMPLE_NAME, @ID_MODEL, @TYPE", new { id_orp = id_o, sample_name = sample, id_model = id_m, type=typeVal }).ToList().First().value;
+                    value = (float) conn.Query<CloudInputData>("dbo.INPUT_DATA_GetDataValue @ID_ORP, @SAMPLE_NAME, @ID_MODEL, @TYPE", new { id_orp = id_o, sample_name = sample, id_model = id_m, type=typeVal }).ToList().First().value;
 
                 return value;
             }
