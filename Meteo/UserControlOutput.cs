@@ -26,6 +26,7 @@ namespace Meteo
         private int stepHour=3;
         private int curHour = 21;
         private List<string> settingOutputVarriableNames = new List<string>();
+        private string output_text_value_blank;
 
         public static UserControlOutput Instance
         {
@@ -188,6 +189,7 @@ namespace Meteo
 
         private void CreateTable()
         {
+            output_text_value_blank = Util.GetSettings("output_text_value_-1");
             dgv.Columns.Add("Id", "id");
             dgv.Columns["Id"].Width = 15;
             dgv.Columns.Add("Color", "");
@@ -231,14 +233,14 @@ namespace Meteo
             CellByName("Id").Style.BackColor = Color.Gray;
             CellByName("Color").Style.BackColor = data.Color;
             CellByName("Region").Value = data.RegionName;
-            CellByName("Value").Value = data.Value==-1? Util.GetSettings("output_text_value_-1") : data.Value.ToString();
+            CellByName("Value").Value = data.Value==-1? output_text_value_blank : data.Value.ToString();
             row.ReadOnly = true;
             dgv.Rows.Add(row);
         }
 
         internal void Render()
         {
-            //dgv.Rows.Clear();
+            dgv.Rows.Clear();
             CreateCanvas();
             CreateLegend();
             /*Draw(new Dictionary<string, float>()
