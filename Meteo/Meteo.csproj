@@ -298,6 +298,7 @@
     <Content Include="bin\Debug\images\output_legend_5.png" />
     <Content Include="bin\Debug\images\output_legend_6.png" />
     <Content Include="bin\Debug\images\output_legend_7.png" />
+    <Content Include="bin\Debug\images\output_legend_8.png" />
     <Content Include="bin\Debug\images\symbol_cloud.png" />
     <Content Include="bin\Debug\images\symbol_rain.png" />
     <Content Include="bin\Debug\images\symbol_storm.png" />
