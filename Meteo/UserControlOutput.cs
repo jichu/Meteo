@@ -40,6 +40,7 @@ namespace Meteo
         public UserControlOutput()
         {
             InitializeComponent();
+            CreateTable();
             CreateComboAlgorithmOutput();
             CreateTrackBarHourMove();
             Render();
@@ -160,6 +161,7 @@ namespace Meteo
         private void CreateLegend()
         {
             string path = Util.pathSource["output_legend"].Replace("[ID]", comboAlgorithmOutput.SelectedIndex.ToString());
+            Console.WriteLine(path);
             ClearControl("legend");
             if (File.Exists(path))
             {
@@ -192,7 +194,6 @@ namespace Meteo
             dgv.Columns["Color"].Width = 20;
             dgv.Columns.Add("Region", "Region");
             dgv.Columns.Add("Value", "Hodnota");
-            dgv.Rows.Clear();
             //dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellDoubleClick);
             dgv.ClearSelection();
@@ -230,19 +231,16 @@ namespace Meteo
             CellByName("Id").Style.BackColor = Color.Gray;
             CellByName("Color").Style.BackColor = data.Color;
             CellByName("Region").Value = data.RegionName;
-            CellByName("Value").Value = data.Value;
+            CellByName("Value").Value = data.Value==-1? Util.GetSettings("output_text_value_-1") : data.Value.ToString();
             row.ReadOnly = true;
             dgv.Rows.Add(row);
-
         }
 
         internal void Render()
         {
-            Util.l(comboAlgorithmOutput.SelectedIndex);
-            dgv.Rows.Clear();
+            //dgv.Rows.Clear();
             CreateCanvas();
             CreateLegend();
-            CreateTable();
             /*Draw(new Dictionary<string, float>()
             {
                 { "Aš", 0 },
