@@ -13,6 +13,7 @@ namespace Meteo
         public string sampleName { get; set; }
         private int precision = 10;
         private bool drydownburst = false;
+        private float precipitationTreshold = 0.0f;
 
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
@@ -705,7 +706,7 @@ namespace Meteo
         //Pomocné výpočetní funkce
 
         private bool TestCondition() {
-            return (Output["0"] > 0.5) ? true : false;
+            return (Output["0"] > precipitationTreshold) ? true : false;
         } 
 
         //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
