@@ -236,6 +236,9 @@
     <None Include="bin\Debug\models\Model_HIRLAM_Nový\Srážky_MAIN_Nový\Barvy_stupnice.csv" />
     <None Include="bin\Debug\models\Model_HIRLAM_Starý\model.cfg" />
     <None Include="bin\Debug\models\Model_HIRLAM_Starý\Srážky_MAIN_Starý\Barvy_stupnice.csv" />
+    <None Include="bin\Debug\models\Model_Nasycenost_pud2\model.cfg" />
+    <None Include="bin\Debug\models\Model_Nasycenost_pud2\Nasycenost_pud_1_typ\Barvy_stupnice.csv" />
+    <None Include="bin\Debug\models\Model_Nasycenost_pud2\Nasycenost_pud_2_typ\Barvy_stupnice.csv" />
     <None Include="bin\Debug\models\Model_Nasycenost_pud\model.cfg" />
     <None Include="bin\Debug\models\Model_Nasycenost_pud\Nasycenost_pud_1_typ\Barvy_stupnice.csv" />
     <None Include="bin\Debug\models\Model_Nasycenost_pud\Nasycenost_pud_2_typ\Barvy_stupnice.csv" />
@@ -561,6 +564,11 @@
     <Content Include="bin\Debug\models\Model_GFS_Wetterzentrale_DE_25km_STARY\Model_GFS_Wetterzentrale_DE_25km_STARY.bmp" />
     <Content Include="bin\Debug\models\Model_HIRLAM_Nový\Model_HIRLAM_Nový.bmp" />
     <Content Include="bin\Debug\models\Model_HIRLAM_Starý\Model_HIRLAM_Starý.bmp" />
+    <Content Include="bin\Debug\models\Model_Nasycenost_pud2\Model_Nasycenost_pud2.bmp" />
+    <Content Include="bin\Debug\models\Model_Nasycenost_pud2\Nasycenost_pud_1_typ\18.png" />
+    <Content Include="bin\Debug\models\Model_Nasycenost_pud2\Nasycenost_pud_1_typ\21.png" />
+    <Content Include="bin\Debug\models\Model_Nasycenost_pud2\Nasycenost_pud_2_typ\18.png" />
+    <Content Include="bin\Debug\models\Model_Nasycenost_pud2\Nasycenost_pud_2_typ\21.png" />
     <Content Include="bin\Debug\models\Model_Nasycenost_pud\Model_Nasycenost_pud.bmp" />
     <Content Include="bin\Debug\models\Model_Radarové_snímky\Model_Radarové_snímky.bmp" />
     <Content Include="bin\Debug\models\Model_Sumarizace_srazek\Model_Sumarizace_srazek.bmp" />
