@@ -9,20 +9,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using System.Windows.Forms;
 
 namespace DownloaderImagesModels
 {
-    class Download 
+    class Download
     {
-        public List<string> Errors = new List<string>();
+        public event EventHandler<DownloadEventArgs> EventProcess;
 
-        private Dictionary<string, string> rulesReplace = new Dictionary<string, string>
-            {
-                { "[yyyy]", DateTime.Now.Year.ToString() },
-                { "[yy]", DateTime.Now.ToString("yy") },
-                { "[MM]", DateTime.Now.ToString("MM") },
-                { "[dd]", DateTime.Now.ToString("dd") }
-            };
+        public List<string> Errors = new List<string>();
+        public string downloadHour = "";
+
+        private string pathOutput = "models";
+        private string pathOutputDate = "";
+        private List<int> timeupdate = new List<int>();
+        private List<int> alreadyDownloaded = new List<int>();
 
         private string ruleDownload = "[s:";
         private string ruleCounter = "[cc]";
@@ -32,25 +34,89 @@ namespace DownloaderImagesModels
         private string ruleCounterMulti = "[mcc:";
 
         private int stepHour=3;
+        private bool process = false;
 
         public Download()
         {
+            LoadConfig(System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".cfg");
+
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            aTimer.Interval = 1000;
+            aTimer.Enabled = true;
+
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            int hour = -1;
+            int.TryParse(DateTime.Now.ToString("HH"), out hour);
+            if (timeupdate.Contains(hour))
+                if (!alreadyDownloaded.Contains(hour))
+                    if(!process)
+                    {
+                        downloadHour = hour > 10 ? hour.ToString() : "0"+hour.ToString();
+                        alreadyDownloaded.Add(hour);
+                        Process();
+                    }
+
+            DownloadEventArgs ea = new DownloadEventArgs();
+            ea.Process = process;
+            ea.Hour = downloadHour==""?downloadHour: downloadHour+"h";
+            OnProcess(ea);
+            if (hour == 0)
+                alreadyDownloaded.Clear();
+        }
+
+        protected virtual void OnProcess(DownloadEventArgs e)
+        {
+            var handler = EventProcess;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public void Process()
+        {
             Thread t = new Thread(() => Do());
             t.Start();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         int counterSuccess = 0;
-        public void Do()
+        private void Do()
         {
+            process = true;
             Errors.Clear();
+            bool csv = LoadSetting.ReadCSVFile(@"data"+downloadHour+".csv");
+            if (!csv)
+            {
+                Util.l(@"data" + downloadHour + ".csv nenačteno",
+                     new Dictionary<string, object>
+                     {
+                        { "messageBoxIcon", MessageBoxIcon.Warning}
+                     }
+                );
+                process = false;
+                return;
+            }
             try
             {
-                Util.ProcessReady("Prosím čekejte...");
+                Util.ProcessReady();
+                counterSuccess = 0;
+
+                string newPathOutput = pathOutput.Replace("[h]",downloadHour);
+
+                if (pathOutputDate != "")
+                    newPathOutput += DateTime.Now.ToString(pathOutputDate);
+
                 int i = 0;
                 foreach (var item in LoadSetting.listOfRecords)
                 {
                     i++;
-                    AutoCounter($"./models/{item.Model}/{item.Submodel}/", ReplaceDate(item.URL));
+                    AutoCounter($"{newPathOutput}/{item.Model}/{item.Submodel}/", ReplaceDate(item.URL));
                 }
 
                 Util.ProcessReady($"Uloženo celkem {counterSuccess} obrázků do adresáře models. Chyb: {Errors.Count}");
@@ -64,6 +130,55 @@ namespace DownloaderImagesModels
             {
                 Util.l(e);
             }
+
+                process = false;
+        }
+
+        private void LoadConfig(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                StreamReader reader = new StreamReader(fileName);
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line == null) continue;
+                    if (line.Length < 2) continue;
+                    if (line[0].ToString() == "#") continue;
+                    if (line.IndexOf('=') == -1) continue;
+                    string[] item = line.Split('=');
+                    if (item.Length > 2) continue;
+                    string value = item[1];
+                    string key = item[0];
+                    if (key == "pathOutput") pathOutput = value;
+                    if (key == "pathOutputDate") pathOutputDate = value;
+                    if (key == "timeupdate") ParseTimeUpdate(value);
+
+                }
+                reader.Close();
+            }
+        }
+
+        private void ParseTimeUpdate(string value)
+        {
+            if (value.IndexOf(',') != -1)
+                foreach (var item in value.Split(','))
+                    ParseTimeUpdateHour(item);
+            else
+                ParseTimeUpdateHour(value);
+
+            foreach (var item in timeupdate)
+            {
+                Util.LabelTimeupdate(item);
+            }
+        }
+        private void ParseTimeUpdateHour(string value)
+        {
+            int update = -1;
+            int.TryParse(value, out update);
+            if (update != -1)
+                if (!timeupdate.Contains(update))
+                    timeupdate.Add(update);
         }
 
         private void ErrorsSaveLog()
@@ -82,6 +197,7 @@ namespace DownloaderImagesModels
 
         private void AutoCounter(string path, string url)
         {
+            Util.l(path);
             if (url.IndexOf(ruleDownload) != -1) {
                 DownloadOne(path, url, ruleDownload);
                 return;
@@ -242,13 +358,53 @@ namespace DownloaderImagesModels
             return 0;
         }
 
+        int DateShift = 0;
         private string ReplaceDate(string url)
         {
+            DateShift = 0;
+            url = ReplaceDateShift(url, '-');
+            url = ReplaceDateShift(url, '+');
+
+            Dictionary<string, string> rulesReplace = new Dictionary<string, string>
+                {
+                    { "[yyyy]", DateTime.Now.Year.ToString() },
+                    { "[yy]", DateTime.Now.ToString("yy") },
+                    { "[MM]", DateTime.Now.ToString("MM") },
+                    { "[dd]", DateTime.Now.ToString("dd") },
+                    { "[yye]", DateTime.Now.AddDays(DateShift).ToString("yy") },
+                    { "[MMe]", DateTime.Now.AddDays(DateShift).ToString("MM") },
+                    { "[dde]", DateTime.Now.AddDays(DateShift).ToString("dd") }
+                };
             foreach (var item in rulesReplace)
             {
                 if (url.IndexOf(item.Key) != -1)
                 {
                     url = url.Replace(item.Key, item.Value);
+                }
+            }
+            return url;
+        }
+
+        private string ReplaceDateShift(string url, char sep)
+        {
+            var regex = new Regex(@"\[d\"+sep+@"\d+\]");
+            foreach (Match match in regex.Matches(url))
+            {
+                string rule = match.Value.Replace("[", "").Replace("]", "");
+                if (rule.IndexOf(sep) != -1)
+                {
+                    string[] c = rule.Split(sep);
+                    if (c.Length == 2)
+                    {
+                        int num = 0;
+                        int.TryParse(c[1], out num);
+                        if (sep == '-') num *= -1;
+                        int dd = 0;
+                        string day = DateTime.Now.ToString("dd");
+                        int.TryParse(day, out dd);
+                        DateShift = num;
+                        return url.Replace(match.Value, "");
+                    }
                 }
             }
             return url;

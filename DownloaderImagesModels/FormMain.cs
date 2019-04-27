@@ -13,36 +13,73 @@ namespace DownloaderImagesModels
 {
     public partial class FormMain : Form
     {
+        private NotifyIcon notifyIcon = new NotifyIcon();
+        private Download download = null;
+
         public FormMain()
         {
             InitializeComponent();
-
+            this.Icon= (Icon)Properties.Resources.icon;
+            /*
+            this.WindowState = FormWindowState.Minimized;
+            this.Hide();
+            */
             Util.form = this;
+
+            Notify();
+        }
+
+        private void Notify()
+        {
+            notifyIcon.Icon = (Icon)Properties.Resources.icon;
+            notifyIcon.Visible = true;
+
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            ToolStripMenuItem exitApplication = new ToolStripMenuItem();
+
+            notifyIcon.ContextMenuStrip = contextMenu;
+            notifyIcon.DoubleClick += Monitoring_Click;
+
+            exitApplication.Text = "Zavřít";
+            exitApplication.Click += new EventHandler(ExitApplication_Click);
+            contextMenu.Items.Add(exitApplication);
+        }
+
+        private void Monitoring_Click(object sender, EventArgs e)
+        {
+            this.BringToFront();
+            this.WindowState = FormWindowState.Minimized;
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void ExitApplication_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            bool csv = LoadSetting.ReadCSVFile(@"data.csv");
+            download = new Download();
+            download.EventProcess += OnProcess;
 
-            if (csv)
-            {
-                status.Text = "Ready...";
-                new Download();
-            }
-            else {
-                Util.l("CSV nenačteno",
-                     new Dictionary<string, object>
-                     {
-                        { "messageBoxIcon", MessageBoxIcon.Warning}
-                     }
-                );
-             }
 
         }
 
+        private void OnProcess(object sender, DownloadEventArgs e)
+        {
+            notifyIcon.Icon = !e.Process?(Icon)Properties.Resources.icon: (Icon)Properties.Resources.icon_process;
+            this.BeginInvoke((Action)(() =>
+            {
+                this.Icon = !e.Process ? (Icon)Properties.Resources.icon : (Icon)Properties.Resources.icon_process;
+                this.Text = e.Process ? "Stahování "+e.Hour : "Downloader Images Models";
+                this.button1.Enabled = e.Process ? false : true;
+            }));
+        }
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            notifyIcon.Icon = null;
             try
             {
                 foreach (var process in Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName))
@@ -57,5 +94,10 @@ namespace DownloaderImagesModels
             catch (Exception ex) { Console.WriteLine(ex); }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            download.downloadHour="";
+            download?.Process();
+        }
     }
 }

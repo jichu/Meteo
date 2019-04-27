@@ -31,6 +31,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.labelTimeupdate = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,20 +58,42 @@
             this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxOutput.Location = new System.Drawing.Point(12, 12);
+            this.richTextBoxOutput.Location = new System.Drawing.Point(12, 34);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
-            this.richTextBoxOutput.Size = new System.Drawing.Size(776, 392);
+            this.richTextBoxOutput.Size = new System.Drawing.Size(776, 370);
             this.richTextBoxOutput.TabIndex = 3;
             this.richTextBoxOutput.Text = "";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(117, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Spustit stahování";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // labelTimeupdate
+            // 
+            this.labelTimeupdate.AutoSize = true;
+            this.labelTimeupdate.Location = new System.Drawing.Point(147, 10);
+            this.labelTimeupdate.Name = "labelTimeupdate";
+            this.labelTimeupdate.Size = new System.Drawing.Size(72, 13);
+            this.labelTimeupdate.TabIndex = 5;
+            this.labelTimeupdate.Text = "Stahování v: ";
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 429);
+            this.Controls.Add(this.labelTimeupdate);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.richTextBoxOutput);
             this.Controls.Add(this.statusStrip1);
             this.Name = "FormMain";
+            this.ShowInTaskbar = false;
             this.Text = "Downloader Images Models";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
@@ -84,6 +108,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         internal System.Windows.Forms.ToolStripStatusLabel status;
         public System.Windows.Forms.RichTextBox richTextBoxOutput;
+        private System.Windows.Forms.Button button1;
+        internal System.Windows.Forms.Label labelTimeupdate;
     }
 }
 
