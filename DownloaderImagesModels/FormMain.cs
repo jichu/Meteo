@@ -20,10 +20,8 @@ namespace DownloaderImagesModels
         {
             InitializeComponent();
             this.Icon= (Icon)Properties.Resources.icon;
-            /*
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
-            */
             Util.form = this;
 
             Notify();
@@ -36,15 +34,20 @@ namespace DownloaderImagesModels
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
             ToolStripMenuItem exitApplication = new ToolStripMenuItem();
+            ToolStripMenuItem download = new ToolStripMenuItem();
 
             notifyIcon.ContextMenuStrip = contextMenu;
             notifyIcon.DoubleClick += Monitoring_Click;
+
+            download.Text = "Spustit stahování";
+            download.Click += new EventHandler(Download_Click);
+            contextMenu.Items.Add(download);
 
             exitApplication.Text = "Zavřít";
             exitApplication.Click += new EventHandler(ExitApplication_Click);
             contextMenu.Items.Add(exitApplication);
         }
-
+        
         private void Monitoring_Click(object sender, EventArgs e)
         {
             this.BringToFront();
@@ -97,6 +100,12 @@ namespace DownloaderImagesModels
         private void button1_Click(object sender, EventArgs e)
         {
             download.downloadHour="";
+            download?.Process();
+        }
+
+        private void Download_Click(object sender, EventArgs e)
+        {
+            download.downloadHour = "";
             download?.Process();
         }
     }

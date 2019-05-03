@@ -33,7 +33,7 @@ namespace DownloaderImagesModels
         private string ruleCounterNowShort = "[sc:";
         private string ruleCounterMulti = "[mcc:";
 
-        private int stepHour=3;
+        private int stepHour = 3;
         private bool process = false;
 
         public Download()
@@ -53,16 +53,16 @@ namespace DownloaderImagesModels
             int.TryParse(DateTime.Now.ToString("HH"), out hour);
             if (timeupdate.Contains(hour))
                 if (!alreadyDownloaded.Contains(hour))
-                    if(!process)
+                    if (!process)
                     {
-                        downloadHour = hour > 10 ? hour.ToString() : "0"+hour.ToString();
+                        downloadHour = hour > 10 ? hour.ToString() : "0" + hour.ToString();
                         alreadyDownloaded.Add(hour);
                         Process();
                     }
 
             DownloadEventArgs ea = new DownloadEventArgs();
             ea.Process = process;
-            ea.Hour = downloadHour==""?downloadHour: downloadHour+"h";
+            ea.Hour = downloadHour == "" ? downloadHour : downloadHour + "h";
             OnProcess(ea);
             if (hour == 0)
                 alreadyDownloaded.Clear();
@@ -90,7 +90,7 @@ namespace DownloaderImagesModels
         {
             process = true;
             Errors.Clear();
-            bool csv = LoadSetting.ReadCSVFile(@"data"+downloadHour+".csv");
+            bool csv = LoadSetting.ReadCSVFile(@"data" + downloadHour + ".csv");
             if (!csv)
             {
                 Util.l(@"data" + downloadHour + ".csv nenačteno",
@@ -107,7 +107,7 @@ namespace DownloaderImagesModels
                 Util.ProcessReady();
                 counterSuccess = 0;
 
-                string newPathOutput = pathOutput.Replace("[h]",downloadHour);
+                string newPathOutput = pathOutput.Replace("[h]", downloadHour);
 
                 if (pathOutputDate != "")
                     newPathOutput += DateTime.Now.ToString(pathOutputDate);
@@ -121,7 +121,7 @@ namespace DownloaderImagesModels
 
                 Util.ProcessReady($"Uloženo celkem {counterSuccess} obrázků do adresáře models. Chyb: {Errors.Count}");
 
-                if(Errors.Count>0)
+                if (Errors.Count > 0)
                 {
                     ErrorsSaveLog();
                 }
@@ -131,7 +131,7 @@ namespace DownloaderImagesModels
                 Util.l(e);
             }
 
-                process = false;
+            process = false;
         }
 
         private void LoadConfig(string fileName)
@@ -197,7 +197,6 @@ namespace DownloaderImagesModels
 
         private void AutoCounter(string path, string url)
         {
-            Util.l(path);
             if (url.IndexOf(ruleDownload) != -1) {
                 DownloadOne(path, url, ruleDownload);
                 return;
@@ -205,7 +204,7 @@ namespace DownloaderImagesModels
 
             if (url.IndexOf(ruleCounter) != -1 | url.IndexOf(ruleCounterShort) != -1)
                 Counter24(path, url);
-            
+
             if (url.IndexOf(ruleCounterNow) != -1)
                 CounterNow(path, url, ruleCounterNow);
 
@@ -230,7 +229,7 @@ namespace DownloaderImagesModels
                     if (s.Length == 2)
                     {
                         string link = url.Replace(match.Value, "");
-                        if(SaveImage(path, link, s[1] + ".png"))
+                        if (SaveImage(path, link, s[1] + ".png"))
                         {
                             counterSuccess++;
                         }
@@ -266,19 +265,19 @@ namespace DownloaderImagesModels
             }
         }
 
-        private void CounterNow(string path, string url, string rc="[scc:")
+        private void CounterNow(string path, string url, string rc = "[scc:")
         {
-            var regex = new Regex(@"\"+rc+@"\d+:\d+:\d+\]");
+            var regex = new Regex(@"\" + rc + @"\d+:\d+:\d+\]");
             char sep = ':';
             int hour = 0;
-            int.TryParse(DateTime.Now.ToString("HH"),out hour);
+            int.TryParse(DateTime.Now.ToString("HH"), out hour);
             foreach (Match match in regex.Matches(url))
             {
-                string rule = match.Value.Replace("[","").Replace("]", "");
-                if (rule.IndexOf(sep)!=-1)
+                string rule = match.Value.Replace("[", "").Replace("]", "");
+                if (rule.IndexOf(sep) != -1)
                 {
                     string[] counter = rule.Split(sep);
-                    if(counter.Length==4)
+                    if (counter.Length == 4)
                     {
                         int from = 0;
                         int to = 0;
@@ -290,15 +289,15 @@ namespace DownloaderImagesModels
                         int startHour = FindHourByUpdate(hour, update);
                         int counterHour = 0;
 
-                        if (to>=from)
-                            for (int i= from; i <= to; i++)
+                        if (to >= from)
+                            for (int i = from; i <= to; i++)
                             {
-                                string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()):i.ToString();
+                                string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()) : i.ToString();
                                 string link = url.Replace(match.Value, index);
                                 string c = (startHour + counterHour).ToString();
                                 counterHour += stepHour;
                                 string cc = c.Length < 2 ? "0" + c : c;
-                                if (SaveImage(path, link, cc+".png"))
+                                if (SaveImage(path, link, cc + ".png"))
                                 {
                                     counterSuccess++;
                                 }
@@ -331,7 +330,7 @@ namespace DownloaderImagesModels
 
                         int counterHour = 0;
                         if (to >= from)
-                            for (int i = from; i <= to; i+=step)
+                            for (int i = from; i <= to; i += step)
                             {
                                 string index = rc.IndexOf("cc") != -1 ? (i < 10 ? "0" + i.ToString() : i.ToString()) : i.ToString();
                                 string link = url.Replace(match.Value, index);
@@ -358,12 +357,18 @@ namespace DownloaderImagesModels
             return 0;
         }
 
-        int DateShift = 0;
-        private string ReplaceDate(string url)
+        private string ReplaceDate(string url) {
+            url = ReplaceDateRule(url, "e");
+            url = ReplaceDateRule(url, "f");
+            return url;
+        }
+
+        private int DateShift = 0;
+        private string ReplaceDateRule(string url, string rule)
         {
             DateShift = 0;
-            url = ReplaceDateShift(url, '-');
-            url = ReplaceDateShift(url, '+');
+            url = ReplaceDateShift(url,rule, '-');
+            url = ReplaceDateShift(url,rule, '+');
 
             Dictionary<string, string> rulesReplace = new Dictionary<string, string>
                 {
@@ -371,9 +376,10 @@ namespace DownloaderImagesModels
                     { "[yy]", DateTime.Now.ToString("yy") },
                     { "[MM]", DateTime.Now.ToString("MM") },
                     { "[dd]", DateTime.Now.ToString("dd") },
-                    { "[yye]", DateTime.Now.AddDays(DateShift).ToString("yy") },
-                    { "[MMe]", DateTime.Now.AddDays(DateShift).ToString("MM") },
-                    { "[dde]", DateTime.Now.AddDays(DateShift).ToString("dd") }
+                    { "[yyyy"+rule+"]", DateTime.Now.AddDays(DateShift).ToString("yy") },
+                    { "[yy"+rule+"]", DateTime.Now.AddDays(DateShift).ToString("yy") },
+                    { "[MM"+rule+"]", DateTime.Now.AddDays(DateShift).ToString("MM") },
+                    { "[dd"+rule+"]", DateTime.Now.AddDays(DateShift).ToString("dd") }
                 };
             foreach (var item in rulesReplace)
             {
@@ -385,9 +391,9 @@ namespace DownloaderImagesModels
             return url;
         }
 
-        private string ReplaceDateShift(string url, char sep)
+        private string ReplaceDateShift(string url,string r, char sep)
         {
-            var regex = new Regex(@"\[d\"+sep+@"\d+\]");
+            var regex = new Regex(@"\["+r+@"\"+sep+@"\d+\]");
             foreach (Match match in regex.Matches(url))
             {
                 string rule = match.Value.Replace("[", "").Replace("]", "");
@@ -434,7 +440,7 @@ namespace DownloaderImagesModels
             {
                 Util.l("Chyba (nelze stáhnout) z "+url);
                 Console.WriteLine(e);
-                Errors.Add(url);
+                Errors.Add($"Nelze stáhnout: {url} do {path}");
                 return false;
             }
         }
