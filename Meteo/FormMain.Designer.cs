@@ -41,6 +41,7 @@
             this.MenuItemAlgorithm = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
             this.backgroundWorkerEnumerationModels = new System.ComponentModel.BackgroundWorker();
+            this.menuItemForecast = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,11 +75,12 @@
             // 
             this.modelyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemLoadModels,
-            this.menuItemExplore,
-            this.menuItemPalette,
             this.menuItemLoadInputs,
-            this.menuItemOutput,
-            this.MenuItemAlgorithm});
+            this.menuItemPalette,
+            this.menuItemExplore,
+            this.menuItemForecast,
+            this.MenuItemAlgorithm,
+            this.menuItemOutput});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";
@@ -96,7 +98,7 @@
             this.menuItemExplore.Name = "menuItemExplore";
             this.menuItemExplore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.menuItemExplore.Size = new System.Drawing.Size(304, 22);
-            this.menuItemExplore.Text = "Prohlídnout";
+            this.menuItemExplore.Text = "Prohlídnout modely";
             this.menuItemExplore.Click += new System.EventHandler(this.menuItemExplore_Click);
             // 
             // menuItemPalette
@@ -144,6 +146,13 @@
             // 
             this.backgroundWorkerEnumerationModels.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerEnumerationModels_DoWork);
             // 
+            // menuItemForecast
+            // 
+            this.menuItemForecast.Name = "menuItemForecast";
+            this.menuItemForecast.Size = new System.Drawing.Size(304, 22);
+            this.menuItemForecast.Text = "Předpověď";
+            this.menuItemForecast.Click += new System.EventHandler(this.menuItemForecast_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,6 +189,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorkerEnumerationModels;
         private System.Windows.Forms.ToolStripMenuItem menuItemLoadInputs;
         private System.Windows.Forms.ToolStripMenuItem MenuItemAlgorithm;
+        private System.Windows.Forms.ToolStripMenuItem menuItemForecast;
     }
 }
 

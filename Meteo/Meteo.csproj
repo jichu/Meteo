@@ -136,6 +136,12 @@
     <Compile Include="Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControlForecast.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControlForecast.Designer.cs">
+      <DependentUpon>UserControlForecast.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControlModel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     </Compile>
     <EmbeddedResource Include="Test.resx">
       <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControlForecast.resx">
+      <DependentUpon>UserControlForecast.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlModel.resx">
       <DependentUpon>UserControlModel.cs</DependentUpon>

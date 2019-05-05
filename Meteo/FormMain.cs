@@ -25,7 +25,7 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
             new Controller();
-            this.menuItemExplore.PerformClick();
+            this.menuItemOutput.PerformClick();
 
 
         }
@@ -140,6 +140,18 @@ namespace Meteo
             catch (Exception ex) {
                 Util.l("Chyba při výpočtu");
             }
+        }
+
+        private void menuItemForecast_Click(object sender, EventArgs e)
+        {
+            if (!panelLayout.Controls.Contains(UserControlForecast.Instance))
+            {
+                panelLayout.Controls.Add(UserControlForecast.Instance);
+                UserControlForecast.Instance.Dock = DockStyle.Fill;
+                UserControlForecast.Instance.BringToFront();
+            }
+            else
+                UserControlForecast.Instance.BringToFront();
         }
     }
 }
