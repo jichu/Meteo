@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace Meteo
@@ -43,18 +44,11 @@ namespace Meteo
 
             Util.curModelName = "Model_ALADIN_CZ";
             Util.curSubmodelName = "Teplota";
-            //new Images(@"D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\models\Model_ALADIN_CZ\Teplota\15.png",true);
 
             ShowModels();
 
-            
-            /*Thread t = new Thread(() => EnumerationModels()); //INPUT_DATA
-            t.Start(); //INPUT_DATA
-            */
-            
-            //treeViewModel.ExpandAll();
         }
-        
+
         public void EnumerationModels()
         {
             if (sourceImages.Count > 0)
@@ -72,13 +66,19 @@ namespace Meteo
 
         public void ShowModels()
         {
+            if (Util.curModelDir == null)
+                return;
+
+            labelModelsDir.Text = Util.curModelDir;
+            labelModelsDir.ForeColor = Color.Black;
+
             string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpeg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff";
             JObject jOptionTemp = JObject.Parse(@"{'option': {}}");
             sourceImages.Clear();
 
             try
             {
-                string dirPath = AppDomain.CurrentDomain.BaseDirectory + @"models";
+                string dirPath = Util.pathSource["models"]+Util.curModelDir;
                 int nodeModel = 0;
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 JObject jModels = new JObject();
@@ -87,7 +87,7 @@ namespace Meteo
                     string model = dir.Substring(dir.LastIndexOf("\\") + 1);
                     treeViewModel.Nodes.Add(model);
 
-                    string orpMask = dir + @"\" + model + ".bmp";
+                    string orpMask = Util.pathSource["masks"] + model + ".bmp";
 
                     if (!File.Exists(orpMask))
                     {
@@ -138,18 +138,25 @@ namespace Meteo
 
         private void AddTypeReal(string file, string model, string submodel)
         {
-            string options = Model.Cloud.MODELSGetModelOptions(model, submodel);
-            JObject jo = JObject.Parse(options);
-            var p = jo.Property("type");
-            if(p!=null)
-            if (jo["type"].ToString() == "REAL")
-                sourceImages.Add(new SourceImage()
-                            {
-                                Path = file,
-                                Model = model,
-                                Submodel = submodel,
-                                Type = "REAL"
-                            });
+            try
+            {
+                string options = Model.Cloud.MODELSGetModelOptions(model, submodel);
+                JObject jo = JObject.Parse(options);
+                var p = jo.Property("type");
+                if (p != null)
+                    if (jo["type"].ToString() == "REAL")
+                        sourceImages.Add(new SourceImage()
+                        {
+                            Path = file,
+                            Model = model,
+                            Submodel = submodel,
+                            Type = "REAL"
+                        });
+            }
+            catch (Exception e)
+            {
+                Util.l(e);
+            }
         }
 
         private void treeViewModel_AfterSelect(object sender, TreeViewEventArgs e)
@@ -382,11 +389,16 @@ namespace Meteo
             FormSetOptions f = new FormSetOptions(Util.curModelName, Util.curSubmodelName, options);
             f.ShowDialog(View.FormMain);
             options = f.options;
-            Util.l(options);
             Model.Cloud.MODELSInsertOrUpdate(new CloudModels(Util.curSubmodelName, Util.curModelName, options));
             Thread t = new Thread(() => LoadMap(curImage));
             t.Start();
         }
 
+        private void labelModelsDir_Click(object sender, EventArgs e)
+        {
+            FormSetModelsDir f = new FormSetModelsDir();
+            f.ShowDialog();            
+            ShowModels();
+        }
     }
 }

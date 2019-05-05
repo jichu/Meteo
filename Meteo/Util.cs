@@ -18,6 +18,7 @@ namespace Meteo
         public static Dictionary<string, string> pathSource = new Dictionary<string, string>
         {
             { "config", @".\config\" },
+            { "masks", @".\config\masks\" },
             { "models", @".\models\" },
             { "model_cfg", @"model.cfg" },
             { "symbol_rain", @".\images\symbol_rain.png" },
@@ -43,12 +44,14 @@ namespace Meteo
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
         public static List<CloudORPColor> ORPColorGetORPColors { get; set; }
 
+        public static List<string> modelsDir = new List<string>();
         public static Dictionary<int, string> palette = new Dictionary<int, string>();
         public static Dictionary<string, Point> rainRegion = new Dictionary<string, Point>();
         public static List<float> rainRegionValue = new List<float>();
 
         public static bool Develop = true;
 
+        public static string curModelDir { get; set; }
         public static string curModelName { get; set; }
         public static string curSubmodelName { get; set; }
         public static string curCountMethod { get; set; }
