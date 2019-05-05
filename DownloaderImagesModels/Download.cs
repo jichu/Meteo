@@ -183,7 +183,7 @@ namespace DownloaderImagesModels
 
         private void ErrorsSaveLog()
         {
-            string filename = "log.txt";
+            string filename = Util.logFile;
 
             //File.WriteAllText(filename, String.Empty);
             using (StreamWriter sw = File.CreateText(filename))

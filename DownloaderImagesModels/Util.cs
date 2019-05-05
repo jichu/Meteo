@@ -10,6 +10,8 @@ namespace DownloaderImagesModels
 {
     internal static class Util
     {
+        internal static string logFile= "log.txt";
+
         internal static FormMain form { get; set; }
 
         internal static void l(object obj, Dictionary<string, object> logOptions = null)
