@@ -75,7 +75,7 @@ namespace Meteo
             string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpeg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff";
             JObject jOptionTemp = JObject.Parse(@"{'option': {}}");
             sourceImages.Clear();
-
+            treeViewModel.Nodes.Clear();
             try
             {
                 string dirPath = Util.pathSource["models"]+Util.curModelDir;
@@ -155,7 +155,8 @@ namespace Meteo
             }
             catch (Exception e)
             {
-                Util.l(e);
+                return;
+                //Util.l(e);
             }
         }
 
