@@ -25,7 +25,7 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
             new Controller();
-            this.menuItemExplore.PerformClick();
+            this.menuItemOutput.PerformClick();
 
 
         }
@@ -56,9 +56,11 @@ namespace Meteo
         // menu MODELY
         private void menuItemLoadModels_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou /models/?", "Načíst data do databáze", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou?", "Načíst data do databáze", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
+                FormSetModelsDir f = new FormSetModelsDir();
+                f.ShowDialog();
                 PreImage mapORP = new PreImage();
                 mapORP.LoadORPfromModels();
             }
@@ -138,6 +140,18 @@ namespace Meteo
             catch (Exception ex) {
                 Util.l("Chyba při výpočtu");
             }
+        }
+
+        private void menuItemForecast_Click(object sender, EventArgs e)
+        {
+            if (!panelLayout.Controls.Contains(UserControlForecast.Instance))
+            {
+                panelLayout.Controls.Add(UserControlForecast.Instance);
+                UserControlForecast.Instance.Dock = DockStyle.Fill;
+                UserControlForecast.Instance.BringToFront();
+            }
+            else
+                UserControlForecast.Instance.BringToFront();
         }
     }
 }

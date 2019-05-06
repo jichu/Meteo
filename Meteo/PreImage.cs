@@ -29,12 +29,15 @@ namespace Meteo
         {
             try
             {
-                string dirPath = Util.pathSource["models"];
+                if (Util.curModelDir == null)
+                    return;
+
+                string dirPath = Util.pathSource["models"] + Util.curModelDir;
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 foreach (var dir in dirs)
                 {
                     string model = dir.Substring(dir.LastIndexOf("\\") + 1);
-                    string orpMask = dir+@"\"+ model + ".bmp";
+                    string orpMask = Util.pathSource["masks"] + model + ".bmp";
                     Util.ShowLoading("Načítání a ukládání ORP masek do databáze...");
 
                     if (File.Exists(orpMask))

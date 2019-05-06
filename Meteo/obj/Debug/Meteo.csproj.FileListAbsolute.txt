@@ -108,3 +108,5 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb
 C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\obj\Debug\Meteo.Test.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.Test.resources
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormSetModelsDir.resources
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlForecast.resources

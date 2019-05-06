@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace DownloaderImagesModels
 {
     internal static class Util
     {
+        internal static string logFile= "log.txt";
+
         internal static FormMain form { get; set; }
 
         internal static void l(object obj, Dictionary<string, object> logOptions = null)
@@ -58,9 +61,20 @@ namespace DownloaderImagesModels
         internal static void ProcessReady(string msg=null)
         {
             if (msg == null)
-                l("Ready...");
+            {
+                form.BeginInvoke((Action)(() =>
+                {
+                    form.richTextBoxOutput.Text = "Prosím čekejte..."+Environment.NewLine;
+                    form.status.Text = "Ready";
+                }));
+            }
             else
                 l(msg);
+        }
+
+        internal static void LabelTimeupdate(int item)
+        {
+            form.labelTimeupdate.Text += item.ToString()+"h ";
         }
     }
 }

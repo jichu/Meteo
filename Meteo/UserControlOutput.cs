@@ -162,7 +162,6 @@ namespace Meteo
         private void CreateLegend()
         {
             string path = Util.pathSource["output_legend"].Replace("[ID]", comboAlgorithmOutput.SelectedIndex.ToString());
-            Console.WriteLine(path);
             ClearControl("legend");
             if (File.Exists(path))
             {

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelModelsDir = new System.Windows.Forms.Label();
             this.treeViewModel = new System.Windows.Forms.TreeView();
             this.checkBoxShowORP = new System.Windows.Forms.CheckBox();
             this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
@@ -43,22 +43,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // labelModelsDir
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Modely:";
+            this.labelModelsDir.AutoSize = true;
+            this.labelModelsDir.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelModelsDir.ForeColor = System.Drawing.Color.DarkRed;
+            this.labelModelsDir.Location = new System.Drawing.Point(3, 6);
+            this.labelModelsDir.Name = "labelModelsDir";
+            this.labelModelsDir.Size = new System.Drawing.Size(106, 13);
+            this.labelModelsDir.TabIndex = 2;
+            this.labelModelsDir.Text = "<vyberte modely>";
+            this.labelModelsDir.Click += new System.EventHandler(this.labelModelsDir_Click);
             // 
             // treeViewModel
             // 
             this.treeViewModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.treeViewModel.Location = new System.Drawing.Point(3, 16);
+            this.treeViewModel.Location = new System.Drawing.Point(3, 27);
             this.treeViewModel.Name = "treeViewModel";
-            this.treeViewModel.Size = new System.Drawing.Size(185, 270);
+            this.treeViewModel.Size = new System.Drawing.Size(185, 259);
             this.treeViewModel.TabIndex = 3;
             // 
             // checkBoxShowORP
@@ -169,7 +172,7 @@
             this.Controls.Add(this.richTextBoxOutput);
             this.Controls.Add(this.checkBoxShowORP);
             this.Controls.Add(this.treeViewModel);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelModelsDir);
             this.Name = "UserControlModel";
             this.Size = new System.Drawing.Size(670, 289);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).EndInit();
@@ -180,7 +183,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelModelsDir;
         public System.Windows.Forms.TreeView treeViewModel;
         public System.Windows.Forms.PictureBox pictureBoxMap;
         public System.Windows.Forms.CheckBox checkBoxShowORP;

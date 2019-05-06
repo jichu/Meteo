@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.souborToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemClose = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,9 +38,10 @@
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemLoadInputs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemAlgorithm = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
             this.backgroundWorkerEnumerationModels = new System.ComponentModel.BackgroundWorker();
-            this.MenuItemAlgorithm = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemForecast = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,11 +75,12 @@
             // 
             this.modelyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemLoadModels,
-            this.menuItemExplore,
-            this.menuItemPalette,
             this.menuItemLoadInputs,
-            this.menuItemOutput,
-            this.MenuItemAlgorithm});
+            this.menuItemPalette,
+            this.menuItemExplore,
+            this.menuItemForecast,
+            this.MenuItemAlgorithm,
+            this.menuItemOutput});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";
@@ -95,7 +98,7 @@
             this.menuItemExplore.Name = "menuItemExplore";
             this.menuItemExplore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.menuItemExplore.Size = new System.Drawing.Size(304, 22);
-            this.menuItemExplore.Text = "Prohlídnout";
+            this.menuItemExplore.Text = "Prohlídnout modely";
             this.menuItemExplore.Click += new System.EventHandler(this.menuItemExplore_Click);
             // 
             // menuItemPalette
@@ -121,6 +124,14 @@
             this.menuItemOutput.Text = "Zobrazit výstup";
             this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
             // 
+            // MenuItemAlgorithm
+            // 
+            this.MenuItemAlgorithm.Name = "MenuItemAlgorithm";
+            this.MenuItemAlgorithm.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.MenuItemAlgorithm.Size = new System.Drawing.Size(304, 22);
+            this.MenuItemAlgorithm.Text = "Spustit algoritmus předpovědi bouří";
+            this.MenuItemAlgorithm.Click += new System.EventHandler(this.MenuItemAlgorithm_Click);
+            // 
             // panelLayout
             // 
             this.panelLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -135,13 +146,12 @@
             // 
             this.backgroundWorkerEnumerationModels.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerEnumerationModels_DoWork);
             // 
-            // MenuItemAlgorithm
+            // menuItemForecast
             // 
-            this.MenuItemAlgorithm.Name = "MenuItemAlgorithm";
-            this.MenuItemAlgorithm.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
-            this.MenuItemAlgorithm.Size = new System.Drawing.Size(304, 22);
-            this.MenuItemAlgorithm.Text = "Spustit algoritmus předpovědi bouří";
-            this.MenuItemAlgorithm.Click += new System.EventHandler(this.MenuItemAlgorithm_Click);
+            this.menuItemForecast.Name = "menuItemForecast";
+            this.menuItemForecast.Size = new System.Drawing.Size(304, 22);
+            this.menuItemForecast.Text = "Předpověď";
+            this.menuItemForecast.Click += new System.EventHandler(this.menuItemForecast_Click);
             // 
             // FormMain
             // 
@@ -151,6 +161,7 @@
             this.ClientSize = new System.Drawing.Size(1008, 730);
             this.Controls.Add(this.panelLayout);
             this.Controls.Add(this.menuMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMain;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -178,6 +189,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorkerEnumerationModels;
         private System.Windows.Forms.ToolStripMenuItem menuItemLoadInputs;
         private System.Windows.Forms.ToolStripMenuItem MenuItemAlgorithm;
+        private System.Windows.Forms.ToolStripMenuItem menuItemForecast;
     }
 }
 
