@@ -21,6 +21,7 @@ namespace Meteo
             { "masks", @".\config\masks\" },
             { "models", @".\models\" },
             { "model_cfg", @"model.cfg" },
+            { "scales",   @".\config\scales\"},
             { "symbol_rain", @".\images\symbol_rain.png" },
             { "symbol_storm", @".\images\symbol_storm.png" },
             { "symbol_cloud", @".\images\symbol_cloud.png" },
