@@ -55,13 +55,18 @@ namespace Meteo
             {
                 foreach (var si in sourceImages)
                 {
-                    Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
-                    new Images(si, true);
+                    Thread t = new Thread(() => EnumerationModel(si));
+                    t.Start();
                     //Util.HideLoading();
                     //break;////
                 }
             }
+        }
 
+        private void EnumerationModel(SourceImage si)
+        {
+            Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
+            new Images(si, true);
         }
 
         public void ShowModels()

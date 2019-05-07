@@ -48,7 +48,7 @@ namespace Meteo
             string options = Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName);
             if (options == string.Empty)
             {
-                Util.l($"Neexistující model {Util.curModelName}:{Util.curSubmodelName}|Chyba modelu");
+                Util.l($"Neexistující model {Util.curModelName}:{Util.curSubmodelName}");
                 return;
             }
 
