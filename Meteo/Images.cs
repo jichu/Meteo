@@ -45,8 +45,14 @@ namespace Meteo
 
         private void LoadPointsOfColorsInMap(bool onlyEnumeration=false)
         {
+            string options = Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName);
+            if (options == string.Empty)
+            {
+                Util.l($"Neexistující model {Util.curModelName}:{Util.curSubmodelName}|Chyba modelu");
+                return;
+            }
 
-            JObject jo = JObject.Parse(Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName));
+            JObject jo = JObject.Parse(options);
             var p = jo.Property("countMethod");
 
             if(!onlyEnumeration)

@@ -215,7 +215,7 @@ namespace Meteo
 
         public void MODELS_GetModelOptions() {
             string options = Model.Cloud.MODELSGetModelOptions("Model_ALADIN_CZ", "Srážky_MAIN");
-            Util.l(options);
+            Util.l("OPTIONS:"+options);
 
         }
 

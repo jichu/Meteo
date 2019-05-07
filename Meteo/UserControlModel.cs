@@ -141,6 +141,7 @@ namespace Meteo
             try
             {
                 string options = Model.Cloud.MODELSGetModelOptions(model, submodel);
+                if (options == String.Empty) return;
                 JObject jo = JObject.Parse(options);
                 var p = jo.Property("type");
                 if (p != null)
@@ -387,6 +388,10 @@ namespace Meteo
         private void labelCountMethod_DoubleClick(object sender, EventArgs e)
         {
             string options = Model.Cloud.MODELSGetModelOptions(Util.curModelName, Util.curSubmodelName);
+            if (options == string.Empty) {
+                Util.l($"Neexistující model {Util.curModelName}:{Util.curSubmodelName}|Chyba modelu");
+                return;
+            }
             FormSetOptions f = new FormSetOptions(Util.curModelName, Util.curSubmodelName, options);
             f.ShowDialog(View.FormMain);
             options = f.options;
