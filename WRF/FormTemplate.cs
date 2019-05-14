@@ -19,8 +19,8 @@ namespace WRF
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Text= title;
-            this.Width = picture.Width;
-            this.Height = picture.Height+20;
+            this.Width = picture.Width+16;
+            this.Height = picture.Height+34;
             pb = new PictureBox();
             pb.Image = picture;
             pb.Width = picture.Width;
