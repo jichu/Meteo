@@ -84,8 +84,9 @@ namespace Meteo
                         float value = 0;
                         if (p != null)
                         {
+                            Util.l($"Kontrola: {Util.curModelName}:{Util.curSubmodelName}:{typeStupnice}");
                             cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName, typeStupnice);
-
+                            
                             switch (p.Value.ToString()) {
                                 default:
                                 case "sum":
@@ -103,6 +104,10 @@ namespace Meteo
                                 case "majority":
                                     Util.curCountMethod = "majorita";
                                     value = GetValueFromSpectrumBarMajority(colors, sizeRegion);
+                                    break;
+                                case "max":
+                                    Util.curCountMethod = "max";
+                                    value = GetValueFromSpectrumBarMax(colors, sizeRegion);
                                     break;
                             }
                         }
@@ -219,9 +224,9 @@ namespace Meteo
                 value = 2.5f;
             if (value >= 2.75 && value <=3)
                 value = 3;
-            if(typeStupnice!="REAL")
+            /*if(typeStupnice!="REAL")
                 if (value >= 3)
-                    value = 3;
+                    value = 3;*/
             Util.curModelOutput += $" - průměrná hodnota regionu: {sumValues / sizeRegion} ~ {value}" + Environment.NewLine+Environment.NewLine;
             return value;
         }
@@ -293,6 +298,37 @@ namespace Meteo
 
             Util.curModelOutput += $" - majoritní hodnota regionu [{maxColor}]: {rank}" + Environment.NewLine + Environment.NewLine;
             return rank;
+        }
+
+        private float GetValueFromSpectrumBarMax(List<Color> list, int sizeRegion)
+        {
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+            Dictionary<string, int> values = new Dictionary<string, int>();
+
+            float max = 0;
+
+            foreach (var c in list)
+                foreach (var r in cloudModelSpectrum)
+                {
+                    if (r.color.Replace("#", "ff") == c.Name)
+                    {
+                        if (counts.ContainsKey(c.Name))
+                            counts[c.Name]++;
+                        else
+                            counts[c.Name] = 1;
+
+                        max = (r.rank>max)?r.rank:max;
+                    }
+                }
+
+            foreach (var c in counts)
+            {
+                //Util.l($" + nalezeno {c.Key}: {c.Value}x");
+                Util.curModelOutput += $" + nalezeno {c.Key}: {c.Value}x" + Environment.NewLine;
+            }
+
+            Util.curModelOutput += $" - hodnota regionu: {max}" + Environment.NewLine + Environment.NewLine;
+            return max;
         }
 
         private void pictureBoxORP_MouseDown(object sender, MouseEventArgs e)

@@ -65,7 +65,7 @@ namespace Meteo
 
         private void EnumerationModel(SourceImage si)
         {
-            Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
+            //Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
             new Images(si, true);
         }
 
@@ -179,10 +179,10 @@ namespace Meteo
 
         private void LoadMap(string map)
         {
-            Util.ShowLoading("Načítání mapy...");
             curImage = map;
             BeginInvoke(new MethodInvoker(delegate
             {
+                Util.ShowLoading("Načítání mapy...");
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
             }));
             new Images(map);
@@ -213,7 +213,7 @@ namespace Meteo
             {
                 try
                 {
-                    string orpMask = Util.pathSource["models"] + Util.curModelName+@"\"+Util.curModelName+".bmp";
+                    string orpMask = Util.pathSource["masks"] +Util.curModelName+".bmp";
                     if (File.Exists(orpMask))
                     {
                         Util.ShowLoading("Načítání masky...");

@@ -32,9 +32,10 @@
             this.radioButtonSum = new System.Windows.Forms.RadioButton();
             this.radioButtonAvarage = new System.Windows.Forms.RadioButton();
             this.groupBoxCountMethod = new System.Windows.Forms.GroupBox();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.groupBoxCountMethod.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,6 +74,7 @@
             // 
             // groupBoxCountMethod
             // 
+            this.groupBoxCountMethod.Controls.Add(this.radioButton2);
             this.groupBoxCountMethod.Controls.Add(this.radioButton4);
             this.groupBoxCountMethod.Controls.Add(this.radioButton1);
             this.groupBoxCountMethod.Controls.Add(this.radioButtonSum);
@@ -83,6 +85,18 @@
             this.groupBoxCountMethod.TabIndex = 5;
             this.groupBoxCountMethod.TabStop = false;
             this.groupBoxCountMethod.Text = "Specifikujte metodu [countMethod]:";
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(121, 47);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(84, 17);
+            this.radioButton4.TabIndex = 6;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Tag = "average_raw";
+            this.radioButton4.Text = "Průměr (raw)";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
@@ -106,17 +120,17 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // radioButton4
+            // radioButton2
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(121, 47);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(84, 17);
-            this.radioButton4.TabIndex = 6;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Tag = "average_raw";
-            this.radioButton4.Text = "Průměr (raw)";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(242, 24);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(45, 17);
+            this.radioButton2.TabIndex = 7;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Tag = "max";
+            this.radioButton2.Text = "Max";
+            this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // FormSetOptions
             // 
@@ -149,5 +163,6 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.RadioButton radioButton2;
     }
 }

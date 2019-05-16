@@ -81,7 +81,7 @@ namespace WRF
             return bmp;
         }
 
-        private void GenerateLines(int angleStep=5, int size = 100, bool showPampelishka=true)
+        private void GenerateLines(int angleStep=1, int size = 100, bool showPampelishka=true)
         {
             DictLines.Clear();
             // IV. kv
