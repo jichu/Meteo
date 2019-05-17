@@ -153,6 +153,7 @@ namespace Meteo
             Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "DEFAULT", "srážkoměry"));
             Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "DEFAULT", "radary_srážkoměry"));
             Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")); 
+            Parameters.Add("Stupeň nasycení max", GetParameter("Model_Nasycenost_pud2", "Nasycenost_pud_2_typ")); 
             Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")); 
             Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
             Parameters.Add("Srážky GDPS", GetParameter("Model_GDPS", "Srážky_MAIN")); 
@@ -214,6 +215,26 @@ namespace Meteo
                     CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
                     Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
                 }
+
+                if (Output.ContainsKey("1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ"))
+                {
+                    CloudOutputData mainOutputDry = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ"], Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA"]);
+                    Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputDry);
+                }
+                else {
+                    CloudOutputData mainOutputDry = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA"]);
+                    Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputDry);
+                }
+
+                if (Output.ContainsKey("1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ"))
+                {
+                    CloudOutputData mainOutputWet = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ"], Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA"]);
+                    Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputWet);
+                }
+                else {
+                    CloudOutputData mainOutputWet = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA"]);
+                    Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputWet);
+                }
             }
             else {
                 CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
@@ -234,7 +255,11 @@ namespace Meteo
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(supercelarTornadosOutput);
                 CloudOutputData strongWindscreensOutputSD = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(strongWindscreensOutputSD);
-                
+                CloudOutputData mainOutputDry = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputDry);
+                CloudOutputData mainOutputWet = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA"]);
+                Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputWet);
+
             }
         }
 
@@ -331,9 +356,9 @@ namespace Meteo
             Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
             level = ValueToLevel(TorrentialFloodRiscScale2, Probability(values));
             Output.Add("2. RIZIKO PŘÍVALOVÉ POVODNĚ", level);
-                                                        //V--Tady se počítá s průměrem
+                                                        
             values = new List<float>() { Parameters["Stupeň nasycení"], Parameters["Suma srážek (1.hod.)"], Output["MÍSTO VÝSKYTU BOUŘEK"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Output["POHYB BOUŘE"], Output["NEBEZPEČNÉ JEVY"] };
-            if (Parameters["Stupeň nasycení"] <= 1.5){//<---Tady se počítá se sumou
+            if (Parameters["Stupeň nasycení max"] <= 1.5){
                 List<float> weights = new List<float>() { 1, 1, 3, 3, 3, 2 };
                 level = ValueToLevel(TorrentialFloodRiscScale, ProbabilityWeights(values, weights));
                 Output.Add("1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ", level);

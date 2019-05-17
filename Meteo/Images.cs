@@ -84,7 +84,7 @@ namespace Meteo
                         float value = 0;
                         if (p != null)
                         {
-                            Util.l($"Kontrola: {Util.curModelName}:{Util.curSubmodelName}:{typeStupnice}");
+                            //Util.l($"Kontrola: {Util.curModelName}:{Util.curSubmodelName}:{typeStupnice}");
                             cloudModelSpectrum = Model.Cloud.ModelSpectrumGetScaleForModels(Util.curModelName, Util.curSubmodelName, typeStupnice);
                             
                             switch (p.Value.ToString()) {

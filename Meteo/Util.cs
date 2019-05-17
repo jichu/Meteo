@@ -39,7 +39,9 @@ namespace Meteo
             { "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST", 5 },
             { "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST", 6 },
             { "PŘEDPOVĚD RIZIKA KRUPOBITÍ",  7},
-            { "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD", 8 }
+            { "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD", 8 },
+            { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA", 9}, 
+            { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA", 10}
         };
 
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
