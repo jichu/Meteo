@@ -39,7 +39,7 @@ namespace Meteo
             //REGIONS_GetRegionCities();
             //SETTING_GetSettings();
             //SETTING_InsertOrUpdateSettings();
-            MODELS_GetModelStructure(); //toto pustit pro načítání stupnic
+            //MODELS_GetModelStructure(); //toto pustit pro načítání stupnic
             //REGIONS_GetNameFromColor();
             //MODELS_GetNumberOfAreasForModel();
             //InputData_InsertOrUpdateData();
