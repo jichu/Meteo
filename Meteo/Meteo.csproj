@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudOutputData.cs" />
+    <Compile Include="DataInput.cs" />
     <Compile Include="ForecastAreaParameters.cs" />
     <Compile Include="CloudInputData.cs" />
     <Compile Include="CloudModelEntity.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="CloudMaskSpectrum.cs" />
     <Compile Include="Chu.cs" />
     <Compile Include="Ji.cs" />
+    <Compile Include="LoadData.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="PreImage.cs" />
     <Compile Include="Program.cs" />
@@ -521,8 +523,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Cloud3_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Cloud3.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

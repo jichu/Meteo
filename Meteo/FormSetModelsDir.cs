@@ -16,6 +16,13 @@ namespace Meteo
         public FormSetModelsDir()
         {
             InitializeComponent();
+            labelText.Text = $"Modely v adresáři {Util.pathSource["models"]}";
+        }
+
+        public FormSetModelsDir(string text)
+        {
+            InitializeComponent();
+            labelText.Text = text;
         }
 
         private void FormSetModelsDir_Load(object sender, EventArgs e)

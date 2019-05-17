@@ -66,12 +66,10 @@ namespace Meteo
         {
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)
             {
-                    View.FormLoader.UpdateInfo(info);
+                View.FormLoader.UpdateInfo(info);
                 return;
             }
             View.FormLoader = new FormLoader(message,info);
-            View.FormLoader.TopMost = true;
-            View.FormLoader.StartPosition = FormStartPosition.CenterScreen;
             View.FormLoader.Show();
             View.FormLoader.Refresh();
             if (selfClose)
