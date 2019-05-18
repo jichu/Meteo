@@ -28,5 +28,14 @@ namespace Meteo
             }));
         }
 
+        public void ShowLoader()
+        {
+            BeginInvoke(new MethodInvoker(delegate
+            {
+                this.Show();
+                this.Refresh();
+            }));
+        }
+
     }
 }

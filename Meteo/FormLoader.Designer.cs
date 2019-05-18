@@ -54,6 +54,7 @@
             this.labelInfo.Size = new System.Drawing.Size(16, 13);
             this.labelInfo.TabIndex = 1;
             this.labelInfo.Text = "...";
+            this.labelInfo.UseWaitCursor = true;
             // 
             // FormLoader
             // 
@@ -68,7 +69,7 @@
             this.Name = "FormLoader";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormLoader";
             this.TopMost = true;
             this.UseWaitCursor = true;

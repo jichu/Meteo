@@ -27,7 +27,6 @@ namespace Meteo
             new Controller();
             this.menuItemOutput.PerformClick();
 
-
         }
 
 
@@ -56,6 +55,8 @@ namespace Meteo
         // menu MODELY
         private void menuItemLoadModels_Click(object sender, EventArgs e)
         {
+            new LoadData();
+            /*
             DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou?", "Načíst data do databáze", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -64,10 +65,7 @@ namespace Meteo
                 PreImage mapORP = new PreImage();
                 mapORP.LoadORPfromModels();
             }
-            else if (dialogResult == DialogResult.No)
-            {
-            }
-
+            */
         }
 
         private void menuItemExplore_Click(object sender, EventArgs e)
