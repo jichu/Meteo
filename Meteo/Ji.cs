@@ -87,7 +87,7 @@ namespace Meteo
 
         public void InputData_GetData()
         {
-            Util.l(Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName("Model_ALADIN_CZ", "Oblačnost"),"06", 0));
+            Util.l(Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName("Model_ALADIN_CZ", "Srážky_MAIN"),"18", 0));
         }
 
         public void InputData_InsertOrUpdateData() {
@@ -228,8 +228,9 @@ namespace Meteo
                 //string modelPath = @"Model_WRF_ARW\LCL_Výška_základny_oblaku\";
                 string filename = @"Barvy_stupnice.csv";
                 string filePath = dirPath + modelPath + filename;
-                Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName)} ");
-
+                //Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, ms.submodelName)} ");
+                Util.l($"{filePath} : {Model.Cloud.MODELSGetSubmodelIDFromName(ms.modelName, "jfghsd")} ");
+                /*
                 try
                 {
                     using (var reader = new StreamReader(filePath))
@@ -254,7 +255,7 @@ namespace Meteo
                 }
                 catch (Exception e) {
                     Util.l(e);
-                }
+                }*/
 
             }
         }

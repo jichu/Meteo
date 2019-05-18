@@ -301,25 +301,34 @@ namespace Meteo
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                List<CloudInputData> records = new List<CloudInputData>();
-                if (!item.region)
+                if (item.id_model == -1)
                 {
-                    records.Add(item);
+                    return false;
                 }
                 else
                 {
-                    //CloudInputData regionInput = new CloudInputData(item);
-                    List<CloudORPS> ORPSList = Model.Cloud.ORPSGetORPSForRegion(item.id_orp);
-                    foreach (var ORP in ORPSList)
+
+                    List<CloudInputData> records = new List<CloudInputData>();
+                    if (!item.region)
                     {
-                        CloudInputData regionInput = new CloudInputData(item);
-                        regionInput.id_orp = ORP.id;
-                        records.Add(regionInput);
+                        records.Add(item);
                     }
-                    
+                    else
+                    {
+                        //CloudInputData regionInput = new CloudInputData(item);
+                        List<CloudORPS> ORPSList = Model.Cloud.ORPSGetORPSForRegion(item.id_orp);
+                        foreach (var ORP in ORPSList)
+                        {
+                            CloudInputData regionInput = new CloudInputData(item);
+                            regionInput.id_orp = ORP.id;
+                            records.Add(regionInput);
+                        }
+
+                    }
+
+                    conn.Execute("dbo.INPUT_DATA_InsertOrUpdateData @ID_MODEL, @ID_ORP, @SAMPLE_NAME, @VALUE, @TYPE", records);
+                    return true;
                 }
-                conn.Execute("dbo.INPUT_DATA_InsertOrUpdateData @ID_MODEL, @ID_ORP, @SAMPLE_NAME, @VALUE, @TYPE", records);
-                return true;
             }
         }
 

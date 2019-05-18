@@ -13,7 +13,7 @@ namespace Meteo
         public string sampleName { get; set; }
         private int precision = 10;
         private bool drydownburst = false;
-        private float precipitationTreshold = 0.0f;
+        private float precipitationTreshold = 0.0f;//Stanovuje jaké množství srážkových modelů musí vracet 1, aby byl zahájen výpočet předpovědi
 
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
@@ -151,10 +151,10 @@ namespace Meteo
             Parameters.Add("KONV+/DIV- (0-1 km)", GetParameter("Model_WRF_ARW", "MFDIV_0-1km")); 
             Parameters.Add("OROGRAPHIC LIFT", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));
             Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "DEFAULT", "srážkoměry"));
-            Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "DEFAULT", "radary_srážkoměry"));
-            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_typ")); 
-            Parameters.Add("Stupeň nasycení max", GetParameter("Model_Nasycenost_pud2", "Nasycenost_pud_2_typ")); 
-            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_typ")); 
+            Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Radary_srážkoměry", "DEFAULT", "radary_srážkoměry"));
+            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2")); 
+            Parameters.Add("Stupeň nasycení max", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_2_max")); 
+            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Suma srážek 1 hod")); 
             Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
             Parameters.Add("Srážky GDPS", GetParameter("Model_GDPS", "Srážky_MAIN")); 
             Parameters.Add("Srážky EURO4", GetParameter("Model_EURO4", "Srážky_MAIN")); 
