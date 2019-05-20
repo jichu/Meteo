@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace Meteo
 {
     class Ji
-    {
+    { 
         public Ji() {
             /*Util.l("Tohle je Jickovo hriste|kkk", new Dictionary<string, object>
             {
@@ -66,6 +66,7 @@ namespace Meteo
         }
 
         public void OutputData_GetDataForSample() {
+            
             Dictionary<string, float> data = Model.Cloud.OUTPUTDATAGetDataForSample("06", Util.algorithmOutput["INTENZITA BOUŘÍ"]);
 
             foreach (var item in data)
