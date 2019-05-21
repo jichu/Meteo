@@ -151,5 +151,10 @@ namespace Meteo
             else
                 UserControlForecast.Instance.BringToFront();
         }
+
+        private void FormMain_MouseClick(object sender, MouseEventArgs e)
+        {
+            Util.l(0);
+        }
     }
 }

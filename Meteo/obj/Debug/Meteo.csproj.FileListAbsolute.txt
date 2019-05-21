@@ -112,3 +112,4 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormSetModel
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlForecast.resources
 C:\Users\jarom\source\repos\jichu\Meteo\Meteo\obj\Debug\Meteo.FormSetModelsDir.resources
 C:\Users\jarom\source\repos\jichu\Meteo\Meteo\obj\Debug\Meteo.UserControlForecast.resources
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormLog.resources

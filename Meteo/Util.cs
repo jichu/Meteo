@@ -66,36 +66,13 @@ namespace Meteo
 
         public static void ShowLoading(string message, string info="", bool selfClose=true)
         {
-            if (View.FormLoader != null && !View.FormLoader.IsDisposed)
-            {
-                View.FormLoader.UpdateInfo(info);
-                return;
-            }
-            View.FormLoader = new FormLoader(message,info);
-            View.FormLoader.Show();
-            View.FormLoader.Refresh();
-            if (selfClose)
-            {
-                Thread.Sleep(100);
-                Application.Idle += OnLoaded;
-            }
+            Preloader.ShowAuto(message, info, selfClose);
         }
         public static void HideLoading()
         {
-            if (View.FormLoader != null && !View.FormLoader.IsDisposed)
-            {
-                Application.Idle -= OnLoaded;
-                View.FormLoader.Close();
-            }
+            Preloader.Hide();
         }
-
-
-        private static void OnLoaded(object sender, EventArgs e)
-        {
-            Application.Idle -= OnLoaded;
-            View.FormLoader.Close();
-        }
-
+        
         public static string GetRegionNameByColorForLoading(string regioncolor) {
             if (ORPColorGetORPColors.Any(s => s.color.Trim() == regioncolor))
                 return ORPSGetORPNames.First(i => i.id == ORPColorGetORPColors.First(s => s.color.Trim() == regioncolor).id_orp).name;

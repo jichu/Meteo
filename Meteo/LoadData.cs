@@ -13,16 +13,15 @@ namespace Meteo
 {
     public class LoadData
     {
+        private List<string> LogErrors = new List<string>();
+
         public LoadData()
         {
-
-            Util.ShowLoading("Načítání modelů, ORP masek a ukládání do databáze...");
-            Thread t = new Thread(() => SaveToDB());
-            t.Start();
-
+            Task.Run(() => ScanDir())
+                .ContinueWith(t => Console.WriteLine(11));
         }
 
-        public void SaveToDB()
+        public void ScanDir()
         {
             FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepat data vybranou adresářovou strukturou, maskami a stupnicemi?");
             dlg.ShowDialog();
@@ -30,50 +29,22 @@ namespace Meteo
             if (Util.curModelDir == null)
                 return;
 
+            Preloader.Show("Načítání modelů, ORP masek a spektra...");
             try
             {
+                List<Task<bool>> tasks = new List<Task<bool>>();
                 string dirPath = Util.pathSource["models"] + Util.curModelDir;
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
                 foreach (var dir in dirs)
                 {
                     string model = dir.Substring(dir.LastIndexOf("\\") + 1);
-                    string orpMask = Util.pathSource["masks"] + model + ".bmp";
-
-
-                    List<string> subdirs = new List<string>(Directory.EnumerateDirectories(dirPath + "\\" + model));
-                    //Model.Cloud.MODELSInsertOrUpdate(new CloudModels(model));
-                    foreach (var subdir in subdirs)
-                    {
-                        string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
-                        if (File.Exists(orpMask))
-                        {
-                            Util.l("Load mask: " + orpMask);
-                            Thread t = new Thread(() => LoadModel(model, submodel));
-                            t.Start();
-                        }
-                        //Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, options));
-                    }
-
-                    /*
-                    List<string> subdirs = new List<string>(Directory.EnumerateDirectories(dirPath + "\\" + model));
-                    //Model.Cloud.MODELSInsertOrUpdate(new CloudModels(model));
-                    foreach (var subdir in subdirs)
-                    {
-                        string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
-                        string options = Model.Cloud.MODELSGetModelOptions(model, submodel);
-                        JObject jo = JObject.Parse(options);
-                        var p = jo.Property("countMethod");
-                        if (p == null)
-                        {
-                            FormSetOptions f = new FormSetOptions(model, submodel, options);
-                            f.ShowDialog(View.FormMain);
-                            options = f.options;
-                            Util.l(model + " " + options);
-                        }
-                        //Model.Cloud.MODELSInsertOrUpdate(new CloudModels(submodel, model, options));
-                    }
-                    */
+                    tasks.Add(Task.Run(() => ScanModel(model)));
                 }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Preloader.Hide();
+                ShowLog();
             }
             catch (Exception e)
             {
@@ -81,23 +52,53 @@ namespace Meteo
             }
         }
 
-        private void LoadModel(string model, string submodel)
+        private bool ScanModel(string model)
         {
+            string dirPath = Util.pathSource["models"] + Util.curModelDir;
             string orpMask = Util.pathSource["masks"] + model + ".bmp";
             if (File.Exists(orpMask))
             {
-                Util.l("Load mask: " + orpMask);
-                //LoadMask((Bitmap)Image.FromFile(orpMask), model);
+                Preloader.Log("Načítání masky: " + orpMask);
+                var masks = LoadMask((Bitmap)Image.FromFile(orpMask), model);
+                if (masks.Count > 0)
+                {
+                    var submodel = LoadSubmodelAndSpectrum(dirPath, model);
+                    if (submodel.Count > 0)
+                    {
+                        CloudSendInputData(new DataInput()
+                        {
+                            ModelName = model,
+                            SubmodelSpectrum = submodel,
+                            Mask = masks
+                        });
+                        return true;
+                    }
+                }
             }
             else
-                Util.l($"Maska {orpMask} nenalezena pro model {model}");
+                LogErrors.Add($"Maska {orpMask} nenalezena pro model {model}");
+            return false;
         }
 
-        private void LoadMask(Bitmap orp, string modelName)
+        private void CloudSendInputData(DataInput dataInput)
         {
+            Preloader.Log($"Uloženo do db: {dataInput.ModelName}");
+        }
+
+        private void ShowLog()
+        {
+            if (LogErrors.Count > 0)
+            {
+                FormLog fl = new FormLog(LogErrors);
+                fl.ShowDialog();
+            }
+        }
+
+        private List<DataMask> LoadMask(Bitmap orp, string modelName)
+        {
+            List<DataMask> mask = new List<DataMask>();
             try
             {
-
                 var mapCR =
                      from x in Enumerable.Range(0, orp.Width - 1)
                      from y in Enumerable.Range(0, orp.Height - 1)
@@ -130,20 +131,71 @@ namespace Meteo
 
                 foreach (var map in data)
                 {
-                    string regionName = Util.GetRegionNameByColorForLoading("#" + map.Key.Substring(2, 6));
-                    if (regionName != "")
-                        Model.Cloud.MaskSpectrumInsertOrUpdate(new CloudMaskSpectrum(modelName, regionName, JsonConvert.SerializeObject(map.Value)));
-
+                    mask.Add(new DataMask()
+                    {
+                        Color= "#" + map.Key.Substring(2, 6),
+                        Coods = JsonConvert.SerializeObject(map.Value)
+                    });
                 }
             }
             catch (Exception ex)
             {
                 Util.l(ex.ToString());
             }
+
+            return mask;
         }
 
+        private Dictionary<string, List<DataSpectrum>> LoadSubmodelAndSpectrum(string path, string model)
+        {
+            Dictionary<string, List<DataSpectrum>> ret = new Dictionary<string, List<DataSpectrum>>();
 
+            List<string> subdirs = new List<string>(Directory.EnumerateDirectories(path + "\\" + model));
+            foreach (var subdir in subdirs)
+            {
+                string submodel = subdir.Substring(subdir.LastIndexOf("\\") + 1);
+                string pathSpectrum = $"{Util.pathSource["scales"]}{model}&{submodel}.csv";
+                if (File.Exists(pathSpectrum))
+                {
+                    Preloader.Log("Načítání spektra: " + pathSpectrum);
+                    var spectrum = LoadSpectrumCSV(pathSpectrum);
+                    if (spectrum.Count>0)
+                    {
+                        ret.Add(submodel, spectrum);
+                    }
+                }
+                else
+                    LogErrors.Add($"Spektrum {pathSpectrum} nenalezeno pro model {model}/{submodel}");
+            }
+            return ret;
+        }
 
+        private List<DataSpectrum> LoadSpectrumCSV(string filename, char separator=';')
+        {
+            List<DataSpectrum> listOfRecords = new List<DataSpectrum>();
+            using (var reader = new StreamReader(filename))
+            {
+                var header = reader.ReadLine();
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (line.IndexOf(separator) > 0)
+                    {
+                        var values = line.Split(separator);
+                        if (values.Length <= 3)
+                        {
+                            listOfRecords.Add(new DataSpectrum()
+                            {
+                                Rank = values[0],
+                                Color = values[1],
+                                Type = values[2],
+                            });
+                        }
+                    }
+                }
+            }
+            return listOfRecords;
+        }
 
     }
 }

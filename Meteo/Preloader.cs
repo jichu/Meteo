@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Meteo
+{
+    public static class Preloader
+    {
+        internal static void ShowAuto(string message, string info = "", bool selfClose = true)
+        {
+            if (View.FormLoader != null && !View.FormLoader.IsDisposed)
+            {
+                View.FormLoader.UpdateInfo(info);
+                return;
+            }
+            View.FormLoader = new FormLoader(message, info);
+            View.FormLoader.TopMost=true;
+            View.FormLoader.Show();
+            View.FormLoader.Refresh();
+            if (selfClose)
+            {
+                Thread.Sleep(100);
+                Application.Idle += OnLoaded;
+            }
+        }
+
+        internal static void Show(string message, string info = "")
+        {
+            ShowAuto(message,info,false);
+        }
+
+        internal static void Hide()
+        {
+            if (View.FormLoader != null && !View.FormLoader.IsDisposed)
+            {
+                Application.Idle -= OnLoaded;
+                View.FormLoader.Close();
+            }
+        }
+
+        internal static void Log(string info = "")
+        {
+            if (View.FormLoader != null && !View.FormLoader.IsDisposed)
+                View.FormLoader.UpdateInfo(info);
+            else
+                Show("Zpracování...", info);
+        }
+
+        private static void OnLoaded(object sender, EventArgs e)
+        {
+            Application.Idle -= OnLoaded;
+            View.FormLoader.Close();
+        }
+    }
+}
