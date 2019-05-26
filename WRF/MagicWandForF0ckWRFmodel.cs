@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace WRF
 {
@@ -12,10 +14,14 @@ namespace WRF
     {
         public int AroundStartPoint { get; set; }
 
-        private List<Bitmap> Shapes=new List<Bitmap>();
+        private List<string> BitmapMatrix = new List<string>();
         private Dictionary<int,List<Point>> DictLines = new Dictionary<int, List<Point>>();
         private List<Point> StartPoints = new List<Point>();
         private List<Point> StartPointsAround = new List<Point>();
+        private List<NamePoint> NamePoints = new List<NamePoint>();
+        private Point gridCount = new Point(25, 16);
+        private Point gridBoxSize = new Point(36, 38);
+        private Point gridOffset = new Point(76, 93);
         private string colorKey = "ff000000";
         private Stopwatch watch;
         private long watchTimeAll=0;
@@ -41,11 +47,11 @@ namespace WRF
             StartWatch();
             GenerateLines();
             StopWatch("GenerateLines()");
-            /*
-            Thread t = new Thread(() => ProcessDoWand(bmpNew));
-            t.Start();
-            */
-            Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms");
+
+
+            ProcessDoWand(bmpNew);
+
+            Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms, startovacích bodů {StartPoints.Count}");
         }
         
         private void StartWatch()
@@ -70,7 +76,10 @@ namespace WRF
                         if (y < cutTop) continue;
                     if (y > bmp.Height - cutBotton) continue;
                     if (Map.MapSource.GetPixel(x, y).Name == colorKey)
+                    {
                         bmp.SetPixel(x, y, Color.Black);
+                        BitmapMatrix.Add($"{x},{y}");
+                    }
                     // use mask
                     if (mask.GetPixel(x, y).Name == colorKey)
                         bmp.SetPixel(x, y, Color.White);
@@ -81,7 +90,7 @@ namespace WRF
             return bmp;
         }
 
-        private void GenerateLines(int angleStep=1, int size = 100, bool showPampelishka=true)
+        private void GenerateLines(int angleStep=1, int size = 37, bool showPampelishka=true)
         {
             DictLines.Clear();
             // IV. kv
@@ -105,11 +114,10 @@ namespace WRF
                     DictLines.Add(angle, line);
                 angle += angleStep;
             }
-
             // II. kv & I. kv
             angle = 270;
             count = DictLines.Count;
-            for (int i = count - 1; i >= 0; i--)
+            for (int i = count - 1; i > 0; i--)
             {
                 List<Point> line = new List<Point>();
                 foreach (var points in DictLines.ElementAt(i).Value)
@@ -117,10 +125,9 @@ namespace WRF
                     line.Add(new Point(points.X, -points.Y));
                 }
                 if (!DictLines.ContainsKey(angle))
-                    DictLines.Add(angle, line);
+                    DictLines.Add(angle-89, line);
                 angle += angleStep;
             }
-
             if (showPampelishka)
             {
                 int c = 240;
@@ -139,7 +146,7 @@ namespace WRF
 
         private double Radian(int angle) { return (Math.PI / 180.0) * angle; }
 
-        private List<Point> DrawLine(int angle=30, int length = 100)
+        private List<Point> DrawLine(int angle=30, int length = 38)
         {
             Bitmap bmp = new Bitmap(length, length,PixelFormat.Format32bppPArgb);
             var myPen = new Pen(Color.Black);
@@ -189,17 +196,14 @@ namespace WRF
         private void GenerateGrid(Bitmap bmp)
         {
             StartPoints.Clear();
-            Point count=new Point(25,17);
-            Point boxSize = new Point(36, 38);
-            Point offset = new Point(76, 93);
-            for (int y = 0; y < count.Y; y++)
+            for (int y = 0; y < gridCount.Y; y++)
             {
-                for (int x = 0; x < count.X; x++)
+                for (int x = 0; x < gridCount.X; x++)
                 {
-                    Point space = new Point(boxSize.X* x+offset.X, boxSize.Y *y+offset.Y);
+                    Point space = new Point(gridBoxSize.X* x+gridOffset.X, gridBoxSize.Y *y+gridOffset.Y);
                     if (space.X<=bmp.Width && space.Y <= bmp.Height)
                     {
-                        AddPointToList(new Point(space.X, space.Y));
+                        AddPointToList(bmp, new Point(space.X, space.Y));
                     }
                 }
             }
@@ -212,20 +216,26 @@ namespace WRF
             }
         }
 
-        private void AddPointToList(Point point)
+        private void AddPointToList(Bitmap bmp, Point point)
         {
-            //StartPoints.Add(new Point(point.X, point.Y));
-            AddPointAroundToList(new Point(point.X, point.Y)); 
+            if (bmp.GetPixel(point.X, point.Y).Name == "ff000000")
+                StartPoints.Add(new Point(point.X, point.Y));
+            else
+                AddPointAroundToList(bmp, new Point(point.X, point.Y));
         }
 
-        private void AddPointAroundToList(Point point)
+        private void AddPointAroundToList(Bitmap bmp, Point point)
         {
             foreach (Point around in StartPointsAround)
             {
                 int x = point.X - around.X;
                 int y = point.Y - around.Y;
                 if (x >= 0 && y >= 0)
+                    if (bmp.GetPixel(x, y).Name == "ff000000")
+                    {
                         StartPoints.Add(new Point(x, y));
+                        break;
+                    }
             }
         }
 
@@ -235,15 +245,62 @@ namespace WRF
         }
 
         // zpracovani WRF
-        private void ProcessDoWand(Bitmap bmp)
+        private void ProcessDoWand(Bitmap bmp,bool sync =true)
+        {
+            if (sync)
+            {
+                StartWatch();
+                foreach (Point startPoint in StartPoints)
+                {
+                    LookUpWind(bmp, startPoint, sync);
+                }
+                StopWatch("ProcessDoWand()");
+                ShowOutput(bmp);
+            }
+            else
+            {
+                Task t = Task.Run(() => ProcessDoWandAsync(bmp));
+            }
+        }
+
+        private void ShowOutput(Bitmap bmp)
+        {
+            Bitmap b = new Bitmap(bmp);
+            foreach (var np in NamePoints)
+            {
+                foreach (var lines in DictLines)
+                {
+                    if (lines.Key == np.Angle)
+                    {
+                        foreach (var p in lines.Value)
+                        {
+                            b.SetPixel(p.X+np.StartPoint.X, p.Y+np.StartPoint.Y, Color.Green);
+                        }
+                        break;
+                    } 
+                }
+            }
+            Show(b, "Výstup");
+        }
+
+        private void ProcessDoWandAsync(Bitmap bmp)
         {
             try
             {
+                StartWatch();
+                List<Task<int>> tasks = new List<Task<int>>();
+                int i = 0;
                 foreach (Point startPoint in StartPoints)
                 {
-                    Thread t = new Thread(() => LookUpWind(bmp, startPoint));
-                    t.Start();
+                    tasks.Add(Task.Run(() => LookUpWind(bmp, startPoint, false)));
+                    //Thread t = new Thread(() => LookUpWind(bmp, startPoint));
+                    //t.Start();
+                    if (i > 1000)
+                        break;
+                    i++;
                 }
+                Task.WaitAll(tasks.ToArray());
+                StopWatch("ProcessDoWandAsyc()");
             }
             catch (Exception e)
             {
@@ -251,93 +308,45 @@ namespace WRF
             }
         }
 
-        private void LookUpWind(Bitmap bmp, Point startPoint)
+        static object locker = new object();
+        private int LookUpWind(Bitmap bmp, Point startPoint,  bool sync=false)
         {
-            if (bmp.GetPixel(startPoint.X, startPoint.Y).Name == "ff000000")
-                Console.WriteLine(1);
-        }
-
-
-        /*
-        int tmpMaxX = 0;
-        int tmpMaxY = 0;
-        int tmpMinX = 0;
-        int tmpMinY = 0;
-        List<Point> cachePoint=new List<Point>();
-        private Bitmap BreakeToShapes(Bitmap bmp)
-        {
-            tmpMaxX = 0;
-            tmpMaxY = 0;
-            tmpMinX = bmp.Width+1;
-            tmpMinY = bmp.Height+1;
-            cachePoint.Clear();
-            Bitmap bmpShape = new Bitmap(bmp.Width,bmp.Height);
-            Point startPoint = FindFirstPoint(bmp);
-            bmp = ColorChange(bmp,startPoint);
-            FindAroundPoint(bmp,startPoint);
-            CreateShape(tmpMaxX - startPoint.X + 1, tmpMaxY - startPoint.Y + 1);
-            Console.WriteLine(tmpMinX);
-            Console.WriteLine(tmpMinY);
-            Console.WriteLine(tmpMaxX-startPoint.X+1);
-            Console.WriteLine(tmpMaxY-startPoint.Y+1);
-            return bmp;
-        }
-
-        private void CreateShape(int w, int h)
-        {
-            Bitmap tmp = new Bitmap(w,h);
-            foreach (Point point in cachePoint)
+            int max = 0;
+            int angle=-1;
+            foreach (var lines in DictLines)
             {
-                Console.WriteLine(point);
-                //tmp.SetPixel(point.X-tmpMinX, point.Y-tmpMaxY, Color.Black);
-            }
-            Show(tmp);
-        }
-
-        private void FindAroundPoint(Bitmap bmp, Point stasrtPoint)
-        {
-            for (int x = -1; x <=1 ; x++)
-            {
-                for (int y = -1; y <=1; y++)
+                int accord = 0;
+                foreach (var point in lines.Value)
                 {
-                    if (bmp.GetPixel(stasrtPoint.X + x, stasrtPoint.Y + y).Name == colorKey)
+                    int x = startPoint.X + point.X;
+                    int y = startPoint.Y + point.Y;
+                    if (x >= 0 && y >= 0)
                     {
-                        bmp = ColorChange(bmp, new Point(stasrtPoint.X + x, stasrtPoint.Y + y));
-                        if (tmpMaxX <= stasrtPoint.X + x)
-                            tmpMaxX = stasrtPoint.X + x;
-                        if (tmpMaxY <= stasrtPoint.Y + y)
-                            tmpMaxY = stasrtPoint.Y + y;
-                        if (tmpMinX >= stasrtPoint.X + x)
-                            tmpMinX = stasrtPoint.X + x;
-                        if (tmpMinY >= stasrtPoint.Y + y)
-                            tmpMinY = stasrtPoint.Y + y;
-                        cachePoint.Add(new Point(stasrtPoint.X + x, stasrtPoint.Y+y));
-                        FindAroundPoint(bmp, new Point(stasrtPoint.X + x, stasrtPoint.Y + y));
+                        if (sync)
+                            if (bmp.GetPixel(x, y).Name == "ff000000")
+                                accord++;
+
+                        if (!sync)
+                            if (BitmapMatrix.Contains($"{x},{y}"))
+                              accord++;
                     }
                 }
-            }
-        }
-
-        private Bitmap ColorChange(Bitmap bmp, Point xy)
-        {
-            if(bmp.Width>=xy.X && bmp.Height>=xy.Y)
-                bmp.SetPixel(xy.X,xy.Y, Color.Red);
-            return bmp;
-        }
-        /*
-        private Point FindFirstPoint(Bitmap bmp)
-        {
-            for (int x = 0; x < bmp.Width; x++)
-            {
-                for (int y = 0; y < bmp.Height; y++)
+                if (max < accord)
                 {
-                    if (bmp.GetPixel(x, y).Name == colorKey)
-                        return new Point(x, y);
+                    max = accord;
+                    angle = lines.Key;
                 }
             }
-            return new Point();
+            //Console.WriteLine($"úhel:{angle} shoda: {max}");
+            if(max>10)
+            NamePoints.Add(new NamePoint()
+            {
+                Angle = angle,
+                StartPoint=startPoint
+            });
+            return angle;
         }
-        */
+
     }
 
 }
