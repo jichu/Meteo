@@ -277,8 +277,18 @@ namespace WRF
                             b.SetPixel(p.X+np.StartPoint.X, p.Y+np.StartPoint.Y, Color.Green);
                         }
                         break;
-                    } 
+                    }
                 }
+                using (Graphics g = Graphics.FromImage(b))
+                {
+                    using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
+                    {
+                        PointF pointF1 = new PointF(np.StartPoint.X-20, np.StartPoint.Y-20);
+                        g.DrawString(np.Angle.ToString()+ "°", font, Brushes.DarkBlue, pointF1);
+                    }
+
+                }
+
             }
             Show(b, "Výstup");
         }
