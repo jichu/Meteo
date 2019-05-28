@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Meteo
 {
-    internal class DataInput
+    public class DataInput
     {
         public string ModelName { get; set; }
         public Dictionary <string, List<DataSpectrum> > SubmodelSpectrum { get; set; }
         public List<DataMask> Mask { get; set; }
     }
 
-    internal class DataMask
+    public class DataMask
     {
         public string Color { get; set; }
         public string Coods { get; set; }
     }
 
-    internal class DataSpectrum
+    public class DataSpectrum
     {
         public string Color { get; set; }
         public string Rank { get; set; }

@@ -34,6 +34,13 @@ namespace Meteo
             this.id = Model.Cloud.MODELSGetIDFromName(id);
         }
 
+        public CloudMaskSpectrum(string id, int id_orp, string coods)
+        {
+            this.coods = coods;
+            this.id_orp = id_orp;
+            this.id = Model.Cloud.MODELSGetIDFromName(id);
+        }
+
         //deprecated
         public CloudMaskSpectrum(string id, string id_orp, string color, string coods) {
 

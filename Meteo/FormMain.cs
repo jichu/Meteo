@@ -55,6 +55,7 @@ namespace Meteo
         // menu MODELY
         private void menuItemLoadModels_Click(object sender, EventArgs e)
         {
+            Model.Cloud.DBClear();
             new LoadData();
             /*
             DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou?", "Načíst data do databáze", MessageBoxButtons.YesNo);
