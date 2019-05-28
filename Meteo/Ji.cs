@@ -50,19 +50,7 @@ namespace Meteo
             //InputData_GetData();
         }
         public void Test() {
-            Util.l(Model.Cloud.MaskSpectrumGetCoodsByColor("#ff0000", "Model_WRF_ARW").Count());
-            Util.l(Model.Cloud.MaskSpectrumGetCoodsByColor("#ff0000", "Model_WRF_ARW").First().coods.Count());
-            Util.l(Model.Cloud.MaskSpectrumGetCoodsByColor("#ff0000", "Model_WRF_ARW").First().coods);
-
-            //Util.l(Model.Cloud.REGIONSGetIDFromName("Zlínský kraj"));
-            /*
-            List<CloudORPColor> colors = Model.Cloud.ORPColorGetORPColors();
-            foreach (var c in colors)
-            {
-                Util.l(c.color);
-                Util.l(Util.GetRegionNameByColor(c.color));
-            }
-            Util.l(Util.GetRegionNameByColor("#abcdff"));*/
+            
         }
 
         public void OutputData_GetDataForSample() {

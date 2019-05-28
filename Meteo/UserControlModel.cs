@@ -55,8 +55,9 @@ namespace Meteo
             {
                 foreach (var si in sourceImages)
                 {
-                    Thread t = new Thread(() => EnumerationModel(si));
-                    t.Start();
+                    EnumerationModel(si);
+                    /*Thread t = new Thread(() => EnumerationModel(si));
+                    t.Start();*/
                     //Util.HideLoading();
                     //break;////
                 }
