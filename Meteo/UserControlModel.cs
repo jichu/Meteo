@@ -3,10 +3,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -49,25 +51,46 @@ namespace Meteo
 
         }
 
+                int i = 0;
         public void EnumerationModels()
         {
+            Stopwatch watch = Stopwatch.StartNew();
+            List<Task> tasks = new List<Task>();
             if (sourceImages.Count > 0)
             {
                 foreach (var si in sourceImages)
                 {
-                    EnumerationModel(si);
-                    /*Thread t = new Thread(() => EnumerationModel(si));
-                    t.Start();*/
+                    //EnumerationModel(si);
+                    tasks.Add(Task.Run(() => EnumerationModel(si)));
+                    if (i == 30)
+                    {
+                        Task.WaitAll(tasks.ToArray());
+                        tasks.Clear();
+                        images.Clear();
+                        i = 0;
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        Util.l("flushing...");
+                    }
+                    i++;
+                    /*
+                    Thread t = new Thread(() => EnumerationModel(si));
+                    t.Start();
+                    */
                     //Util.HideLoading();
                     //break;////
                 }
             }
+            Task.WaitAll(tasks.ToArray());
+            watch.Stop();
+            Console.WriteLine($"Celkově v čase {watch.ElapsedMilliseconds}ms, obrázků {sourceImages.Count}");
         }
 
+        private List<Images> images = new List<Images>();
         private void EnumerationModel(SourceImage si)
         {
             //Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
-            new Images(si, true);
+            images.Add(new Images(si, true));
         }
 
         public void ShowModels()

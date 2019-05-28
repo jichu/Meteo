@@ -27,6 +27,8 @@ namespace Meteo
         private int curHour = 21;
         private List<string> settingOutputVarriableNames = new List<string>();
         private string output_text_value_blank;
+        private string usedMask = "Model_ALADIN_CZ";
+        private Bitmap mask;
 
         public static UserControlOutput Instance
         {
@@ -136,8 +138,15 @@ namespace Meteo
             if(File.Exists(Util.pathSource["map_output_background"]))
                 canvas.Image = Image.FromFile(Util.pathSource["map_output_background"]);
             canvas.Paint += Canvas_Paint;
+            string orpMask = Util.pathSource["masks"] + usedMask + ".bmp";
+            if (File.Exists(orpMask))
+            {
+                Util.ShowLoading("Načítání masky...");
+                mask = (Bitmap)Image.FromFile(orpMask);
+            }
+            canvas.MouseMove += Canvas_MouseMove;
         }
-
+        
         private void PictureSave_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -249,7 +258,6 @@ namespace Meteo
                 { "Kraslice",2 },
                 { "Ostrov",3}
             });*/
-            Util.l(SelectedHour());
             Draw(Model.Cloud.OUTPUTDATAGetDataForSample(SelectedHour(), comboAlgorithmOutput.SelectedIndex));
             //Draw(Model.Cloud.OUTPUTDATAGetDataForSample("18", comboAlgorithmOutput.SelectedIndex));
             canvas.Invalidate();
@@ -272,6 +280,8 @@ namespace Meteo
                 });
                 DrawRegion(Model.Cloud.ORPNameToColor(ll.Key), GetOutputColor((int)ll.Value));
             }
+
+
         }
 
         private void Canvas_Paint(object sender, PaintEventArgs e)
@@ -279,10 +289,62 @@ namespace Meteo
 
         }
 
+        private string curColorRegion = "";
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (usedMask != null)
+            {
+                Util.curModelName = usedMask;
+                Bitmap img = (Bitmap)(sender as PictureBox).Image;
+                float sX = img.Width / (float)(sender as PictureBox).Width;
+                float sY = img.Height / (float)(sender as PictureBox).Height;
+                string c = "";
+                if (e.X < mask.Width && e.Y < mask.Height)
+                    c = "#" + mask.GetPixel((int)(e.X), (int)(e.Y)).Name.Substring(2, 6);
+                if (!(curColorRegion == c || c == "#ffffff" || c == "#000000"))
+                {
+                    curColorRegion = c;
+                    ShowToolTip(Util.GetRegionNameByColor(curColorRegion));
+                }
+            }
+        }
+
+        private ToolTip tt;
+        private void ShowToolTip(string regionName)
+        {
+            tt?.Dispose();
+            tt = new ToolTip();
+            tt.BackColor = Color.Yellow;
+            string value = " ";
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if(row.Cells["Region"].Value.ToString()==regionName)
+                {
+                    value += row.Cells["Value"].Value.ToString();
+                    break;
+                }
+            }
+            tt.SetToolTip(canvas, regionName+value);
+            tt.OwnerDraw = true;
+            tt.Popup += new PopupEventHandler(tooltip_Popup);
+            tt.Draw += new DrawToolTipEventHandler(toolTip_Draw);
+        }
+
+        private void tooltip_Popup(object sender, PopupEventArgs e)
+        {
+            e.ToolTipSize = TextRenderer.MeasureText((sender as ToolTip).GetToolTip(e.AssociatedControl), new Font("Arial", 18.0f));
+        }
+        private void toolTip_Draw(object sender, DrawToolTipEventArgs e)
+        {
+            Font f = new Font("Arial", 18.0f);
+            e.DrawBackground();
+            e.Graphics.DrawString(e.ToolTipText+Environment.NewLine, f, Brushes.Black, new PointF(2, 2));
+        }
+
         private void DrawRegion(string hex, Color value)
         {
             Util.ShowLoading("Vykreslování");
-            List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(hex, "Model_ALADIN_CZ");
+            List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(hex, usedMask);
             string coods = cms.Count > 0 ? cms.First().coods : "";
             if (coods != "")
             {

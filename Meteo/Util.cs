@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -63,6 +64,7 @@ namespace Meteo
 
         public static string ExceptionText = "Exception";
         public static char logMessageDelimiter = '|';
+        private static Stopwatch watch;
 
         public static void ShowLoading(string message, string info="", bool selfClose=true)
         {
@@ -171,6 +173,17 @@ namespace Meteo
         {
             Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings(key, value));
         }
+
+        public static void StartWatch()
+        {
+            watch = Stopwatch.StartNew();
+        }
+        public static void StopWatch(string msg = "")
+        {
+            watch.Stop();
+            Console.WriteLine($"{msg} v čase {watch.ElapsedMilliseconds}ms");
+        }
+
     }
 
 }
