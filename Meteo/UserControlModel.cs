@@ -62,10 +62,11 @@ namespace Meteo
                 {
                     //EnumerationModel(si);
                     tasks.Add(Task.Run(() => EnumerationModel(si)));
-                    if (i == 50)
+                    if (i == 30)
                     {
                         Task.WaitAll(tasks.ToArray());
                         tasks.Clear();
+                        images.Clear();
                         i = 0;
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
@@ -85,10 +86,11 @@ namespace Meteo
             Console.WriteLine($"Celkově v čase {watch.ElapsedMilliseconds}ms, obrázků {sourceImages.Count}");
         }
 
+        private List<Images> images = new List<Images>();
         private void EnumerationModel(SourceImage si)
         {
             //Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
-            new Images(si, true);
+            images.Add(new Images(si, true));
         }
 
         public void ShowModels()
