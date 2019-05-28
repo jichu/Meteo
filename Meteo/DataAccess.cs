@@ -11,6 +11,12 @@ namespace Meteo
 {
     public class DataAccess
     {
+       public void ClearDatabase() {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                conn.Query<CloudMaskSpectrum>("dbo.Global_ClearDatabase");
+            }
+        }
        public List<CloudMaskSpectrum> MaskSpectrumGetCoodsByColor(string col, string model)
         {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
