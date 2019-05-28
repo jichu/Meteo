@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -50,9 +51,10 @@ namespace Meteo
 
         }
 
+                int i = 0;
         public void EnumerationModels()
         {
-            Util.StartWatch();
+            Stopwatch watch = Stopwatch.StartNew();
             List<Task> tasks = new List<Task>();
             if (sourceImages.Count > 0)
             {
@@ -60,8 +62,16 @@ namespace Meteo
                 {
                     //EnumerationModel(si);
                     tasks.Add(Task.Run(() => EnumerationModel(si)));
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
+                    if (i == 50)
+                    {
+                        Task.WaitAll(tasks.ToArray());
+                        tasks.Clear();
+                        i = 0;
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        Util.l("flushing...");
+                    }
+                    i++;
                     /*
                     Thread t = new Thread(() => EnumerationModel(si));
                     t.Start();
@@ -71,15 +81,14 @@ namespace Meteo
                 }
             }
             Task.WaitAll(tasks.ToArray());
-            Util.StopWatch("EnumerationModels() ");
+            watch.Stop();
+            Console.WriteLine($"Celkově v čase {watch.ElapsedMilliseconds}ms, obrázků {sourceImages.Count}");
         }
 
         private void EnumerationModel(SourceImage si)
         {
             //Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
             new Images(si, true);
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         public void ShowModels()

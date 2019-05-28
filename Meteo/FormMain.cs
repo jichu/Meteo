@@ -87,6 +87,7 @@ namespace Meteo
             dlg.ShowDialog();
             if (Util.curModelDir == null)
                 return;
+
             backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 
