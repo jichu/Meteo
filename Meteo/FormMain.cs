@@ -83,6 +83,10 @@ namespace Meteo
 
         private void menuItemLoadInputs_Click(object sender, EventArgs e)
         {
+            FormSetModelsDir dlg = new FormSetModelsDir();
+            dlg.ShowDialog();
+            if (Util.curModelDir == null)
+                return;
             backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 

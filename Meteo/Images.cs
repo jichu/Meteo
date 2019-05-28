@@ -64,6 +64,7 @@ namespace Meteo
                 Util.rainRegionValue.Clear();
                 Util.curDataOutputs.Clear();
                 Util.curModelOutput = "";
+                if (bmp == null) return;
                 foreach (var map in Util.ORPColorGetORPColors)
                 {
                     string regionName = Util.GetRegionNameByColor(map.color);
@@ -76,9 +77,17 @@ namespace Meteo
                         int sizeRegion = 0;
                         foreach (JArray point in JsonConvert.DeserializeObject<JArray>(coods))
                         {
-                            Color c = bmp.GetPixel((int)point[0], (int)point[1]);
-                            colors.Add(c);
-                            sizeRegion++;
+                            if ((int)point[0] >= 0 && (int)point[1] >= 0)
+                            {
+                                if (bmp.Width <= (int)point[0] || bmp.Height <= (int)point[1])
+                                {
+                                    Util.l($"Chybná maska pro: {Util.curModelName}/{Util.curSubmodelName}");
+                                    return;
+                                }
+                                Color c = bmp.GetPixel((int)point[0], (int)point[1]);
+                                colors.Add(c);
+                                sizeRegion++;
+                            }
                         }
                         
                         float value = 0;
@@ -124,6 +133,7 @@ namespace Meteo
                             CloudInputData inputORP = new CloudInputData(Util.curModelName, Util.curSubmodelName, regionName, Path.GetFileNameWithoutExtension(path), value, typeStupnice);
                          
                             Model.Cloud.InputDataInsertOrUpdate(inputORP); //INPUT_DATA - DON'T TOUCH!!!! 
+                            //Util.l($"Model: {Util.curModelName} /{Util.curSubmodelName} > Uložen do DB");
                         }
                         else
                         {

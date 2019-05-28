@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -51,23 +52,34 @@ namespace Meteo
 
         public void EnumerationModels()
         {
+            Util.StartWatch();
+            List<Task> tasks = new List<Task>();
             if (sourceImages.Count > 0)
             {
                 foreach (var si in sourceImages)
                 {
-                    EnumerationModel(si);
-                    /*Thread t = new Thread(() => EnumerationModel(si));
-                    t.Start();*/
+                    //EnumerationModel(si);
+                    tasks.Add(Task.Run(() => EnumerationModel(si)));
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    /*
+                    Thread t = new Thread(() => EnumerationModel(si));
+                    t.Start();
+                    */
                     //Util.HideLoading();
                     //break;////
                 }
             }
+            Task.WaitAll(tasks.ToArray());
+            Util.StopWatch("EnumerationModels() ");
         }
 
         private void EnumerationModel(SourceImage si)
         {
             //Util.l($"Model: {si.Model} / {si.Submodel} > Data z obrázku {Path.GetFileName(si.Path)}");
             new Images(si, true);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         public void ShowModels()
