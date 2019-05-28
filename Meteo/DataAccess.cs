@@ -11,10 +11,10 @@ namespace Meteo
 {
     public class DataAccess
     {
-       public void ClearDatabase() {
+       public void DBInitialization() {
             using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
             {
-                conn.Query<CloudMaskSpectrum>("dbo.Global_ClearDatabase");
+                conn.Query<CloudMaskSpectrum>("dbo.Global_DBInitialization");
             }
         }
        public List<CloudMaskSpectrum> MaskSpectrumGetCoodsByColor(string col, string model)
