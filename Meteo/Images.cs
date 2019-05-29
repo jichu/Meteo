@@ -31,6 +31,8 @@ namespace Meteo
         public Images(string path)
         {
             this.path = path;
+            this.curModelName = Util.curModelName;
+            this.curSubmodelName = Util.curSubmodelName;
             this.typeStupnice = "DEFAULT";
             LoadImage(path);
             LoadPointsOfColorsInMap();

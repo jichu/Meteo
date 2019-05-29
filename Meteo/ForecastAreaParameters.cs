@@ -289,7 +289,7 @@ namespace Meteo
                 HumidityInfluences();
                 WindEffect();
                 MergeB();
-                WriteOutputLog();
+                //WriteOutputLog();
             }
             WriteToDatabase();
         }

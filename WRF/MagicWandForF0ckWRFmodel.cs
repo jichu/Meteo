@@ -20,7 +20,7 @@ namespace WRF
         private List<Point> StartPointsAround = new List<Point>();
         private List<NamePoint> NamePoints = new List<NamePoint>();
         private Point gridCount = new Point(25, 16);
-        private Point gridBoxSize = new Point(36, 38);
+        private Point gridBoxSize = new Point(37, 38);
         private Point gridOffset = new Point(76, 93);
         private string colorKey = "ff000000";
         private Stopwatch watch;
@@ -203,6 +203,7 @@ namespace WRF
                     Point space = new Point(gridBoxSize.X* x+gridOffset.X, gridBoxSize.Y *y+gridOffset.Y);
                     if (space.X<=bmp.Width && space.Y <= bmp.Height)
                     {
+                        bmp.SetPixel(space.X, space.Y, Color.Orange);
                         AddPointToList(bmp, new Point(space.X, space.Y));
                     }
                 }
@@ -270,21 +271,33 @@ namespace WRF
             {
                 foreach (var lines in DictLines)
                 {
+                    //Console.WriteLine(lines.Key);
                     if (lines.Key == np.Angle)
                     {
                         foreach (var p in lines.Value)
                         {
-                            b.SetPixel(p.X+np.StartPoint.X, p.Y+np.StartPoint.Y, Color.Green);
+                            b.SetPixel(p.X+np.StartPoint.X, p.Y+np.StartPoint.Y, Color.Red);
                         }
                         break;
                     }
                 }
+                string compass="";
+
+                if (np.Angle > 337.5 || np.Angle < 22.5) compass = "V";
+                if (np.Angle > 22.5 && np.Angle < 67.5) compass = "JV";
+                if (np.Angle > 67.5 && np.Angle < 112.5) compass = "J";
+                if (np.Angle > 112.5 && np.Angle < 157.5) compass = "JZ";
+                if (np.Angle > 157.5 && np.Angle < 202.5) compass = "Z";
+                if (np.Angle > 202.5 && np.Angle < 247.5) compass = "SZ";
+                if (np.Angle > 247.5 && np.Angle < 292.5) compass = "S";
+                if (np.Angle > 292.5 && np.Angle < 337.5) compass = "SV";
+
                 using (Graphics g = Graphics.FromImage(b))
                 {
                     using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
                     {
-                        PointF pointF1 = new PointF(np.StartPoint.X-20, np.StartPoint.Y-20);
-                        g.DrawString(np.Angle.ToString()+ "°", font, Brushes.DarkBlue, pointF1);
+                        PointF pointF1 = new PointF(np.StartPoint.X, np.StartPoint.Y-20);
+                        g.DrawString(compass, font, Brushes.DarkBlue, pointF1);
                     }
 
                 }

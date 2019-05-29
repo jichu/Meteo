@@ -62,7 +62,7 @@ namespace Meteo
                 {
                     //EnumerationModel(si);
                     tasks.Add(Task.Run(() => EnumerationModel(si)));
-                    if (i == 30)
+                    if (i == 465)
                     {
                         Task.WaitAll(tasks.ToArray());
                         tasks.Clear();
@@ -209,6 +209,7 @@ namespace Meteo
                 Util.ShowLoading("Načítání mapy...");
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
             }));
+            Util.l($"NETUSIM: {Util.curModelName}");
             new Images(map);
             ResizeMap(pictureBoxMap);
         }
