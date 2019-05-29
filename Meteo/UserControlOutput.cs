@@ -134,7 +134,7 @@ namespace Meteo
             pb.ContextMenu = cm;
             this.Controls.Add(pb);
             canvas = (this.Controls["canvas"] as PictureBox);
-            canvas.Image = new Bitmap(canvas.Width, canvas.Height);
+            canvas.Image = new Bitmap(canvas.Width, canvas.Height,PixelFormat.Format32bppRgb);
             if(File.Exists(Util.pathSource["map_output_background"]))
                 canvas.Image = Image.FromFile(Util.pathSource["map_output_background"]);
             canvas.Paint += Canvas_Paint;
