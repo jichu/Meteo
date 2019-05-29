@@ -82,6 +82,7 @@ namespace Meteo
 
         private void CloudSendInputData(DataInput dataInput)
         {
+            Model.Cloud.DBInitialization(dataInput);
             Preloader.Log($"Uloženo do db: {dataInput.ModelName}");
         }
 
