@@ -175,6 +175,8 @@ namespace Meteo
                     Util.rainRegion.Add(regionName, (new Point((int)Math.Round((float)x / count), (int)Math.Round((float)y / count))));
                     Util.rainRegionValue.Add(value);
                 }
+                Util.curModelName = curModelName;
+                Util.curSubmodelName = curSubmodelName;
                 Util.curDataOutputs.Add(new DataOutput()
                 {
                     RegionName = regionName,
