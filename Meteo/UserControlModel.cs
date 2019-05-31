@@ -62,7 +62,7 @@ namespace Meteo
                 {
                     //EnumerationModel(si);
                     tasks.Add(Task.Run(() => EnumerationModel(si)));
-                    if (i == 465)
+                    if (i == 30)
                     {
                         Task.WaitAll(tasks.ToArray());
                         tasks.Clear();
