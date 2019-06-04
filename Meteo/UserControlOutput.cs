@@ -75,7 +75,7 @@ namespace Meteo
             this.Controls.Add(labelHourMove);
             trackBarHourMove = new TrackBar();
             trackBarHourMove.Minimum = 0;
-            trackBarHourMove.Maximum = 24/stepHour;
+            trackBarHourMove.Maximum = 42/stepHour;
             trackBarHourMove.SmallChange = 1;
             trackBarHourMove.LargeChange = 1;
             trackBarHourMove.Location = new Point(comboAlgorithmOutput.Width+labelHourMove.Width+space,0);

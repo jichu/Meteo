@@ -13,7 +13,7 @@ namespace Meteo
         public string sampleName { get; set; }
         private int precision = 10;
         private bool drydownburst = false;
-        private float precipitationTreshold = 0.5f;//Stanovuje jaké množství srážkových modelů musí vracet 1, aby byl zahájen výpočet předpovědi
+        private float precipitationTreshold = 0.1f;//Stanovuje jaké množství srážkových modelů musí vracet 1, aby byl zahájen výpočet předpovědi
 
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
