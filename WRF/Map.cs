@@ -14,11 +14,13 @@ namespace WRF
         private static Dictionary<string, string> pathSource = new Dictionary<string, string>
         {
             { "source", @".\img\test.png" },
-            { "mask", @".\img\mask.png" }
+            { "mask", @".\img\mask.png" },
+            { "mask_orp", @".\img\Model_WRF_NMM_FLYMET.bmp" }
         };
 
         public static Bitmap MapSource;
         public static Bitmap MapMask;
+        public static Bitmap MapMaskORP;
         public static Point Size { get; set; }
         public static bool Ready { get; set; }
 
@@ -26,14 +28,16 @@ namespace WRF
         {
             Bitmap bmp = LoadImage(pathSource["source"]);
             Bitmap mask = LoadImage(pathSource["mask"]);
+            Bitmap maskorp = LoadImage(pathSource["mask_orp"]);
             PictureBox pb = new PictureBox();
-            if (bmp != null && mask!=null) {
+            if (bmp != null && mask!=null && maskorp!=null) {
                 pb.Image = bmp;
                 pb.Width = bmp.Width;
                 pb.Height = bmp.Height;
                 MapSource = bmp;
                 Size = new Point(bmp.Width,bmp.Height);
                 MapMask = mask;
+                MapMaskORP = maskorp;
                 Ready = true;
             }
             return pb;

@@ -35,7 +35,6 @@ namespace WRF
             if (Map.Ready)
             {
                 SetWinForm();
-                new FormTemplate("mask", Map.MapMask).Show();
                 Map.Process();
             }
         }

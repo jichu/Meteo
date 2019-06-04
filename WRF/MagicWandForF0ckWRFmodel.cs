@@ -12,48 +12,59 @@ namespace WRF
 {
     internal class MagicWandForF0ckWRFmodel
     {
-        public int AroundStartPoint { get; set; }
+        public int AroundStartPoint { get; set; } = 20;
+        public int AngleStep { get; set; } = 5;
+        public int LineLength { get; set; } = 34;
+        public bool ShowMetaOutputs { get; set; } = false;
 
         private List<string> BitmapMatrix = new List<string>();
         private Dictionary<int,List<Point>> DictLines = new Dictionary<int, List<Point>>();
         private List<Point> StartPoints = new List<Point>();
-        private List<Point> StartPointsAround = new List<Point>();
+        private List<List<Point>> StartPointsAround = new List<List<Point>>();
         private List<NamePoint> NamePoints = new List<NamePoint>();
-        private Point gridCount = new Point(25, 16);
-        private Point gridBoxSize = new Point(37, 38);
+        private Point gridCount = new Point(12, 7);
+        private Point gridBoxSize = new Point(36, 38);
         private Point gridOffset = new Point(76, 93);
         private string colorKey = "ff000000";
         private Stopwatch watch;
         private long watchTimeAll=0;
-
-        public bool ShowMetaOutputs { get; set; }
-
+        private Bitmap bmpNew;
+        
         public MagicWandForF0ckWRFmodel()
         {
-            AroundStartPoint = 10;
-            ShowMetaOutputs = true;
             
-            Bitmap bmpNew = new Bitmap(Map.MapSource.Width, Map.MapSource.Height);
+            bmpNew = new Bitmap(Map.MapSource.Width, Map.MapSource.Height);
             bmpNew = PreprocessDoFilterMask(bmpNew,Map.MapMask);
 
             StartWatch();
-            GenerateAroundCircle();
-            StopWatch("GenerateAroundCircle()");
+            GenerateAroundCircles();
+            StopWatch("GenerateAroundCircles()");
+            
+            StartWatch();
+            GenerateGrids(bmpNew,Map.MapMask);
+            StopWatch("GenerateGrids()");
 
             StartWatch();
-            GenerateGrid(bmpNew);
-            StopWatch("GenerateGrid()");
-
-            StartWatch();
-            GenerateLines();
+            GenerateLines(AngleStep,LineLength);
             StopWatch("GenerateLines()");
 
-
-            ProcessDoWand(bmpNew);
+            Do();
 
             Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms, startovacích bodů {StartPoints.Count}");
         }
-        
+
+        public void Do()
+        {
+            ProcessDoWand(bmpNew);
+
+            StartWatch();
+            ProcessDoAssignORP();
+            StopWatch("ProcessDoAssignORP()");
+
+            if(ShowMetaOutputs)
+                ShowOutput(bmpNew);
+        }
+
         private void StartWatch()
         {
             watch = Stopwatch.StartNew();
@@ -75,14 +86,16 @@ namespace WRF
                     if (bmp.Height > cutTop)
                         if (y < cutTop) continue;
                     if (y > bmp.Height - cutBotton) continue;
+                    // use mask
+                    if (mask.GetPixel(x, y).Name == colorKey || mask.GetPixel(x, y).Name == "ffff0000")
+                        Map.MapSource.SetPixel(x, y, Color.White);
+
                     if (Map.MapSource.GetPixel(x, y).Name == colorKey)
                     {
                         bmp.SetPixel(x, y, Color.Black);
-                        BitmapMatrix.Add($"{x},{y}");
+                        if (mask.GetPixel(x, y).Name != colorKey)
+                            BitmapMatrix.Add($"{x},{y}");
                     }
-                    // use mask
-                    if (mask.GetPixel(x, y).Name == colorKey)
-                        bmp.SetPixel(x, y, Color.White);
                 }
             }
             if (ShowMetaOutputs)
@@ -90,7 +103,7 @@ namespace WRF
             return bmp;
         }
 
-        private void GenerateLines(int angleStep=1, int size = 37, bool showPampelishka=true)
+        private void GenerateLines(int angleStep=5, int size = 34, bool showPampelishka=true)
         {
             DictLines.Clear();
             // IV. kv
@@ -128,20 +141,21 @@ namespace WRF
                     DictLines.Add(angle-89, line);
                 angle += angleStep;
             }
-            if (showPampelishka)
-            {
-                int c = 240;
-                Bitmap bmp = new Bitmap(size * 2, size * 2);
-                Graphics g = Graphics.FromImage(bmp);
-                g.Clear(Color.DarkGreen);
-                foreach (var item in DictLines)
+            if (ShowMetaOutputs)
+                if (showPampelishka)
                 {
-                    foreach (var points in item.Value)
-                        bmp.SetPixel(size + points.X, size + points.Y, Color.FromArgb(255, 255, 255, c));
-                    if (c > 0) c-=(int)255/DictLines.Count;
+                    int c = 240;
+                    Bitmap bmp = new Bitmap(size * 2, size * 2);
+                    Graphics g = Graphics.FromImage(bmp);
+                    g.Clear(Color.DarkGreen);
+                    foreach (var item in DictLines)
+                    {
+                        foreach (var points in item.Value)
+                            bmp.SetPixel(size + points.X, size + points.Y, Color.FromArgb(255, 255, 255, c));
+                        if (c > 0) c-=(int)255/DictLines.Count;
+                    }
+                    Show(bmp);
                 }
-                Show(bmp);
-            }
         }
 
         private double Radian(int angle) { return (Math.PI / 180.0) * angle; }
@@ -175,27 +189,52 @@ namespace WRF
             return line;
         }
 
-        private void GenerateAroundCircle()
+        private void GenerateAroundCircles()
         {
-            Bitmap bmp = new Bitmap(AroundStartPoint, AroundStartPoint);
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                g.Clear(Color.White);
-                g.FillEllipse(new SolidBrush(Color.Black), new Rectangle(0, 0, AroundStartPoint, AroundStartPoint));
-            }
             StartPointsAround.Clear();
-            for (int x = 0; x < bmp.Width; x++)
+            for (int i = 0; i < AroundStartPoint; i+=3)
             {
-                for (int y = 0; y < bmp.Height; y++)
+                int size = i;
+                Bitmap bmp = new Bitmap(size + 1, size + 1);
+                using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    if (bmp.GetPixel(x, y).Name == "ff000000")
-                        StartPointsAround.Add(new Point(x- AroundStartPoint/2, y-AroundStartPoint/2));
+                    g.Clear(Color.White);
+                    g.DrawEllipse(new Pen(Color.Black), new Rectangle(0, 0, size, size));
                 }
+                List<Point> circle = new List<Point>();
+                for (int x = 0; x < bmp.Width; x++)
+                    for (int y = 0; y < bmp.Height; y++)
+                        if (bmp.GetPixel(x, y).Name == "ff000000")
+                            circle.Add(new Point(x - size / 2, y - size / 2));
+                StartPointsAround.Add(circle);
             }
         }
-        private void GenerateGrid(Bitmap bmp)
+
+        private void GenerateGrids(Bitmap bmpNew, Bitmap mask)
         {
-            StartPoints.Clear();
+            Point tmp_gridOffset = gridOffset;
+            for (int i = 1; i <= 2; i++)
+            {
+                GenerateGrid(bmpNew,mask);
+                gridOffset = new Point(gridOffset.X + gridBoxSize.X * gridCount.X, gridOffset.Y);
+            }
+            gridOffset = new Point(tmp_gridOffset.X, gridOffset.Y + gridBoxSize.Y * gridCount.Y+3);
+            for (int i = 1; i <= 2; i++)
+            {
+                GenerateGrid(bmpNew,mask);
+                gridOffset = new Point(gridOffset.X + gridBoxSize.X * gridCount.X, gridOffset.Y);
+            }
+            if (ShowMetaOutputs)
+            {
+                Bitmap b = new Bitmap(bmpNew);
+                foreach (var p in StartPoints)
+                    b.SetPixel(p.X, p.Y, Color.Red);
+                Show(b, "GenerateGrid startPoint");
+            }
+        }
+
+        private void GenerateGrid(Bitmap bmp,Bitmap mask)
+        {
             for (int y = 0; y < gridCount.Y; y++)
             {
                 for (int x = 0; x < gridCount.X; x++)
@@ -203,8 +242,8 @@ namespace WRF
                     Point space = new Point(gridBoxSize.X* x+gridOffset.X, gridBoxSize.Y *y+gridOffset.Y);
                     if (space.X<=bmp.Width && space.Y <= bmp.Height)
                     {
-                        bmp.SetPixel(space.X, space.Y, Color.Orange);
-                        AddPointToList(bmp, new Point(space.X, space.Y));
+                        if (mask.GetPixel(space.X, space.Y).Name != "ffff0000")
+                            AddPointToList(bmp, new Point(space.X, space.Y));
                     }
                 }
             }
@@ -219,25 +258,8 @@ namespace WRF
 
         private void AddPointToList(Bitmap bmp, Point point)
         {
-            if (bmp.GetPixel(point.X, point.Y).Name == "ff000000")
-                StartPoints.Add(new Point(point.X, point.Y));
-            else
-                AddPointAroundToList(bmp, new Point(point.X, point.Y));
-        }
-
-        private void AddPointAroundToList(Bitmap bmp, Point point)
-        {
-            foreach (Point around in StartPointsAround)
-            {
-                int x = point.X - around.X;
-                int y = point.Y - around.Y;
-                if (x >= 0 && y >= 0)
-                    if (bmp.GetPixel(x, y).Name == "ff000000")
-                    {
-                        StartPoints.Add(new Point(x, y));
-                        break;
-                    }
-            }
+            if(!StartPoints.Contains(new Point(point.X, point.Y)))
+            StartPoints.Add(new Point(point.X, point.Y));
         }
 
         private void Show(Bitmap bmpNew,string title="")
@@ -246,96 +268,99 @@ namespace WRF
         }
 
         // zpracovani WRF
-        private void ProcessDoWand(Bitmap bmp,bool sync =true)
+        private void ProcessDoWand(Bitmap bmp,bool sync =false)
         {
             if (sync)
             {
                 StartWatch();
                 foreach (Point startPoint in StartPoints)
                 {
-                    LookUpWind(bmp, startPoint, sync);
+                    LookUpStartWind(bmp, startPoint, sync);
                 }
                 StopWatch("ProcessDoWand()");
-                ShowOutput(bmp);
             }
             else
             {
-                Task t = Task.Run(() => ProcessDoWandAsync(bmp));
+                StartWatch();
+                List<Task<bool>> tasks = new List<Task<bool>>();
+                tasks.Add(Task.Run(() => ProcessDoWandAsync(bmp)));
+                Task.WaitAll(tasks.ToArray());
+                StopWatch("ProcessDoWandAsyc()");
             }
         }
 
-        private void ShowOutput(Bitmap bmp)
+        private bool ProcessDoWandAsync(Bitmap bmp)
         {
-            Bitmap b = new Bitmap(bmp);
-            foreach (var np in NamePoints)
-            {
-                foreach (var lines in DictLines)
-                {
-                    //Console.WriteLine(lines.Key);
-                    if (lines.Key == np.Angle)
-                    {
-                        foreach (var p in lines.Value)
-                        {
-                            b.SetPixel(p.X+np.StartPoint.X, p.Y+np.StartPoint.Y, Color.Red);
-                        }
-                        break;
-                    }
-                }
-                string compass="";
 
-                if (np.Angle > 337.5 || np.Angle < 22.5) compass = "V";
-                if (np.Angle > 22.5 && np.Angle < 67.5) compass = "JV";
-                if (np.Angle > 67.5 && np.Angle < 112.5) compass = "J";
-                if (np.Angle > 112.5 && np.Angle < 157.5) compass = "JZ";
-                if (np.Angle > 157.5 && np.Angle < 202.5) compass = "Z";
-                if (np.Angle > 202.5 && np.Angle < 247.5) compass = "SZ";
-                if (np.Angle > 247.5 && np.Angle < 292.5) compass = "S";
-                if (np.Angle > 292.5 && np.Angle < 337.5) compass = "SV";
-
-                using (Graphics g = Graphics.FromImage(b))
-                {
-                    using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
-                    {
-                        PointF pointF1 = new PointF(np.StartPoint.X, np.StartPoint.Y-20);
-                        g.DrawString(compass, font, Brushes.DarkBlue, pointF1);
-                    }
-
-                }
-
-            }
-            Show(b, "Výstup");
-        }
-
-        private void ProcessDoWandAsync(Bitmap bmp)
-        {
+            List<Task<int>> tasks = new List<Task<int>>();
             try
             {
-                StartWatch();
-                List<Task<int>> tasks = new List<Task<int>>();
                 int i = 0;
                 foreach (Point startPoint in StartPoints)
                 {
-                    tasks.Add(Task.Run(() => LookUpWind(bmp, startPoint, false)));
-                    //Thread t = new Thread(() => LookUpWind(bmp, startPoint));
-                    //t.Start();
-                    if (i > 1000)
-                        break;
+                    tasks.Add(Task.Run(() => LookUpStartWind(bmp, startPoint, false)));
+                    if (i > 1002)
+                    {
+                        Task.WaitAll(tasks.ToArray());
+                        tasks.Clear();
+                        i=0;
+                    }
                     i++;
                 }
-                Task.WaitAll(tasks.ToArray());
-                StopWatch("ProcessDoWandAsyc()");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }
+                return false;
+            };
+
+            Task.WaitAll(tasks.ToArray());
+            return true;
         }
 
-        static object locker = new object();
-        private int LookUpWind(Bitmap bmp, Point startPoint,  bool sync=false)
+        private int LookUpStartWind(Bitmap bmp, Point startPoint,  bool sync=false)
         {
-            int max = 0;
-            int angle=-1;
+            List<Point> curStartPoints = new List<Point>();
+            if (IsBlack(bmp,startPoint.X, startPoint.Y))
+                curStartPoints.Add(startPoint);
+            else
+                curStartPoints = LookUpPointsAround(bmp, startPoint);
+
+         //   Console.WriteLine($"startovacích bodů pro jeden směr: {curStartPoints.Count}");
+
+            if (curStartPoints.Count > 0)
+            {
+                int angleWin = -1;
+                int maxAgree = 0;
+
+                foreach (var sp in curStartPoints)
+                {
+                    int max = 0;
+                    int angle = -1;
+                    if (LookUpWind(bmp, curStartPoints[0], out max, out angle))
+                    {
+                        if (max > maxAgree)
+                        {
+                            maxAgree = max;
+                            angleWin = angle;
+                        }
+                    }
+                }
+                if(angleWin!=-1)
+                NamePoints.Add(new NamePoint()
+                {
+                    Angle = angleWin,
+                    StartPoint = startPoint
+                });
+            }
+
+            return 0;
+        }
+
+        private bool LookUpWind(Bitmap bmp, Point startPoint, out int max, out int angle, bool sync = false)
+        {
+            max = 0;
+            angle=-1;
             foreach (var lines in DictLines)
             {
                 int accord = 0;
@@ -346,8 +371,10 @@ namespace WRF
                     if (x >= 0 && y >= 0)
                     {
                         if (sync)
+                        {
                             if (bmp.GetPixel(x, y).Name == "ff000000")
                                 accord++;
+                        }
 
                         if (!sync)
                             if (BitmapMatrix.Contains($"{x},{y}"))
@@ -361,15 +388,145 @@ namespace WRF
                 }
             }
             //Console.WriteLine($"úhel:{angle} shoda: {max}");
-            if(max>10)
-            NamePoints.Add(new NamePoint()
-            {
-                Angle = angle,
-                StartPoint=startPoint
-            });
-            return angle;
+            if (max >= 8) return true;
+            else return false;
         }
 
+        private List<Point> LookUpPointsAround(Bitmap bmp, Point startPoint)
+        {
+            List<Point> curStartPoints = new List<Point>();
+            bool found = false;
+            int r = 0;//AroundStartPoint/4;
+            foreach (var circles in StartPointsAround)
+            {
+                if (found) break;
+                foreach (var circle in circles)
+                {
+                    int x = circle.X-r + startPoint.X;
+                    int y = circle.Y-r + startPoint.Y;
+                    if (IsBlack(bmp, x, y))
+                    {
+                        curStartPoints.Add(new Point(x, y));
+                        found = true;
+                        break;
+                    }
+                    /*
+                    if (!IsBlack(bmp, x, y))
+                        bmp.SetPixel(x,y, Color.Green);
+                        */
+                }
+            }
+
+            return curStartPoints;
+        }
+
+
+        private void ShowOutput(Bitmap bmp)
+        {
+            Bitmap b = new Bitmap(bmp);
+            Console.WriteLine(bmp.Height);
+            foreach (var np in NamePoints)
+            {
+                foreach (var lines in DictLines)
+                {
+                    if (lines.Key == np.Angle)
+                    {
+                        foreach (var p in lines.Value)
+                        {
+                            b.SetPixel(p.X + np.StartPoint.X, p.Y + np.StartPoint.Y, Color.Red);
+                        }
+                        break;
+                    }
+                }
+
+                string compass = GetCompass(np.Angle);
+                using (Graphics g = Graphics.FromImage(b))
+                {
+                    using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
+                    {
+                        PointF pointF1 = new PointF(np.StartPoint.X, np.StartPoint.Y);
+                        g.DrawString(compass, font, Brushes.DarkBlue, pointF1);
+                    }
+
+                }
+
+            }
+            Show(b, "Výstup");
+        }
+
+        private string GetCompass(int angle)
+        {
+            string compass = "";
+            if (angle > 337.5 || angle < 22.5) compass = "V";
+            if (angle > 22.5 && angle < 67.5) compass = "JV";
+            if (angle > 67.5 && angle < 112.5) compass = "J";
+            if (angle > 112.5 && angle < 157.5) compass = "JZ";
+            if (angle > 157.5 && angle < 202.5) compass = "Z";
+            if (angle > 202.5 && angle < 247.5) compass = "SZ";
+            if (angle > 247.5 && angle < 292.5) compass = "S";
+            if (angle > 292.5 && angle < 337.5) compass = "SV";
+            return compass;
+        }
+
+        private bool IsBlack(Bitmap bmp, int x, int y)
+        {
+            return (BitmapMatrix.Contains($"{x},{y}"));
+                //                return bmp.GetPixel(x, y).Name == "ff000000";
+        }
+
+
+        // prirazeni vetru k ORP
+        private Dictionary<string, string> ProcessDoAssignORP()
+        {
+            Dictionary<string, string> ret = new Dictionary<string, string>();
+            Dictionary<string, LineRegion> regions = new Dictionary<string, LineRegion>();
+            foreach (var np in NamePoints)
+            {
+                Dictionary<string, int> DicColorCounter = new Dictionary<string, int>();
+                foreach (var wind in DictLines[np.Angle])
+                {
+                    string color =Map.MapMaskORP.GetPixel(np.StartPoint.X + wind.X, np.StartPoint.Y + wind.Y).Name;
+                    if (color == "ffffffff" || color == "ff000000")
+                        break;
+                    if (!DicColorCounter.ContainsKey(color))
+                        DicColorCounter.Add(color, 1);
+                    else
+                        DicColorCounter[color]++;
+                }
+
+                if(DicColorCounter.Count>0)
+                {
+                    foreach (var cc in DicColorCounter)
+                    {
+                     //   Console.WriteLine($"{cc.Key}: {cc.Value}x angle: {np.Angle}");
+                        if (!regions.ContainsKey(cc.Key))
+                            regions.Add(cc.Key, new LineRegion()
+                            {
+                                Angle = np.Angle,
+                                AngleArea = cc.Value
+                            });
+                        else
+                        {
+                            if (regions[cc.Key].AngleArea < cc.Value)
+                                regions[cc.Key].AngleArea = cc.Value;
+                            if (regions[cc.Key].AngleArea == cc.Value)
+                                Console.WriteLine($"HA, co teď? {cc.Key} ({Region.ORP["#" + cc.Key.Substring(2, 6)]}): {cc.Value}x angle: {np.Angle} a {regions[cc.Key].AngleArea}");
+                        }
+                    }
+                }
+            }
+
+            foreach (var r in regions)
+            {
+                if (Region.ORP.ContainsKey("#" + r.Key.Substring(2, 6)))
+                {
+                    Console.WriteLine($"{Region.ORP["#" + r.Key.Substring(2, 6)]} směr: {GetCompass(r.Value.Angle)}   ({"#" + r.Key.Substring(2, 6)} {r.Value.AngleArea}x úhel: {r.Value.Angle}))");
+                    ret.Add(Region.ORP["#" + r.Key.Substring(2, 6)], GetCompass(r.Value.Angle));
+                }
+            }
+
+            return ret;
+        }
     }
 
 }
