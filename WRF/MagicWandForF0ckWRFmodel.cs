@@ -15,14 +15,14 @@ namespace WRF
         public int AroundStartPoint { get; set; } = 20;
         public int AngleStep { get; set; } = 5;
         public int LineLength { get; set; } = 34;
-        public bool ShowMetaOutputs { get; set; } = false;
+        public bool ShowMetaOutputs { get; set; } = true;
 
         private List<string> BitmapMatrix = new List<string>();
         private Dictionary<int,List<Point>> DictLines = new Dictionary<int, List<Point>>();
         private List<Point> StartPoints = new List<Point>();
         private List<List<Point>> StartPointsAround = new List<List<Point>>();
         private List<NamePoint> NamePoints = new List<NamePoint>();
-        private Point gridCount = new Point(12, 7);
+        private Point gridCount = new Point(12, 8);
         private Point gridBoxSize = new Point(36, 38);
         private Point gridOffset = new Point(76, 93);
         private string colorKey = "ff000000";
@@ -219,6 +219,7 @@ namespace WRF
                 gridOffset = new Point(gridOffset.X + gridBoxSize.X * gridCount.X, gridOffset.Y);
             }
             gridOffset = new Point(tmp_gridOffset.X, gridOffset.Y + gridBoxSize.Y * gridCount.Y+3);
+
             for (int i = 1; i <= 2; i++)
             {
                 GenerateGrid(bmpNew,mask);
@@ -485,9 +486,12 @@ namespace WRF
                 Dictionary<string, int> DicColorCounter = new Dictionary<string, int>();
                 foreach (var wind in DictLines[np.Angle])
                 {
+                   
+                    
                     string color =Map.MapMaskORP.GetPixel(np.StartPoint.X + wind.X, np.StartPoint.Y + wind.Y).Name;
+                    
                     if (color == "ffffffff" || color == "ff000000")
-                        break;
+                        continue;
                     if (!DicColorCounter.ContainsKey(color))
                         DicColorCounter.Add(color, 1);
                     else
@@ -509,12 +513,14 @@ namespace WRF
                         {
                             if (regions[cc.Key].AngleArea < cc.Value)
                                 regions[cc.Key].AngleArea = cc.Value;
-                            if (regions[cc.Key].AngleArea == cc.Value)
-                                Console.WriteLine($"HA, co teď? {cc.Key} ({Region.ORP["#" + cc.Key.Substring(2, 6)]}): {cc.Value}x angle: {np.Angle} a {regions[cc.Key].AngleArea}");
+                            /*if (regions[cc.Key].AngleArea == cc.Value)
+                                Console.WriteLine($"HA, co teď? {cc.Key} ({Region.ORP["#" + cc.Key.Substring(2, 6)]}): {cc.Value}x angle: {np.Angle} a {regions[cc.Key].AngleArea}");*/
                         }
                     }
                 }
             }
+
+            Console.WriteLine($"Počet detekovaných ORP: {regions.Count}");
 
             foreach (var r in regions)
             {
