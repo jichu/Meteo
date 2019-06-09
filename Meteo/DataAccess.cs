@@ -231,7 +231,7 @@ namespace Meteo
 
         }
 
-        public int ORPSGetIDFromName(string nam)
+       public int ORPSGetIDFromName(string nam)
        {
            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
            {
@@ -241,7 +241,17 @@ namespace Meteo
 
        }
 
-       public bool ORPSInsertOrUpdate(CloudORPS item)
+
+       public int ORPSGetRegionForORP(string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                int id = conn.Query<CloudORPS>("dbo.ORPS_GetRegionForORP @NAME", new { name = nam }).ToList().First().id_region;
+                return id;
+            }
+
+        }
+        public bool ORPSInsertOrUpdate(CloudORPS item)
        {
            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
            {
@@ -316,7 +326,7 @@ namespace Meteo
        {
            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
            {
-               int reference = conn.Query<CloudORPS>("dbo.REGIONS_GetIDFromName @NAME", new { name = nam }).ToList().First().region_referenece;
+               int reference = conn.Query<CloudORPS>("dbo.REGIONS_GetIDFromName @NAME", new { name = nam }).ToList().First().id_region;
                return reference;
            }
 
@@ -367,10 +377,11 @@ namespace Meteo
                    List<CloudInputData> records = new List<CloudInputData>();
                    if (!item.region)
                    {
-                       records.Add(item);
+                        records.Add(item);
                    }
                    else
                    {
+                       
                        //CloudInputData regionInput = new CloudInputData(item);
                        List<CloudORPS> ORPSList = Model.Cloud.ORPSGetORPSForRegion(item.id_orp);
                        foreach (var ORP in ORPSList)
@@ -383,6 +394,7 @@ namespace Meteo
                    }
 
                    conn.Execute("dbo.INPUT_DATA_InsertOrUpdateData @ID_MODEL, @ID_ORP, @SAMPLE_NAME, @VALUE, @TYPE", records);
+
                    return true;
                }
            }

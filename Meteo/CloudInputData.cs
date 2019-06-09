@@ -34,13 +34,14 @@ namespace Meteo
         }
 
         public CloudInputData(string namModel, string namSubmodel, string namORP, string sample_name, float value, string type = "DEFAULT") {
+            int numberOfRegions = 14; //Počet krajů v zemi
             id_model = Model.Cloud.MODELSGetSubmodelIDFromName(namModel,namSubmodel);
             this.type = Model.Cloud.ModelSpectrumTypeGetIDForName(type);
             this.sample_name = sample_name;
             this.value = value;
-            id_orp = Model.Cloud.ORPSGetIDFromName(namORP);
-            region = (id_orp == -1) ? true : false;           
-            if (region) id_orp = Model.Cloud.REGIONSGetIDFromName(namORP);
+            region = (Model.Cloud.MODELSGetNumberOfAreasForModel(namModel)<=numberOfRegions) ? true : false;           
+            if (region) id_orp = Model.Cloud.ORPSGetRegionForORP(namORP);
+            else id_orp = Model.Cloud.ORPSGetIDFromName(namORP);
         }
     }
 }

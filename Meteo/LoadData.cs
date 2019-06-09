@@ -23,7 +23,7 @@ namespace Meteo
 
         public void ScanDir()
         {
-            FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepat data vybranou adresářovou strukturou, maskami a stupnicemi?");
+            FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepsat data vybranou adresářovou strukturou, maskami a stupnicemi?");
             dlg.ShowDialog();
 
             if (Util.curModelDir == null)

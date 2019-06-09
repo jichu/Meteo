@@ -10,7 +10,7 @@ namespace Meteo
     {
         public int id { get; set; }
         public string name { get; set; }
-        public int region_referenece { get; set; }
+        public int id_region { get; set; }
 
         public CloudORPS() {
         }

@@ -81,12 +81,12 @@ namespace Meteo
 
         public void InputData_InsertOrUpdateData() {
             //Ukázka přidání dat pro ORP
-            CloudInputData inputORP = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", 2);
+           /* CloudInputData inputORP = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Beroun", "02", 2);
             Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}");
-            Model.Cloud.InputDataInsertOrUpdate(inputORP);
+            Model.Cloud.InputDataInsertOrUpdate(inputORP);*/
 
             //Ukázka přidání dat pro Region
-            CloudInputData inputREGION = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Zlínský kraj", "02", 2);
+            CloudInputData inputREGION = new CloudInputData("Model_GFS_Austria_50km", "SI_index_GFS_MAIN", "Zlín", "03", 2);
             Util.l($"inputREGION:{inputREGION.id_model}:{inputREGION.id_orp}:{inputREGION.sample_name}:{inputREGION.value}:{inputREGION.region}");
             Model.Cloud.InputDataInsertOrUpdate(inputREGION);
             /*CloudInputData inputNOEXIST = new CloudInputData("Model_ALADIN_CZ", "Teplota", "Neexistující oblast", "02", 2);

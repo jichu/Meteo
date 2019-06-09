@@ -150,11 +150,11 @@ namespace Meteo
             Parameters.Add("RH 2 m (%)", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000"));
             Parameters.Add("KONV+/DIV- (0-1 km)", GetParameter("Model_WRF_ARW", "MFDIV_0-1km")); 
             Parameters.Add("OROGRAPHIC LIFT", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));
-            Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", GetParameter("Model_Sumarizace_srazek", "Sumarizace_srazek", "DEFAULT", "srážkoměry"));
-            Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Radary_srážkoměry", "DEFAULT", "radary_srážkoměry"));
-            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1")); 
-            Parameters.Add("Stupeň nasycení max", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_max")); 
-            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Suma srážek 1 hod")); 
+            Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", GetParameter("Model_Sumarizace_srazek", "Srážkoměry", false));
+            Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Radary_srážkoměry", false));
+            Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1",false)); 
+            Parameters.Add("Stupeň nasycení max", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1_max",false)); 
+            Parameters.Add("Suma srážek (1.hod.)", GetParameter("Model_Nasycenost_pud", "Suma srážek 1 hod",false)); 
             Parameters.Add("Srážky ALADIN", GetParameter("Model_ALADIN_CZ", "Srážky_MAIN"));
             Parameters.Add("Srážky GDPS", GetParameter("Model_GDPS", "Srážky_MAIN")); 
             Parameters.Add("Srážky EURO4", GetParameter("Model_EURO4", "Srážky_MAIN")); 
@@ -166,10 +166,10 @@ namespace Meteo
             Parameters.Add("Srážky GFS Starý", GetParameter("Model_GFS_Wetterzentrale_DE_25km_STARY", "Srážky_MAIN_Starý"));
 
             //Parametry pro suchý downburst
-            Parameters.Add("RH 1000 hPa Real", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000","REAL")); //75 
-            Parameters.Add("RH 925 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925", "REAL")); //60 
-            Parameters.Add("RH 850 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850", "REAL")); //75 
-            Parameters.Add("LCL Real", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku", "REAL")); //1200 
+            Parameters.Add("RH 1000 hPa Real", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000",true, "REAL")); //75 
+            Parameters.Add("RH 925 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925",true, "REAL")); //60 
+            Parameters.Add("RH 850 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850",true, "REAL")); //75 
+            Parameters.Add("LCL Real", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku", true, "REAL")); //1200 
 
             //Příprava dat pro předpověď času výskytu srážek
             PrecipitationModels.Add("Srážky ALADIN", GetPrecipitationData(Parameters["Srážky ALADIN"]));
@@ -829,7 +829,7 @@ namespace Meteo
         private void WriteOutputLog() {
             
             Util.l("\n\nDOSTUPNÉ VSTUPNÍ PARAMETRY\n--------------------\n");
-            Util.l(this.Name_orp);
+            Util.l($"{this.Name_orp}:{this.sampleName}");
             Util.l("Počet dostupných srážkových modelů: " + PrecipitationPlaceModels.Count);
             foreach (var item in Parameters)
             {
@@ -850,15 +850,15 @@ namespace Meteo
         }
 
         //Vytažení parametru z databáze
-        private float GetParameter(string model, string submodel, string type = "DEFAULT", string sample = "") {
+        private float GetParameter(string model, string submodel, bool sample = true, string type = "DEFAULT") {
             float value;
 
-            if (sample == "")
+            if (sample)
             {
                 value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp, typeValueDictionary[type]);
             }
             else {
-                value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sample, id_orp, typeValueDictionary[type]);
+                value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), "", id_orp, typeValueDictionary[type]);
             }
 
            // Util.l($"{model}:{submodel}:{type}:{sampleName}:{value}");

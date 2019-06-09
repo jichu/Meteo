@@ -10,6 +10,6 @@ namespace Meteo
     {
         public int id { get; set; }
         public string Region_name { get; set; }
-        public string Region_referenece { get; set; }
+        public string region_referenece { get; set; }
     }
 }
