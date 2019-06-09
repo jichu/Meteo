@@ -435,5 +435,18 @@ namespace Meteo
            return color;
        }
 
-   }
+       public float RELIEFCHARVALUESGetValueForName(int id_o, string nam)
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                float value;
+               
+                value = conn.Query<float>("dbo.RELIEF_CHAR_VALUES_GetValueForName @NAME, @ID_ORP", new { id_orp = id_o, name = nam}).ToList().First();
+               
+                return value;
+            }
+
+        }
+
+    }
 }

@@ -54,17 +54,20 @@ namespace Meteo
         private void LoadParameters() {
 
             //Charakteristiky reliéfu
-            Parameters.Add("Sklonitost reliéfu (průměrná)", -1);
-            Parameters.Add("Orientace reliéfu (tepelný prohřev)", -1);
-            Parameters.Add("Světelnost od JZ (Z-factor)", -1);
-            Parameters.Add("Vegetace-pokrytí (%)", -1);
-            Parameters.Add("Teplotní gradient (nadmořská výška)", -1);
-            Parameters.Add("IR kontrast", -1);
-            Parameters.Add("Sídelní útvar", -1);
-            Parameters.Add("Šířka údolí", -1);
-            Parameters.Add("Obtékání překážky", -1);
-            Parameters.Add("Polohy nadmořských výšek", -1);
-            Parameters.Add("Hřeben", -1);
+            Parameters.Add("Sklonitost reliéfu (průměrná)", GetRelief("Sklonitost reliéfu (průměrná)"));
+            if(sampleName == "06" || sampleName == "09" || sampleName == "30" || sampleName == "33") Parameters.Add("Orientace reliéfu (tepelný prohřev)", GetRelief("Orientace reliéfu (tepelný prohřev) dopoledne"));
+            if(sampleName == "12" || sampleName == "15" || sampleName == "18" || sampleName == "36" || sampleName == "39" || sampleName == "42") Parameters.Add("Orientace reliéfu (tepelný prohřev)", GetRelief("Orientace reliéfu (tepelný prohřev) odpoledne"));
+            if(sampleName == "06" || sampleName == "09" || sampleName == "30" || sampleName == "33") Parameters.Add("Světelnost od JZ (Z-factor)", GetRelief("Světelnost od JZ (Z-factor) dopoledne"));
+            if(sampleName == "12" || sampleName == "15" || sampleName == "18" || sampleName == "36" || sampleName == "39" || sampleName == "42") Parameters.Add("Světelnost od JZ (Z-factor)", GetRelief("Světelnost od JZ (Z-factor) odpoledne"));
+            Parameters.Add("Vegetace-pokrytí (%)", GetRelief("Vegetace-pokrytí (%)"));
+            Parameters.Add("Teplotní gradient (nadmořská výška)", GetRelief("Teplotní gradient (nadmořská výška)"));
+            Parameters.Add("IR kontrast", GetRelief("IR kontrast"));
+            Parameters.Add("Sídelní útvar", GetRelief("Sídelní útvar"));
+            Parameters.Add("Šířka údolí", GetRelief("Šířka údolí"));
+            Parameters.Add("Obtékání překážky", GetRelief("Obtékání překážky"));
+            Parameters.Add("Polohy nadmořských výšek", GetRelief("Polohy nadmořských výšek"));
+            Parameters.Add("Hřeben", GetRelief("Šířka hřebene"));
+
             Parameters.Add("Teplota (MAX)", -1);
 
             //Zatím vynechané parametry
@@ -378,11 +381,14 @@ namespace Meteo
         //7. Lokální předpověď
         //Teplotní vlivy zemského povrchu
         private void TemperatureInfluencesOfEarthSurface() {
-            List<float> values = new List<float>() { Parameters["Sklonitost reliéfu (průměrná)"], Parameters["Orientace reliéfu (tepelný prohřev)"], Parameters["Světelnost od JZ (Z-factor)"], Parameters["Vegetace-pokrytí (%)"],
+            if (IsDay())
+            {
+                List<float> values = new List<float>() { Parameters["Sklonitost reliéfu (průměrná)"], Parameters["Orientace reliéfu (tepelný prohřev)"], Parameters["Světelnost od JZ (Z-factor)"], Parameters["Vegetace-pokrytí (%)"],
                                                     Parameters["Teplotní gradient (nadmořská výška)"], Parameters["IR kontrast"], Parameters["Teplota (MAX)"], Parameters["Oblačnost"]
-                                                    }; 
-            int level = ValueToLevel(LevelScale, Probability(values));
-            Output.Add("TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU", level);
+                                                    };
+                int level = ValueToLevel(LevelScale, Probability(values));
+                Output.Add("TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU", level);
+            }
         }
 
         //Větrné vlivy
@@ -866,6 +872,14 @@ namespace Meteo
             return value;
         }
 
+        private float GetRelief(string name) {
+            float value = 0;
+
+            value = Model.Cloud.RELIEFCHARVALUESGetValueForName(id_orp, name);
+            //value = -1;//Vypnutí charakteristik reliéfu (pro debug)
+            return value;
+        }
+
         //Načtení dat ze srážkových modelů
         private List<CloudInputData> GetPrecipitationData(float value)
         {
@@ -887,7 +901,8 @@ namespace Meteo
 
         //Test na den/noc
         private bool IsDay() {
-            if (sampleName == "21" || sampleName == "00" || sampleName == "03" || sampleName == "06" || sampleName == "24")
+            if (sampleName == "21" || sampleName == "00" || sampleName == "03" || sampleName == "06" || sampleName == "24" ||
+                sampleName == "27" || sampleName == "30" || sampleName == "45" || sampleName == "48")
                 return false;
             else
                 return true;
