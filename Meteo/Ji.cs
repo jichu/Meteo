@@ -50,7 +50,11 @@ namespace Meteo
             //InputData_GetData();
         }
         public void Test() {
-            
+            List<CloudSamples> test = Model.Cloud.InputDataGetSamples();
+            foreach (var t in test) {
+                Util.l(t.sample_name);
+            }
+
         }
 
         public void OutputData_GetDataForSample() {

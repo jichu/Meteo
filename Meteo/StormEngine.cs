@@ -11,45 +11,22 @@ namespace Meteo
     {
         List<CloudORPS> ORPS = Model.Cloud.ORPSGetORPNames();
         List<ForecastAreaParameters> fapList = new List<ForecastAreaParameters>();
+        List<CloudSamples> listSamples = Model.Cloud.InputDataGetSamples();
         public string sampleName { get; set; }
-        public List<string> sampleNames = new List<string>{
-            "00",
-            "03",
-            "06",
-            "09",
-            "12",
-            "15",
-            "18",
-            "21",
-            "24",
-            "27",
-            "30",
-            "33",
-            "36",
-            "39",
-            "42",
-        };
+        public List<string> sampleNames = new List<string>();
 
         public StormEngine()
         {
-            
+            foreach (var l in listSamples) {
+                sampleNames.Add(l.sample_name);
+            }
             /*Thread t = new Thread(() => Run());
             t.Start();*/
             Run();
             
         }
 
-        public StormEngine(string sampleName) {
-            this.sampleName = sampleName;
-           
-                foreach (var ORP in ORPS)
-                {
-                    ForecastAreaParameters fap = new ForecastAreaParameters(ORP, this.sampleName);
-                    fapList.Add(fap);
-                }
-            
-            //Output();
-        }
+       
 
         public void Run() {
             //List<Task> taskList = new List<Task>();
@@ -77,8 +54,22 @@ namespace Meteo
                 new ForecastAreaParameters(ORP, s);
             }
             Util.l($"Výpočet pro {s}. hodinu dokončen za {DateTime.Now - start}");
-        } 
+        }
 
+
+        //Odsud se to nepouští!
+        public StormEngine(string sampleName)
+        {
+            this.sampleName = sampleName;
+
+            foreach (var ORP in ORPS)
+            {
+                ForecastAreaParameters fap = new ForecastAreaParameters(ORP, this.sampleName);
+                fapList.Add(fap);
+            }
+
+            //Output();
+        }
         //Zde se bude počítat předpověď na základě parametrů
         public void Output() {
             foreach (var f in fapList)

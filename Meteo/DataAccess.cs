@@ -350,6 +350,16 @@ namespace Meteo
            }
        }
 
+       public List<CloudSamples> InputDataGetSamples()
+        {
+            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))
+            {
+                var samples = conn.Query<CloudSamples>("dbo.INPUT_DATA_GetSamples").ToList();
+
+                return samples;
+            }
+        }
+
        public float InputDataGetData(int id_m, string sample, int id_o, int typeVal = 0)
        {
            using (IDbConnection conn = new SqlConnection(Model.ConnStr("Cloud")))

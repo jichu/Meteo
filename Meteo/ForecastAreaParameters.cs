@@ -11,6 +11,7 @@ namespace Meteo
         public int id_orp { get; set; }
         public string Name_orp { get; set; }
         public string sampleName { get; set; }
+        public string previousSample { get; set; }
         private int precision = 10;
         private bool drydownburst = false;
         private float precipitationTreshold = 0.1f;//Stanovuje jaké množství srážkových modelů musí vracet 1, aby byl zahájen výpočet předpovědi
@@ -37,7 +38,28 @@ namespace Meteo
             { "CONVECTIVE", 1 },
             { "RASTER", 2 },
             { "REAL", 3 }
-        };        
+        };
+
+        private List<string> sampleNames = new List<string>{
+            "N",
+            "00",
+            "03",
+            "06",
+            "09",
+            "12",
+            "15",
+            "18",
+            "21",
+            "24",
+            "27",
+            "30",
+            "33",
+            "36",
+            "39",
+            "42",
+            "45",
+            "48"
+        };
 
         public ForecastAreaParameters() {
 
@@ -47,6 +69,8 @@ namespace Meteo
             Name_orp = ORP.name;
             id_orp = ORP.id;
             this.sampleName = sampleName;
+            int index = sampleNames.IndexOf(sampleName);
+            this.previousSample = sampleNames.GetRange(index - 1, 1).ToArray()[0];
             DoCountOperations();
 
         }
@@ -73,7 +97,7 @@ namespace Meteo
             //Zatím vynechané parametry
             Parameters.Add("MOCON", -1); // prozatím vynechat
             Parameters.Add("RV 850 hPa", -1); 
-            Parameters.Add("RV 500 hPa", -1);
+            
             Parameters.Add("RV 300 hPa", -1); 
             Parameters.Add("SWEAT", -1);
             //Parameters.Add("1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")); // prozatím vynechat
@@ -125,6 +149,7 @@ namespace Meteo
             Parameters.Add("RH 700 hPa", GetParameter("Model_WRF_ARW", "Relativní_vlhkost_700")); 
             Parameters.Add("RH 500 hPa", GetParameter("Model_WRF_ARW", "Relativní_vlhkost_500")); 
             Parameters.Add("RH 300 hPa", GetParameter("Model_WRF_ARW", "Relativní_vlhkost_300"));
+            Parameters.Add("RV 500 hPa", GetParameter("Model_WRF_ARW", "Relativni_vorticita_500_hPa_WRF"));
             Parameters.Add("Pwater", GetParameter("Model_WRF_ARW", "Pwater")); 
             Parameters.Add("T 850 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Teplota_850")); 
             Parameters.Add("DLS", GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km")); 
@@ -148,7 +173,7 @@ namespace Meteo
             Parameters.Add("SBCAPE 0-2 km (J/kg) - den", GetParameter("Model_GFS_Lightning_Wizard_50km", "SBCAPE_2km"));
             Parameters.Add("STP", GetParameter("Model_GFS_Meteomodel_PL_25km", "EHI,STP_MAIN")); 
             Parameters.Add("Tlak MSLP", GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP"));
-            Parameters.Add("Oblačnost", GetParameter("Model_ALADIN_CZ", "Oblačnost"));
+            Parameters.Add("Oblačnost", GetParameter("Model_ALADIN_CZ", "Oblačnost", true, "DEFAULT", true));
             Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m"));
             Parameters.Add("RH 2 m (%)", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000"));
             Parameters.Add("KONV+/DIV- (0-1 km)", GetParameter("Model_WRF_ARW", "MFDIV_0-1km")); 
@@ -292,7 +317,7 @@ namespace Meteo
                 HumidityInfluences();
                 WindEffect();
                 MergeB();
-                //WriteOutputLog();
+                WriteOutputLog();
             }
             WriteToDatabase();
         }
@@ -856,10 +881,12 @@ namespace Meteo
         }
 
         //Vytažení parametru z databáze
-        private float GetParameter(string model, string submodel, bool sample = true, string type = "DEFAULT") {
+        private float GetParameter(string model, string submodel, bool sample = true,  string type = "DEFAULT", bool usePreviousSample = false) {
             float value;
-
-            if (sample)
+            if (usePreviousSample) {
+                value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), previousSample, id_orp, typeValueDictionary[type]);
+            }
+            else if (sample)
             {
                 value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp, typeValueDictionary[type]);
             }

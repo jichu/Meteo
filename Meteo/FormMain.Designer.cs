@@ -74,13 +74,13 @@
             // modelyToolStripMenuItem
             // 
             this.modelyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemExplore,
             this.menuItemLoadModels,
             this.menuItemLoadInputs,
-            this.menuItemPalette,
-            this.menuItemExplore,
-            this.menuItemForecast,
             this.MenuItemAlgorithm,
-            this.menuItemOutput});
+            this.menuItemOutput,
+            this.menuItemForecast,
+            this.menuItemPalette});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
             this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.modelyToolStripMenuItem.Text = "Modely";

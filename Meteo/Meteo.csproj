@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudOutputData.cs" />
+    <Compile Include="CloudSamples.cs" />
     <Compile Include="DataInput.cs" />
     <Compile Include="ForecastAreaParameters.cs" />
     <Compile Include="CloudInputData.cs" />
