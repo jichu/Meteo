@@ -52,12 +52,17 @@ namespace Meteo
         }
 
         public void Run() {
+            //List<Task> taskList = new List<Task>();
+            //Util.StartWatch();
             foreach (var s in sampleNames)
             {
+                //taskList.Add(Task.Run(() => Algorithm(s)));
                 Thread t = new Thread(() => Algorithm(s));
                 t.Start();
                 //Algorithm(s);
             }
+            //Task.WaitAll(taskList.ToArray());
+            //Util.StopWatch("Vypočet dokončen!");
             //Output();
 
         }
