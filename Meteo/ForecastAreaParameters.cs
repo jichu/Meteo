@@ -70,7 +70,8 @@ namespace Meteo
             id_orp = ORP.id;
             this.sampleName = sampleName;
             int index = sampleNames.IndexOf(sampleName);
-            this.previousSample = sampleNames.GetRange(index - 1, 1).ToArray()[0];
+            if (index != -1) this.previousSample = sampleNames.GetRange(index - 1, 1).ToArray()[0];
+            else this.previousSample = sampleNames.GetRange(0, 1).ToArray()[0];
             DoCountOperations();
 
         }
@@ -265,6 +266,7 @@ namespace Meteo
                 }
             }
             else {
+                //Util.l($"Pro {sampleName}. interval a {Name_orp} nic NEPOČÍTÁM!");
                 CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
                 CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
@@ -762,7 +764,7 @@ namespace Meteo
         //Pomocné výpočetní funkce
 
         private bool TestCondition() {
-            return (Output["0"] > precipitationTreshold) ? true : false;
+            return (Output["0"] >= precipitationTreshold) ? true : false;
         } 
 
         //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
