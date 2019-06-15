@@ -82,6 +82,8 @@ namespace Meteo
             trackBarHourMove.Width = 200;
             trackBarHourMove.Value = curHour/stepHour;
             trackBarHourMove.Scroll += new EventHandler(trackBarHourMove_Scroll);
+            trackBarHourMove.MouseUp += new MouseEventHandler(trackBarHour_Render);
+            trackBarHourMove.KeyUp += new KeyEventHandler(trackBarHour_Render);
             this.Controls.Add(trackBarHourMove);
         }
 
@@ -91,6 +93,12 @@ namespace Meteo
         }
 
         private void trackBarHourMove_Scroll(object sender, EventArgs e)
+        {
+            curHour = (sender as TrackBar).Value*stepHour;
+            labelHourMoveTextRefresh();
+            //Render();
+        }
+        private void trackBarHour_Render(object sender, EventArgs e)
         {
             curHour = (sender as TrackBar).Value*stepHour;
             labelHourMoveTextRefresh();
