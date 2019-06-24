@@ -318,6 +318,7 @@ namespace Meteo
         }
 
         private ToolTip tt;
+        private int textShift =30;
         private void ShowToolTip(string regionName)
         {
             tt?.Dispose();
@@ -332,7 +333,8 @@ namespace Meteo
                     break;
                 }
             }
-            tt.SetToolTip(canvas, regionName+value);
+            tt.SetToolTip(canvas, regionName+Environment.NewLine+value);
+            tt.Tag = value.ToString();
             tt.OwnerDraw = true;
             tt.Popup += new PopupEventHandler(tooltip_Popup);
             tt.Draw += new DrawToolTipEventHandler(toolTip_Draw);
@@ -340,13 +342,17 @@ namespace Meteo
 
         private void tooltip_Popup(object sender, PopupEventArgs e)
         {
-            e.ToolTipSize = TextRenderer.MeasureText((sender as ToolTip).GetToolTip(e.AssociatedControl), new Font("Arial", 18.0f));
+            Size size = TextRenderer.MeasureText((sender as ToolTip).GetToolTip(e.AssociatedControl), new Font("Arial", 18.0f));
+            e.ToolTipSize = new Size(size.Width+ textShift, size.Height);
         }
         private void toolTip_Draw(object sender, DrawToolTipEventArgs e)
         {
             Font f = new Font("Arial", 18.0f);
+            Console.WriteLine((sender as ToolTip).Tag+ comboAlgorithmOutput.SelectedIndex.ToString());
             e.DrawBackground();
-            e.Graphics.DrawString(e.ToolTipText+Environment.NewLine, f, Brushes.Black, new PointF(2, 2));
+            Image img = Image.FromFile(@"images\symbol_storm.png");
+            e.Graphics.DrawImage(img, 0, 0);
+            e.Graphics.DrawString(e.ToolTipText, f, Brushes.Black, new PointF(textShift, 2));
         }
 
         private void DrawRegion(string hex, Color value)
