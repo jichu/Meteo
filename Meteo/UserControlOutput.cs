@@ -24,11 +24,14 @@ namespace Meteo
         private TrackBar trackBarHourMove;
         private Label labelHourMove;
         private int stepHour=3;
-        private int curHour = 21;
+        private int curHour;
+        private int minTrackBar;
+        private int maxTrackBar;
         private List<string> settingOutputVarriableNames = new List<string>();
         private string output_text_value_blank;
         private string usedMask = "Model_ALADIN_CZ";
         private Bitmap mask;
+        List<CloudSamples> listSamples;
 
         public static UserControlOutput Instance
         {
@@ -65,17 +68,48 @@ namespace Meteo
             comboAlgorithmOutput.SelectedIndex = 0;
             comboAlgorithmOutput.SelectedIndexChanged += new EventHandler(ComboAlgorithmOutput_SelectedIndexChanged);
         }
+        private void IntitializeMinMax() {
+            listSamples = Model.Cloud.InputDataGetSamples();
+            if (listSamples.Count() > 0)
+            {
+                if (Int32.TryParse(listSamples.First().sample_name, out int first))
+                {
+                    minTrackBar = first;
+                }
+                else
+                {
+                    minTrackBar = 0;
+                }
+
+                if (Int32.TryParse(listSamples.Last().sample_name, out int last))
+                {
+                    maxTrackBar = last;
+                }
+                else
+                {
+                    maxTrackBar = 0;
+                }
+            }
+            else
+            {
+                minTrackBar = 0;
+                maxTrackBar = 0;
+            }
+        }
 
         private void CreateTrackBarHourMove()
         {
+            //Util.l($"Počet samplů: {listSamples.Count()}");
+            IntitializeMinMax();
+            curHour = minTrackBar;
             int space = 10;
             labelHourMove = new Label();
             labelHourMove.Location = new Point(comboAlgorithmOutput.Width + space, 0);
             labelHourMoveTextRefresh();
             this.Controls.Add(labelHourMove);
             trackBarHourMove = new TrackBar();
-            trackBarHourMove.Minimum = 0;
-            trackBarHourMove.Maximum = 42/stepHour;
+            trackBarHourMove.Minimum = minTrackBar / stepHour;
+            trackBarHourMove.Maximum = maxTrackBar / stepHour;
             trackBarHourMove.SmallChange = 1;
             trackBarHourMove.LargeChange = 1;
             trackBarHourMove.Location = new Point(comboAlgorithmOutput.Width+labelHourMove.Width+space,0);
@@ -87,21 +121,31 @@ namespace Meteo
             this.Controls.Add(trackBarHourMove);
         }
 
-        private void labelHourMoveTextRefresh()
+        private void RefreshTrackBarHourMove(object sender)
+        {
+            IntitializeMinMax();
+            (sender as TrackBar).Minimum = minTrackBar / stepHour;
+            (sender as TrackBar).Maximum = maxTrackBar / stepHour;
+            (sender as TrackBar).Value=((sender as TrackBar).Value > (sender as TrackBar).Maximum)? (sender as TrackBar).Maximum: (sender as TrackBar).Value;
+            (sender as TrackBar).Value=((sender as TrackBar).Value < (sender as TrackBar).Minimum)? (sender as TrackBar).Minimum: (sender as TrackBar).Value;
+        }
+
+        private void labelHourMoveTextRefresh(object sender=null)
         {
             labelHourMove.Text = "Vybrána "+SelectedHour() + ". hodina";
+            if(sender!=null) RefreshTrackBarHourMove(sender);
         }
 
         private void trackBarHourMove_Scroll(object sender, EventArgs e)
         {
             curHour = (sender as TrackBar).Value*stepHour;
-            labelHourMoveTextRefresh();
+            labelHourMoveTextRefresh(sender);
             //Render();
         }
         private void trackBarHour_Render(object sender, EventArgs e)
         {
             curHour = (sender as TrackBar).Value*stepHour;
-            labelHourMoveTextRefresh();
+            labelHourMoveTextRefresh(sender);
             Render();
         }
 
