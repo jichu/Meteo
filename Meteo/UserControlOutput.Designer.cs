@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.dgv = new System.Windows.Forms.DataGridView();
+            this.checkBoxTableShow = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,29 +42,44 @@
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv.GridColor = System.Drawing.Color.Black;
-            this.dgv.Location = new System.Drawing.Point(642, 3);
+            this.dgv.Location = new System.Drawing.Point(642, 27);
             this.dgv.Name = "dgv";
             this.dgv.RowHeadersVisible = false;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgv.ShowCellErrors = false;
             this.dgv.ShowEditingIcon = false;
-            this.dgv.Size = new System.Drawing.Size(239, 614);
+            this.dgv.Size = new System.Drawing.Size(239, 590);
             this.dgv.TabIndex = 12;
+            // 
+            // checkBoxTableShow
+            // 
+            this.checkBoxTableShow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxTableShow.AutoSize = true;
+            this.checkBoxTableShow.Location = new System.Drawing.Point(642, 4);
+            this.checkBoxTableShow.Name = "checkBoxTableShow";
+            this.checkBoxTableShow.Size = new System.Drawing.Size(131, 17);
+            this.checkBoxTableShow.TabIndex = 13;
+            this.checkBoxTableShow.Text = "Zobrazit celou tabulku";
+            this.checkBoxTableShow.UseVisualStyleBackColor = true;
+            this.checkBoxTableShow.CheckedChanged += new System.EventHandler(this.checkBoxTableShow_CheckedChanged);
             // 
             // UserControlOutput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxTableShow);
             this.Controls.Add(this.dgv);
             this.Name = "UserControlOutput";
             this.Size = new System.Drawing.Size(884, 620);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         public System.Windows.Forms.DataGridView dgv;
+        internal System.Windows.Forms.CheckBox checkBoxTableShow;
     }
 }

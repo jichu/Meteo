@@ -322,18 +322,24 @@ namespace Meteo
 
         private void Draw(Dictionary<string, float> output)
         {
+            int rows = 0;
+            int filter = checkBoxTableShow.Checked?-1:1;
             foreach (var ll in output)
             {
-                AddTable(new DataOutput()
+                if (ll.Value >=filter)
                 {
-                    Color = GetOutputColor((int)ll.Value),
-                    RegionName = ll.Key,
-                    Value = ll.Value
-                });
+                    AddTable(new DataOutput()
+                    {
+                        Color = GetOutputColor((int)ll.Value),
+                        RegionName = ll.Key,
+                        Value = ll.Value
+                    });
+                    rows++;
+                }
                 DrawRegion(Model.Cloud.ORPNameToColor(ll.Key), GetOutputColor((int)ll.Value));
             }
-
-
+            if (rows == 0) dgv.Hide();
+            else dgv.Show();
         }
 
         private void Canvas_Paint(object sender, PaintEventArgs e)
@@ -442,5 +448,9 @@ namespace Meteo
             return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
         }
 
+        private void checkBoxTableShow_CheckedChanged(object sender, EventArgs e)
+        {
+            Render();
+        }
     }
 }
