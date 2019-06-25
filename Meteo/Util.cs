@@ -45,6 +45,20 @@ namespace Meteo
             { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA", 10}
         };
 
+        public static List<string> pathSymbolsAlgorithmOutput = new List<string>()
+        {
+            @".\images\symbols\riziko přívalové povodně [ID].png",
+            @".\images\symbols\intenzita bouří [ID].png",
+            @".\images\symbols\pravděpodobnost konvektivních srážek [ID].png",
+            @".\images\symbols\pravděpodobnost konvektivních srážek [ID].png",
+            @".\images\symbols\riziko přívalového deště [ID].png",
+            @".\images\symbols\riziko silných nárazů větru [ID].png",
+            @".\images\symbols\riziko silných nárazů větru [ID].png",
+            @".\images\symbols\riziko krupobytí [ID].png",
+            @".\images\symbols\riziko tornád [ID].png",
+            @".\images\symbols\riziko přívalové povodně [ID].png"
+        };
+
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
         public static List<CloudORPColor> ORPColorGetORPColors { get; set; }
 

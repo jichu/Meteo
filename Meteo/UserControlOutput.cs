@@ -362,13 +362,14 @@ namespace Meteo
         }
 
         private ToolTip tt;
-        private int textShift =30;
+        private int symbolSize =75;
+        private int textShift =75;
         private void ShowToolTip(string regionName)
         {
             tt?.Dispose();
             tt = new ToolTip();
-            tt.BackColor = Color.Yellow;
-            string value = " ";
+            tt.BackColor = Color.LightYellow;
+            string value = "";
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 if(row.Cells["Region"].Value.ToString()==regionName)
@@ -377,8 +378,15 @@ namespace Meteo
                     break;
                 }
             }
-            tt.SetToolTip(canvas, regionName+Environment.NewLine+value);
-            tt.Tag = value.ToString();
+            int tag = -1;
+            tt.Tag = tag;
+            string k = "";
+            if (int.TryParse(value, out tag))
+            {
+                tt.Tag = tag;
+                k = "Koeficient: ";
+            }
+            tt.SetToolTip(canvas, regionName.ToUpper()+Environment.NewLine+k+value);
             tt.OwnerDraw = true;
             tt.Popup += new PopupEventHandler(tooltip_Popup);
             tt.Draw += new DrawToolTipEventHandler(toolTip_Draw);
@@ -386,17 +394,20 @@ namespace Meteo
 
         private void tooltip_Popup(object sender, PopupEventArgs e)
         {
-            Size size = TextRenderer.MeasureText((sender as ToolTip).GetToolTip(e.AssociatedControl), new Font("Arial", 18.0f));
-            e.ToolTipSize = new Size(size.Width+ textShift, size.Height);
+            Size size = TextRenderer.MeasureText((sender as ToolTip).GetToolTip(e.AssociatedControl), new Font("Arial", 16.0f));
+            textShift = (sender as ToolTip).Tag.ToString()=="-1"?0:symbolSize;
+            e.ToolTipSize = new Size(size.Width+ textShift, symbolSize);
         }
         private void toolTip_Draw(object sender, DrawToolTipEventArgs e)
         {
-            Font f = new Font("Arial", 18.0f);
-            Console.WriteLine((sender as ToolTip).Tag+ comboAlgorithmOutput.SelectedIndex.ToString());
+            Font f = new Font("Arial", 16.0f);
             e.DrawBackground();
-            Image img = Image.FromFile(@"images\symbol_storm.png");
-            e.Graphics.DrawImage(img, 0, 0);
-            e.Graphics.DrawString(e.ToolTipText, f, Brushes.Black, new PointF(textShift, 2));
+            var symbol = Util.pathSymbolsAlgorithmOutput[comboAlgorithmOutput.SelectedIndex].ToString().Replace("[ID]", (sender as ToolTip).Tag.ToString());
+            if (File.Exists(symbol))
+            {
+                e.Graphics.DrawImage(Image.FromFile(symbol), 0, 0);
+            }
+            e.Graphics.DrawString(e.ToolTipText, f, Brushes.Black, new PointF(textShift, 15));
         }
 
         private void DrawRegion(string hex, Color value)
