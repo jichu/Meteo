@@ -29,13 +29,15 @@ namespace Meteo
        
 
         public void Run() {
-            //List<Task> taskList = new List<Task>();
+            //List<Thread> threadList = new List<Thread>();
             //Util.StartWatch();
             foreach (var s in sampleNames)
             {
+                
                 //taskList.Add(Task.Run(() => Algorithm(s)));
                 Thread t = new Thread(() => Algorithm(s));
                 t.Start();
+                //threadList.Add(t);
                 //Algorithm(s);
             }
             //Task.WaitAll(taskList.ToArray());

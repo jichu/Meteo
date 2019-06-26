@@ -32,6 +32,7 @@ namespace Meteo
         private string usedMask = "Model_ALADIN_CZ";
         private Bitmap mask;
         List<CloudSamples> listSamples;
+        private Dictionary<string, float> output;
 
         public static UserControlOutput Instance
         {
@@ -322,6 +323,7 @@ namespace Meteo
 
         private void Draw(Dictionary<string, float> output)
         {
+            this.output = output;
             int rows = 0;
             int filter = checkBoxTableShow.Checked?-1:1;
             foreach (var ll in output)
@@ -376,11 +378,12 @@ namespace Meteo
             tt = new ToolTip();
             tt.BackColor = Color.LightYellow;
             string value = "";
-            foreach (DataGridViewRow row in dgv.Rows)
+            foreach (var row in output)
             {
-                if(row.Cells["Region"].Value.ToString()==regionName)
+                
+                if(row.Key==regionName)
                 {
-                    value += row.Cells["Value"].Value.ToString();
+                    value = (row.Value==-1)? output_text_value_blank:row.Value.ToString();
                     break;
                 }
             }
