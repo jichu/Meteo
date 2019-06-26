@@ -413,6 +413,7 @@
     <Content Include="bin\Debug\images\map_output_background.png" />
     <Content Include="bin\Debug\images\output_legend_0.png" />
     <Content Include="bin\Debug\images\output_legend_1.png" />
+    <Content Include="bin\Debug\images\output_legend_10.png" />
     <Content Include="bin\Debug\images\output_legend_2.png" />
     <Content Include="bin\Debug\images\output_legend_3.png" />
     <Content Include="bin\Debug\images\output_legend_4.png" />
@@ -420,6 +421,7 @@
     <Content Include="bin\Debug\images\output_legend_6.png" />
     <Content Include="bin\Debug\images\output_legend_7.png" />
     <Content Include="bin\Debug\images\output_legend_8.png" />
+    <Content Include="bin\Debug\images\output_legend_9.png" />
     <Content Include="bin\Debug\images\symbols\intenzita bouří 0.png" />
     <Content Include="bin\Debug\images\symbols\intenzita bouří 1.png" />
     <Content Include="bin\Debug\images\symbols\intenzita bouří 2.png" />

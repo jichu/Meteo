@@ -54,7 +54,7 @@ namespace Meteo
             @".\images\symbols\riziko přívalového deště [ID].png",
             @".\images\symbols\riziko silných nárazů větru [ID].png",
             @".\images\symbols\riziko silných nárazů větru [ID].png",
-            @".\images\symbols\riziko krupobytí [ID].png",
+            @".\images\symbols\riziko krupobití [ID].png",
             @".\images\symbols\riziko tornád [ID].png",
             @".\images\symbols\riziko přívalové povodně [ID].png"
         };
