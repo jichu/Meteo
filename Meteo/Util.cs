@@ -27,6 +27,7 @@ namespace Meteo
             { "symbol_storm", @".\images\symbol_storm.png" },
             { "symbol_cloud", @".\images\symbol_cloud.png" },
             { "map_output_background", @".\images\map_output_background.png" },
+            { "wrf_mask", @".\images\wrf_mask.png" },
             { "output_legend", @".\images\output_legend_[ID].png" }
         };
 

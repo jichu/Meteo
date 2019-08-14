@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WRFdll;
 
 namespace Meteo
 {
@@ -24,9 +25,17 @@ namespace Meteo
         private void FormMain_Load(object sender, EventArgs e)
         {
             Util.ShowLoading("Načítání aplikace...");
+            /*
+            WRF.Process(new Dictionary<string, string>
+            {
+                { "source", @".\img1\test.png" },
+                { "mask", Util.pathSource["wrf_mask"] },
+                { "mask_orp", @".\img1\Model_WRF_NMM_FLYMET.bmp" }
+            }
+            );
+            */
             new Controller();
             this.menuItemOutput.PerformClick();
-
         }
 
 

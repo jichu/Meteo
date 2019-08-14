@@ -73,6 +73,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WRFdll">
+      <HintPath>..\WRFdll\bin\Debug\WRFdll.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudOutputData.cs" />
