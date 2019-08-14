@@ -47,22 +47,22 @@ namespace WRFdll
             StartWatch();
             GenerateLines(AngleStep,LineLength);
             StopWatch("GenerateLines()");
-
-            Do();
-
+            
             Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms, startovacích bodů {StartPoints.Count}");
         }
 
-        public void Do()
+        public Dictionary<string,string> Do()
         {
             ProcessDoWand(bmpNew);
 
             StartWatch();
-            ProcessDoAssignORP();
+            Dictionary<string, string> d =ProcessDoAssignORP();
             StopWatch("ProcessDoAssignORP()");
 
             if(ShowMetaOutputs)
                 ShowOutput(bmpNew);
+
+            return d;
         }
 
         private void StartWatch()
@@ -526,7 +526,7 @@ namespace WRFdll
             {
                 if (Region.ORP.ContainsKey("#" + r.Key.Substring(2, 6)))
                 {
-                    Console.WriteLine($"{Region.ORP["#" + r.Key.Substring(2, 6)]} směr: {GetCompass(r.Value.Angle)}   ({"#" + r.Key.Substring(2, 6)} {r.Value.AngleArea}x úhel: {r.Value.Angle}))");
+                    //Console.WriteLine($"{Region.ORP["#" + r.Key.Substring(2, 6)]} směr: {GetCompass(r.Value.Angle)}   ({"#" + r.Key.Substring(2, 6)} {r.Value.AngleArea}x úhel: {r.Value.Angle}))");
                     ret.Add(Region.ORP["#" + r.Key.Substring(2, 6)], GetCompass(r.Value.Angle));
                 }
             }

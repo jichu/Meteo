@@ -43,11 +43,12 @@ namespace WRFdll
             return pb;
         }
 
-        public static void Process(Dictionary<string, string> dic)
+        public static Dictionary<string, string> Process(Dictionary<string, string> dic)
         {
             pathSource = dic;
             PictureBox pb = CreatePicture();
             MagicWandForF0ckWRFmodel magic = new MagicWandForF0ckWRFmodel();
+            return magic.Do();
         }
 
         public static void ShowPicture()
