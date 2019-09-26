@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WRFdll;
 
 namespace Meteo
 {
@@ -24,7 +25,7 @@ namespace Meteo
         private string typeStupnice;
         private bool onlyEnumeration=false;
         private List<CloudModelSpectrum> cloudModelSpectrum;
-
+        private Dictionary<string, string> wrfSet;
         public Images() {
         }
 
@@ -40,13 +41,40 @@ namespace Meteo
 
         public Images(SourceImage si, bool onlyEnumeration = false)
         {
+            wrfSet = new Dictionary<string, string>{
+                 { "mask", Util.pathSource["wrf_mask"] },
+                 { "mask_orp", Util.pathSource["masks"]+si.Model+".bmp" }
+                };
+
+            WRF.Init(wrfSet);
             this.path = si.Path;
             this.curModelName = si.Model;
             this.curSubmodelName = si.Submodel;
             this.typeStupnice = si.Type;
             this.onlyEnumeration = onlyEnumeration;
             LoadImage(path);
-            LoadPointsOfColorsInMap(onlyEnumeration);
+            //LoadPointsOfColorsInMap(onlyEnumeration);
+            LoadWindDirection(si);
+        }
+
+        private void LoadWindDirection(SourceImage si) {
+            if (si.Type == "WIND")
+            {
+                Util.l($"Tady se budou načítat směry větrů pro {si.Path}:{si.Model}:{si.Submodel}:{si.Type}");
+                Util.l($"Cesty ke zpracování {si.Path}:{Util.pathSource["wrf_mask"]}:.\\config\\Model_WRF_NMM_FLYMET.bmp:");
+
+                wrfSet = new Dictionary<string, string>{
+                 { "source", si.Path },
+                };
+
+                Dictionary<string, string> wrf = WRF.Process(wrfSet);
+
+                foreach (var r in wrf)
+                {
+                    Console.WriteLine(r.Key + "  " + r.Value);
+                }
+                
+            }
         }
 
         private void LoadPointsOfColorsInMap(bool onlyEnumeration=false)

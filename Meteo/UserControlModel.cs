@@ -182,6 +182,14 @@ namespace Meteo
                             Submodel = submodel,
                             Type = "REAL"
                         });
+                    else if (jo["type"].ToString() == "WIND")
+                        sourceImages.Add(new SourceImage()
+                        {
+                            Path = file,
+                            Model = model,
+                            Submodel = submodel,
+                            Type = "WIND"
+                        });
             }
             catch (Exception e)
             {
@@ -218,7 +226,7 @@ namespace Meteo
         {
             // disable resize
             return;
-
+            /*
             if (pb != null)
             {
                 float ratio = (float)pb.Image.Height / (float)pb.Image.Width;
@@ -229,7 +237,7 @@ namespace Meteo
                     pb.Height = (int)((float)size * ratio);
                     pb.SizeMode = PictureBoxSizeMode.StretchImage;
                 }));
-            }
+            }*/
         }
 
         private void checkBoxShowORP_CheckedChanged(object sender, EventArgs e)

@@ -33,7 +33,7 @@ namespace WRFdll
         public MagicWandForF0ckWRFmodel()
         {
             
-            bmpNew = new Bitmap(WRF.MapSource.Width, WRF.MapSource.Height);
+            bmpNew = new Bitmap(WRF.MapMaskORP.Width,WRF.MapMaskORP.Height);
             bmpNew = PreprocessDoFilterMask(bmpNew,WRF.MapMask);
 
             StartWatch();
@@ -89,7 +89,7 @@ namespace WRFdll
                     // use mask
                     if (mask.GetPixel(x, y).Name == colorKey || mask.GetPixel(x, y).Name == "ffff0000")
                         WRF.MapSource.SetPixel(x, y, Color.White);
-
+                        
                     if (WRF.MapSource.GetPixel(x, y).Name == colorKey)
                     {
                         bmp.SetPixel(x, y, Color.Black);

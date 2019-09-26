@@ -21,23 +21,21 @@ namespace WRFdll
         internal static Bitmap MapSource;
         internal static Bitmap MapMask;
         internal static Bitmap MapMaskORP;
+        internal static MagicWandForF0ckWRFmodel magic;
         internal static Point Size { get; set; }
         internal static bool Ready { get; set; }
 
         internal static PictureBox CreatePicture()
         {
             Bitmap bmp = LoadImage(pathSource["source"]);
-            Bitmap mask = LoadImage(pathSource["mask"]);
-            Bitmap maskorp = LoadImage(pathSource["mask_orp"]);
+            
             PictureBox pb = new PictureBox();
-            if (bmp != null && mask!=null && maskorp!=null) {
+            if (bmp != null && MapMask !=null && MapMaskORP!=null) {
                 pb.Image = bmp;
                 pb.Width = bmp.Width;
                 pb.Height = bmp.Height;
                 MapSource = bmp;
                 Size = new Point(bmp.Width,bmp.Height);
-                MapMask = mask;
-                MapMaskORP = maskorp;
                 Ready = true;
             }
             return pb;
@@ -47,8 +45,21 @@ namespace WRFdll
         {
             pathSource = dic;
             PictureBox pb = CreatePicture();
-            MagicWandForF0ckWRFmodel magic = new MagicWandForF0ckWRFmodel();
             return magic.Do();
+        }
+
+        public static void Init(Dictionary<string, string> dic)
+        {
+            pathSource = dic;
+            Bitmap mask = LoadImage(pathSource["mask"]);
+            Bitmap maskorp = LoadImage(pathSource["mask_orp"]);
+            if (mask != null && maskorp != null)
+            {
+                MapMask = mask;
+                MapMaskORP = maskorp;   
+            }
+            magic = new MagicWandForF0ckWRFmodel();
+            
         }
 
         public static void ShowPicture()

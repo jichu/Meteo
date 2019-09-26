@@ -116,3 +116,5 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.FormLog.reso
 C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\obj\Debug\Meteo.FormLog.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\WRFdll.dll
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\WRFdll.pdb
+C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\bin\Debug\WRFdll.dll
+C:\Users\jarom\Source\Repos\jichu\Meteo\Meteo\bin\Debug\WRFdll.pdb
