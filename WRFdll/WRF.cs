@@ -48,7 +48,7 @@ namespace WRFdll
             return magic.Do();
         }
 
-        public static void Init(Dictionary<string, string> dic)
+        public static void Init(Dictionary<string, string> dic, bool ShowOutput = true)
         {
             pathSource = dic;
             Bitmap mask = LoadImage(pathSource["mask"]);
@@ -58,8 +58,8 @@ namespace WRFdll
                 MapMask = mask;
                 MapMaskORP = maskorp;   
             }
-            magic = new MagicWandForF0ckWRFmodel();
-            
+            magic = new MagicWandForF0ckWRFmodel(ShowOutput);
+
         }
 
         public static void ShowPicture()

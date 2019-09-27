@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WRF.Properties
+namespace WRFtest.Properties
 {
 
 

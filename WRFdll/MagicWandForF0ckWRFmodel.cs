@@ -30,34 +30,45 @@ namespace WRFdll
         private long watchTimeAll=0;
         private Bitmap bmpNew;
         
-        public MagicWandForF0ckWRFmodel()
+        public MagicWandForF0ckWRFmodel(bool so = false)
         {
+            ShowMetaOutputs = so;
             
             bmpNew = new Bitmap(WRF.MapMaskORP.Width,WRF.MapMaskORP.Height);
-            bmpNew = PreprocessDoFilterMask(bmpNew,WRF.MapMask);
 
-            StartWatch();
+            if (ShowMetaOutputs)
+                StartWatch();
             GenerateAroundCircles();
-            StopWatch("GenerateAroundCircles()");
-            
-            StartWatch();
-            GenerateGrids(bmpNew,WRF.MapMask);
-            StopWatch("GenerateGrids()");
+            if (ShowMetaOutputs)
+                StopWatch("GenerateAroundCircles()");
 
-            StartWatch();
+            if (ShowMetaOutputs)
+                StartWatch();
+            GenerateGrids(bmpNew,WRF.MapMask);
+            if (ShowMetaOutputs)
+                StopWatch("GenerateGrids()");
+
+            if (ShowMetaOutputs)
+                StartWatch();
             GenerateLines(AngleStep,LineLength);
-            StopWatch("GenerateLines()");
-            
-            Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms, startovacích bodů {StartPoints.Count}");
+            if (ShowMetaOutputs)
+                StopWatch("GenerateLines()");
+
+            if (ShowMetaOutputs)
+                Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms, startovacích bodů {StartPoints.Count}");
         }
 
         public Dictionary<string,string> Do()
         {
+            bmpNew = PreprocessDoFilterMask(bmpNew, WRF.MapMask);
+
             ProcessDoWand(bmpNew);
 
-            StartWatch();
+            if (ShowMetaOutputs)
+                StartWatch();
             Dictionary<string, string> d =ProcessDoAssignORP();
-            StopWatch("ProcessDoAssignORP()");
+            if (ShowMetaOutputs)
+                StopWatch("ProcessDoAssignORP()");
 
             if(ShowMetaOutputs)
                 ShowOutput(bmpNew);
@@ -86,6 +97,7 @@ namespace WRFdll
                     if (bmp.Height > cutTop)
                         if (y < cutTop) continue;
                     if (y > bmp.Height - cutBotton) continue;
+                    
                     // use mask
                     if (mask.GetPixel(x, y).Name == colorKey || mask.GetPixel(x, y).Name == "ffff0000")
                         WRF.MapSource.SetPixel(x, y, Color.White);
@@ -103,7 +115,7 @@ namespace WRFdll
             return bmp;
         }
 
-        private void GenerateLines(int angleStep=5, int size = 34, bool showPampelishka=true)
+        private void GenerateLines(int angleStep=5, int size = 34, bool showPampelishka=false)
         {
             DictLines.Clear();
             // IV. kv
@@ -225,6 +237,7 @@ namespace WRFdll
                 GenerateGrid(bmpNew,mask);
                 gridOffset = new Point(gridOffset.X + gridBoxSize.X * gridCount.X, gridOffset.Y);
             }
+            /*
             if (ShowMetaOutputs)
             {
                 Bitmap b = new Bitmap(bmpNew);
@@ -232,6 +245,7 @@ namespace WRFdll
                     b.SetPixel(p.X, p.Y, Color.Red);
                 Show(b, "GenerateGrid startPoint");
             }
+            */
         }
 
         private void GenerateGrid(Bitmap bmp,Bitmap mask)
@@ -248,6 +262,7 @@ namespace WRFdll
                     }
                 }
             }
+            /*
             if (ShowMetaOutputs)
             {
                 Bitmap b = new Bitmap(bmp);
@@ -255,6 +270,7 @@ namespace WRFdll
                     b.SetPixel(p.X, p.Y, Color.Red);
                 Show(b, "GenerateGrid startPoint");
             }
+            */
         }
 
         private void AddPointToList(Bitmap bmp, Point point)
@@ -526,7 +542,8 @@ namespace WRFdll
             {
                 if (Region.ORP.ContainsKey("#" + r.Key.Substring(2, 6)))
                 {
-                    //Console.WriteLine($"{Region.ORP["#" + r.Key.Substring(2, 6)]} směr: {GetCompass(r.Value.Angle)}   ({"#" + r.Key.Substring(2, 6)} {r.Value.AngleArea}x úhel: {r.Value.Angle}))");
+                    if(ShowMetaOutputs)
+                    Console.WriteLine($"{Region.ORP["#" + r.Key.Substring(2, 6)]} směr: {GetCompass(r.Value.Angle)}   ({"#" + r.Key.Substring(2, 6)} {r.Value.AngleArea}x úhel: {r.Value.Angle}))");
                     ret.Add(Region.ORP["#" + r.Key.Substring(2, 6)], GetCompass(r.Value.Angle));
                 }
             }
