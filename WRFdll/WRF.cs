@@ -28,8 +28,12 @@ namespace WRFdll
         internal static PictureBox CreatePicture()
         {
             Bitmap bmp = LoadImage(pathSource["source"]);
-            
-            PictureBox pb = new PictureBox();
+            if(bmp==null)
+              MessageBox.Show($"WRF modul se doslonil: ty koňu chybí ti obrazek\n{pathSource["source"]}", "WRF chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+       
+
+
+        PictureBox pb = new PictureBox();
             if (bmp != null && MapMask !=null && MapMaskORP!=null) {
                 pb.Image = bmp;
                 pb.Width = bmp.Width;
@@ -45,7 +49,12 @@ namespace WRFdll
         {
             pathSource = dic;
             PictureBox pb = CreatePicture();
-            return magic.Do();
+            if(Ready)
+                return magic.Do();
+            else
+            {
+                return null;
+            }
         }
 
         public static void Init(Dictionary<string, string> dic, bool ShowOutput = true)
@@ -56,9 +65,13 @@ namespace WRFdll
             if (mask != null && maskorp != null)
             {
                 MapMask = mask;
-                MapMaskORP = maskorp;   
+                MapMaskORP = maskorp;
+                magic = new MagicWandForF0ckWRFmodel(ShowOutput);
             }
-            magic = new MagicWandForF0ckWRFmodel(ShowOutput);
+            else
+            {
+                MessageBox.Show($"WRF modul: chybí zdroj\n{pathSource["mask"]}\n{pathSource["mask_orp"]}", "WRF chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 
