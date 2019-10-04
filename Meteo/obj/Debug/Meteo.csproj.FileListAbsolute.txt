@@ -102,7 +102,6 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlM
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlOutput.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlPaletteForMask.resources
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.GenerateResource.cache
-D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInputs.cache
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb

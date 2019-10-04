@@ -106,7 +106,14 @@ namespace Meteo
             if (Util.curModelDir == null)
                 return;
 
-            backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
+            WRF.Init(new Dictionary<string, string>{
+                 { "mask", Util.pathSource["wrf_mask"] },
+                 { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
+                }, false);
+
+            Task.Run(() => UserControlModel.Instance.EnumerationModels());
+
+          //  backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 
         private void menuItemOutput_Click(object sender, EventArgs e)

@@ -41,12 +41,6 @@ namespace Meteo
 
         public Images(SourceImage si, bool onlyEnumeration = false)
         {
-            wrfSet = new Dictionary<string, string>{
-                 { "mask", Util.pathSource["wrf_mask"] },
-                 { "mask_orp", Util.pathSource["masks"]+si.Model+".bmp" }
-                };
-
-            WRF.Init(wrfSet);
             this.path = si.Path;
             this.curModelName = si.Model;
             this.curSubmodelName = si.Submodel;
@@ -66,14 +60,12 @@ namespace Meteo
                 wrfSet = new Dictionary<string, string>{
                  { "source", si.Path },
                 };
-
                 Dictionary<string, string> wrf = WRF.Process(wrfSet);
 
                 foreach (var r in wrf)
                 {
                     Console.WriteLine(r.Key + "  " + r.Value);
                 }
-                
             }
         }
 

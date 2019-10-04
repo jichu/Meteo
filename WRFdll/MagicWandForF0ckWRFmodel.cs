@@ -7,10 +7,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace WRFdll
 {
-    internal class MagicWandForF0ckWRFmodel
+    internal class MagicWandForF0ckWRFmodel 
     {
         public int AroundStartPoint { get; set; } = 20;
         public int AngleStep { get; set; } = 5;
@@ -33,8 +34,10 @@ namespace WRFdll
         public MagicWandForF0ckWRFmodel(bool so = false)
         {
             ShowMetaOutputs = so;
-            
-            bmpNew = new Bitmap(WRF.MapMaskORP.Width,WRF.MapMaskORP.Height);
+            lock (WRF.MapMaskORP) {
+
+                    bmpNew = new Bitmap(WRF.MapMaskORP.Width, WRF.MapMaskORP.Height);
+            }
 
             if (ShowMetaOutputs)
                 StartWatch();
@@ -60,9 +63,12 @@ namespace WRFdll
 
         public Dictionary<string,string> Do()
         {
-            bmpNew = PreprocessDoFilterMask(bmpNew, WRF.MapMask);
+            lock(bmpNew)
+                lock (WRF.MapMask)
+                    bmpNew = PreprocessDoFilterMask(bmpNew, WRF.MapMask);
 
-            ProcessDoWand(bmpNew);
+            lock (bmpNew)
+                ProcessDoWand(bmpNew);
 
             if (ShowMetaOutputs)
                 StartWatch();
@@ -89,24 +95,27 @@ namespace WRFdll
 
         private Bitmap PreprocessDoFilterMask(Bitmap bmp, Bitmap mask, int cutTop = 0, int cutBotton = 0)
         {
-            for (int x = 0; x < mask.Width; x++)
+            lock (mask)
             {
-                for (int y = 0; y < mask.Height; y++)
+                for (int x = 0; x < mask.Width; x++)
                 {
-                    bmp.SetPixel(x, y, Color.White);
-                    if (bmp.Height > cutTop)
-                        if (y < cutTop) continue;
-                    if (y > bmp.Height - cutBotton) continue;
-                    
-                    // use mask
-                    if (mask.GetPixel(x, y).Name == colorKey || mask.GetPixel(x, y).Name == "ffff0000")
-                        WRF.MapSource.SetPixel(x, y, Color.White);
-                        
-                    if (WRF.MapSource.GetPixel(x, y).Name == colorKey)
+                    for (int y = 0; y < mask.Height; y++)
                     {
-                        bmp.SetPixel(x, y, Color.Black);
-                        if (mask.GetPixel(x, y).Name != colorKey)
-                            BitmapMatrix.Add($"{x},{y}");
+                        bmp.SetPixel(x, y, Color.White);
+                        if (bmp.Height > cutTop)
+                            if (y < cutTop) continue;
+                        if (y > bmp.Height - cutBotton) continue;
+
+                        // use mask
+                        if (mask.GetPixel(x, y).Name == colorKey || mask.GetPixel(x, y).Name == "ffff0000")
+                            WRF.MapSource.SetPixel(x, y, Color.White);
+
+                        if (WRF.MapSource.GetPixel(x, y).Name == colorKey)
+                        {
+                            bmp.SetPixel(x, y, Color.Black);
+                            if (mask.GetPixel(x, y).Name != colorKey)
+                                BitmapMatrix.Add($"{x},{y}");
+                        }
                     }
                 }
             }
@@ -248,17 +257,21 @@ namespace WRFdll
             */
         }
 
+        private object lockObject = new object();
         private void GenerateGrid(Bitmap bmp,Bitmap mask)
         {
-            for (int y = 0; y < gridCount.Y; y++)
+            lock (mask)
             {
-                for (int x = 0; x < gridCount.X; x++)
+                for (int y = 0; y < gridCount.Y; y++)
                 {
-                    Point space = new Point(gridBoxSize.X* x+gridOffset.X, gridBoxSize.Y *y+gridOffset.Y);
-                    if (space.X<=bmp.Width && space.Y <= bmp.Height)
+                    for (int x = 0; x < gridCount.X; x++)
                     {
-                        if (mask.GetPixel(space.X, space.Y).Name != "ffff0000")
-                            AddPointToList(bmp, new Point(space.X, space.Y));
+                        Point space = new Point(gridBoxSize.X * x + gridOffset.X, gridBoxSize.Y * y + gridOffset.Y);
+                        if (space.X <= bmp.Width && space.Y <= bmp.Height)
+                        {
+                            if (mask.GetPixel(space.X, space.Y).Name != "ffff0000")
+                                AddPointToList(bmp, new Point(space.X, space.Y));
+                        }
                     }
                 }
             }
