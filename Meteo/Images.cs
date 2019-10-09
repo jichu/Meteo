@@ -54,17 +54,23 @@ namespace Meteo
         private void LoadWindDirection(SourceImage si) {
             if (si.Type == "WIND")
             {
-                Util.l($"Tady se budou načítat směry větrů pro {si.Path}:{si.Model}:{si.Submodel}:{si.Type}");
-                Util.l($"Cesty ke zpracování {si.Path}:{Util.pathSource["wrf_mask"]}:.\\config\\Model_WRF_NMM_FLYMET.bmp:");
+                string samplename = si.Path.Split('\\').Last().Split('.')[0];
+                //Util.l($"Tady se budou načítat směry větrů pro {si.Path}:{si.Model}:{si.Submodel}:{si.Type}");
+                //Util.l($"Cesty ke zpracování {si.Path}:{Util.pathSource["wrf_mask"]}:.\\config\\Model_WRF_NMM_FLYMET.bmp:");
 
                 wrfSet = new Dictionary<string, string>{
                  { "source", si.Path },
                 };
+
                 Dictionary<string, string> wrf = WRF.Process(wrfSet);
 
                 foreach (var r in wrf)
                 {
-                    Console.WriteLine(r.Key + "  " + r.Value);
+                    //Console.WriteLine(r.Key + "  " + r.Value);
+
+                    CloudInputData inputORP = new CloudInputData(si.Model, si.Submodel, r.Key, samplename, Util.windDirectionToInt[r.Value], "REAL");
+                    //Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}:{inputORP.type}");
+                    Model.Cloud.InputDataInsertOrUpdate(inputORP);
                 }
             }
         }

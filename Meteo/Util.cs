@@ -60,6 +60,30 @@ namespace Meteo
             @".\images\symbols\riziko přívalové povodně [ID].png"
         };
 
+        public static Dictionary<string, int> windDirectionToInt = new Dictionary<string, int>
+        {
+            { "S", 0 },
+            { "SV", 1 },
+            { "V", 2 },
+            { "JV", 3 },
+            { "J", 4 },
+            { "JZ", 5 },
+            { "Z", 6 },
+            { "SZ",  7}
+        };
+
+        public static Dictionary<int, string> windDirectionToString = new Dictionary<int, string>
+        {
+            { 0, "S" },
+            { 1, "SV" },
+            { 2, "V" },
+            { 3, "JV" },
+            { 4, "J" },
+            { 5, "JZ" },
+            { 6, "Z"},
+            { 7, "SZ"}
+        };
+
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
         public static List<CloudORPColor> ORPColorGetORPColors { get; set; }
 
