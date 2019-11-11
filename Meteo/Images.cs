@@ -69,7 +69,7 @@ namespace Meteo
                     //Console.WriteLine(r.Key + "  " + r.Value);
 
                     CloudInputData inputORP = new CloudInputData(si.Model, si.Submodel, r.Key, samplename, Util.windDirectionToInt[r.Value], "REAL");
-                    //Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}:{inputORP.type}");
+                    Util.l($"inputORP:{inputORP.id_model}:{inputORP.id_orp}:{inputORP.sample_name}:{inputORP.value}:{inputORP.region}:{inputORP.type}");
                     Model.Cloud.InputDataInsertOrUpdate(inputORP);
                 }
             }
