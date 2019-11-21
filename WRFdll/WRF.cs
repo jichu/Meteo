@@ -39,7 +39,7 @@ namespace WRFdll
                 pb.Width = bmp.Width;
                 pb.Height = bmp.Height;
                 MapSource = bmp;
-                Size = new Point(bmp.Width,bmp.Height);
+                //Size = new Point(bmp.Width,bmp.Height);
                 Ready = true;
             }
             return pb;
