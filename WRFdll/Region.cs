@@ -8,6 +8,7 @@ namespace WRFdll
 {
     internal static class Region
     {
+        public static Dictionary<string, Gravity> Gravity = new Dictionary<string, Gravity>();
         public static Dictionary<string, string> ORP = new Dictionary<string, string>
         {
             {"#006400","Český Těšín"},

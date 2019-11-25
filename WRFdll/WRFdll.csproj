@@ -50,6 +50,7 @@
     <Compile Include="FormTemplate.Designer.cs">
       <DependentUpon>FormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gravity.cs" />
     <Compile Include="LineRegion.cs" />
     <Compile Include="MagicWandForF0ckWRFmodel.cs" />
     <Compile Include="WRF.cs" />

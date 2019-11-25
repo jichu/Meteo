@@ -58,11 +58,19 @@ namespace WRFdll
                 StopWatch("GenerateLines()");
 
             if (ShowMetaOutputs)
+                StartWatch();
+            FindGravity(WRF.MapMaskORP);
+            if (ShowMetaOutputs)
+                StopWatch("FindGravity()");
+
+            if (ShowMetaOutputs)
                 Console.WriteLine($"Celkový čas zpracování {watchTimeAll}ms, startovacích bodů {StartPoints.Count}");
         }
-
+        
         public Dictionary<string,string> Do()
         {
+            return null;
+
             lock(bmpNew)
                 lock (WRF.MapMask)
                     bmpNew = PreprocessDoFilterMask(bmpNew, WRF.MapMask);
@@ -292,6 +300,43 @@ namespace WRFdll
             StartPoints.Add(new Point(point.X, point.Y));
         }
 
+        private void FindGravity(Bitmap m)
+        {
+            Bitmap b = (Bitmap)m.Clone();
+            lock (b)
+            {
+                Console.WriteLine(b.Width);
+                Console.WriteLine(b.Height);
+                for (int y = 0; y < b.Height; y++)
+                {
+                    for (int x = 0; x < b.Width; x++)
+                    {
+                        if (b.GetPixel(x, y).Name == "ffffffff" || b.GetPixel(x, y).Name == "ff000000")
+                            continue;
+                        //Console.WriteLine(b.GetPixel(x, y).Name+" "+x);
+                        AddPointToGravityList(b.GetPixel(x, y).Name.Substring(2, 6), x, y);
+                    }
+                }
+            }
+            foreach (var orp in Region.Gravity)
+            {
+                if (Region.Gravity.ContainsKey(orp.Key));
+                    b.SetPixel(orp.Value.Average.X, orp.Value.Average.Y, Color.White);
+            }
+            Show(b);
+        }
+
+        private void AddPointToGravityList(string color, int x, int y)
+        {
+            string c = "#" + color;
+            if (Region.Gravity.ContainsKey(c))
+                Region.Gravity[c] = new Gravity(
+                    new Point(Region.Gravity[c].Sum.X + x, Region.Gravity[c].Sum.Y + y),
+                    new Point(Region.Gravity[c].Counts.X+1, Region.Gravity[c].Counts.Y+1));
+            else
+                Region.Gravity.Add(c, new Gravity(new Point(0, 0), new Point(1,1)));
+        }
+        
         private void Show(Bitmap bmpNew,string title="")
         {
             new FormTemplate(title, bmpNew).Show();
@@ -328,6 +373,8 @@ namespace WRFdll
                 int i = 0;
                 foreach (Point startPoint in StartPoints)
                 {
+                    if (tasks.Count > 10)
+                        break; ;
                     tasks.Add(Task.Run(() => LookUpStartWind(bmp, startPoint, false)));
                     if (i > 1002)
                     {
@@ -454,7 +501,6 @@ namespace WRFdll
         private void ShowOutput(Bitmap bmp)
         {
             Bitmap b = new Bitmap(bmp);
-            Console.WriteLine(bmp.Height);
             foreach (var np in NamePoints)
             {
                 foreach (var lines in DictLines)

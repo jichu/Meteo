@@ -26,33 +26,32 @@ namespace WRFtest
         private void Form1_Load(object sender, EventArgs e)
         {
 
-
-            List<Task<int>> tasks = new List<Task<int>>();
-            try
-            {
-                int i = 0;
-                    tasks.Add(Task.Run(() => Run()));
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            };
-        }
-
-        private int Run()
-        {
             WRF.Init(new Dictionary<string, string>{
                  { "mask", pathSource["wrf_mask"] },
                  { "mask_orp", pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
                 });
 
 
+            List<string> paths = new List<string>()
+            {
+                 @".\models\03.png", //@".\models\06.png"
+            };
 
+            List<Task> tasks = new List<Task>();
+                foreach (string si in paths)
+            {
+                EnumerationModel(si);
+               // tasks.Add(Task.Run(() => EnumerationModel(si)));
+                }
+            
+            //Task.WaitAll(tasks.ToArray());
+        }
+
+        private void EnumerationModel(string p)
+        {
             WRF.Process(new Dictionary<string, string>{
-                 { "source", @".\models\18.png" }
+                 { "source", p }
                 });
-            return 1;
         }
     }
 }
