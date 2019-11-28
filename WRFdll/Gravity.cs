@@ -12,10 +12,16 @@ namespace WRFdll
         public Point Sum { get; set; }
         public Point Counts { get; set; }
         public Point Average { get; set; }
+        public Point NearestStrartPoint { get; set; }
         public Gravity(Point sum, Point counts)
         {
             Sum = sum;
             Counts = counts;
+            Calc();
+        }
+
+        private void Calc()
+        {
             if(Counts.X!=0 && Counts.Y!=0)
                 Average = new Point(
                     (int)Math.Round((float)Sum.X/(float)Counts.X, MidpointRounding.AwayFromZero), 

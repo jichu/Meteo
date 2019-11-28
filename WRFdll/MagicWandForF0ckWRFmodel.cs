@@ -22,6 +22,7 @@ namespace WRFdll
         private Dictionary<int,List<Point>> DictLines = new Dictionary<int, List<Point>>();
         private List<Point> StartPoints = new List<Point>();
         private List<List<Point>> StartPointsAround = new List<List<Point>>();
+        private List<NamePoint> StartPointsNearest = new List<NamePoint>();
         private List<NamePoint> NamePoints = new List<NamePoint>();
         private Point gridCount = new Point(12, 8);
         private Point gridBoxSize = new Point(36, 38);
@@ -305,27 +306,28 @@ namespace WRFdll
             Bitmap b = (Bitmap)m.Clone();
             lock (b)
             {
-                Console.WriteLine(b.Width);
-                Console.WriteLine(b.Height);
                 for (int y = 0; y < b.Height; y++)
                 {
                     for (int x = 0; x < b.Width; x++)
                     {
                         if (b.GetPixel(x, y).Name == "ffffffff" || b.GetPixel(x, y).Name == "ff000000")
                             continue;
-                        //Console.WriteLine(b.GetPixel(x, y).Name+" "+x);
                         AddPointToGravityList(b.GetPixel(x, y).Name.Substring(2, 6), x, y);
                     }
                 }
             }
+            GravityFindNearestStartPoint();
             foreach (var orp in Region.Gravity)
             {
-                if (Region.Gravity.ContainsKey(orp.Key));
+                if (Region.Gravity.ContainsKey(orp.Key))
+                {
                     b.SetPixel(orp.Value.Average.X, orp.Value.Average.Y, Color.White);
+                    //Console.WriteLine($"{orp.Value.NearestStrartPoint} ");
+                }
             }
             Show(b);
         }
-
+        
         private void AddPointToGravityList(string color, int x, int y)
         {
             string c = "#" + color;
@@ -336,7 +338,26 @@ namespace WRFdll
             else
                 Region.Gravity.Add(c, new Gravity(new Point(0, 0), new Point(1,1)));
         }
-        
+
+        private void GravityFindNearestStartPoint()
+        {
+            foreach (var G in Region.Gravity)
+            {
+            double min = WRF.MapMaskORP.Width;
+                foreach (Point sp in StartPoints)
+                {
+                    int dX = sp.X - G.Value.Average.X,
+                        dY = sp.Y - G.Value.Average.Y;
+                    double len = Math.Sqrt(dX * dX + dY * dY);
+                    if (len < min)
+                    {
+                        min = len;
+                        G.Value.NearestStrartPoint = sp;
+                    }
+                }
+            }
+        }
+
         private void Show(Bitmap bmpNew,string title="")
         {
             new FormTemplate(title, bmpNew).Show();
@@ -345,6 +366,9 @@ namespace WRFdll
         // zpracovani WRF
         private void ProcessDoWand(Bitmap bmp,bool sync =false)
         {
+            ProcessDoWandForGravity(bmp);
+            /*
+
             if (sync)
             {
                 StartWatch();
@@ -362,6 +386,57 @@ namespace WRFdll
                 Task.WaitAll(tasks.ToArray());
                 StopWatch("ProcessDoWandAsyc()");
             }
+            */
+        }
+
+        private void ProcessDoWandForGravity(Bitmap bmp)
+        {
+            Dictionary<Point, NamePoint> cachePoint = new Dictionary<Point, NamePoint>();
+            foreach (var G in Region.Gravity)
+            {
+                Point startPoint = G.Value.NearestStrartPoint;
+                if (cachePoint.ContainsKey(startPoint))
+                    continue;
+
+                List<Point> curStartPoints = new List<Point>();
+                if (IsBlack(bmp, startPoint.X, startPoint.Y))
+                    curStartPoints.Add(startPoint);
+                else
+                    curStartPoints = LookUpPointsAround(bmp, startPoint);
+
+                if (curStartPoints.Count > 0)
+                {
+                    int angleWin = -1;
+                    int maxAgree = 0;
+
+                    foreach (var sp in curStartPoints)
+                    {
+                        int max = 0;
+                        int angle = -1;
+                        if (LookUpWind(bmp, curStartPoints[0], out max, out angle))
+                        {
+                            if (max > maxAgree)
+                            {
+                                maxAgree = max;
+                                angleWin = angle;
+                            }
+                        }
+                    }
+                    if (angleWin != -1)
+                    {
+                        NamePoints.Add(new NamePoint()
+                        {
+                            Angle = angleWin,
+                            StartPoint = startPoint
+                        });
+                        cachePoint.Add(startPoint, new NamePoint()
+                        {
+                            Angle = angleWin,
+                            StartPoint = startPoint
+                        });
+                    }
+                }
+            }            
         }
 
         private bool ProcessDoWandAsync(Bitmap bmp)
@@ -561,8 +636,7 @@ namespace WRFdll
                 Dictionary<string, int> DicColorCounter = new Dictionary<string, int>();
                 foreach (var wind in DictLines[np.Angle])
                 {
-                   
-                    
+                                     
                     string color =WRF.MapMaskORP.GetPixel(np.StartPoint.X + wind.X, np.StartPoint.Y + wind.Y).Name;
                     
                     if (color == "ffffffff" || color == "ff000000")
