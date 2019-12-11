@@ -37,7 +37,8 @@ namespace Meteo
             { "DEFAULT", 0 },
             { "CONVECTIVE", 1 },
             { "RASTER", 2 },
-            { "REAL", 3 }
+            { "REAL", 3 },
+            { "WIND", 4}
         };
 
         private List<string> sampleNames = new List<string>{
@@ -78,6 +79,25 @@ namespace Meteo
 
         private void LoadParameters() {
 
+            //Zatím vynechané parametry
+            Parameters.Add("Teplota (MAX)", -1);
+            Parameters.Add("MOCON", -1); // prozatím vynechat
+            Parameters.Add("RV 850 hPa", -1);
+            Parameters.Add("RV 300 hPa", -1);
+            Parameters.Add("SWEAT", -1);
+
+            //Parameters.Add("925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")); 
+            //Parameters.Add("Směr větru v hladině 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
+
+            //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu")); //nakonec se nebude používat
+            /*Nezařazené parametry z adresářové struktury
+            Model_Radarové_snímky	Radarové_snímky
+            Model_Synoptická_předpověď Synoptická_předpověď
+            Model_Výstrahy_chmu Výstrahy_chmu
+            Model_Výstrahy_estofex Výstrahy_estofex
+            Model_WRF_ARW   Relativni_vorticita_850 - 300_hPa_WRF
+            */
+
             //Charakteristiky reliéfu
             Parameters.Add("Sklonitost reliéfu (průměrná)", GetRelief("Sklonitost reliéfu (průměrná)"));
             if(sampleName == "06" || sampleName == "09" || sampleName == "30" || sampleName == "33") Parameters.Add("Orientace reliéfu (tepelný prohřev)", GetRelief("Orientace reliéfu (tepelný prohřev) dopoledne"));
@@ -93,40 +113,16 @@ namespace Meteo
             Parameters.Add("Polohy nadmořských výšek", GetRelief("Polohy nadmořských výšek"));
             Parameters.Add("Hřeben", GetRelief("Šířka hřebene"));
 
-            Parameters.Add("Teplota (MAX)", -1);
-
-            //Zatím vynechané parametry
-            Parameters.Add("MOCON", -1); // prozatím vynechat
-            Parameters.Add("RV 850 hPa", -1); 
-            
-            Parameters.Add("RV 300 hPa", -1); 
-            Parameters.Add("SWEAT", -1);
-            //Parameters.Add("1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m")); // prozatím vynechat
-            //Parameters.Add("925 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Vítr_925")); // prozatím vynechat
-            //Parameters.Add("850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850")); // prozatím vynechat
-            //Parameters.Add("700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
-            //Parameters.Add("600 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600")); // prozatím vynechat
-            //Parameters.Add("500 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500")); // prozatím vynechat
-            //Parameters.Add("400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400")); // prozatím vynechat
-            //Parameters.Add("300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300")); // prozatím vynechat
-            //Parameters.Add("Směr větru v hladině 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700")); // prozatím vynechat
-
-            //Parameters.Add("Intenzita bouřek (SIVS) Staniční srážkoměry", GetParameter("Model_Výstrahy_chmu", "Výstrahy_chmu")); //nakonec se nebude používat
-
             //Orografické vlastnosti oblasti
-            Parameters.Add("Proudění větru J", 1);
-            Parameters.Add("Proudění větru S", 1);
-            Parameters.Add("Proudění větru V", 1);
-            Parameters.Add("Proudění větru Z", 1);
+            Parameters.Add("Návětrný efekt S", GetRelief("Návětrný efekt S"));
+            Parameters.Add("Návětrný efekt J", GetRelief("Návětrný efekt J"));
+            Parameters.Add("Návětrný efekt V", GetRelief("Návětrný efekt V"));
+            Parameters.Add("Návětrný efekt Z", GetRelief("Návětrný efekt Z"));
+            Parameters.Add("Závětrný efekt S", GetRelief("Závětrný efekt S"));
+            Parameters.Add("Závětrný efekt J", GetRelief("Závětrný efekt J"));
+            Parameters.Add("Závětrný efekt V", GetRelief("Závětrný efekt V"));
+            Parameters.Add("Závětrný efekt Z", GetRelief("Závětrný efekt Z"));
 
-
-            /*Nezařazené parametry z adresářové struktury
-            Model_Radarové_snímky	Radarové_snímky
-            Model_Synoptická_předpověď Synoptická_předpověď
-            Model_Výstrahy_chmu Výstrahy_chmu
-            Model_Výstrahy_estofex Výstrahy_estofex
-            Model_WRF_ARW   Relativni_vorticita_850 - 300_hPa_WRF
-            */
             //Alternaci parametrů udělat přes settings (tabulka v DB)
             Parameters.Add("MLCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS")); // Alternace: Model_GFS_Wetter3_DE_25km	MLCAPE+LI_Wetter_3_de
             Parameters.Add("LI", GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN"));
@@ -193,6 +189,15 @@ namespace Meteo
             Parameters.Add("Srážky WRF-ARW", GetParameter("Model_WRF_ARW", "Srážky_MAIN"));
             Parameters.Add("Srážky GFS", GetParameter("Model_GFS_Wetterzentrale_DE_25km", "Srážky_MAIN_Nový"));
             Parameters.Add("Srážky GFS Starý", GetParameter("Model_GFS_Wetterzentrale_DE_25km_STARY", "Srážky_MAIN_Starý"));
+
+            //Směry větrů
+            Parameters.Add("Směr větru 1000 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m", true, "REAL")); 
+            Parameters.Add("Směr větru 850 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850", true, "REAL"));
+            Parameters.Add("Směr větru 700 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700", true, "REAL")); 
+            Parameters.Add("Směr větru 600 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600", true, "REAL"));
+            Parameters.Add("Směr větru 500 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500", true, "REAL")); 
+            Parameters.Add("Směr větru 400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400", true, "REAL")); 
+            Parameters.Add("Směr větru 300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300", true, "REAL"));
 
             //Parametry pro suchý downburst
             Parameters.Add("RH 1000 hPa Real", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000",true, "REAL")); //75 
@@ -319,9 +324,9 @@ namespace Meteo
                 HumidityInfluences();
                 WindEffect();
                 MergeB();
-                //WriteOutputLog();
+                WriteOutputLog();
             }
-            WriteToDatabase();
+            //WriteToDatabase();
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď
