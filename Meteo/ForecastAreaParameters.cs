@@ -32,6 +32,9 @@ namespace Meteo
         private List<float> RHLevelsAlternative = new List<float>() { 0.1f, 0.3f, 0.4f, 1.0f }; //??? Není jisté, zda je tato stupnice dobře
         private const int RATIO = 3;
 
+        private Dictionary<float, float> mapWindwardEffect;
+        private Dictionary<float, float> mapLeeEffect;
+
         public Dictionary<string, int> typeValueDictionary = new Dictionary<string, int>
         {
             { "DEFAULT", 0 },
@@ -199,6 +202,32 @@ namespace Meteo
             Parameters.Add("Směr větru 400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400", true, "REAL")); 
             Parameters.Add("Směr větru 300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300", true, "REAL"));
 
+            //Slovník pro Naávětrný efekt
+            mapWindwardEffect = new Dictionary<float, float> {
+                {-1, 0},
+                {0f, Parameters["Návětrný efekt S"]},
+                {1f, Parameters["Návětrný efekt S"]},
+                {2f, Parameters["Návětrný efekt V"]},
+                {3f, Parameters["Návětrný efekt J"]},
+                {4f, Parameters["Návětrný efekt J"]},
+                {5f, Parameters["Návětrný efekt J"]},
+                {6f, Parameters["Návětrný efekt Z"]},
+                {7f, Parameters["Návětrný efekt S"]}
+            };
+
+            //Slovník pro Závětrný efekt
+             mapLeeEffect = new Dictionary<float, float> {
+                {-1, 0},
+                {0f, Parameters["Závětrný efekt S"]},
+                {1f, Parameters["Závětrný efekt S"]},
+                {2f, Parameters["Závětrný efekt V"]},
+                {3f, Parameters["Závětrný efekt J"]},
+                {4f, Parameters["Závětrný efekt J"]},
+                {5f, Parameters["Závětrný efekt J"]},
+                {6f, Parameters["Závětrný efekt Z"]},
+                {7f, Parameters["Závětrný efekt S"]}
+            };
+
             //Parametry pro suchý downburst
             Parameters.Add("RH 1000 hPa Real", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000",true, "REAL")); //75 
             Parameters.Add("RH 925 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925",true, "REAL")); //60 
@@ -334,11 +363,11 @@ namespace Meteo
             List<float> values;
             if (IsDay())
             {
-                values = new List<float>() { Output["TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU"], Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění"] };
+                values = new List<float>() { Output["TEPLOTNÍ VLIVY ZEMSKÉHO POVRCHU"], Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT"] };
 
             }
             else {
-                values = new List<float>() { Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění"] };
+                values = new List<float>() { Output["VĚTRNÉ VLIVY"], Output["VLHKOSTNÍ VLIVY"], Output["NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT"] };
             }
 
             int level = ValueToLevel(LevelScale, Probability(values));
@@ -447,21 +476,31 @@ namespace Meteo
         //Zjistit jak konkrétně budou vypočtené parametry využívány a počítány! 
         private void WindEffect()
         {
-            List<float> windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
-            int windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
-
-            List<float> leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
-            int leeLevel = ValueToLevel(LevelScale, Probability(leeValues));
-
+            List<float> windwardValues, leeValues;
             List<float> windEffectValues = new List<float>();
-            windEffectValues.Add(windwardLevel);
-            windEffectValues.Add(leeLevel);
+            int windwardLevel, leeLevel;
+
+            if (mapWindwardEffect[Parameters["Směr větru 1000 hPa"]] == 1){
+                windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
+                windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
+                windEffectValues.Add(windwardLevel);
+            }
+            else {
+                windEffectValues.Add(0);
+            }
+
+            if (mapLeeEffect[Parameters["Směr větru 1000 hPa"]] == 1){
+                leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
+                leeLevel = ValueToLevel(LevelScale, Probability(leeValues));
+                windEffectValues.Add(leeLevel);
+            }
+            else{
+                windEffectValues.Add(0);
+            }
+
             int windEffectLevel = ValueToLevel(OroKonvScale, Probability(windEffectValues));
 
-            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; JZ,J,JV proudění", windEffectLevel);
-            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; SZ,S,SV proudění", windEffectLevel);
-            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; Z proudění", windEffectLevel);
-            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT; V proudění", windEffectLevel);
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT", windEffectLevel);
 
         }
 
