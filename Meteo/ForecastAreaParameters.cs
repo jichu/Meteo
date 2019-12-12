@@ -480,7 +480,7 @@ namespace Meteo
             List<float> windEffectValues = new List<float>();
             int windwardLevel, leeLevel;
 
-            if (mapWindwardEffect[Parameters["Směr větru 1000 hPa"]] == 1){
+            if (mapWindwardEffect[Parameters["Směr větru 600 hPa"]] == 1){
                 windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
                 windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
                 windEffectValues.Add(windwardLevel);
@@ -489,7 +489,7 @@ namespace Meteo
                 windEffectValues.Add(0);
             }
 
-            if (mapLeeEffect[Parameters["Směr větru 1000 hPa"]] == 1){
+            if (mapLeeEffect[Parameters["Směr větru 600 hPa"]] == 1){
                 leeValues = new List<float>() { Parameters["GRAD 850-500 hPa"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["Rychlost větru v 10 m nad terénem v m/s"] };
                 leeLevel = ValueToLevel(LevelScale, Probability(leeValues));
                 windEffectValues.Add(leeLevel);
