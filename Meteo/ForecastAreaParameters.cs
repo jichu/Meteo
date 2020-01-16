@@ -177,7 +177,7 @@ namespace Meteo
             Parameters.Add("Rychlost větru v 10 m nad terénem v m/s", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m"));
             Parameters.Add("RH 2 m (%)", GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000"));
             Parameters.Add("KONV+/DIV- (0-1 km)", GetParameter("Model_WRF_ARW", "MFDIV_0-1km")); 
-            Parameters.Add("OROGRAPHIC LIFT", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));
+            Parameters.Add("OROGRAPHIC LIFT", GetParameter("Model_GFS_Lightning_Wizard_50km", "MTV_vector_RH_1000-600 hPa"));//MTV + POTENTIAL OROGRAPHIC LIFITING |  oroOutputValues nastavit do tohoto parametru.
             Parameters.Add("Staniční srážkoměry CHMU+interpolace stanic", GetParameter("Model_Sumarizace_srazek", "Srážkoměry", false));
             Parameters.Add("Interpolace (radary+srážkoměry)", GetParameter("Model_Sumarizace_srazek", "Radary_srážkoměry", false));
             Parameters.Add("Stupeň nasycení", GetParameter("Model_Nasycenost_pud", "Nasycenost_pud_1",false)); 
@@ -202,7 +202,7 @@ namespace Meteo
             Parameters.Add("Směr větru 400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400", true, "REAL")); 
             Parameters.Add("Směr větru 300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300", true, "REAL"));
 
-            //Slovník pro Naávětrný efekt
+            //Slovník pro Návětrný efekt
             mapWindwardEffect = new Dictionary<float, float> {
                 {-1, 0},
                 {0f, Parameters["Návětrný efekt S"]},
@@ -639,7 +639,7 @@ namespace Meteo
         private void StormMoving()
         {
 
-            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", -1); //
+            //Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", -1); //
 
             //Vektor pohybu bouře
             List<float> windSpeedValues = new List<float>() { Parameters["850 hPa"], Parameters["700 hPa"], Parameters["600 hPa"], Parameters["500 hPa"], Parameters["400 hPa"], Parameters["300 hPa"] };
@@ -691,6 +691,7 @@ namespace Meteo
             List<float> values = new List<float>() { Parameters["DLS"] };
             int windCut = ValueToLevel(LevelScale, Probability(values));
             Output.Add("STŘIH VĚTRU", windCut);
+            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", -1);
         }
 
         //Podpora konvekce
