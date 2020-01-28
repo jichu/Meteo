@@ -70,7 +70,7 @@ namespace WRFdll
         
         public Dictionary<string,string> Do()
         {
-            return null;
+            //return null;
 
             lock(bmpNew)
                 lock (WRF.MapMask)
