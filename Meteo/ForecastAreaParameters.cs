@@ -65,6 +65,22 @@ namespace Meteo
             "48"
         };
 
+        //Pořadí směrů: S, SV, V, JV, J, JZ, Z, SZ (podle růžice)
+        private float[][] windDirectioncoordinates =
+            {
+                    new float[] { 0f, 2f },
+                    new float[] { 1.42f, 1.42f},
+                    new float[] { 2f, 0f },
+                    new float[] { 1.42f, -1.42f },
+                    new float[] {  0f, -2f  },
+                    new float[] { -1.42f, -1.42f  },
+                    new float[] { -2f, 0f },
+                    new float[] { -1.42f, 1.42f },
+                };
+
+        //List na uchování všech směrů větru, které byly nalzeny v rámci analýzy směru větru
+        private List<float> windDirections = new List<float>();
+
         public ForecastAreaParameters() {
 
         }
@@ -201,6 +217,16 @@ namespace Meteo
             Parameters.Add("Směr větru 500 hPa", GetParameter("Model_WRF_NMM_FLYMET", "Vítr_500", true, "REAL")); 
             Parameters.Add("Směr větru 400 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_400", true, "REAL")); 
             Parameters.Add("Směr větru 300 hPa", GetParameter("Model_GFS_FLYMET_50km", "Vítr_300", true, "REAL"));
+
+            //Příprava dat pro výpočet střihu větru
+            if (Parameters["Směr větru 1000 hPa"] != -1) windDirections.Add(Parameters["Směr větru 1000 hPa"]);
+            if(!windDirections.Contains(Parameters["Směr větru 850 hPa"])&& Parameters["Směr větru 850 hPa"] !=-1) windDirections.Add(Parameters["Směr větru 850 hPa"]);
+            if(!windDirections.Contains(Parameters["Směr větru 700 hPa"]) && Parameters["Směr větru 700 hPa"] != -1) windDirections.Add(Parameters["Směr větru 700 hPa"]);
+            if(!windDirections.Contains(Parameters["Směr větru 600 hPa"]) && Parameters["Směr větru 600 hPa"] != -1) windDirections.Add(Parameters["Směr větru 600 hPa"]);
+            if(!windDirections.Contains(Parameters["Směr větru 500 hPa"]) && Parameters["Směr větru 500 hPa"] != -1) windDirections.Add(Parameters["Směr větru 500 hPa"]);
+            if(!windDirections.Contains(Parameters["Směr větru 400 hPa"]) && Parameters["Směr větru 400 hPa"] != -1) windDirections.Add(Parameters["Směr větru 400 hPa"]);
+            if(!windDirections.Contains(Parameters["Směr větru 300 hPa"]) && Parameters["Směr větru 300 hPa"] != -1) windDirections.Add(Parameters["Směr větru 300 hPa"]);
+            
 
             //Slovník pro Návětrný efekt
             mapWindwardEffect = new Dictionary<float, float> {
@@ -690,8 +716,24 @@ namespace Meteo
         {
             List<float> values = new List<float>() { Parameters["DLS"] };
             int windCut = ValueToLevel(LevelScale, Probability(values));
+            //windDirections
+            float windCutCoef = -1;
+            if (windDirections.Count() != 0) {
+                if (windDirections.Count() == 1) { windCutCoef = 0; }
+                else {
+                    for (int i = 0; i < windDirections.Count()-1; i++) {
+                        for (int j = i+1; j < windDirections.Count(); j++) {
+                            float diff = WindDirectionDifference(windDirectioncoordinates[(int)windDirections[i]], windDirectioncoordinates[(int)windDirections[j]]);
+                            if(diff>windCutCoef) windCutCoef = diff;
+                            if (windCutCoef == 3) break;
+                        }
+                        if (windCutCoef == 3) break;
+                    }
+                }
+            }
+
             Output.Add("STŘIH VĚTRU", windCut);
-            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", -1);
+            Output.Add("ZMĚNA SMĚRU VĚTRU (1000 - 300) hPa", windCutCoef);
         }
 
         //Podpora konvekce
@@ -807,6 +849,18 @@ namespace Meteo
         }
 
         //Pomocné výpočetní funkce
+
+        //Výpočet rozdílu směru větru + převedení na koeficient
+        private float WindDirectionDifference(float[] first, float[] second) {
+            float distance = 0;
+            float coeficient = 0;
+            //Výpočet míry střihu větru
+            distance = (float) Math.Sqrt(Math.Pow(second[0] - first[0], 2) + Math.Pow(second[1]-first[1],2));
+            //Přepočet na koeficient
+            coeficient = (distance > 3.8f) ? 3 : (distance > 3) ? 2 : (distance > 0) ? 1 : 0;
+            return coeficient;
+        }
+
 
         private bool TestCondition() {
             return (Output["0"] >= precipitationTreshold) ? true : false;
