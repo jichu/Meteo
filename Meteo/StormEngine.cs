@@ -30,17 +30,21 @@ namespace Meteo
 
         public void Run() {
             //List<Thread> threadList = new List<Thread>();
+            List<Task> taskList = new List<Task>();
             //Util.StartWatch();
+            Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
             foreach (var s in sampleNames)
             {
                 
-                //taskList.Add(Task.Run(() => Algorithm(s)));
-                Thread t = new Thread(() => Algorithm(s));
-                t.Start();
+                taskList.Add(Task.Run(() => Algorithm(s)));
+                /*Thread t = new Thread(() => Algorithm(s));
+                t.Start();*/
                 //threadList.Add(t);
                 //Algorithm(s);
             }
-            //Task.WaitAll(taskList.ToArray());
+            
+            Task.WaitAll(taskList.ToArray());
+            Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
             //Util.StopWatch("Vypočet dokončen!");
             //Output();
 

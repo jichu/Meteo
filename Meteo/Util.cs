@@ -83,7 +83,7 @@ namespace Meteo
             { 6, "Z"},
             { 7, "SZ"}
         };
-
+        public static List<CloudOutput> outputDataCache { get; set; } = new List<CloudOutput>();
         public static List<CloudORPS> ORPSGetORPNames { get; set; }
         public static List<CloudORPColor> ORPColorGetORPColors { get; set; }
 

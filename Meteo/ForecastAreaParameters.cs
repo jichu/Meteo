@@ -15,6 +15,7 @@ namespace Meteo
         private int precision = 10;
         private bool drydownburst = false;
         private float precipitationTreshold = 0.1f;//Stanovuje jaké množství srážkových modelů musí vracet 1, aby byl zahájen výpočet předpovědi
+        
 
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
@@ -276,6 +277,7 @@ namespace Meteo
         }
 
         private void WriteToDatabase() {
+            
             if (TestCondition())
             {
                 CloudOutputData mainOutput = new CloudOutputData(id_orp, sampleName, Output["1. RIZIKO PŘÍVALOVÉ POVODNĚ"], Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ"]);
@@ -349,7 +351,6 @@ namespace Meteo
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputDry);
                 CloudOutputData mainOutputWet = new CloudOutputData(id_orp, sampleName, -1, Util.algorithmOutput["PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutputWet);
-
             }
         }
 
@@ -379,9 +380,17 @@ namespace Meteo
                 HumidityInfluences();
                 WindEffect();
                 MergeB();
-                WriteOutputLog();
+                //WriteOutputLog();        
             }
+
+            WriteToCache();
             //WriteToDatabase();
+        }
+
+        private void WriteToCache() {
+            CloudOutput data = new CloudOutput(Name_orp, sampleName, Output);
+            Util.outputDataCache.Add(data);
+
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď

@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudOutput.cs" />
     <Compile Include="CloudOutputData.cs" />
     <Compile Include="CloudSamples.cs" />
     <Compile Include="DataInput.cs" />
