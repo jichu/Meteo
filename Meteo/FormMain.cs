@@ -25,6 +25,9 @@ namespace Meteo
         private void FormMain_Load(object sender, EventArgs e)
         {
             Util.ShowLoading("Načítání aplikace...");
+
+            CsvHelper.CSVexport.Write();
+
             /*  
              Dictionary<string,string> wrf =WRF.Process(new Dictionary<string, string>
              {

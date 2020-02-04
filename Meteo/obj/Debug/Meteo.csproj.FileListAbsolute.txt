@@ -147,3 +147,11 @@ D:\workspace\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.GenerateResource.cache
 D:\workspace\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CopyComplete
 D:\workspace\Repos\Meteo\Meteo\obj\Debug\Meteo.exe
 D:\workspace\Repos\Meteo\Meteo\obj\Debug\Meteo.pdb
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\CsvHelper.dll
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\CsvHelper.xml
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml

@@ -336,12 +336,19 @@ namespace Meteo
                         RegionName = ll.Key,
                         Value = ll.Value
                     });
+                    CsvHelper.CSVexport.AddRow(new CsvHelper.CSVdataOutputTemplate()
+                    {
+                        NameORP = ll.Key,
+                        Value = ll.Value.ToString()
+                    });
                     rows++;
                 }
                 DrawRegion(Model.Cloud.ORPNameToColor(ll.Key), GetOutputColor((int)ll.Value));
             }
             if (rows == 0) dgv.Hide();
             else dgv.Show();
+
+            CsvHelper.CSVexport.Write(comboAlgorithmOutput.Text.ToString()+"_" + curHour.ToString() + "h"); 
         }
 
         private void Canvas_Paint(object sender, PaintEventArgs e)
