@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,19 +10,35 @@ namespace Meteo.JSONparser
 {
     class JSONwriter
     {
+        internal static string PathJson { get; set; } = "export";
+        private static string format = "yyMMdd_HHmmss";
+        private static string ext = ".json";
+
         internal async Task Do()
         {
-            var task = Task.Run(() => SaveToFile());
-            await task;
+            string filename = "nnn" + ext;
+            List<object> data = new List<object>();
+            /*
+            data.Add(new object() {
+                key=1
+            });*/
+            await Task.Run(() => SaveToFile(filename, data));
+        }
+        private static void CreatePath()
+        {
+            if (!Directory.Exists(PathJson))
+                Directory.CreateDirectory(PathJson);
         }
 
-        private bool SaveToFile()
+        private bool SaveToFile(string filename, List<object> data)
         {
             try
             {
-                int b = 0 * 9;
-                int a = 10 / b;
-                Console.WriteLine(a);
+                using (StreamWriter file = File.CreateText(Path.Combine(PathJson, filename)))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, data);
+                }
                 return true;
             }
             catch (Exception e)
