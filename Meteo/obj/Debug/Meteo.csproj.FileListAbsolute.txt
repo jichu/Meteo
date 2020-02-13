@@ -155,3 +155,11 @@ D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\CsvHelper.xml
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\CsvHelper.dll
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\CsvHelper.xml
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml
