@@ -26,7 +26,10 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
 
-            CsvHelper.CSVexport.Write();
+            var json = new JSONparser.JSONwriter();
+            _ = json.Do();
+
+            //CsvHelper.CSVexport.Write();
 
             /*  
              Dictionary<string,string> wrf =WRF.Process(new Dictionary<string, string>
