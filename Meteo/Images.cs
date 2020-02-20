@@ -47,8 +47,8 @@ namespace Meteo
             this.typeStupnice = si.Type;
             this.onlyEnumeration = onlyEnumeration;
             LoadImage(path);
-            //LoadPointsOfColorsInMap(onlyEnumeration);
-            LoadWindDirection(si);
+            LoadPointsOfColorsInMap(onlyEnumeration);
+            //LoadWindDirection(si);
         }
 
         private void LoadWindDirection(SourceImage si) {
