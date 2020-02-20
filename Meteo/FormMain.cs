@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Meteo.JSONparser;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,8 +27,9 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
 
-            var json = new JSONparser.JSONwriter();
-            _ = json.Do();
+            List<object> list = new List<object>() { new { key = 1} };
+            //var json = new JSONwriter();
+            _ = JSONwriter.Do(list, "Mrakomor");
 
             //CsvHelper.CSVexport.Write();
 

@@ -8,21 +8,19 @@ using System.Threading.Tasks;
 
 namespace Meteo.JSONparser
 {
-    class JSONwriter
+    internal static class JSONwriter
     {
         internal static string PathJson { get; set; } = "export";
         private static string format = "yyMMdd_HHmmss";
         private static string ext = ".json";
 
-        internal async Task Do()
+        internal async static Task Do(List<object> data, string name="")
         {
-            string filename = "nnn" + ext;
-            List<object> data = new List<object>();
-            /*
-            data.Add(new object() {
-                key=1
-            });*/
-            await Task.Run(() => SaveToFile(filename, data));
+            if (name == string.Empty)
+                name = $"{DateTime.Now.ToString(format)}{ext}";
+            else
+                name += ext;
+            await Task.Run(() => SaveToFile(data, name));
         }
         private static void CreatePath()
         {
@@ -30,10 +28,11 @@ namespace Meteo.JSONparser
                 Directory.CreateDirectory(PathJson);
         }
 
-        private bool SaveToFile(string filename, List<object> data)
+        private static bool SaveToFile(List<object> data, string filename)
         {
             try
             {
+                CreatePath();
                 using (StreamWriter file = File.CreateText(Path.Combine(PathJson, filename)))
                 {
                     JsonSerializer serializer = new JsonSerializer();
@@ -43,7 +42,7 @@ namespace Meteo.JSONparser
             }
             catch (Exception e)
             {
-                Utils.Log.Error(e, this.GetType().Name);
+                Utils.Log.Error(e, "SaveToFile");
                 return false;
             }
         }
