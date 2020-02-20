@@ -150,7 +150,8 @@ namespace Meteo
             Parameters.Add("MUCAPE", GetParameter("Model_GFS_Meteomodel_PL_25km", "MUCAPE_GFS")); 
             Parameters.Add("SI", GetParameter("Model_GFS_Austria_50km", "SI_index_GFS_MAIN"));
             //Parameters.Add("MUCIN", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de"));
-            Parameters.Add("TT index", GetParameter("Model_WRF_ARW_Balearsmeteo", "TT_Totals_Totals_index_Aladin_HR"));
+            //Parameters.Add("TT index", GetParameter("Model_WRF_ARW_Balearsmeteo", "TT_Totals_Totals_index_Aladin_HR"));
+            Parameters.Add("TT index", -1);
             Parameters.Add("KI", GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index"));
             Parameters.Add("GRAD 850-500 hPa", GetParameter("Model_GFS_Meteomodel_PL_25km", "Instabilita_GRAD_850-500"));
             Parameters.Add("WETBULB", GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp"));
@@ -260,6 +261,16 @@ namespace Meteo
             Parameters.Add("RH 925 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_925",true, "REAL")); //60 
             Parameters.Add("RH 850 hPa Real", GetParameter("Model_GFS_Meteomodel_PL_25km", "Relativní_vlhkost_850",true, "REAL")); //75 
             Parameters.Add("LCL Real", GetParameter("Model_WRF_ARW", "LCL_Výška_základny_oblaku", true, "REAL")); //1200 
+
+            //Data pro konvektivní srážky
+            Parameters.Add("LI Conv", GetParameter("Model_GFS_Austria_50km", "LI_index_GFS_MAIN", true, "REAL"));
+            Parameters.Add("SI Conv", GetParameter("Model_GFS_Austria_50km", "SI_index_GFS_MAIN", true, "REAL"));
+            Parameters.Add("KI Conv", GetParameter("Model_GFS_Meteomodel_PL_25km", "KI_Whiting_index", true, "REAL"));
+            Parameters.Add("MUCAPE Conv", GetParameter("Model_GFS_Meteomodel_PL_25km", "MUCAPE_GFS", true, "REAL"));
+            Parameters.Add("MLCAPE Conv", GetParameter("Model_GFS_Meteomodel_PL_25km", "MLCAPE_GFS", true, "REAL"));
+            Parameters.Add("WETBULB Conv", GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp", true, "REAL"));
+            Parameters.Add("MLCAPE + LI Conv", GetParameter("Model_GFS_Wetter3_DE_25km", "MLCAPE+LI_Wetter_3_de", true, "REAL"));
+
 
             //Příprava dat pro předpověď času výskytu srážek
             PrecipitationModels.Add("Srážky ALADIN", GetPrecipitationData(Parameters["Srážky ALADIN"]));
@@ -869,10 +880,25 @@ namespace Meteo
             coeficient = (distance > 3.8f) ? 3 : (distance > 3) ? 2 : (distance > 0) ? 1 : 0;
             return coeficient;
         }
-
+        private bool TestConvection() {
+            if (Parameters["LI Conv"] < 0 && Parameters["SI Convv"] < 0 && Parameters["KI Conv"] < 0 && Parameters["MUCAPE Conv"] < 0 && Parameters["MLCAPE Conv"] < 0 && Parameters["WETBULB Conv"] < 0 && Parameters["MLCAPE + LI Conv"] < 0)
+            {
+                return false;
+            }
+            else {
+                return true;
+            }
+               
+        }
 
         private bool TestCondition() {
-            return (Output["0"] >= precipitationTreshold) ? true : false;
+            if (TestConvection())
+            {
+                return (Output["0"] >= precipitationTreshold) ? true : false;
+            }
+            else {
+                return false;
+            }
         } 
 
         //Převod hodnoty pravděpodobnosti na úroveň dle tabulky

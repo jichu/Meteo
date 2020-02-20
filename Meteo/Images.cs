@@ -48,7 +48,7 @@ namespace Meteo
             this.onlyEnumeration = onlyEnumeration;
             LoadImage(path);
             LoadPointsOfColorsInMap(onlyEnumeration);
-            //LoadWindDirection(si);
+            LoadWindDirection(si);
         }
 
         private void LoadWindDirection(SourceImage si) {
