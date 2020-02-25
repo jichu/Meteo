@@ -163,3 +163,11 @@ C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\CsvHelper.xml
 C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\jarom\source\repos\jichu\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\CsvHelper.dll
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\CsvHelper.xml
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml

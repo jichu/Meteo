@@ -1,4 +1,5 @@
 ﻿using Meteo.JSONparser;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,11 +28,30 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
 
-            List<object> list = new List<object>() { new { key = 1} };
-            //var json = new JSONwriter();
-            _ = JSONwriter.Do(list, "Mrakomor");
+            JSONwriter.CreateJson(
+               new JObject(
+                    new JProperty("samplename", new JArray() { "03", "06", "09" }),
+                    new JProperty("data", new JArray() { new JArray() { new JArray() { 0, 1, 3 }, new JArray() { 0, 1, 3 }, new JArray() { 0, 1, 3 } } })
+                ),
+               "03h_"
+            );
 
-            //CsvHelper.CSVexport.Write();
+            /*
+             * root create 1
+            JSONwriter.Add("orplist", new JArray() { 1, 2, 3 });
+            JSONwriter.Add("outputlist", new JArray() { "xx", "yy" });
+            JSONwriter.CreateJsonRoot();
+            */
+
+            /*
+             * root create 2
+            JSONwriter.CreateJsonRoot(
+               new JObject(
+                    new JProperty("orplist", new JArray() { 1, 2, 3 }),
+                    new JProperty("outputlist", new JArray() { 10, "2", 3 })
+                )
+            );
+            */
 
             /*  
              Dictionary<string,string> wrf =WRF.Process(new Dictionary<string, string>
@@ -48,7 +68,7 @@ namespace Meteo
              {
                  Console.WriteLine(r.Key+"  "+r.Value);
              }*/
-            
+
             new Controller();
             this.menuItemOutput.PerformClick();
             
