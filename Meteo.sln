@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo", "Meteo\Meteo.csproj", "{F169D7DE-A1C7-4919-8F25-77874992DCBF}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRFdll", "WRFdll\WRFdll.csproj", "{6B0D4AD8-8961-4CB6-BB78-9CE6A1A894AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRFtest", "WRFtest\WRFtest.csproj", "{EE972C88-E0EF-4AAE-8816-16AF1336EF36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeteoViewer", "MeteoViewer\MeteoViewer.csproj", "{936D5342-C8E2-4C5F-9C49-5A9271E62914}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{EE972C88-E0EF-4AAE-8816-16AF1336EF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE972C88-E0EF-4AAE-8816-16AF1336EF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE972C88-E0EF-4AAE-8816-16AF1336EF36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936D5342-C8E2-4C5F-9C49-5A9271E62914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936D5342-C8E2-4C5F-9C49-5A9271E62914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936D5342-C8E2-4C5F-9C49-5A9271E62914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936D5342-C8E2-4C5F-9C49-5A9271E62914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
