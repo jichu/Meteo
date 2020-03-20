@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Meteo.JSONparser;
+using Newtonsoft.Json.Linq;
 
 namespace Meteo
 {
@@ -32,7 +34,7 @@ namespace Meteo
             //List<Thread> threadList = new List<Thread>();
             List<Task> taskList = new List<Task>();
             //Util.StartWatch();
-            Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
+            //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
             foreach (var s in sampleNames)
             {
                 
@@ -44,7 +46,59 @@ namespace Meteo
             }
             
             Task.WaitAll(taskList.ToArray());
-            Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
+
+            List<string> outputList = new List<string>();
+            foreach (var item in Util.outputDataCache) {
+                foreach(var output in item.output){
+                    if (!outputList.Contains(output.Key)) outputList.Add(output.Key);
+                }
+            }
+            List<string> orpList = new List<string>();
+            foreach (var orp in Util.outputDataCache)
+            {
+                if (!orpList.Contains(orp.nameOrp)) orpList.Add(orp.nameOrp);
+            }
+
+            int[,,] data = new int [sampleNames.Count,outputList.Count,orpList.Count];
+
+            List<CloudOutput> filter = new List<CloudOutput>();
+
+            for(int i = 0; i<sampleNames.Count; i++){
+                foreach (var item in Util.outputDataCache)
+                {
+                    if (item.sampleName == sampleNames[i])
+                    {
+                        filter.Add(item);
+                    }
+                }
+                for(int j = 0; j<outputList.Count; j++)
+                {
+                    for (int k = 0; k< orpList.Count; k++)
+                    {
+                        foreach (var item in filter)
+                        {
+                            if (item.nameOrp == orpList[k])
+                                if (item.output.ContainsKey(outputList[j])) data[i,j,k]=((int)item.output[outputList[j]]);
+                                else data[i,j,k]=(-1);
+                        }
+                    }
+                }
+            }
+
+            var array = JArray.FromObject(data);
+
+            JSONwriter.CreateJson(
+              new JObject
+              (
+                   new JProperty("orplist", orpList),
+                   new JProperty("outputlist", outputList),
+                   new JProperty("samplename",sampleNames),
+                   new JProperty("data", array)
+               ),
+              "Output_"
+           );
+            //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
+
             //Util.StopWatch("Vypočet dokončen!");
             //Output();
 
