@@ -1,5 +1,9 @@
-﻿using System;
+﻿using MeteoViewer.Data;
+using MeteoViewer.JSONparser;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +31,18 @@ namespace MeteoViewer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadRootAsync();
+            LoadDataAsync();
+        }
 
+        private async void LoadRootAsync()
+        {
+            Stream.JRoot = await JSONreader.LoadJsonRoot();
+        }
+
+        private async void LoadDataAsync()
+        {
+            Stream.JData = await JSONreader.LoadJson("03h_200225_205750");
         }
     }
 }
