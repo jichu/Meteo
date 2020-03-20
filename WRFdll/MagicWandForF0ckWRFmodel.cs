@@ -436,7 +436,8 @@ namespace WRFdll
                         });
                     }
                 }
-            }            
+            }
+            Console.WriteLine($"Počet: {NamePoints.Count}");
         }
 
         private bool ProcessDoWandAsync(Bitmap bmp)
