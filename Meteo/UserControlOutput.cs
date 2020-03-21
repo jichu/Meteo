@@ -348,7 +348,7 @@ namespace Meteo
             if (rows == 0) dgv.Hide();
             else dgv.Show();
 
-            CsvHelper.CSVexport.Write(comboAlgorithmOutput.Text.ToString()+"_" + curHour.ToString() + "h"); 
+            //CsvHelper.CSVexport.Write(comboAlgorithmOutput.Text.ToString()+"_" + curHour.ToString() + "h"); 
         }
 
         private void Canvas_Paint(object sender, PaintEventArgs e)

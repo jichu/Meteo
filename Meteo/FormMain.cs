@@ -28,14 +28,6 @@ namespace Meteo
         {
             Util.ShowLoading("Načítání aplikace...");
 
-            JSONwriter.CreateJson(
-               new JObject(
-                    new JProperty("samplename", new JArray() { "03", "06", "09" }),
-                    new JProperty("data", new JArray() { new JArray() { new JArray() { 0, 1, 3 }, new JArray() { 0, 1, 3 }, new JArray() { 0, 1, 3 } } })
-                ),
-               "03h_"
-            );
-
             /*
              * root create 1
             JSONwriter.Add("orplist", new JArray() { 1, 2, 3 });

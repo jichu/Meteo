@@ -45,6 +45,7 @@ namespace Meteo.JSONparser
         }
         internal static void CreateJsonRoot(JObject data = null, string filename="root")
         {
+            fienamePrefix = "";
             _ = Do(data ?? JData, filename);
         }
         internal async static Task Do(dynamic data, string name="")

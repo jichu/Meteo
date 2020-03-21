@@ -83,7 +83,7 @@ namespace Meteo
                         }
                     }
                 }
-            }
+            }           
 
             var array = JArray.FromObject(data);
 
@@ -102,7 +102,7 @@ namespace Meteo
                    new JProperty("samplename",sampleNames),
                    new JProperty("data", array)
                ),
-              "Output_"
+              "03h_"
            );
 
             
