@@ -87,16 +87,25 @@ namespace Meteo
 
             var array = JArray.FromObject(data);
 
-            JSONwriter.CreateJson(
+            JSONwriter.CreateJsonRoot(
               new JObject
               (
                    new JProperty("orplist", orpList),
                    new JProperty("outputlist", outputList),
+                   new JProperty("outputresultcolor", new JArray() { "#fff", "#66ff33", "#ffff00", "#ffc000", "#ff0000" })
+               )
+           );
+
+            JSONwriter.CreateJson(
+              new JObject
+              (
                    new JProperty("samplename",sampleNames),
                    new JProperty("data", array)
                ),
               "Output_"
            );
+
+            
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
 
             //Util.StopWatch("Vypočet dokončen!");
