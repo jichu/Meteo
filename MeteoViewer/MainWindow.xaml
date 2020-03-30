@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MeteoViewer"
         xmlns:map="clr-namespace:MeteoViewer.Map"
+        xmlns:Tree="clr-namespace:MeteoViewer.TreeView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="Meteo Viewer" Height="500" Width="840" ResizeMode="NoResize" WindowStyle="ToolWindow">
     <Grid>
-        <map:UserControlMap />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="600"/>
+        </Grid.ColumnDefinitions>
+        <map:UserControlMap x:Name="UserControlMap" Width="600" HorizontalAlignment="Center" Grid.Column="1" />
+        <Tree:UserControlTree x:Name="UserControlTree" HorizontalAlignment="Center" Grid.Column="0" />
     </Grid>
 </Window>

@@ -31,18 +31,6 @@ namespace MeteoViewer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadRootAsync();
-            LoadDataAsync();
-        }
-
-        private async void LoadRootAsync()
-        {
-            Stream.JRoot = await JSONreader.LoadJsonRoot();
-        }
-
-        private async void LoadDataAsync()
-        {
-            Stream.JData = await JSONreader.LoadJson("03h_200225_205750");
         }
     }
 }

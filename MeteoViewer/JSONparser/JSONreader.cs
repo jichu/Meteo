@@ -13,8 +13,6 @@ namespace MeteoViewer.JSONparser
     internal static class JSONreader
     {
         internal static string PathJson { get; set; } = "export";
-        private static string fienamePrefix = "";
-        private static string format = "yyMMdd_HHmmss";
         private static string ext = ".json";
         private static JObject JData;
 
@@ -37,7 +35,6 @@ namespace MeteoViewer.JSONparser
 
         private static JObject ReadFromFile(string name)
         {
-            Debug.WriteLine(@Path.Combine(PathJson, name + ext));
             try
             {
                 using (StreamReader file = File.OpenText(@Path.Combine(PathJson, name+ext)))

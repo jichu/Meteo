@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ namespace MeteoViewer.Data
         private static string Model_ALADIN_CZ { get; set; } = @Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathImages, "Model_ALADIN_CZ.bmp");
         internal static BitmapImage MapOutputBackground { get; private set; }
         internal static BitmapImage MapMaskORP { get; private set; }
+        internal static Bitmap BitmapMapOutputBackground { get; private set; }
+        internal static Bitmap BitmapMapMaskORP { get; private set; }
         
         internal static bool Load()
         {
@@ -22,6 +25,8 @@ namespace MeteoViewer.Data
             {
                 MapOutputBackground = new BitmapImage(new Uri(map_output_background, UriKind.RelativeOrAbsolute));
                 MapMaskORP = new BitmapImage(new Uri(Model_ALADIN_CZ, UriKind.RelativeOrAbsolute));
+                BitmapMapOutputBackground = BitmapImage2Bitmap(MapOutputBackground);
+                BitmapMapMaskORP = BitmapImage2Bitmap(MapMaskORP);
                 return true;
             }
             return false;
@@ -34,5 +39,17 @@ namespace MeteoViewer.Data
             Utils.Log.Error(new FileNotFoundException());
             return false;
         }
+        private static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+                return new Bitmap(bitmap);
+            }
+        }
+
     }
 }

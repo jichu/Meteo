@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +13,49 @@ namespace MeteoViewer.Data
     {
         internal static JObject JRoot { get; set; }
         internal static JObject JData { get; set; }
-        internal static void Update()
+        internal static JArray GetJRoot(string key)
         {
-
+            try
+            {
+                if (JRoot.ContainsKey(key))
+                    return (JArray)JRoot[key];
+                return new JArray();
+            }
+            catch (Exception e)
+            {
+                Utils.Log.Error(e);
+                return new JArray();
+            }
+        }
+        internal static JArray GetJData(string key)
+        {
+            try
+            {
+                if(JData!=null)
+                if (JData.ContainsKey(key))
+                    return (JArray)JData[key];
+                return new JArray();
+            }
+            catch (Exception e)
+            {
+                Utils.Log.Error(e);
+                return new JArray();
+            }
+        }
+        internal static JArray GetJDataValues()
+        {
+            try
+            {
+                if (JData != null)
+                    if (JData.ContainsKey("data"))
+                    return (JArray)JData["data"][Cache.indexHour][Cache.indexOutputlist];
+                return new JArray();
+            }
+            catch (Exception e)
+            {
+                Utils.Log.Error(e);
+                return new JArray();
+            }
         }
     }
 }
