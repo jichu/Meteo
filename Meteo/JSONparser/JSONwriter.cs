@@ -12,19 +12,19 @@ namespace Meteo.JSONparser
     internal static class JSONwriter
     {
         internal static string PathJson { get; set; } = "export";
-        private static string fienamePrefix = "";
+        private static string fienamePostfix = "";
         private static string format = "yyMMdd_HHmmss";
         private static string ext = ".json";
         private static JObject JData;
 
-        internal static string CreateJsonFilename(string name="")
+        internal static string CreateJsonFilename(string name = "")
         {
             CreatePath();
             if (name == string.Empty)
-                name = $"{DateTime.Now.ToString(format)}{ext}";
+                name = $"{DateTime.Now.ToString(format)}{fienamePostfix}{ext}";
             else
-                name += ext;
-            return Path.Combine(PathJson, fienamePrefix+name);
+            name += ext;
+            return Path.Combine(PathJson, name);
         }
         internal static void Add(string prop, JArray values)
         {
@@ -38,17 +38,16 @@ namespace Meteo.JSONparser
             JData = null;
         }
 
-        internal static void CreateJson(JObject data = null, string fPrefix = "")
+        internal static void CreateJson(JObject data = null, string fPostfix = "")
         {
-            fienamePrefix = fPrefix;
+            fienamePostfix = fPostfix;
             _ = Do(data ?? JData, "");
         }
-        internal static void CreateJsonRoot(JObject data = null, string filename="root")
+        internal static void CreateJsonRoot(JObject data = null, string filename = "root")
         {
-            fienamePrefix = "";
             _ = Do(data ?? JData, filename);
         }
-        internal async static Task Do(dynamic data, string name="")
+        internal async static Task Do(dynamic data, string name = "")
         {
             await Task.Run(() => SaveToFile(data, name));
         }

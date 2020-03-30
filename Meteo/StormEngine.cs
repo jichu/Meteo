@@ -102,7 +102,7 @@ namespace Meteo
                    new JProperty("samplename",sampleNames),
                    new JProperty("data", array)
                ),
-              "03h_"
+              "_03h"
            );
 
             
