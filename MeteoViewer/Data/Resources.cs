@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace MeteoViewer.Data
@@ -29,6 +30,7 @@ namespace MeteoViewer.Data
                 BitmapMapMaskORP = BitmapImage2Bitmap(MapMaskORP);
                 return true;
             }
+            //MessageBox.Show("Chybí obrázkové zdroje!");
             return false;
         }
         private static bool Check()

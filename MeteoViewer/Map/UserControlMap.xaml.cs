@@ -40,6 +40,7 @@ namespace MeteoViewer.Map
         
         internal void Open(string name)
         {
+            LoadRootAsync();
             LoadDataAsync(name);
         }
 
@@ -198,6 +199,9 @@ namespace MeteoViewer.Map
             TooltipRegion.VerticalOffset = position.Y;
             string name = Data.Region.GetRegionNameByCoods(position);
             Debug.WriteLine($"{name} {position.X} {position.Y}");
+
+            if(LabelRegion.Content.ToString() != name)
+            LabelRegion.Content = name;
         }
 
         private void Canvas_MouseLeave(object sender, MouseEventArgs e)

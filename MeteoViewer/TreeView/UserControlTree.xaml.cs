@@ -81,6 +81,7 @@ namespace MeteoViewer.TreeView
                 TreeJson.Items.Clear();
                 var ld = new LoadDir();
                 List<string> nodes = new List<string>();
+                if (ld.Files == null) return;
                 foreach (var file in ld.Files)
                 {
                     if (Data.Cache.JsonDataFormat.Length <= file.Name.Length)

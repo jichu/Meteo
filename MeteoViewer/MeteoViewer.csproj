@@ -127,6 +127,31 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\map_output_background.png" />
+    <Resource Include="bin\Debug\images\Model_ALADIN_CZ.bmp" />
+    <Resource Include="bin\Debug\images\symbols\intenzita bouří 0.png" />
+    <Resource Include="bin\Debug\images\symbols\intenzita bouří 1.png" />
+    <Resource Include="bin\Debug\images\symbols\intenzita bouří 2.png" />
+    <Resource Include="bin\Debug\images\symbols\intenzita bouří 3.png" />
+    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 0.png" />
+    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 1.png" />
+    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 2.png" />
+    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 3.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalové povodně 1.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalové povodně 2.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalové povodně 3.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 0.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 1.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 2.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 3.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 0.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 1.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 2.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 3.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko tornád 0.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko tornád 2.png" />
+    <Resource Include="bin\Debug\images\symbols\riziko tornád 3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

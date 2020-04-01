@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +13,22 @@ namespace MeteoViewer.Data
     internal static class Region
     {
         public static Dictionary<string, JArray> ORPcoods;
-        public static string GetRegionNameByCoods(Point point)
+        public static string GetRegionNameByCoods(System.Windows.Point point)
         {
-            if (Resources.BitmapMapMaskORP == null)
+            try
+            {
+                if (Resources.BitmapMapMaskORP == null)
+                    return string.Empty;
+                string colorName = "#" + Resources.BitmapMapMaskORP.GetPixel((int)point.X, (int)point.Y).Name.Substring(2, 6);
+                if (ORP.ContainsKey(colorName))
+                    return ORP[colorName];
                 return string.Empty;
-            Resources.BitmapMapMaskORP.GetPixel((int)point.X, (int)point.Y);
-            if (ORPcoods.ContainsKey(color))
-                return ORPcoods[color];
-            return null;
+            }
+            catch (Exception e)
+            {
+                Utils.Log.Error(e);
+            }
+                return string.Empty;
         }
         public static JArray GetCoodsByRegionName(string name)
         {
