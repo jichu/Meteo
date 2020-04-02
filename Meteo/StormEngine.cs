@@ -61,6 +61,8 @@ namespace Meteo
 
             int[,,] data = new int [sampleNames.Count,outputList.Count,orpList.Count];
 
+            List<CloudSettings> settings = Model.Cloud.SETTINGSGetSettings();
+
             List<CloudOutput> filter = new List<CloudOutput>();
 
             for(int i = 0; i<sampleNames.Count; i++){
@@ -92,7 +94,12 @@ namespace Meteo
               (
                    new JProperty("orplist", orpList),
                    new JProperty("outputlist", outputList),
-                   new JProperty("outputresultcolor", new JArray() { "#fff", "#66ff33", "#ffff00", "#ffc000", "#ff0000" })
+                   new JProperty("outputresultcolor", new JArray() {
+                       GetValueFromSettingsList(settings, "output_result-1_color"),
+                       GetValueFromSettingsList(settings, "output_result0_color"),
+                       GetValueFromSettingsList(settings, "output_result1_color"),
+                       GetValueFromSettingsList(settings, "output_result2_color"),
+                       GetValueFromSettingsList(settings, "output_result3_color") })
                )
            );
 
@@ -110,6 +117,15 @@ namespace Meteo
 
             //Util.StopWatch("Vypočet dokončen!");
             //Output();
+
+        }
+
+        private string GetValueFromSettingsList(List<CloudSettings> settings, string option_name) {
+            string option_value = "";
+            foreach (var item in settings) {
+                if (item.option_name == option_name) option_value = item.option_value;
+            }
+            return option_value;
 
         }
 

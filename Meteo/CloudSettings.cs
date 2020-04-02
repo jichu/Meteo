@@ -19,5 +19,6 @@ namespace Meteo
             this.option_name = option_name;
             this.option_value = option_value;
         }
+
     }
 }

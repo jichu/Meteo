@@ -20,6 +20,7 @@ namespace Meteo
         public Dictionary<string, float> Parameters { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
+        public Dictionary<string, float> MainOutput { get; set; } = new Dictionary<string, float>();
         private List<float> PrecipitationPlaceModels = new List<float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
         private List<float> FinalScale = new List<float>() { 0.08f, 0.33f, 0.67f, 1.0f };
@@ -399,7 +400,20 @@ namespace Meteo
         }
 
         private void WriteToCache() {
-            CloudOutput data = new CloudOutput(Name_orp, sampleName, Output);
+
+            AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", "1. RIZIKO PŘÍVALOVÉ POVODNĚ");
+            AddItemToMainOutput("INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK(DEN) 2", "PŘEDPOVĚĎ INTENZITY BOUŘÍ");
+            AddItemToMainOutput("MÍSTO VÝSKYTU BOUŘEK", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)");
+            AddItemToMainOutput("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", "PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ");
+            AddItemToMainOutput("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST");
+            AddItemToMainOutput("MÍSTO VÝSKYTU - KRUPOBITÍ", "PŘEDPOVĚD RIZIKA KRUPOBITÍ");
+            AddItemToMainOutput("MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA", "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD");
+            AddItemToMainOutput("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST");
+            AddItemToMainOutput("1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ", "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA");
+            AddItemToMainOutput("1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ", "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA");
+
+            CloudOutput data = new CloudOutput(Name_orp, sampleName, MainOutput);
             Util.outputDataCache.Add(data);
 
         }
@@ -869,6 +883,19 @@ namespace Meteo
         }
 
         //Pomocné výpočetní funkce
+
+        //Předání ověřeného výstupu do cache
+        //první parametr - nazev v outputu, druhý parametr - nový název
+        private void AddItemToMainOutput(string name, string parameter){
+            if (Output.ContainsKey(parameter))
+            {
+                MainOutput.Add(name, Output[parameter]);
+            }
+            else
+            {
+                MainOutput.Add(name, -1);
+            }
+        }
 
         //Výpočet rozdílu směru větru + převedení na koeficient
         private float WindDirectionDifference(float[] first, float[] second) {
