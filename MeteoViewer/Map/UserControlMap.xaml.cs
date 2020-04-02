@@ -196,12 +196,12 @@ namespace MeteoViewer.Map
             if (!TooltipRegion.IsOpen) 
                 TooltipRegion.IsOpen = true; 
             TooltipRegion.HorizontalOffset = position.X;
-            TooltipRegion.VerticalOffset = position.Y;
+            TooltipRegion.VerticalOffset = position.Y+20;
             string name = Data.Region.GetRegionNameByCoods(position);
-            Debug.WriteLine($"{name} {position.X} {position.Y}");
-
-            if(LabelRegion.Content.ToString() != name)
-            LabelRegion.Content = name;
+            if(name==string.Empty)
+                TooltipRegion.IsOpen = false;
+            if (LabelRegion.Content.ToString() != name)
+                LabelRegion.Content = name;
         }
 
         private void Canvas_MouseLeave(object sender, MouseEventArgs e)

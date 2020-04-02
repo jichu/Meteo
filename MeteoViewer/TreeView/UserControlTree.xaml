@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="220" Loaded="UserControl_Loaded">
     <Grid>
-        <TreeView Name="TreeJson" HorizontalAlignment="Left" Height="430" Margin="10,40,0,0" VerticalAlignment="Top" Width="200" SelectedItemChanged="TreeJson_SelectedItemChanged"/>
+        <TreeView Name="TreeJson" HorizontalAlignment="Left" Height="400" Margin="10,40,0,0" VerticalAlignment="Top" Width="200" SelectedItemChanged="TreeJson_SelectedItemChanged"/>
         <Label Content="export" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" MouseDoubleClick="Label_MouseDoubleClick"/>
     </Grid>
 </UserControl>

@@ -13,6 +13,7 @@ namespace MeteoViewer.Data
     internal static class Resources
     {
         private static string PathImages { get; set; } = "images";
+        private static string PathSymbols { get; set; } = "images/symbols";
         private static string map_output_background { get; set; } = @Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathImages, "map_output_background.png");
         private static string Model_ALADIN_CZ { get; set; } = @Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathImages, "Model_ALADIN_CZ.bmp");
         internal static BitmapImage MapOutputBackground { get; private set; }
@@ -31,6 +32,10 @@ namespace MeteoViewer.Data
                 return true;
             }
             //MessageBox.Show("Chybí obrázkové zdroje!");
+            return false;
+        }
+        internal static bool LoadSymbols()
+        {
             return false;
         }
         private static bool Check()
