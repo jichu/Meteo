@@ -20,8 +20,7 @@ namespace MeteoViewer.Data
         internal static BitmapImage MapMaskORP { get; private set; }
         internal static Bitmap BitmapMapOutputBackground { get; private set; }
         internal static Bitmap BitmapMapMaskORP { get; private set; }
-        internal static FileInfo[] FilesSymbols { get; private set; }
-
+        
         internal static bool Load()
         {
             if (Check())
@@ -30,27 +29,14 @@ namespace MeteoViewer.Data
                 MapMaskORP = new BitmapImage(new Uri(Model_ALADIN_CZ, UriKind.RelativeOrAbsolute));
                 BitmapMapOutputBackground = BitmapImage2Bitmap(MapOutputBackground);
                 BitmapMapMaskORP = BitmapImage2Bitmap(MapMaskORP);
-                LoadSymbols();
                 return true;
             }
             //MessageBox.Show("Chybí obrázkové zdroje!");
             return false;
         }
-
-        private static void LoadSymbols()
+        internal static bool LoadSymbols()
         {
-            if (Directory.Exists(PathSymbols))
-            {
-                try
-                {
-                    DirectoryInfo di = new DirectoryInfo(PathSymbols);
-                    FilesSymbols = di.GetFiles("*.png", SearchOption.AllDirectories);
-                }
-                catch (Exception e)
-                {
-                    Utils.Log.Error(e);
-                }
-            }
+            return false;
         }
         private static bool Check()
         {
