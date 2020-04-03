@@ -26,6 +26,8 @@ namespace MeteoViewer.TreeView
     /// </summary>
     public partial class UserControlTree : UserControl
     {
+        internal static UserControlTree Instance { get; private set; }
+
         public UserControlTree()
         {
             InitializeComponent();
@@ -33,6 +35,7 @@ namespace MeteoViewer.TreeView
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            Instance = this;
             //_ = RunPeriodicAsync(OnTick, TimeSpan.FromMilliseconds(500), CancellationToken.None);
             RefreshTreeView();
             MonitoringFileSystem();
@@ -119,6 +122,7 @@ namespace MeteoViewer.TreeView
 
         private void TreeJson_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if ((TreeViewItem)e.NewValue == null) return;
             LoadDataAsync(((TreeViewItem)e.NewValue).Tag?.ToString());
             Data.Cache.Redraw = true;
         }

@@ -57,5 +57,34 @@ namespace MeteoViewer.Data
                 return new JArray();
             }
         }
+        internal static int GetJDataValueByRegionName(string name)
+        {
+            int ret = -1;
+            try
+            {
+                if (JData != null)
+                    if (JData.ContainsKey("data"))
+                    {
+                        JArray orplist = GetJRoot("orplist");
+                        if (orplist.Count > 0)
+                        {
+                            int index = orplist.TakeWhile(x => x.ToString() != name).Count();
+                            JArray values = GetJDataValues();
+                            if (values.Count!=orplist.Count) return ret;
+                            if (index==-1) return ret;
+                            if (index== orplist.Count) return ret;
+                            return (int)values[index];
+                        }
+                        else
+                            return ret;
+                    }
+                return ret;
+            }
+            catch (Exception e)
+            {
+                Utils.Log.Error(e);
+                return ret;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MeteoViewer.JSONparser;
+using MeteoViewer.TreeView;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -32,6 +33,7 @@ namespace MeteoViewer.Map
     public partial class UserControlMap : UserControl
     {
         internal Bitmap MapOutput { get; set; }
+        private JArray ORPlist { get; set; }
 
         public UserControlMap()
         {
@@ -59,6 +61,7 @@ namespace MeteoViewer.Map
         private async void LoadRootAsync()
         {
             Data.Stream.JRoot = await JSONreader.LoadJsonRoot();
+            ORPlist = Data.Stream.GetJRoot("orplist");
         }
 
         private async void LoadDataAsync(string name)
@@ -180,7 +183,6 @@ namespace MeteoViewer.Map
         private void SliderHour_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int val = (int)(sender as Slider).Value;
-            Debug.WriteLine((sender as Slider).Value);
             LabelHour.Content = $"Hodina {Data.Stream.GetJData("samplename")[val]}:";
             Data.Cache.indexHour = val;
             RefreshDrawMap();
@@ -198,10 +200,21 @@ namespace MeteoViewer.Map
             TooltipRegion.HorizontalOffset = position.X;
             TooltipRegion.VerticalOffset = position.Y+20;
             string name = Data.Region.GetRegionNameByCoods(position);
-            if(name==string.Empty)
+            if(name==string.Empty) 
                 TooltipRegion.IsOpen = false;
             if (LabelRegion.Content.ToString() != name)
-                LabelRegion.Content = name;
+            {
+                int val = Data.Stream.GetJDataValueByRegionName(name);
+                string koef = val==-1?"":$"\nKoeficient: {val}";
+                LabelRegion.Content = name + koef;
+                //var symbol = Data.Resources.FilesSymbols.Where(f => f.FullName.ToLower().Contains(ComboOutputList.SelectedItem.ToString().ToLower()+" "+val)).Select(f=>f.FullName).FirstOrDefault();
+                var symbol = Data.Resources.FilesSymbols.Where(f => f.FullName.ToLower().Contains("intenzita bouří 0")).Select(f=>f.FullName).FirstOrDefault();
+                
+                //Debug.WriteLine(ComboOutputList.SelectedItem.ToString().ToLower() + " 0");
+                if(name!="")
+                TooltipImage.Source = new BitmapImage(new Uri(symbol, UriKind.RelativeOrAbsolute));
+
+            }
         }
 
         private void Canvas_MouseLeave(object sender, MouseEventArgs e)
