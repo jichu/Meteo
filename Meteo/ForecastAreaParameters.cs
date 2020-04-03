@@ -402,16 +402,16 @@ namespace Meteo
         private void WriteToCache() {
 
             AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", "1. RIZIKO PŘÍVALOVÉ POVODNĚ");
-            AddItemToMainOutput("INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK(DEN) 2", "PŘEDPOVĚĎ INTENZITY BOUŘÍ");
-            AddItemToMainOutput("MÍSTO VÝSKYTU BOUŘEK", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)");
-            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)");
-            AddItemToMainOutput("MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY", "PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ");
-            AddItemToMainOutput("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU", "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST");
-            AddItemToMainOutput("MÍSTO VÝSKYTU - KRUPOBITÍ", "PŘEDPOVĚD RIZIKA KRUPOBITÍ");
-            AddItemToMainOutput("MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA", "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD");
-            AddItemToMainOutput("MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST", "PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST");
-            AddItemToMainOutput("1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ", "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA");
-            AddItemToMainOutput("1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ", "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA");
+            AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK(DEN) 2");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "MÍSTO VÝSKYTU BOUŘEK");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
+            AddItemToMainOutput("PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ", "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY");
+            AddItemToMainOutput("PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST", "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU");
+            AddItemToMainOutput("PŘEDPOVĚD RIZIKA KRUPOBITÍ","MÍSTO VÝSKYTU - KRUPOBITÍ");
+            AddItemToMainOutput("PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD","MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA");
+            AddItemToMainOutput("PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST", "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST");
+            AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA", "1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ");
+            AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA","1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ");
 
             CloudOutput data = new CloudOutput(Name_orp, sampleName, MainOutput);
             Util.outputDataCache.Add(data);
