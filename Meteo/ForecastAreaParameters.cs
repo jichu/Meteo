@@ -297,9 +297,9 @@ namespace Meteo
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
                 CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
-                CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
+                CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
-                CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
+                CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
                 CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
@@ -403,7 +403,7 @@ namespace Meteo
         private void WriteToCache() {
 
             AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", "1. RIZIKO PŘÍVALOVÉ POVODNĚ");
-            AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK(DEN) 2");
+            AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2");
             AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
             AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", "MÍSTO VÝSKYTU BOUŘEK");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ", "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY");
