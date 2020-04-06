@@ -23,6 +23,7 @@ namespace Meteo
         public Dictionary<string, float> MainOutput { get; set; } = new Dictionary<string, float>();
         private List<float> PrecipitationPlaceModels = new List<float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
+        private List<float> PlaceStormIntensityScale = new List<float>() { 0.25f, 0.5f, 0.67f, 1.0f };
         private List<float> FinalScale = new List<float>() { 0.08f, 0.33f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale = new List<float>() { 0.22f, 0.39f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale2 = new List<float>() { 0.39f, 1.0f };
@@ -403,8 +404,8 @@ namespace Meteo
 
             AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", "1. RIZIKO PŘÍVALOVÉ POVODNĚ");
             AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK(DEN) 2");
-            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "MÍSTO VÝSKYTU BOUŘEK");
-            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", "MÍSTO VÝSKYTU BOUŘEK");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ", "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST", "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA KRUPOBITÍ","MÍSTO VÝSKYTU - KRUPOBITÍ");
@@ -434,7 +435,7 @@ namespace Meteo
             Output.Add("LOKÁLNÍ PŘEDPOVĚĎ", level);
 
             values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"]};
-            level = ValueToLevel(LevelScale, Probability(values));
+            level = ValueToLevel(PlaceStormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU BOUŘEK", level);
 
             //8)Nebezpečné doprovodné jevy (6.krok+Sloučení A)
