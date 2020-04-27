@@ -21,6 +21,7 @@ namespace Meteo
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, float> MainOutput { get; set; } = new Dictionary<string, float>();
+        public Dictionary<string, float> InterimOutput { get; set; } = new Dictionary<string, float>();
         private List<float> PrecipitationPlaceModels = new List<float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
         private List<float> PlaceStormIntensityScale = new List<float>() { 0.25f, 0.5f, 0.67f, 1.0f };
@@ -67,6 +68,22 @@ namespace Meteo
             "45",
             "48"
         };
+
+        private List<string> mainOuputNames = new List<string>
+        {
+            "1. RIZIKO PŘÍVALOVÉ POVODNĚ",
+            "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN)",
+            "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT",
+            "MÍSTO VÝSKYTU BOUŘEK",
+            "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY",
+            "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU",
+            "MÍSTO VÝSKYTU - KRUPOBITÍ",
+            "MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA",
+            "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST",
+            "1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ",
+            "1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ"
+        };
+
 
         //Pořadí směrů: S, SV, V, JV, J, JZ, Z, SZ (podle růžice)
         private float[][] windDirectioncoordinates =
@@ -402,6 +419,7 @@ namespace Meteo
 
         private void WriteToCache() {
 
+            //Hlavní výstupy
             AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", "1. RIZIKO PŘÍVALOVÉ POVODNĚ");
             AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN)");
             AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
@@ -416,6 +434,8 @@ namespace Meteo
 
             CloudOutput data = new CloudOutput(Name_orp, sampleName, MainOutput);
             Util.outputDataCache.Add(data);
+
+            //Vedlejší výstupy
 
         }
 
