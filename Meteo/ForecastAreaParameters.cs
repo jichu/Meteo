@@ -436,6 +436,7 @@ namespace Meteo
             Util.outputDataCache.Add(data);
 
             //Vedlejší výstupy
+            //InterimOutput
 
         }
 
