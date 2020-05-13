@@ -1,6 +1,6 @@
 ﻿using MeteoViewer.Data;
 using MeteoViewer.Map;
-using Microsoft.Office.Interop.Excel;
+//using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
@@ -98,24 +98,25 @@ namespace MeteoViewer.Table
             if (result == true)
                 SaveAllToExcel(saveFileDialog.FileName);
         }
-
+        
         private void SaveToExcel(string fileName)
         {
             try
             {
+                /*
                 Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
                 app.Visible = true;
                 app.WindowState = XlWindowState.xlMaximized;
 
                 Workbook wb = app.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
                 Worksheet ws = wb.Worksheets[1];
-                /*
-                ws.Range["A1"].Value = "ORP";
-                ws.Cells[1, 1].EntireRow.Font.Bold = true;
+                
+                //ws.Range["A1"].Value = "ORP";
+                //ws.Cells[1, 1].EntireRow.Font.Bold = true;
 
-                ws.Range["B1"].Value = Data.Stream.GetJData("samplename")[Cache.indexHour];
-                ws.Cells[1, 2].EntireRow.Font.Bold = true;
-                */
+                //ws.Range["B1"].Value = Data.Stream.GetJData("samplename")[Cache.indexHour];
+                //ws.Cells[1, 2].EntireRow.Font.Bold = true;
+                
                 for (int i = 1; i <= Data.Region.CurrentORP.Count; i++)
                 {
                     ws.Range["A" + i].Value = Data.Region.CurrentORP.ElementAt(i - 1).Key;
@@ -124,17 +125,19 @@ namespace MeteoViewer.Table
 
                 ws.Columns.AutoFit();
                 wb.SaveAs(fileName);
+                */
             }
             catch 
             {
 
             }
+        
         }
 
         private void SaveAllToExcel(string fileName)
         {
             try
-            {
+            {/*
                 Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
                 app.Visible = true;
                 app.WindowState = XlWindowState.xlMaximized;
@@ -162,7 +165,7 @@ namespace MeteoViewer.Table
                     }
                 }
                 ws.Columns.AutoFit();
-                wb.SaveAs(fileName);
+                wb.SaveAs(fileName);*/
                 //wb.Close();
             }
             catch

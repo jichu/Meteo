@@ -225,7 +225,7 @@ namespace MeteoViewer.Map
                 LabelRegion.Content = $"{name}{koef}";
                 TooltipImage.Source = Data.Resources.LoadSymbol("riziko tornád 3");
                 //Console.WriteLine($"{ComboOutputList.SelectedItem} {val}");
-                //TooltipImage.Source = Data.Resources.LoadSymbol($"{ComboOutputList.SelectedItem} {val}");
+                TooltipImage.Source = Data.Resources.LoadSymbol($"{ComboOutputList.SelectedItem} {val}");
             }
         }
 

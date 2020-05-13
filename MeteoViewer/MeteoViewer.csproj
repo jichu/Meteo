@@ -137,28 +137,6 @@
   <ItemGroup>
     <Resource Include="bin\Debug\images\map_output_background.png" />
     <Resource Include="bin\Debug\images\Model_ALADIN_CZ.bmp" />
-    <Resource Include="bin\Debug\images\symbols\intenzita bouří 0.png" />
-    <Resource Include="bin\Debug\images\symbols\intenzita bouří 1.png" />
-    <Resource Include="bin\Debug\images\symbols\intenzita bouří 2.png" />
-    <Resource Include="bin\Debug\images\symbols\intenzita bouří 3.png" />
-    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 0.png" />
-    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 1.png" />
-    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 2.png" />
-    <Resource Include="bin\Debug\images\symbols\pravděpodobnost konvektivních srážek 3.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalové povodně 1.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalové povodně 2.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalové povodně 3.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 0.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 1.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 2.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko přívalového deště 3.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 0.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 1.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 2.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko silných nárazů větru 3.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko tornád 0.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko tornád 2.png" />
-    <Resource Include="bin\Debug\images\symbols\riziko tornád 3.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -188,6 +166,139 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28ALGORITMUS%29 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28ALGORITMUS%29 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28ALGORITMUS%29 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28ALGORITMUS%29 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28NWP MODELY%29 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28NWP MODELY%29 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28NWP MODELY%29 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK %28NWP MODELY%29 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ INTENZITY BOUŘÍ 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ INTENZITY BOUŘÍ 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ INTENZITY BOUŘÍ 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ INTENZITY BOUŘÍ 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA KRUPOBITÍ 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA KRUPOBITÍ 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA KRUPOBITÍ 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA KRUPOBITÍ 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - SUCHÝ DOWNBURST 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST 3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD 0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\images\symbols\PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD 3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
