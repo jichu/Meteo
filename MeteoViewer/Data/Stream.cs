@@ -57,5 +57,20 @@ namespace MeteoViewer.Data
                 return new JArray();
             }
         }
+        internal static int GetJDataValue(int hour, int output, int index)
+        {
+            try
+            {
+                if (JData != null)
+                    if (JData.ContainsKey("data"))
+                        return (int)JData["data"][hour][output][index];
+                return -1;
+            }
+            catch (Exception e)
+            {
+                Utils.Log.Error(e);
+                return -1;
+            }
+        }
     }
 }

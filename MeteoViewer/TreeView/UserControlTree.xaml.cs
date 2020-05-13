@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using Path = System.IO.Path;
 
 namespace MeteoViewer.TreeView
 {
@@ -50,15 +46,15 @@ namespace MeteoViewer.TreeView
 
         private void MonitoringFileSystem()
         {
-            FileSystemWatcher fsw = new FileSystemWatcher();
+            System.IO.FileSystemWatcher fsw = new System.IO.FileSystemWatcher();
             fsw.Path = Data.Cache.PathJson;
             fsw.Filter = "*.json";
-            fsw.Changed += new FileSystemEventHandler(Dir_Changed);
-            fsw.Deleted += new FileSystemEventHandler(Dir_Changed);
+            fsw.Changed += new System.IO.FileSystemEventHandler(Dir_Changed);
+            fsw.Deleted += new System.IO.FileSystemEventHandler(Dir_Changed);
             fsw.EnableRaisingEvents = true;
         }
 
-        private void Dir_Changed(object sender, FileSystemEventArgs e)
+        private void Dir_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
             if (Data.Cache.JsonDataFormat.Length <= e.Name.Length)                    
                 RefreshTreeView();
@@ -128,7 +124,7 @@ namespace MeteoViewer.TreeView
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
             {
-                (sender as Label).Content = Path.GetFileName(dialog.SelectedPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)); ;
+                (sender as Label).Content = System.IO.Path.GetFileName(dialog.SelectedPath.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar)); ;
                 (sender as Label).ToolTip = System.IO.Path.GetDirectoryName(dialog.SelectedPath);
                 Data.Cache.PathJson = dialog.SelectedPath;
                 LoadRootAsync();

@@ -41,6 +41,7 @@ namespace MeteoViewer.Data
                 return ORPcoods[color];
             return null;
         }
+        public static Dictionary<string, int> CurrentORP = new Dictionary<string, int>();
         public static Dictionary<string, string> ORP = new Dictionary<string, string>
         {
             {"#006400","Český Těšín"},

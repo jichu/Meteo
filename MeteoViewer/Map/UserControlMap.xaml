@@ -7,15 +7,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600" Loaded="UserControl_Loaded" LayoutUpdated="UserControl_LayoutUpdated">
     <Grid>
-        <Image Name="Canvas" Margin="0,80,0,0" VerticalAlignment="Top" MouseMove="Canvas_MouseMove" MouseLeave="Canvas_MouseLeave"/>
-        <Popup Name="TooltipRegion" AllowsTransparency="True" Placement="Relative" PlacementTarget="{Binding ElementName=Canvas}">
+        <Image Name="Canvas" Margin="0,80,0,0" VerticalAlignment="Top" MouseMove="Canvas_MouseMove" MouseLeave="Canvas_MouseLeave" Grid.ColumnSpan="2">
+            <Image.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="MenuItemExport" Header="Exportovat obrázek..." Click="Export_Click" />
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+        <Popup Name="TooltipRegion" AllowsTransparency="True" Placement="Relative" PlacementTarget="{Binding ElementName=Canvas}" Grid.ColumnSpan="2">
             <StackPanel x:Name="TooltipPanel" Background="LightYellow">
-                <Image Name="TooltipImage" VerticalAlignment="Top"/>
-                <Label Name="LabelRegion" Content="" FontSize="24"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Name="TooltipImage" VerticalAlignment="Center" Grid.Column="0"/>
+                    <Label Name="LabelRegion" Content="" FontSize="24" Grid.Column="1" Margin="0 0 10 0"/>
+                </Grid>
             </StackPanel>
         </Popup>
-        <ComboBox Name="ComboOutputList" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="600" SelectionChanged="ComboOutputList_SelectionChanged" />
-        <Slider Name="SliderHour" HorizontalAlignment="Right" Margin="0,50,0,0" VerticalAlignment="Top" Width="520" SmallChange="1" Maximum="8" AutoToolTipPlacement="TopLeft" TickPlacement="BottomRight" ValueChanged="SliderHour_ValueChanged" IsSnapToTickEnabled="True"/>
+        <ComboBox Name="ComboOutputList" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="600" SelectionChanged="ComboOutputList_SelectionChanged" Grid.ColumnSpan="2" />
+        <Slider Name="SliderHour" HorizontalAlignment="Right" Margin="0,50,0,0" VerticalAlignment="Top" Width="520" SmallChange="1" Maximum="8" AutoToolTipPlacement="TopLeft" TickPlacement="BottomRight" ValueChanged="SliderHour_ValueChanged" IsSnapToTickEnabled="True" Grid.ColumnSpan="2"/>
         <Label Name="LabelHour" Content="Hodina:" HorizontalAlignment="Left" Margin="0,48,0,0" VerticalAlignment="Top"/>
 
     </Grid>

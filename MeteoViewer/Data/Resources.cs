@@ -34,9 +34,12 @@ namespace MeteoViewer.Data
             //MessageBox.Show("Chybí obrázkové zdroje!");
             return false;
         }
-        internal static bool LoadSymbols()
+        internal static BitmapImage LoadSymbol(string name)
         {
-            return false;
+            string path = @Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PathSymbols, name+".png");
+            if (File.Exists(path))
+                return new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
+            return null;
         }
         private static bool Check()
         {
