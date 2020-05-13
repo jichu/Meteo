@@ -21,8 +21,10 @@ namespace Meteo
         public Dictionary<string, List<CloudInputData>> PrecipitationModels { get; set; } = new Dictionary<string, List<CloudInputData>>();
         public Dictionary<string, float> Output { get; set; } = new Dictionary<string, float>();
         public Dictionary<string, float> MainOutput { get; set; } = new Dictionary<string, float>();
+        public Dictionary<string, float> InterimOutput { get; set; } = new Dictionary<string, float>();
         private List<float> PrecipitationPlaceModels = new List<float>();
         private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
+        private List<float> PlaceStormIntensityScale = new List<float>() { 0.25f, 0.5f, 0.67f, 1.0f };
         private List<float> FinalScale = new List<float>() { 0.08f, 0.33f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale = new List<float>() { 0.22f, 0.39f, 0.67f, 1.0f };
         private List<float> TorrentialFloodRiscScale2 = new List<float>() { 0.39f, 1.0f };
@@ -66,6 +68,22 @@ namespace Meteo
             "45",
             "48"
         };
+
+        private List<string> mainOuputNames = new List<string>
+        {
+            "1. RIZIKO PŘÍVALOVÉ POVODNĚ",
+            "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN)",
+            "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT",
+            "MÍSTO VÝSKYTU BOUŘEK",
+            "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY",
+            "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU",
+            "MÍSTO VÝSKYTU - KRUPOBITÍ",
+            "MÍSTO VÝSKYTU - SUPERCELÁRNÍ TORNÁDA",
+            "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU - SUCHÝ DOWNBURST",
+            "1. RIZIKO PŘÍVALOVÉ POVODNĚ - SUCHÝ",
+            "1. RIZIKO PŘÍVALOVÉ POVODNĚ - VLHKÝ"
+        };
+
 
         //Pořadí směrů: S, SV, V, JV, J, JZ, Z, SZ (podle růžice)
         private float[][] windDirectioncoordinates =
@@ -296,9 +314,9 @@ namespace Meteo
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(mainOutput);
                 CloudOutputData stormIntensityOutput = new CloudOutputData(id_orp, sampleName, Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"], Util.algorithmOutput["PŘEDPOVĚĎ INTENZITY BOUŘÍ"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(stormIntensityOutput);
-                CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
+                CloudOutputData precipitationPlaceOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceOutput);
-                CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
+                CloudOutputData precipitationPlaceKoefOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU BOUŘEK"], Util.algorithmOutput["PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(precipitationPlaceKoefOutput);
                 CloudOutputData torrentialRainOutput = new CloudOutputData(id_orp, sampleName, Output["MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY"], Util.algorithmOutput["PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ"]);
                 Model.Cloud.OUTPUTDATAInsertOrUpdate(torrentialRainOutput);
@@ -401,10 +419,11 @@ namespace Meteo
 
         private void WriteToCache() {
 
+            //Hlavní výstupy
             AddItemToMainOutput("PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", "1. RIZIKO PŘÍVALOVÉ POVODNĚ");
-            AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK(DEN) 2");
-            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "MÍSTO VÝSKYTU BOUŘEK");
-            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
+            AddItemToMainOutput("PŘEDPOVĚĎ INTENZITY BOUŘÍ", "INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN)");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK - KOEFICIENT");
+            AddItemToMainOutput("PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", "MÍSTO VÝSKYTU BOUŘEK");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA PŘÍVALOVÉHO DEŠTĚ", "MÍSTO VÝSKYTU - PŘÍVALOVÉ SRÁŽKY");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA SILNÝCH NÁRAZŮ VĚTRU - VLHKÝ DOWNBURST", "MÍSTO VÝSKYTU - SILNÉ NÁRAZY VĚTRU");
             AddItemToMainOutput("PŘEDPOVĚD RIZIKA KRUPOBITÍ","MÍSTO VÝSKYTU - KRUPOBITÍ");
@@ -415,6 +434,9 @@ namespace Meteo
 
             CloudOutput data = new CloudOutput(Name_orp, sampleName, MainOutput);
             Util.outputDataCache.Add(data);
+
+            //Vedlejší výstupy
+            //InterimOutput
 
         }
 
@@ -434,7 +456,7 @@ namespace Meteo
             Output.Add("LOKÁLNÍ PŘEDPOVĚĎ", level);
 
             values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["INTENZITA SILNÝCH - EXTRÉMNĚ SILNÝCH BOUŘEK (DEN) 2"]};
-            level = ValueToLevel(LevelScale, Probability(values));
+            level = ValueToLevel(PlaceStormIntensityScale, Probability(values));
             Output.Add("MÍSTO VÝSKYTU BOUŘEK", level);
 
             //8)Nebezpečné doprovodné jevy (6.krok+Sloučení A)
