@@ -47,8 +47,8 @@ namespace MeteoViewer.Data
             try
             {
                 if (JData != null)
-                    if (JData.ContainsKey("data"))
-                    return (JArray)JData["data"][Cache.indexHour][Cache.indexOutputlist];
+                    if (JData.ContainsKey(Cache.Config.GetDataType("data")))
+                    return (JArray)JData[Cache.Config.GetDataType("data")][Cache.indexHour][Cache.indexOutputlist];
                 return new JArray();
             }
             catch (Exception e)
@@ -62,8 +62,8 @@ namespace MeteoViewer.Data
             try
             {
                 if (JData != null)
-                    if (JData.ContainsKey("data"))
-                        return (int)JData["data"][hour][output][index];
+                    if (JData.ContainsKey(Cache.Config.GetDataType("data")))
+                        return (int)JData[Cache.Config.GetDataType("data")][hour][output][index];
                 return -1;
             }
             catch (Exception e)

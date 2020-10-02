@@ -14,5 +14,6 @@ namespace MeteoViewer.Data
         internal static int indexOutputlist { get; set; } = 0;
         internal static int indexHour { get; set; } = 0;
         internal static bool Redraw { get; set; } = true;
+        internal static Config.MeteoViewer Config { get; set; } = new Config.MeteoViewer();
     }
 }

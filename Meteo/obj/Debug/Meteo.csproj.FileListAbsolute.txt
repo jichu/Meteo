@@ -171,3 +171,4 @@ D:\workspace\Repos\Meteo\Meteo\bin\Debug\CsvHelper.xml
 D:\workspace\Repos\Meteo\Meteo\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInputs.cache
