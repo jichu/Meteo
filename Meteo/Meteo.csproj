@@ -236,6 +236,7 @@
     <EmbeddedResource Include="UserControlPaletteForMask.resx">
       <DependentUpon>UserControlPaletteForMask.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="bin\Debug\config\model.cfg.tmp" />
     <None Include="bin\Debug\config\scales\Model_ALADIN_CZ&amp;Oblačnost.csv" />
     <None Include="bin\Debug\config\scales\Model_ALADIN_CZ&amp;Relativní_vlhkost_1000.csv" />
