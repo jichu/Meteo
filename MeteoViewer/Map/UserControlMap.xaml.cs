@@ -123,7 +123,7 @@ namespace MeteoViewer.Map
         {
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
                 ComboOutputList.Items.Clear();
-                foreach (string item in Data.Stream.GetJRoot("outputlist"))
+                foreach (string item in Data.Stream.GetJRoot(Data.Cache.Config.GetDataType("list")))
                     ComboOutputList.Items.Add(item);
                 if (ComboOutputList.Items.Count > 0)
                     ComboOutputList.SelectedIndex = 0;

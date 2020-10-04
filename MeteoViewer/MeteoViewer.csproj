@@ -64,6 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\MeteoViewer.cs" />
     <Compile Include="Data\Cache.cs" />
     <Compile Include="Data\Region.cs" />
     <Compile Include="Data\Resources.cs" />
