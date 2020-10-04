@@ -416,7 +416,7 @@ namespace Meteo
             }
 
             WriteToCache();
-            //WriteToDatabase();
+            WriteToDatabase();
         }
 
         private void WriteToCache() {
@@ -932,7 +932,7 @@ namespace Meteo
             return coeficient;
         }
         private bool TestConvection() {
-            if (Parameters["LI Conv"] < 0 && Parameters["SI Convv"] < 0 && Parameters["KI Conv"] < 0 && Parameters["MUCAPE Conv"] < 0 && Parameters["MLCAPE Conv"] < 0 && Parameters["WETBULB Conv"] < 0 && Parameters["MLCAPE + LI Conv"] < 0)
+            if (Parameters["LI Conv"] < 0 && Parameters["SI Conv"] < 0 && Parameters["KI Conv"] < 0 && Parameters["MUCAPE Conv"] < 0 && Parameters["MLCAPE Conv"] < 0 && Parameters["WETBULB Conv"] < 0 && Parameters["MLCAPE + LI Conv"] < 0)
             {
                 return false;
             }

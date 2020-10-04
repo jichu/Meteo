@@ -401,11 +401,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="bin\Debug\config\masks\Model_ALADIN_CZ.bmp" />
     <Content Include="bin\Debug\config\masks\Model_EURO4.bmp" />
     <Content Include="bin\Debug\config\masks\Model_GDPS.bmp" />

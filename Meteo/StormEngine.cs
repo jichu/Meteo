@@ -151,6 +151,7 @@ namespace Meteo
                ),
               "root_secondary"
             );
+
             //Všechno dohromady
             JSONwriter.CreateJsonRoot(
               new JObject
@@ -167,29 +168,9 @@ namespace Meteo
                ),
               "root"
             );
-
-            //Vytváření souboru konkrétních dat
-            //Hlavní výstupy
             var arrayMain = JArray.FromObject(mainData);
-            JSONwriter.CreateJson(
-              new JObject
-              (
-                   new JProperty("samplename",sampleNames),
-                   new JProperty("data", arrayMain)
-               ),
-              "_main"
-            );
-            //Vedlejší výstupy
             var arraySec = JArray.FromObject(secondaryData);
-            JSONwriter.CreateJson(
-              new JObject
-              (
-                   new JProperty("samplename", sampleNames),
-                   new JProperty("data", arraySec)
-               ),
-              "_secondary"
-            );
-            //Všechno dohromady
+
             JSONwriter.CreateJson(
               new JObject
               (
@@ -199,6 +180,29 @@ namespace Meteo
                ),
               "_data"
             );
+
+            //Vytváření souboru konkrétních dat
+            //Hlavní výstupy
+            
+            /*JSONwriter.CreateJson(
+              new JObject
+              (
+                   new JProperty("samplename",sampleNames),
+                   new JProperty("data", arrayMain)
+               ),
+              "_main"
+            );*/
+            //Vedlejší výstupy
+            
+            /*JSONwriter.CreateJson(
+              new JObject
+              (
+                   new JProperty("samplename", sampleNames),
+                   new JProperty("data", arraySec)
+               ),
+              "_secondary"
+            );*/
+            
 
 
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
