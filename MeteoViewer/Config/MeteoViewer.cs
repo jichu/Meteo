@@ -10,7 +10,7 @@ namespace MeteoViewer.Config
     internal class MeteoViewer
     {
         public JArray DataType { get; set; } = new JArray();
-        public int DataTypeSelected { get; set; } = 1;
+        public int DataTypeSelected { get; set; } = 0;
 
         public MeteoViewer()
         {

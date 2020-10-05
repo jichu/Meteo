@@ -122,7 +122,7 @@ namespace Meteo
 
             //Vytváření souboru root
             //Hlavní výstupy
-            JSONwriter.CreateJsonRoot(
+            /*JSONwriter.CreateJsonRoot(
               new JObject
               (
                    new JProperty("orplist", orpList),
@@ -150,7 +150,7 @@ namespace Meteo
                        GetValueFromSettingsList(settings, "output_result3_color") })
                ),
               "root_secondary"
-            );
+            );*/
 
             //Všechno dohromady
             JSONwriter.CreateJsonRoot(
@@ -180,10 +180,9 @@ namespace Meteo
                ),
               "_data"
             );
-
             //Vytváření souboru konkrétních dat
             //Hlavní výstupy
-            
+
             /*JSONwriter.CreateJson(
               new JObject
               (
@@ -193,7 +192,7 @@ namespace Meteo
               "_main"
             );*/
             //Vedlejší výstupy
-            
+
             /*JSONwriter.CreateJson(
               new JObject
               (
@@ -202,7 +201,7 @@ namespace Meteo
                ),
               "_secondary"
             );*/
-            
+
 
 
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");

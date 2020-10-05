@@ -121,7 +121,9 @@ namespace Meteo
 
         private void menuItemLoadInputs_Click(object sender, EventArgs e)
         {
+            Util.ShowLoading("Načítání vstupů...","", false);
             FormSetModelsDir dlg = new FormSetModelsDir();
+            List<Task> tasks = new List<Task>();
             dlg.ShowDialog();
             if (Util.curModelDir == null)
                 return;
@@ -131,9 +133,10 @@ namespace Meteo
                  { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
                 }, false);
 
-            Task.Run(() => UserControlModel.Instance.EnumerationModels());
-
-          //  backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
+            tasks.Add(Task.Run(() => UserControlModel.Instance.EnumerationModels()));
+            Task.WaitAll(tasks.ToArray());
+            Util.HideLoading();
+            //  backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 
         private void menuItemOutput_Click(object sender, EventArgs e)
@@ -184,6 +187,7 @@ namespace Meteo
             try
             {
                 new StormEngine();
+                UserControlOutput.Instance.Render();
             }
             catch (Exception ex) {
                 Util.l("Chyba při výpočtu");

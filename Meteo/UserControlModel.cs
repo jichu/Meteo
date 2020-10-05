@@ -84,6 +84,7 @@ namespace Meteo
             Task.WaitAll(tasks.ToArray());
             watch.Stop();
             Console.WriteLine($"Celkově v čase {watch.ElapsedMilliseconds}ms, obrázků {sourceImages.Count}");
+            
         }
 
         private List<Images> images = new List<Images>();

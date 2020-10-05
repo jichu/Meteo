@@ -325,7 +325,7 @@ namespace WRFdll
                     //Console.WriteLine($"{orp.Value.NearestStrartPoint} ");
                 }
             }
-            Show(b);
+            if(ShowMetaOutputs) Show(b);
         }
         
         private void AddPointToGravityList(string color, int x, int y)
