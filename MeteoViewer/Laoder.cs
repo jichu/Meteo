@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MeteoViewer.Config
+namespace MeteoViewer
 {
-    public class Config
+    class Laoder
     {
+        public Laoder()
+        {
+            Config.Manage.Load();
+        }
     }
 }

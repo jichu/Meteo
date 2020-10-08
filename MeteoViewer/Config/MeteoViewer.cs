@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace MeteoViewer.Config
 {
+    [JsonObject(MemberSerialization.OptIn)]
     internal class MeteoViewer
     {
+        [JsonProperty]
         public JArray DataType { get; set; } = new JArray();
+        [JsonProperty]
         public int DataTypeSelected { get; set; } = 0;
 
         public MeteoViewer()

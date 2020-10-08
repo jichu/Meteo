@@ -26,7 +26,14 @@
                 </Grid>
             </StackPanel>
         </Popup>
-        <ComboBox Name="ComboOutputList" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="600" SelectionChanged="ComboOutputList_SelectionChanged" Grid.ColumnSpan="2" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Name="ComboOutputListType" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" SelectionChanged="ComboOutputListType_SelectionChanged" Grid.Column="0 "/>
+            <ComboBox Name="ComboOutputList" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" SelectionChanged="ComboOutputList_SelectionChanged" Grid.Column="1" />
+        </Grid>
         <Slider Name="SliderHour" HorizontalAlignment="Right" Margin="0,50,0,0" VerticalAlignment="Top" Width="520" SmallChange="1" Maximum="8" AutoToolTipPlacement="TopLeft" TickPlacement="BottomRight" ValueChanged="SliderHour_ValueChanged" IsSnapToTickEnabled="True" Grid.ColumnSpan="2"/>
         <Label Name="LabelHour" Content="Hodina:" HorizontalAlignment="Left" Margin="0,48,0,0" VerticalAlignment="Top"/>
 
