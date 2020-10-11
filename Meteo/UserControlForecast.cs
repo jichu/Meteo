@@ -36,7 +36,6 @@ namespace Meteo
 
         private void ShowMap(string name, string url, int x, int y)
         {
-            Util.ShowLoading("Připojování...");
             ClearControl(name);
             var request = WebRequest.Create(url);
             using (var response = request.GetResponse())

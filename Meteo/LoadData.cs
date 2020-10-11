@@ -17,19 +17,20 @@ namespace Meteo
 
         public LoadData()
         {
-            Task.Run(() => ScanDir())
-                .ContinueWith(t => Console.WriteLine(11));
-        }
-
-        public void ScanDir()
-        {
             FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepsat data vybranou adresářovou strukturou, maskami a stupnicemi?");
             dlg.ShowDialog();
 
             if (Util.curModelDir == null)
                 return;
 
-            Preloader.Show("Načítání modelů, ORP masek a spektra...");
+            Util.ShowLoading("Načítání modelů, ORP masek a spektra...");
+            ScanDir();
+            Util.HideLoading();
+        }
+
+
+        public void ScanDir()
+        {
             try
             {
                 List<Task<bool>> tasks = new List<Task<bool>>();
@@ -42,8 +43,7 @@ namespace Meteo
                 }
 
                 Task.WaitAll(tasks.ToArray());
-
-                Preloader.Hide();
+                                
                 ShowLog();
             }
             catch (Exception e)

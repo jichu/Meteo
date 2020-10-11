@@ -61,6 +61,7 @@ namespace Meteo
                 foreach (var si in sourceImages)
                 {
                     //EnumerationModel(si);
+                    //Preloader.Log($"načítání a zpracování obrázků {i}/{sourceImages.Count}  ");
                     tasks.Add(Task.Run(() => EnumerationModel(si)));
                     if (i == 30)
                     {
@@ -70,7 +71,10 @@ namespace Meteo
                         i = 0;
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
-                        Util.l("flushing...");
+
+                        Task.Delay(500).Wait();
+                        Preloader.Log($"[flushing] ");
+                        Util.l($"flushing");
                     }
                     i++;
                     /*
@@ -215,7 +219,6 @@ namespace Meteo
             curImage = map;
             BeginInvoke(new MethodInvoker(delegate
             {
-                Util.ShowLoading("Načítání mapy...");
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
             }));
             Util.l($"NETUSIM: {Util.curModelName}");
@@ -250,7 +253,6 @@ namespace Meteo
                     string orpMask = Util.pathSource["masks"] +Util.curModelName+".bmp";
                     if (File.Exists(orpMask))
                     {
-                        Util.ShowLoading("Načítání masky...");
                         PictureBox symbol = new PictureBox();
                         Bitmap bmp1 = (Bitmap)Image.FromFile(orpMask);
                         symbol.Width = bmp1.Width;
@@ -340,7 +342,6 @@ namespace Meteo
             {
                 int size = 24;
                 symbolsRainCount = 0;
-                Util.ShowLoading("Načítání symbolů...");
                 Bitmap symbols;
                 foreach (var point in Util.rainRegion)
                 {
