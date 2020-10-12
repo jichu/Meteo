@@ -149,11 +149,11 @@
     <Compile Include="CloudMaskSpectrum.cs" />
     <Compile Include="Chu.cs" />
     <Compile Include="Ji.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="Utils\Log.cs" />
     <Compile Include="JSONparser\JSONreader.cs" />
     <Compile Include="JSONparser\JSONwriter.cs" />
     <Compile Include="LoadData.cs" />
-    <Compile Include="Model.cs" />
     <Compile Include="PreImage.cs" />
     <Compile Include="Preloader.cs" />
     <Compile Include="Program.cs" />
