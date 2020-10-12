@@ -85,7 +85,7 @@ namespace MeteoViewer.TreeView
                         if (file.Name.Length >= 6)
                         {
                             string date = $"{file.Name.Substring(4, 2)}. {file.Name.Substring(2, 2)}. 20{file.Name.Substring(0, 2)}";
-                            string f = $"{file.Name.Substring(14, 3)} ({file.Name.Substring(7, 2)}:{file.Name.Substring(9, 2)})";
+                            string f = $"{file.Name.Substring(14).Replace(".json","")} ({file.Name.Substring(7, 2)}:{file.Name.Substring(9, 2)})";
                             if (!nodes.Contains(date))
                             {
                                 TreeViewItem nodeDate = new TreeViewItem() { Header = date, IsExpanded=true };
