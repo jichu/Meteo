@@ -27,6 +27,7 @@ namespace MeteoViewer
         public MainWindow()
         {
             InitializeComponent();
+            new Laoder();
         }
     }
 }

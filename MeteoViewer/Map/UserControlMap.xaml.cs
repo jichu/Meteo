@@ -52,6 +52,8 @@ namespace MeteoViewer.Map
         {
             Instance = this;
 
+            CreateComboOutputListType();
+
             LoadRootAsync();
             if (Data.Resources.Load())
             {
@@ -130,6 +132,17 @@ namespace MeteoViewer.Map
             }));
         }
 
+        private void CreateComboOutputListType()
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
+                ComboOutputListType.Items.Clear();
+                foreach (JObject item in Data.Cache.Config.DataType)
+                    ComboOutputListType.Items.Add(item["tag"]);
+                if (ComboOutputListType.Items.Count > 0)
+                    ComboOutputListType.SelectedIndex = Data.Cache.Config.DataTypeSelected;
+            }));
+        }
+
         private void RefreshSliderHour()
         {
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
@@ -179,7 +192,14 @@ namespace MeteoViewer.Map
                 return System.Drawing.Color.White;
             return ColorTranslator.FromHtml(colorStr);
         }
-        
+
+        private void ComboOutputListType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Data.Cache.Config.DataTypeSelected = (sender as ComboBox).SelectedIndex;
+            Config.Manage.Save();
+            RerfreshComboOutputList();
+        }
+
         private void ComboOutputList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Data.Cache.indexOutputlist = (sender as ComboBox).SelectedIndex;
@@ -261,5 +281,6 @@ namespace MeteoViewer.Map
                 Utils.Log.Error(e);
             }
         }
+
     }
 }

@@ -159,6 +159,7 @@ namespace Meteo
                 }
             
             Console.WriteLine(obj);
+            if (obj == null) return;
             if (obj.GetType().ToString().Contains(ExceptionText) || (bool) options["toFile"])
             {
                 try

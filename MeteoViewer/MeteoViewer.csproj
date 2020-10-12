@@ -64,12 +64,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\Manage.cs" />
     <Compile Include="Config\MeteoViewer.cs" />
     <Compile Include="Data\Cache.cs" />
     <Compile Include="Data\Region.cs" />
     <Compile Include="Data\Resources.cs" />
     <Compile Include="Data\Stream.cs" />
+    <Compile Include="Laoder.cs" />
     <Compile Include="Map\MaskORP.cs" />
     <Compile Include="Map\UserControlMap.xaml.cs">
       <DependentUpon>UserControlMap.xaml</DependentUpon>

@@ -12,6 +12,18 @@ namespace Meteo
     {
         internal static void ShowAuto(string message, string info = "", bool selfClose = true)
         {
+            if (View.FormMain.Preloader)
+            {
+                UserControlLoader.uc.UpdateInfo(info);
+                return;
+            }
+            View.FormMain.ShowControlLoader(message);
+            if (selfClose)
+            {
+                Thread.Sleep(100);
+                Application.Idle += OnLoaded;
+            }
+            /*
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)
             {
                 View.FormLoader.UpdateInfo(info);
@@ -25,7 +37,7 @@ namespace Meteo
             {
                 Thread.Sleep(100);
                 Application.Idle += OnLoaded;
-            }
+            }*/
         }
 
         internal static void Show(string message, string info = "")
@@ -35,25 +47,39 @@ namespace Meteo
 
         internal static void Hide()
         {
+            if (View.FormMain.Preloader)
+            {
+                Application.Idle -= OnLoaded;
+                View.FormMain.HideControlLoader();
+            }
+            /*
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)
             {
                 Application.Idle -= OnLoaded;
                 View.FormLoader.Close();
             }
+            */
         }
 
         internal static void Log(string info = "")
         {
+            if (View.FormMain.Preloader)
+                UserControlLoader.uc.UpdateInfo(info);
+            else
+                Show("Zpracování...", info);
+
+            /*
             if (View.FormLoader != null && !View.FormLoader.IsDisposed)
                 View.FormLoader.UpdateInfo(info);
             else
                 Show("Zpracování...", info);
+            */
         }
 
         private static void OnLoaded(object sender, EventArgs e)
         {
             Application.Idle -= OnLoaded;
-            View.FormLoader.Close();
+            View.FormMain.HideControlLoader();
         }
     }
 }

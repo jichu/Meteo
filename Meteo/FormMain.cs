@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WRFdll;
@@ -16,57 +17,69 @@ namespace Meteo
 {
     public partial class FormMain : System.Windows.Forms.Form
     {
+        dynamic ControlActive = null;
+        public bool Preloader { get; set; } = false;
 
         public FormMain()
         {
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             View.FormMain = this;
+            Application.Idle += Application_Idle;
+        }
+
+        private void Application_Idle(object sender, EventArgs e)
+        {
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            Util.ShowLoading("Načítání aplikace...");
-
-            /*
-             * root create 1
-            JSONwriter.Add("orplist", new JArray() { 1, 2, 3 });
-            JSONwriter.Add("outputlist", new JArray() { "xx", "yy" });
-            JSONwriter.CreateJsonRoot();
-            */
-
-            /*
-             * root create 2
-            JSONwriter.CreateJsonRoot(
-               new JObject(
-                    new JProperty("orplist", new JArray() { 1, 2, 3 }),
-                    new JProperty("outputlist", new JArray() { 10, "2", 3 })
-                )
-            );
-            */
-
-            /*  
-             Dictionary<string,string> wrf =WRF.Process(new Dictionary<string, string>
-             {
-                 { "source", @".\img1\test.png" },
-                 { "mask", Util.pathSource["wrf_mask"] },
-                 { "mask_orp", @".\img1\Model_WRF_NMM_FLYMET.bmp" }
-             }
-             );
-
-
-
-             foreach (var r in wrf)
-             {
-                 Console.WriteLine(r.Key+"  "+r.Value);
-             }*/
-
+         //   Util.ShowLoading("Načítání aplikace...");
             new Controller();
-            this.menuItemOutput.PerformClick();
-            
+            this.menuItemOutput.PerformClick();            
         }
 
+        public void ShowControlLoader(string message="Zpracování...")
+        {
+            if (panelLayout.InvokeRequired)
+                panelLayout.BeginInvoke((Action)(() =>
+                {
+                    LoaderOn(message);
+                }));
+            else
+                LoaderOn(message);
+        }
 
+        private void LoaderOn(string message)
+        {
+            if (!panelLayout.Controls.Contains(UserControlLoader.Instance))
+            {
+                panelLayout.Controls.Add(UserControlLoader.Instance);
+                UserControlLoader.Instance.Dock = DockStyle.Fill;
+            }
+            UserControlLoader.Instance.BringToFront();
+            UserControlLoader.Instance.UpdateMessage(message);
+            Preloader = true;
+            modelyToolStripMenuItem.Enabled = false;
+        }
+
+        public void HideControlLoader()
+        {
+            if (ControlActive.InvokeRequired)
+                ControlActive.BeginInvoke((Action)(() =>
+                {
+                    LoaderOff();
+                }));
+            else
+                LoaderOff();
+        }
+
+        private void LoaderOff()
+        {
+            ControlActive.BringToFront();
+            Preloader = false;
+            modelyToolStripMenuItem.Enabled = true;
+        }
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -92,8 +105,7 @@ namespace Meteo
         // menu MODELY
         private void menuItemLoadModels_Click(object sender, EventArgs e)
         {
-            Model.Cloud.DBClear();
-            new LoadData();
+            LoadModels();
             /*
             DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou?", "Načíst data do databáze", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
@@ -104,6 +116,13 @@ namespace Meteo
                 mapORP.LoadORPfromModels();
             }
             */
+        }
+
+        private void LoadModels()
+        {
+            Model.Cloud.DBClear();
+            new LoadData();
+            Util.HideLoading();
         }
 
         private void menuItemExplore_Click(object sender, EventArgs e)
@@ -121,13 +140,23 @@ namespace Meteo
 
         private void menuItemLoadInputs_Click(object sender, EventArgs e)
         {
-            Util.ShowLoading("Načítání vstupů...","", false);
-            FormSetModelsDir dlg = new FormSetModelsDir();
-            List<Task> tasks = new List<Task>();
-            dlg.ShowDialog();
+            Util.l(Util.curModelDir);
             if (Util.curModelDir == null)
-                return;
+            {
+                FormSetModelsDir dlg = new FormSetModelsDir();
+                dlg.ShowDialog();
+            }
+            LoadInputs();
 
+            //  backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
+        }
+
+        private void LoadInputs()
+        {
+            if (Util.curModelDir == null)
+                    return;
+            Util.ShowLoading("Načítání vstupů...", "", false);
+            List<Task> tasks = new List<Task>();
             WRF.Init(new Dictionary<string, string>{
                  { "mask", Util.pathSource["wrf_mask"] },
                  { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
@@ -136,7 +165,6 @@ namespace Meteo
             tasks.Add(Task.Run(() => UserControlModel.Instance.EnumerationModels()));
             Task.WaitAll(tasks.ToArray());
             Util.HideLoading();
-            //  backgroundWorkerEnumerationModels.RunWorkerAsync(); //INPUT_DATA
         }
 
         private void menuItemOutput_Click(object sender, EventArgs e)
@@ -149,6 +177,8 @@ namespace Meteo
             }
             else
                 UserControlOutput.Instance.BringToFront();
+
+            ControlActive = UserControlOutput.Instance;
         }
 
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
@@ -174,6 +204,8 @@ namespace Meteo
             }
             else
                 UserControlPaletteForMask.Instance.BringToFront();
+
+            ControlActive = UserControlPaletteForMask.Instance;
         }
 
         private void backgroundWorkerEnumerationModels_DoWork(object sender, DoWorkEventArgs e)
@@ -183,15 +215,24 @@ namespace Meteo
 
         private void MenuItemAlgorithm_Click(object sender, EventArgs e)
         {
+            LoadAlgorithm();
+        }
+
+        private void LoadAlgorithm()
+        {
+            if (Util.curModelDir == null)
+                return;
             Util.ShowLoading("Algoritmus počítá přepověď....");
             try
             {
                 new StormEngine();
                 UserControlOutput.Instance.Render();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Util.l("Chyba při výpočtu");
             }
+            Util.HideLoading();
         }
 
         private void menuItemForecast_Click(object sender, EventArgs e)
@@ -204,11 +245,19 @@ namespace Meteo
             }
             else
                 UserControlForecast.Instance.BringToFront();
+
+            ControlActive = UserControlForecast.Instance;
         }
 
         private void FormMain_MouseClick(object sender, MouseEventArgs e)
         {
-            Util.l(0);
+        }
+
+        private void menuDoAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadModels();
+            LoadInputs();
+            LoadAlgorithm();
         }
     }
 }

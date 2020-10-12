@@ -194,7 +194,6 @@ namespace Meteo
             string orpMask = Util.pathSource["masks"] + usedMask + ".bmp";
             if (File.Exists(orpMask))
             {
-                Util.ShowLoading("Načítání masky...");
                 mask = (Bitmap)Image.FromFile(orpMask);
             }
             canvas.MouseMove += Canvas_MouseMove;
@@ -428,7 +427,6 @@ namespace Meteo
 
         private void DrawRegion(string hex, Color value)
         {
-            Util.ShowLoading("Vykreslování");
             List<CloudMaskSpectrum> cms = Model.Cloud.MaskSpectrumGetCoodsByColor(hex, usedMask);
             string coods = cms.Count > 0 ? cms.First().coods : "";
             if (coods != "")
