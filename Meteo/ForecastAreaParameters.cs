@@ -457,7 +457,12 @@ namespace Meteo
             int level = ValueToLevel(LevelScale, Probability(values));
             Output.Add("LOKÁLNÍ PŘEDPOVĚĎ", level);
 
-            values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["M_PŘEDPOVĚĎ INTENZITY BOUŘÍ"] };
+            //SPECIÁLNÍ PŘEDPOVĚĎ VLASTNOSTÍ ATMOSFÉRY
+            values = new List<float>() { Parameters["KI"], Parameters["MFDIV 0-1 km"], Parameters["RH 700 hPa"], Parameters["RH 500 hPa"] };
+            level = ValueToLevel(LevelScale, Probability(values));
+            Output.Add("SPECIÁLNÍ PŘEDPOVĚĎ VLASTNOSTÍ ATMOSFÉRY", level);
+
+            values = new List<float>() { Output["LOKÁLNÍ PŘEDPOVĚĎ"], Output["SPECIÁLNÍ PŘEDPOVĚĎ VLASTNOSTÍ ATMOSFÉRY"], Output["M_PŘEDPOVĚĎ INTENZITY BOUŘÍ"] };
             level = ValueToLevel(PlaceStormIntensityScale, Probability(values));
             Output.Add("M_PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", level); //MÍSTO VÝSKYTU BOUŘEK
 
@@ -744,7 +749,7 @@ namespace Meteo
             values.Add(stormVectorLevel);
 
             int stormMovement = ValueToLevel(LevelScale, Probability(values));
-            stormMovement = (stormMovement == 0 || stormMovement == 1) ? 0 : 1;
+            //stormMovement = (stormMovement == 0 || stormMovement == 1) ? 0 : 1;
 
             Output.Add("POHYB BOUŘE", stormMovement);
         }

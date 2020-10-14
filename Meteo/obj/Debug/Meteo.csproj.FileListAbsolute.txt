@@ -173,3 +173,4 @@ D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Runtime.CompilerServices.Unsafe.
 D:\workspace\Repos\Meteo\Meteo\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.csproj.CoreCompileInputs.cache
 D:\_PROGRAMOVANI\workspace\csharp\Repos\Meteo\Meteo\obj\Debug\Meteo.UserControlLoader.resources
+C:\Users\jarom\source\repos\jichu\Meteo\Meteo\obj\Debug\Meteo.UserControlLoader.resources
