@@ -178,8 +178,8 @@ namespace Meteo
                    new JProperty("maindata", arrayMain),
                    new JProperty("secondarydata", arraySec)
                ),
-              "_data"
-            );
+              "_" + Util.GetModelDate()
+            ); ;
             //Vytváření souboru konkrétních dat
             //Hlavní výstupy
 

@@ -201,6 +201,12 @@ namespace Meteo
             catch (Exception e) { Util.l(e); }
         }
 
+        internal static string GetModelDate()
+        {
+            Console.WriteLine(curModelDir);
+            return curModelDir;
+        }
+
         public static string GetSettings(string item)
         {
             foreach (var s in Model.Cloud.SETTINGSGetSettings())
