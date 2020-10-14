@@ -568,7 +568,7 @@ namespace Meteo
             List<float> windwardValues, leeValues;
             List<float> windEffectValues = new List<float>();
             int windwardLevel, leeLevel;
-
+            /* VYPNUTĚ POČÍTÁNÍ ZÁVĚTRNÝCH + NÁVĚTRNÝCH EFEKTŮ
             if (mapWindwardEffect[Parameters["Směr větru 600 hPa"]] == 1){
                 windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["GRAD 925-700 hPa"], Parameters["MXR"], Parameters["KONV+/DIV- (0-1 km)"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
                 windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
@@ -588,12 +588,15 @@ namespace Meteo
             }
 
             int windEffectLevel = ValueToLevel(OroKonvScale, Probability(windEffectValues));
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT", windEffectLevel);*/
 
-            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT", windEffectLevel);
-
+            //Návětrný efekt - orografické vlivy
+            windwardValues = new List<float>() { Parameters["Polohy nadmořských výšek"], Parameters["Hřeben"], Parameters["MFDIV 0-1 km"], Parameters["OROGRAPHIC LIFT"], Parameters["Rychlost větru v 850 hPa"] };
+            windwardLevel = ValueToLevel(LevelScale, Probability(windwardValues));
+            Output.Add("NÁVĚTRNÝ+ZÁVĚTRNÝ EFEKT", windwardLevel); //"NÁVĚTRNÝ EFEKT - OROGRAFICKÉ VLIVY"
         }
 
-        //Návětrný efekt
+       
 
         //6. Riziko výskytu nebezpečných jevů
         private int DangerousPhenomenaCount(List<float> weights, List<float> values) {
@@ -1095,7 +1098,7 @@ namespace Meteo
             float value = 0;
 
             value = Model.Cloud.RELIEFCHARVALUESGetValueForName(id_orp, name);
-            //value = -1;//Vypnutí charakteristik reliéfu (pro debug)
+            //value = -1; //Vypnutí charakteristik reliéfu (pro debug)
             return value;
         }
 
