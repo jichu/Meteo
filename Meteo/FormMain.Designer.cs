@@ -40,9 +40,11 @@
             this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemForecast = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDoAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
             this.backgroundWorkerEnumerationModels = new System.ComponentModel.BackgroundWorker();
-            this.menuDoAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemWind = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSettingWind = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,10 +54,11 @@
             this.menuMain.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.souborToolStripMenuItem,
-            this.modelyToolStripMenuItem});
+            this.modelyToolStripMenuItem,
+            this.menuItemWind});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(1512, 35);
+            this.menuMain.Size = new System.Drawing.Size(1512, 33);
             this.menuMain.TabIndex = 2;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -143,6 +146,16 @@
             this.menuItemPalette.Text = "Paleta masky";
             this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
             // 
+            // menuDoAllToolStripMenuItem
+            // 
+            this.menuDoAllToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.menuDoAllToolStripMenuItem.Name = "menuDoAllToolStripMenuItem";
+            this.menuDoAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.menuDoAllToolStripMenuItem.Size = new System.Drawing.Size(483, 34);
+            this.menuDoAllToolStripMenuItem.Text = "Proveď CELÝ výpočet předpovědí ...";
+            this.menuDoAllToolStripMenuItem.ToolTipText = "Načíst modely a ORP masky, načíst vstupy, algoritmus předpovědí";
+            this.menuDoAllToolStripMenuItem.Click += new System.EventHandler(this.menuDoAllToolStripMenuItem_Click);
+            // 
             // panelLayout
             // 
             this.panelLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -158,15 +171,20 @@
             // 
             this.backgroundWorkerEnumerationModels.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerEnumerationModels_DoWork);
             // 
-            // menuDoAllToolStripMenuItem
+            // menuItemWind
             // 
-            this.menuDoAllToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.menuDoAllToolStripMenuItem.Name = "menuDoAllToolStripMenuItem";
-            this.menuDoAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.menuDoAllToolStripMenuItem.Size = new System.Drawing.Size(483, 34);
-            this.menuDoAllToolStripMenuItem.Text = "Proveď CELÝ výpočet předpovědí ...";
-            this.menuDoAllToolStripMenuItem.ToolTipText = "Načíst modely a ORP masky, načíst vstupy, algoritmus předpovědí";
-            this.menuDoAllToolStripMenuItem.Click += new System.EventHandler(this.menuDoAllToolStripMenuItem_Click);
+            this.menuItemWind.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuSettingWind});
+            this.menuItemWind.Name = "menuItemWind";
+            this.menuItemWind.Size = new System.Drawing.Size(105, 29);
+            this.menuItemWind.Text = "Nastavení";
+            // 
+            // menuSettingWind
+            // 
+            this.menuSettingWind.Name = "menuSettingWind";
+            this.menuSettingWind.Size = new System.Drawing.Size(391, 34);
+            this.menuSettingWind.Text = "Zahrnout do výpočtů i Směry větru";
+            this.menuSettingWind.Click += new System.EventHandler(this.menuSettingWind_Click);
             // 
             // FormMain
             // 
@@ -208,6 +226,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemAlgorithm;
         private System.Windows.Forms.ToolStripMenuItem menuItemForecast;
         private System.Windows.Forms.ToolStripMenuItem menuDoAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuItemWind;
+        internal System.Windows.Forms.ToolStripMenuItem menuSettingWind;
     }
 }
 

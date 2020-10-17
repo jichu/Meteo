@@ -25,6 +25,7 @@ namespace Meteo
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             View.FormMain = this;
+            menuSettingWind.Checked = true;
             Application.Idle += Application_Idle;
         }
 
@@ -220,8 +221,6 @@ namespace Meteo
 
         private void LoadAlgorithm()
         {
-            if (Util.curModelDir == null)
-                return;
             Util.ShowLoading("Algoritmus počítá přepověď....");
             try
             {
@@ -258,6 +257,11 @@ namespace Meteo
             LoadModels();
             LoadInputs();
             LoadAlgorithm();
+        }
+
+        private void menuSettingWind_Click(object sender, EventArgs e)
+        {
+            menuSettingWind.Checked = !menuSettingWind.Checked;
         }
     }
 }
