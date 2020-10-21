@@ -14,7 +14,7 @@ namespace Meteo
         {
             if (View.FormMain.Preloader)
             {
-                UserControlLoader.uc.UpdateInfo(info);
+                UserControlLoader.Instance.UpdateInfo(info);
                 return;
             }
             View.FormMain.ShowControlLoader(message);
@@ -63,8 +63,9 @@ namespace Meteo
 
         internal static void Log(string info = "")
         {
+                UserControlLoader.Instance.UpdateInfo(info);
+            /*
             if (View.FormMain.Preloader)
-                UserControlLoader.uc.UpdateInfo(info);
             else
                 Show("Zpracování...", info);
 

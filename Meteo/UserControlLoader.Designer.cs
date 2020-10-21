@@ -75,6 +75,7 @@
             this.Controls.Add(this.labelMessage);
             this.Name = "UserControlLoader";
             this.Size = new System.Drawing.Size(1451, 799);
+            this.Load += new System.EventHandler(this.UserControlLoader_Load);
             this.ResumeLayout(false);
 
         }
