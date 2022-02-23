@@ -264,3 +264,5 @@ __pycache__/
 *.pyc
 /Meteo/CloudInputData.cs
 /Meteo/ForecastAreaParameters.cs
+/WRFdownloader
+/WRFtest/Scripts
