@@ -36,11 +36,7 @@ namespace WRFparser
         public static void Init(string configFile)
         {
             LoadConfig(configFile);
-            foreach (var orp in Config.ORP)
-            {
-                RunWeb(orp["url"].ToString(), orp["name"].ToString());
-                Console.WriteLine($"{orp["name"]}");
-            }
+            
             
         }
 
@@ -63,6 +59,7 @@ namespace WRFparser
 
         public static JArray Parse(string html)
         {
+            
             numbers = new List<int>();
             JArray ja = new JArray();
             if (html.IndexOf(sep) == -1) return ja;
@@ -159,49 +156,8 @@ namespace WRFparser
             bmp.Save(dir+"/"+Name+".png", ImageFormat.Png);
         }
 
-        private static void RunWeb(string url, string name)
-        {
-            Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2();
-            wv.Source = new Uri(url);
-            wv.Tag = name;
-            wv.NavigationCompleted += webView_NavigationCompleted;
-        }
-
-
-        private static async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
-        {
-            //MessageBox.Show("sdfg");
-            //(sender as Microsoft.Web.WebView2.WinForms.WebView2).CoreWebView2.DOMContentLoaded += webView_DOMContentLoaded;
-            await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
-        }
-
-
-        private static async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
-        {
-            string click = "document.querySelector(\"[data-name = '2d_w']\").click();";
-            string html = "";
-            var o = await wv.CoreWebView2.ExecuteScriptAsync(click);
-            o = await wv.CoreWebView2.ExecuteScriptAsync("let g =document.querySelectorAll('#tabid_1_content_div svg g g');let result = '';for (let x of g) { result += x.getAttribute('transform') + ';'; };result");
-            html = o.ToString();
-            /*
-            while (true)
-            {
-                Thread.Sleep(100);
-                var o = await wv.CoreWebView2.ExecuteScriptAsync(click);
-                o = await wv.CoreWebView2.ExecuteScriptAsync("let g =document.querySelectorAll('#tabid_1_content_div svg g g');let result = '';for (let x of g) { result += x.getAttribute('transform') + ';'; };result");
-                html = o.ToString();
-            Debug.WriteLine(html);
-            }
-            */
-            DebugTest = Config.Debug;
-            Time = Config.Time;
-            Name = wv.Tag.ToString();
-            JArray ja = Parse(html);
-            outputs.Add(new JObject(
-                new JProperty("name", wv.Tag),
-                new JProperty("wind", ja)
-                ));
-        }
+        
+        
     }
 
 }

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SmeryVetru
 {
-    class ApplyWRF : Form
+    class ApplyWRF
     {
         private JArray Outputs = new JArray();
 

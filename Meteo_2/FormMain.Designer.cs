@@ -185,7 +185,7 @@
             this.panelLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelLayout.Location = new System.Drawing.Point(13, 37);
+            this.panelLayout.Location = new System.Drawing.Point(12, 27);
             this.panelLayout.Name = "panelLayout";
             this.panelLayout.Size = new System.Drawing.Size(983, 681);
             this.panelLayout.TabIndex = 3;
