@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29326.143
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo", "Meteo\Meteo.csproj", "{F169D7DE-A1C7-4919-8F25-77874992DCBF}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRFparser", "WRFparser\WRFparser.csproj", "{07E472D2-B654-4773-88F1-7F4706D153A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmeryVetru", "SmeryVetru\SmeryVetru.csproj", "{EB1C4ABE-E288-47E6-BBC9-E7ECDD7E90A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo_2", "Meteo_2\Meteo_2.csproj", "{03783833-7590-447C-B60A-E98EDD434281}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{EB1C4ABE-E288-47E6-BBC9-E7ECDD7E90A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB1C4ABE-E288-47E6-BBC9-E7ECDD7E90A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB1C4ABE-E288-47E6-BBC9-E7ECDD7E90A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03783833-7590-447C-B60A-E98EDD434281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03783833-7590-447C-B60A-E98EDD434281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03783833-7590-447C-B60A-E98EDD434281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03783833-7590-447C-B60A-E98EDD434281}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
