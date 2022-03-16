@@ -106,12 +106,12 @@ namespace Meteo
             pressureMLSP = GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP", sample_name, id, "REAL");
             mlcape = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCAPE+LI_Wetter_3_de", sample_name, id, "REAL");  
             mlcin = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de", sample_name, id, "REAL");
+            temperature_850 = GetParameter("Model_GFS_Wetter3_DE_25km", "Teplota_850hPa", sample_name, id, "REAL");
+            mucape = GetParameter("Model_GFS_Lightning_Wizard_50km", "MUCAPE", sample_name, id, "REAL");
 
-
-            //temperature_850 = GetParameter("Model_GFS_Meteomodel_PL_25km", "Teplota_850", sample_name, id); //+ Wetter3 DE 25km / Teplota 850
             //dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km", sample_name, id);//možná nebude k dispozici
             //relativeVorticity = GetParameter("", "", sample_name, id);// relative vorticity 500hpa
-            //mucape = GetParameter("", "", sample_name, id);//+ lighting wizard 
+
 
             //charakteristiky reliéfu
             sklonitost_reliefu = GetRelief("Sklonitost reliéfu (průměrná)");

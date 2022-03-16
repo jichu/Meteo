@@ -38,7 +38,7 @@ namespace Meteo
         {
          //   Util.ShowLoading("Načítání aplikace...");
             new Controller();
-            ApplyWRF();
+            //ApplyWRF();
             this.menuItemOutput.PerformClick();            
         }
 
