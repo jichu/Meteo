@@ -15,6 +15,7 @@ namespace Meteo
         //Předpovědní parametry ORP
         public float wetBulb { get; set; } 
         public float corfidiVector { get; set; } 
+        public float wind_1000 { get; set; }
         public float wind_850 { get; set; }
         public float wind_700 { get; set; }
         public float wind_600 { get; set; }
@@ -77,6 +78,16 @@ namespace Meteo
 
         public Dictionary<string, float> convectionTypes { get; set; } = new Dictionary<string, float>();
 
+        //Předpověď lokálních podmínek
+        public int temperatureInfluence { get; set; }
+        public int windInfluence { get; set; }
+        public int humidityInfluence { get; set; }
+        public int orographicInfluence { get; set; }
+        public int combineInfluence { get; set; }
+        public int significantPredictors { get; set; }
+        public int otherPredictors { get; set; }
+        public int combineIntensity { get; set; }
+
         public CloudORPS() {
         }
         public CloudORPS(string id, string name)
@@ -88,6 +99,7 @@ namespace Meteo
         public void LoadData(string sample_name) {
             //přepovědní parametry
             wetBulb = GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp", sample_name, id, "REAL");
+            wind_1000 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m", sample_name, id);
             wind_850 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850", sample_name, id);
             wind_700 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700", sample_name, id);
             wind_600 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600", sample_name, id);
@@ -109,6 +121,7 @@ namespace Meteo
             temperature_850 = GetParameter("Model_GFS_Wetter3_DE_25km", "Teplota_850hPa", sample_name, id, "REAL");
             mucape = GetParameter("Model_GFS_Lightning_Wizard_50km", "MUCAPE", sample_name, id, "REAL");
 
+            dls = -1f;
             //dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km", sample_name, id);//možná nebude k dispozici
             //relativeVorticity = GetParameter("", "", sample_name, id);// relative vorticity 500hpa
 

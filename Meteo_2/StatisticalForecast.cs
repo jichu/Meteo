@@ -8,6 +8,10 @@ namespace Meteo
 {
     class StatisticalForecast
     {
+        private int precision = 10;
+        private const int RATIO = 3;
+        private List<float> LevelScale = new List<float>() { 0.25f, 0.5f, 0.75f, 1.0f };
+
         public CloudSamples sample { get; set; }
 
         public int windDirection { get; set; }
@@ -85,7 +89,18 @@ namespace Meteo
         private void precipitationProbability(CloudORPS orp, float minT, float maxT) {
             if (orp.temperature_850 >= minT && orp.temperature_850 <= maxT)
             {
-
+                //TODO podmínka na denní dobu (odpolední hodiny)
+                //Předpověď lokálních podmínek
+                orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.orientace_reliefu_tepelny_prohrev_odpoledne, orp.vegetace_pokryti, orp.ir_kontrast, orp.cloudy }));
+                orp.windInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sidelni_utvar, orp.sirka_udoli, orp.obtekani_prekazky, orp.wind_1000 }));
+                orp.humidityInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.rh_1000, orp.mfdiv }));
+                orp.orographicInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.polohy_nadmorskych_vysek, orp.sirka_hrebene, orp.mfdiv, orp.potentional_orographic_lift, orp.wind_850 }));
+                orp.combineInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.temperatureInfluence, orp.windInfluence, orp.humidityInfluence, orp.orographicInfluence }));
+                
+                //Kombinovaná předpověď intenzity konvektivnách srážek
+                orp.significantPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.temperature_850, orp.corfidiVector, orp.wetBulb, orp.dls}));
+                orp.otherPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.frontogenesis_850, orp.mlcape, orp.mlcin, orp.mixr, orp.sreh_3km, orp.wind_850, orp.wind_300, orp.pwater}));
+                orp.combineIntensity = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.significantPredictors, orp.otherPredictors }));
             }
         }
 
@@ -334,7 +349,7 @@ namespace Meteo
             }
             return sum;
         }
-
+        //Zjištění denní doby podle názvu snímku
         private bool IsDay()
         {
             if (this.sample.sample_name == "21" || this.sample.sample_name == "00" || this.sample.sample_name == "03" || this.sample.sample_name == "06" || this.sample.sample_name == "24" ||
@@ -342,6 +357,36 @@ namespace Meteo
                 return false;
             else
                 return true;
+        }
+
+        //Převod hodnoty pravděpodobnosti na úroveň dle tabulky
+        private int ValueToLevel(List<float> levels, float value)
+        {
+            int level = -1;
+            foreach (var l in levels)
+            {
+
+                level = (value <= l) ? levels.IndexOf(l) : -1;
+                if (level != -1) break;
+            }
+            return level;
+        }
+        //Výpočet pravděpodobnosti
+        private float Probability(List<float> list)
+        {
+            List<float> values = TestParameters(list);
+            if (values.Count != 0) return (float)Math.Round((double)(new decimal(SumArray(values) / (values.Count * RATIO))), precision);
+            else { return -1; }
+        }
+
+        private List<float> TestParameters(List<float> list)
+        {
+            List<float> values = new List<float>();
+            foreach (var l in list)
+            {
+                if (l != -1) values.Add(l);
+            }
+            return values;
         }
     }
 }
