@@ -49,6 +49,19 @@ namespace Meteo
                 {
                     //Util.l("Výpočet ukončen");
                 }
+
+                //Výpis výsledků
+                Util.l($"{orp.name}; Sloučená intenzita: {orp.combineIntensity}; Směr větru: {Util.windDirectionToString[sample.windDirection]}; Typů konvekce: {orp.convectionTypes.Count}");
+                foreach (var type in orp.convectionTypes)
+                {
+                    Util.l($"{type.Key}");
+                }
+
+                orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY", orp.combineIntensity);
+
+                CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
+                Util.outputDataCache.Add(data);
+
             }
 
         }
@@ -57,7 +70,7 @@ namespace Meteo
             //Util.l($"Zvlněná studená fronta: {orp.convectionTypes.Keys.Contains("Zvlněná studentá fronta")}");
             if (orp.convectionTypes.Keys.Contains("Zvlněná studentá fronta")) {
                 precipitationProbability(orp, 14, 20);
-                precipitationProbability(orp, -300, 13);
+                precipitationProbability(orp, -300, 13, true); //Pouští se jen pro tento případ
             }
             if (orp.convectionTypes.Keys.Contains("Zvlněná studentá fronta - supercelární bouře")) {
                 precipitationProbability(orp, 16, 20);
@@ -86,9 +99,13 @@ namespace Meteo
             
         }
 
-        private void precipitationProbability(CloudORPS orp, float minT, float maxT) {
+        private void precipitationProbability(CloudORPS orp, float minT, float maxT, bool cold=false) {
             if (orp.temperature_850 >= minT && orp.temperature_850 <= maxT)
             {
+                orp.warmWetSectorPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.temperature_850, orp.frontogenesis_850, orp.pressureMLSP, orp.mfdiv, orp.relativeVorticity, orp.rh_700 }));
+                orp.coldSectorPlace = (cold)?ValueToLevel(LevelScale, Probability(new List<float>() { orp.pressureMLSP, orp.mfdiv, orp.relativeVorticity, orp.rh_700 })):0;
+                orp.combineSectorPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.warmWetSectorPlace, orp.coldSectorPlace}));
+
                 //TODO podmínka na denní dobu (odpolední hodiny)
                 //Předpověď lokálních podmínek
                 orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.orientace_reliefu_tepelny_prohrev_odpoledne, orp.vegetace_pokryti, orp.ir_kontrast, orp.cloudy }));
@@ -97,10 +114,15 @@ namespace Meteo
                 orp.orographicInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.polohy_nadmorskych_vysek, orp.sirka_hrebene, orp.mfdiv, orp.potentional_orographic_lift, orp.wind_850 }));
                 orp.combineInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.temperatureInfluence, orp.windInfluence, orp.humidityInfluence, orp.orographicInfluence }));
                 
-                //Kombinovaná předpověď intenzity konvektivnách srážek
+                //Kombinovaná předpověď intenzity konvektivních srážek
                 orp.significantPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.temperature_850, orp.corfidiVector, orp.wetBulb, orp.dls}));
                 orp.otherPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.frontogenesis_850, orp.mlcape, orp.mlcin, orp.mixr, orp.sreh_3km, orp.wind_850, orp.wind_300, orp.pwater}));
                 orp.combineIntensity = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.significantPredictors, orp.otherPredictors }));
+
+                //TODO 
+                orp.statisticalPrecipitation = 1;
+                orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineSectorPlace}));   
+                orp.finalStorm= ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineIntensity })); //chybí summmerge?  
             }
         }
 

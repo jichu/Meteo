@@ -37,7 +37,10 @@ namespace Meteo
             else if (method == algorithms.statistic_forecast)
             {
                 Util.l("Algoritmus statistické předpovědi konvenktivních srážek");
-
+                foreach (var l in listSamples)
+                {
+                    sampleNames.Add(l.sample_name);
+                }
                 precipitationFilter = new PrecipitationFilter(ORPS, listSamples);
 
                 Util.l("Dále bude výpočet pokračovat pro tyto intervaly: ");
@@ -50,7 +53,7 @@ namespace Meteo
                         new StatisticalForecast(orp, s);
                     }*/
                 }
-
+                Run();
 
             }
             else {
@@ -67,7 +70,7 @@ namespace Meteo
             foreach (var s in sampleNames)
             {
                 
-                taskList.Add(Task.Run(() => Algorithm(s)));
+                //taskList.Add(Task.Run(() => Algorithm(s))); //zapnutí/vypnutí původního algoritmu
                 /*Thread t = new Thread(() => Algorithm(s));
                 t.Start();*/
                 //threadList.Add(t);

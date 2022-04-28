@@ -40,7 +40,6 @@ namespace Meteo
         public float mlcin { get; set; }
 
         //Charakteristiky reliéfu
-
         public float sklonitost_reliefu { get; set; }
         public float orientace_reliefu_tepelny_prohrev_dopoledne { get; set; }
         public float orientace_reliefu_tepelny_prohrev_odpoledne { get; set; }
@@ -78,6 +77,11 @@ namespace Meteo
 
         public Dictionary<string, float> convectionTypes { get; set; } = new Dictionary<string, float>();
 
+        //Místa výskytu srážek
+        public int warmWetSectorPlace { get; set; }
+        public int coldSectorPlace { get; set; }
+        public int combineSectorPlace { get; set; }
+
         //Předpověď lokálních podmínek
         public int temperatureInfluence { get; set; }
         public int windInfluence { get; set; }
@@ -87,6 +91,13 @@ namespace Meteo
         public int significantPredictors { get; set; }
         public int otherPredictors { get; set; }
         public int combineIntensity { get; set; }
+
+        //Výsledné předpovědi
+        public int statisticalPrecipitation { get; set; }
+        public int finalPlace { get; set; }
+        public int finalStorm { get; set; }
+
+        public Dictionary<string, float> output { get; set; } = new Dictionary<string, float>();
 
         public CloudORPS() {
         }
