@@ -10,6 +10,7 @@ namespace Meteo
     {
         public List<CloudORPS> ORPList { get; set; }
         public List<CloudSamples> samplesList { get; set; }
+        public List<int> id_regions { get; set; } = new List<int>();
         public List<CloudSamples> finalSampleList { get; set; } = new List<CloudSamples>();
 
         public Dictionary<string, int> typeValueDictionary = new Dictionary<string, int>
@@ -39,9 +40,37 @@ namespace Meteo
                         finalSampleList.Add(s);
                         break;
                     }
-
+                }        
+            }
+            foreach (var orp in finalSampleList.First().ORPS) {
+                if (!(id_regions.Contains(orp.id_region)))
+                {
+                    id_regions.Add(orp.id_region);
                 }
             }
+
+
+            foreach (var s in finalSampleList){
+                foreach (var orp in s.ORPS){
+                    orp.precipitationResult = (GetParameter("Model_ALADIN_CZ", "Srážky_MAIN", s.sample_name, orp.id) + GetParameter("Model_WRF_ARW", "Srážky_MAIN", s.sample_name, orp.id) + GetParameter("Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN", s.sample_name, orp.id));
+                }
+                foreach (var region in id_regions){
+                   int tempResult = 0; 
+                   foreach (var orp in s.ORPS){
+                        if (region == orp.id_region) {
+                            if (orp.precipitationResult > tempResult) tempResult = (int) orp.precipitationResult;
+                        }
+                   }
+                   foreach (var orp in s.ORPS){
+                        if (region == orp.id_region)
+                        {
+                            orp.precipitationResultRegion = tempResult;
+                        }
+                    }
+                }
+
+            }
+
         }
 
         private float GetParameter(string model, string submodel, string sampleName, int id_orp, string type = "DEFAULT")

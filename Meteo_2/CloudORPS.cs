@@ -15,6 +15,7 @@ namespace Meteo
         //Předpovědní parametry ORP
         public float wetBulb { get; set; } 
         public float corfidiVector { get; set; } 
+        public float corfidiVectorLevel { get; set; } 
         public float wind_1000 { get; set; }
         public float wind_850 { get; set; }
         public float wind_700 { get; set; }
@@ -38,6 +39,8 @@ namespace Meteo
         public float rh_1000 { get; set; }
         public float cloudy { get; set; }
         public float mlcin { get; set; }
+        public float precipitationResult { get; set; }
+        public float precipitationResultRegion { get; set; }
 
         //Charakteristiky reliéfu
         public float sklonitost_reliefu { get; set; }
@@ -75,7 +78,22 @@ namespace Meteo
             { "Orografická konvekce - linie konvergence", 0f}
         };
 
+        public Dictionary<string, string> convectionTypeConversion = new Dictionary<string, string>
+        {
+            { "Zvlněná studentá fronta", "FRONTÁLNÍ (Studená instabilní hmota)" },
+            { "Zvlněná studentá fronta - supercelární bouře", "FRONTÁLNÍ (Studená instabilní hmota)"  },
+            { "Studentá fronta", "FRONTÁLNÍ (Studená instabilní hmota)"  },
+            { "Studentá okluze", "FRONTÁLNÍ (Studená instabilní hmota)"  },
+            { "Teplá okluze", "FRONTÁLNÍ (Teplá instabilní hmota)"},
+            { "Teplá okluze - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"},
+            { "Kvazifrontální konvekce", "KVAZIFRONTÁLNÍ (Studená instabilní hmota)"},
+            { "Orografická konvekce", "OROGRAFICKÁ (Teplá instabilní hmota)"},
+            { "Orografická konvekce - linie konvergence", "OROGRAFICKÁ (Teplá instabilní hmota)"}
+        };
+
         public Dictionary<string, float> convectionTypes { get; set; } = new Dictionary<string, float>();
+        public string convectionTypesStringForm { get; set; }
+        public string convectionSuperTypesStringForm { get; set; }
 
         //Místa výskytu srážek
         public int warmWetSectorPlace { get; set; }
@@ -97,7 +115,7 @@ namespace Meteo
         public int finalPlace { get; set; }
         public int finalStorm { get; set; }
 
-        public Dictionary<string, float> output { get; set; } = new Dictionary<string, float>();
+        public Dictionary<string, string> output { get; set; } = new Dictionary<string, string>();
 
         public CloudORPS() {
         }
@@ -149,6 +167,24 @@ namespace Meteo
             polohy_nadmorskych_vysek = GetRelief("Polohy nadmořských výšek");
             sirka_hrebene = GetRelief("Šířka hřebene");
 
+        }
+
+        public void ProcessConvectionTypes() {
+            if (convectionTypes.Count >= 2)
+            {
+                foreach (var item in convectionTypes)
+                {
+                    convectionTypesStringForm += item.Key + ";";
+                    convectionSuperTypesStringForm += convectionTypeConversion[item.Key] + ";";
+                }
+                //Util.l($"XXX:{convectionTypesStringForm}: {convectionSuperTypesStringForm}");
+            }
+            else {
+                
+                convectionTypesStringForm = convectionTypes.First().Key;
+                convectionSuperTypesStringForm = convectionTypeConversion[convectionTypes.First().Key];
+                //Util.l($"YYY:{convectionTypesStringForm}: {convectionSuperTypesStringForm}");
+            }
         }
 
         private float GetParameter(string model, string submodel, string sampleName, int id_orp, string type = "DEFAULT")

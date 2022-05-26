@@ -34,15 +34,41 @@ namespace Meteo
                     //Vektor pohybu bouře
                     List<float> windSpeedValues = new List<float>() { orp.wind_850, orp.wind_700, orp.wind_600, orp.wind_500, orp.wind_400, orp.wind_300 };
                     orp.corfidiVector = 2 * Average(windSpeedValues) - windSpeedValues.First();
-                    float corfidiVectorLevel = 0;
-                    if (orp.corfidiVector <= 3) corfidiVectorLevel = 3;
-                    else if (orp.corfidiVector <= 9) corfidiVectorLevel = 2;
-                    else if (orp.corfidiVector <= 15) corfidiVectorLevel = 1;
-                    else corfidiVectorLevel = 0;
+                    if (orp.corfidiVector <= 3) orp.corfidiVectorLevel = 3;
+                    else if (orp.corfidiVector <= 9) orp.corfidiVectorLevel = 2;
+                    else if (orp.corfidiVector <= 15) orp.corfidiVectorLevel = 1;
+                    else orp.corfidiVectorLevel = 0;
 
                     ConvectionType(orp);
                     CombinePrecipitation(orp);
 
+                    //Výstupní parametry / vlastnosti
+                    orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity != 0 ? orp.combineIntensity.ToString() : "0");
+                    orp.output.Add("SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
+                    orp.output.Add("ČAS VÝSKYTU", sample.sample_name);
+                    orp.output.Add("RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+                    orp.output.Add("PODTYP KONVEKCE", orp.convectionTypesStringForm);
+                    orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
+                    orp.output.Add("SRÁŽKY ORP", orp.precipitationResult.ToString());
+                    orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());
+
+                    //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
+                    orp.statisticalPrecipitation = 0;
+                    if (orp.statisticalPrecipitation == 0)
+                    {
+                        orp.finalPlace = orp.combineInfluence;
+                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.significantPredictors })); //chybí summmerge?  
+                    }
+                    else
+                    {
+                        orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineInfluence }));
+                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.significantPredictors })); //chybí summmerge?  
+                    }
+                    
+
+                    orp.output.Add("M_STATISTICKÁ PŘEDPOVĚĎ", orp.statisticalPrecipitation.ToString());
+                    orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ MÍSTA VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.finalPlace.ToString());
+                    orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.finalStorm.ToString());
 
                 }
                 else
@@ -51,13 +77,23 @@ namespace Meteo
                 }
 
                 //Výpis výsledků
-                Util.l($"{orp.name}; Sloučená intenzita: {orp.combineIntensity}; Směr větru: {Util.windDirectionToString[sample.windDirection]}; Typů konvekce: {orp.convectionTypes.Count}");
-                foreach (var type in orp.convectionTypes)
+                //Util.l($"{orp.name}; Sloučená intenzita: {orp.combineIntensity}; Směr větru: {Util.windDirectionToString[sample.windDirection]}; Typů konvekce: {orp.convectionTypes.Count}; Čas: {sample.sample_name}; Srážky: {orp.precipitationResult}");
+                /*foreach (var type in orp.convectionTypes)
                 {
                     Util.l($"{type.Key}");
-                }
+                }*/
 
-                orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY", orp.combineIntensity);
+                //Výstupní parametry / vlastnosti
+                /*orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity!=0?orp.combineIntensity.ToString():"0");
+                orp.output.Add("M_SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
+                orp.output.Add("M_ČAS VÝSKYTU", sample.sample_name);
+                orp.output.Add("M_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+                orp.output.Add("M_PODTYP KONVEKCE", orp.convectionTypesStringForm);
+                orp.output.Add("M_TYP KONVEKCE", orp.convectionSuperTypesStringForm);
+                orp.output.Add("M_SRÁŽKY ORP", orp.precipitationResult.ToString());                
+                orp.output.Add("M_SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());*/                
+
+
 
                 CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
                 Util.outputDataCache.Add(data);
@@ -106,7 +142,7 @@ namespace Meteo
                 orp.coldSectorPlace = (cold)?ValueToLevel(LevelScale, Probability(new List<float>() { orp.pressureMLSP, orp.mfdiv, orp.relativeVorticity, orp.rh_700 })):0;
                 orp.combineSectorPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.warmWetSectorPlace, orp.coldSectorPlace}));
 
-                //TODO podmínka na denní dobu (odpolední hodiny)
+                //TODO podmínka na denní dobu (odpolední hodiny) //týká se pouze temperatureInfluence 21-3 vypadne temparatureInfluence, 6 a 9 orp.orientace_reliefu_tepelny_prohrev_dopoledne
                 //Předpověď lokálních podmínek
                 orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.orientace_reliefu_tepelny_prohrev_odpoledne, orp.vegetace_pokryti, orp.ir_kontrast, orp.cloudy }));
                 orp.windInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sidelni_utvar, orp.sirka_udoli, orp.obtekani_prekazky, orp.wind_1000 }));
@@ -116,13 +152,8 @@ namespace Meteo
                 
                 //Kombinovaná předpověď intenzity konvektivních srážek
                 orp.significantPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.temperature_850, orp.corfidiVector, orp.wetBulb, orp.dls}));
-                orp.otherPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.frontogenesis_850, orp.mlcape, orp.mlcin, orp.mixr, orp.sreh_3km, orp.wind_850, orp.wind_300, orp.pwater}));
+                orp.otherPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.frontogenesis_850, orp.mlcape, orp.mlcin, orp.mixr, orp.sreh_3km, orp.wind_850, orp.wind_300, orp.pwater})); //mlcape vs mucape
                 orp.combineIntensity = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.significantPredictors, orp.otherPredictors }));
-
-                //TODO 
-                orp.statisticalPrecipitation = 1;
-                orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineSectorPlace}));   
-                orp.finalStorm= ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineIntensity })); //chybí summmerge?  
             }
         }
 
@@ -142,11 +173,11 @@ namespace Meteo
             //Teplá okluze - supercelární bouře
             WarmOcclusionS(orp);
             //Kvazifrontální konvekce
-            QuasifontalConvection(orp);
+            QuasifontalConvection(orp); //KVAZIFRONÁTLNÍ
             //Orografická konvekce
-            OrographicConvection(orp);
+            OrographicConvection(orp); //OROGRAFICKA
             //Orografická konvekce - linie konvergence
-            OrographicConvectionConvergenceLine(orp);
+            OrographicConvectionConvergenceLine(orp); //OROGRAFICKA
 
             var types = orp.convectionTypeResults.Where(p => p.Value.Equals(orp.convectionTypeResults.Values.Max()));
 
@@ -155,6 +186,8 @@ namespace Meteo
                 //Util.l($" Nejvyšší hodnotu: {type.Value} má {type.Key}");
                 orp.convectionTypes[type.Key] = type.Value;
             }
+
+            orp.ProcessConvectionTypes();
 
             /*
             foreach (KeyValuePair<string, float> kvp in orp.convectionTypes)

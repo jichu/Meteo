@@ -449,8 +449,10 @@ namespace Meteo
             Util.outputDataCache.Add(data);
             */
 
-            CloudOutput data = new CloudOutput(Name_orp, sampleName, Output);
-            Util.outputDataCache.Add(data);
+            // VYSTUP z tohoto algoritmu je vypnutý tj. nic se neposílá ven.
+
+            /*CloudOutput data = new CloudOutput(Name_orp, sampleName, Output);
+            Util.outputDataCache.Add(data);*/
         }
 
         //8. Sloučení B (DEN) - Intenzita bouřek a Lokální předpověď

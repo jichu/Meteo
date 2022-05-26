@@ -18,6 +18,7 @@ namespace Meteo
         List<CloudSamples> listSamples = Model.Cloud.InputDataGetSamples();
         public string sampleName { get; set; }
         public List<string> sampleNames = new List<string>();
+        public List<string> finalSampleNames = new List<string>();
         public algorithms algorithm { get; set; }
         public PrecipitationFilter precipitationFilter { get; set; }
 
@@ -47,12 +48,10 @@ namespace Meteo
                 foreach (var s in precipitationFilter.finalSampleList) {
                     s.LoadORPS();
                     Util.l($"{s.sample_name}");
+                    finalSampleNames.Add(s.sample_name);
                     new StatisticalForecast(s);
-                    /*foreach (var orp in ORPS)
-                    {
-                        new StatisticalForecast(orp, s);
-                    }*/
                 }
+                sampleNames = finalSampleNames;
                 Run();
 
             }
@@ -80,7 +79,7 @@ namespace Meteo
             Task.WaitAll(taskList.ToArray());
 
             List<string> outputList = new List<string>(); //Hlavní výstupy
-            List<string> secondaryOutputList = new List<string>(); //Vedlješí výstupy
+            List<string> secondaryOutputList = new List<string>(); //Vedlejší výstupy
 
             string[] splittedOutputName = { };
             foreach (var item in Util.outputDataCache) {
@@ -108,17 +107,20 @@ namespace Meteo
                 if (!orpList.Contains(orp.nameOrp)) orpList.Add(orp.nameOrp);
             }
 
-            int[,,] mainData = new int [sampleNames.Count,outputList.Count,orpList.Count]; //Hodnoty pro hlavní výstupy
-            int[,,] secondaryData = new int [sampleNames.Count,secondaryOutputList.Count,orpList.Count]; //Hodnoty pro vedlejší výstupy
+            string[,,] mainData = new string [sampleNames.Count,outputList.Count,orpList.Count]; //Hodnoty pro hlavní výstupy
+            string[,,] secondaryData = new string [sampleNames.Count,secondaryOutputList.Count,orpList.Count]; //Hodnoty pro vedlejší výstupy
 
             List<CloudSettings> settings = Model.Cloud.SETTINGSGetSettings();
 
             List<CloudOutput> filter = new List<CloudOutput>();
 
+
+
             for(int i = 0; i<sampleNames.Count; i++){
+                filter.Clear();
                 foreach (var item in Util.outputDataCache)
                 {
-                    if (item.sampleName == sampleNames[i])
+                    if(item.sampleName == sampleNames[i])
                     {
                         filter.Add(item);
                     }
@@ -131,11 +133,13 @@ namespace Meteo
                         foreach (var item in filter)
                         {
                             if (item.nameOrp == orpList[k])
-                                if (item.output.ContainsKey("M_"+outputList[j])) mainData[i,j,k]=((int)item.output["M_"+outputList[j]]);
-                                else mainData[i,j,k]=(-1);
+                                if (item.output.ContainsKey("M_" + outputList[j])) { mainData[i, j, k] = (item.output["M_" + outputList[j]]); }
+                                else mainData[i, j, k] = ("-1");
                         }
                     }
                 }
+
+
                 
                 //Uložení vedlejších výstupů
                 for (int j = 0; j < secondaryOutputList.Count; j++)
@@ -145,8 +149,8 @@ namespace Meteo
                         foreach (var item in filter)
                         {
                             if (item.nameOrp == orpList[k])
-                                if (item.output.ContainsKey(secondaryOutputList[j])) secondaryData[i, j, k] = ((int)item.output[secondaryOutputList[j]]);
-                                else secondaryData[i, j, k] = (-1);
+                                if (item.output.ContainsKey(secondaryOutputList[j])) secondaryData[i, j, k] = (item.output[secondaryOutputList[j]]);
+                                else secondaryData[i, j, k] = ("-1");
                         }
                     }
                 }
