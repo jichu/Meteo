@@ -33,7 +33,7 @@ namespace Meteo
                     //Util.l("Výpočet bude pokračovat");
                     //Vektor pohybu bouře
                     List<float> windSpeedValues = new List<float>() { orp.wind_850, orp.wind_700, orp.wind_600, orp.wind_500, orp.wind_400, orp.wind_300 };
-                    orp.corfidiVector = 2 * Average(windSpeedValues) - windSpeedValues.First();
+                    orp.corfidiVector = 2 * Average(TestParameters(windSpeedValues)) - windSpeedValues.First();
                     if (orp.corfidiVector <= 3) orp.corfidiVectorLevel = 3;
                     else if (orp.corfidiVector <= 9) orp.corfidiVectorLevel = 2;
                     else if (orp.corfidiVector <= 15) orp.corfidiVectorLevel = 1;
@@ -201,13 +201,14 @@ namespace Meteo
         private void WavyColdFront(CloudORPS orp) {
             if (windDirection >= Util.windDirectionToInt["SV"] && windDirection <= Util.windDirectionToInt["JZ"])
             {
-                List<float> parameters = new List<float>() {
-                (orp.temperature_850>=14 && orp.temperature_850<=20)?1:0,
-                (orp.frontogenesis_850>=2f)?1:0,
-                (orp.corfidiVector>=6f)?1:0,
-                (orp.wetBulb>=51f)?1:0, 
-                //orp.dls>=13?1:0
+                List<float> param = new List<float>() {
+                (orp.temperature_850!=-1f)?((orp.temperature_850>=14 && orp.temperature_850<=20)?1:0):-1f,
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=2f)?1:0):-1f,
+                (orp.corfidiVector!=-1f)?((orp.corfidiVector>=6f)?1:0):-1f,
+                (orp.wetBulb!=-1f)?((orp.wetBulb>=51f)?1:0):-1f, 
+                (orp.dls!=-1f)?(orp.dls>=13?1:0):-1f
             };
+                List<float> parameters = TestParameters(param);
                 orp.wavyColdFront = SumArray(parameters)/parameters.Count;
                 orp.convectionTypeResults["Zvlněná studentá fronta"] = orp.wavyColdFront;
             }
@@ -218,16 +219,17 @@ namespace Meteo
         private void WavyColdFrontS(CloudORPS orp) {
             if (windDirection >= Util.windDirectionToInt["J"] && windDirection <= Util.windDirectionToInt["JZ"])
             {
-                List<float> parameters = new List<float>() {
-                (orp.temperature_850>=16 && orp.temperature_850<=20)?1:0,
-                (orp.frontogenesis_850>=2f)?1:0,
-                (orp.wetBulb>=63f)?1:0, 
-                //orp.dls>=20?1:0,
-                (orp.sreh_3km>=300f)?1:0,
-                (orp.wind_300>=21f)?1:0
+                List<float> param = new List<float>() {
+                (orp.temperature_850!=-1f)?((orp.temperature_850>=16 && orp.temperature_850<=20)?1:0):-1f,
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=2f)?1:0):-1f,
+                (orp.wetBulb!=-1f)?((orp.wetBulb>=63f)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=20?1:0):-1f,
+                (orp.sreh_3km!=-1f)?((orp.sreh_3km>=300f)?1:0):-1f,
+                (orp.wind_300!=-1f)?((orp.wind_300>=21f)?1:0):-1f
             };
-                if (IsDay()) { parameters.Add((orp.mlcape >= 1000 && orp.mlcape <= 3600) ? 1 : 0); }
-                else { parameters.Add((orp.mucape >= 1750 && orp.mucape <= 5500) ? 1 : 0); }
+                if (IsDay()) { param.Add((orp.mlcape!=-1f)?((orp.mlcape >= 1000 && orp.mlcape <= 3600) ? 1 : 0):-1f); }
+                else { param.Add((orp.mucape!=-1f)?((orp.mucape >= 1750 && orp.mucape <= 5500) ? 1 : 0):-1f); }
+                List<float> parameters = TestParameters(param);
                 orp.wavyColdFrontS = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Zvlněná studentá fronta - supercelární bouře"] = orp.wavyColdFrontS;
             }
@@ -238,13 +240,14 @@ namespace Meteo
         private void ColdFront(CloudORPS orp) {
             if (windDirection >= Util.windDirectionToInt["Z"] || windDirection <= Util.windDirectionToInt["SV"])
             {
-                List<float> parameters = new List<float>() {
-                (orp.temperature_850>=10 && orp.temperature_850<=13)?1:0,
-                (orp.frontogenesis_850>=1f)?1:0,
-                (orp.corfidiVector>=4f)?1:0,
-                (orp.wetBulb>=48f && orp.wetBulb<=60f)?1:0, 
-                //orp.dls>=8?1:0
+                List<float> param = new List<float>() {
+                (orp.temperature_850!=-1f)?((orp.temperature_850>=10 && orp.temperature_850<=13)?1:0):-1f,
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=1f)?1:0):-1f,
+                (orp.corfidiVector!=-1f)?((orp.corfidiVector>=4f)?1:0):-1f,
+                (orp.wetBulb!=-1f)?((orp.wetBulb>=48f && orp.wetBulb<=60f)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=8?1:0):-1f
             };
+                List<float> parameters = TestParameters(param);
                 orp.coldFront = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Studentá fronta"] = orp.coldFront;
             }
@@ -255,13 +258,14 @@ namespace Meteo
         private void ColdOcclusion(CloudORPS orp) {
             if (windDirection >= Util.windDirectionToInt["Z"] || (windDirection >= Util.windDirectionToInt["SV"] && windDirection <= Util.windDirectionToInt["JV"]))
             {
-                List<float> parameters = new List<float>() {
-                (orp.frontogenesis_850>=-0.2f && orp.frontogenesis_850<=0.8f)?1:0,
-                (orp.corfidiVector>=4f)?1:0,
-                (orp.wetBulb>=33f && orp.wetBulb<=57f)?1:0,
-                (orp.mixr>=7f)?1:0,
-                //orp.dls>=6?1:0
+                List<float> param = new List<float>() {
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=-0.2f && orp.frontogenesis_850<=0.8f)?1:0):-1f,
+                (orp.corfidiVector!=-1f)?((orp.corfidiVector>=4f)?1:0):-1f,
+                (orp.wetBulb!=-1f)?((orp.wetBulb>=33f && orp.wetBulb<=57f)?1:0):-1f,
+                (orp.mixr!=-1f)?((orp.mixr>=7f)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=6?1:0):-1f
             };
+                List<float> parameters = TestParameters(param);
                 orp.coldOcclusion = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Studentá okluze"] = orp.coldOcclusion;
             }
@@ -272,12 +276,13 @@ namespace Meteo
         private void WarmOcclusion(CloudORPS orp) {
             if (windDirection != Util.windDirectionToInt["S"] && windDirection != Util.windDirectionToInt["J"])
             {
-                List<float> parameters = new List<float>() {
-                (orp.frontogenesis_850>=-0.2f)?1:0,
-                //orp.dls>=10?1:0,
-                (orp.sreh_3km>=50f)?1:0,
-                (orp.wind_300>=9f)?1:0,
+                List<float> param = new List<float>() {
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=-0.2f)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=10?1:0):-1f,
+                (orp.sreh_3km!=-1f)?((orp.sreh_3km>=50f)?1:0):-1f,
+                (orp.wind_300!=-1f)?((orp.wind_300>=9f)?1:0):-1f,
             };
+                List<float> parameters = TestParameters(param);
                 orp.warmOcclusion = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Teplá okluze"] = orp.warmOcclusion;
             }
@@ -288,16 +293,17 @@ namespace Meteo
         private void WarmOcclusionS(CloudORPS orp) {
             if (windDirection >= Util.windDirectionToInt["JZ"])
             {
-                List<float> parameters = new List<float>() {
-                (orp.temperature_850>=14 && orp.temperature_850<=17)?1:0,
-                (orp.frontogenesis_850>=0.4f)?1:0,
-                (orp.wetBulb>=51)?1:0, 
-                //orp.dls>=15?1:0,
-                (orp.sreh_3km >=100f)?1:0,
-                (orp.wind_300>=24f)?1:0
+                List<float> param = new List<float>() {
+                (orp.temperature_850!=-1f)?((orp.temperature_850>=14 && orp.temperature_850<=17)?1:0):-1f,
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=0.4f)?1:0):-1f,
+                (orp.wetBulb!=-1f)?((orp.wetBulb>=51)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=15?1:0):-1f,
+                (orp.sreh_3km!=-1f)?((orp.sreh_3km >=100f)?1:0):-1f,
+                (orp.wind_300!=-1f)?((orp.wind_300>=24f)?1:0):-1f
             };
-                if (IsDay()) { parameters.Add((orp.mlcape >= 100 && orp.mlcape <= 3600) ? 1 : 0); }
-                else { parameters.Add((orp.mucape >= 75 && orp.mucape <= 5500) ? 1 : 0); }
+                if (IsDay()) { param.Add((orp.mlcape != -1f) ? ((orp.mlcape >= 100 && orp.mlcape <= 3600) ? 1 : 0) : -1f); }
+                else { param.Add((orp.mucape != -1f) ? ((orp.mucape >= 75 && orp.mucape <= 5500) ? 1 : 0) : -1f); }
+                List<float> parameters = TestParameters(param);
                 orp.warmOcclusionS = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Teplá okluze - supercelární bouře"] = orp.warmOcclusionS;
             }
@@ -315,34 +321,35 @@ namespace Meteo
 
                 if (windDirection == Util.windDirectionToInt["Z"])
                 {
-                    corfidiVectorCondition = (orp.corfidiVector >= 6f && orp.corfidiVector <= 12f) ? 1 : 0;
-                    mixrCondition = (orp.mixr >= 8f && orp.mixr <= 14f) ? 1 : 0;
-                    wind_850Condition = (orp.wind_850 >= 1.5f && orp.wind_850 <= 17f) ? 1 : 0;
-                    pwaterCondition = (orp.pwater >= 22f && orp.pwater <= 40f) ? 1 : 0;
+                    corfidiVectorCondition = (orp.corfidiVector != -1f) ? ((orp.corfidiVector >= 6f && orp.corfidiVector <= 12f) ? 1 : 0) : -1f;
+                    mixrCondition = (orp.mixr != -1f) ? ((orp.mixr >= 8f && orp.mixr <= 14f) ? 1 : 0) : -1f;
+                    wind_850Condition = (orp.wind_850 != -1f) ? ((orp.wind_850 >= 1.5f && orp.wind_850 <= 17f) ? 1 : 0) : -1f;
+                    pwaterCondition = (orp.pwater != -1f) ? ((orp.pwater >= 22f && orp.pwater <= 40f) ? 1 : 0) : -1f;
                 };
                 if (windDirection == Util.windDirectionToInt["SZ"])
                 {
-                    corfidiVectorCondition = (orp.corfidiVector >= 4f && orp.corfidiVector <= 15f) ? 1 : 0;
-                    mixrCondition = (orp.mixr >= 7f && orp.mixr <= 12f) ? 1 : 0;
-                    wind_850Condition = (orp.wind_850 >= 1.5f && orp.wind_850 <= 12f) ? 1 : 0;
-                    pwaterCondition = (orp.pwater >= 20f && orp.pwater <= 30f) ? 1 : 0;
+                    corfidiVectorCondition = (orp.corfidiVector != -1f) ? ((orp.corfidiVector >= 4f && orp.corfidiVector <= 15f) ? 1 : 0) : -1f;
+                    mixrCondition = (orp.mixr != -1f) ? ((orp.mixr >= 7f && orp.mixr <= 12f) ? 1 : 0) : -1f;
+                    wind_850Condition = (orp.wind_850 != -1f) ? ((orp.wind_850 >= 1.5f && orp.wind_850 <= 12f) ? 1 : 0) : -1f;
+                    pwaterCondition = (orp.pwater != -1f) ? ((orp.pwater >= 20f && orp.pwater <= 30f) ? 1 : 0) : -1f;
                 };
                 if (windDirection == Util.windDirectionToInt["S"])
                 {
-                    corfidiVectorCondition = (orp.corfidiVector >= 2f && orp.corfidiVector <= 10f) ? 1 : 0;
-                    mixrCondition = (orp.mixr >= 6f && orp.mixr <= 12f) ? 1 : 0;
-                    wind_850Condition = (orp.wind_850 >= 1.5f && orp.wind_850 <= 12f) ? 1 : 0;
-                    pwaterCondition = (orp.pwater >= 15f && orp.pwater <= 30f) ? 1 : 0;
+                    corfidiVectorCondition = (orp.corfidiVector != -1f) ? ((orp.corfidiVector >= 2f && orp.corfidiVector <= 10f) ? 1 : 0) : -1f;
+                    mixrCondition = (orp.mixr != -1f) ? ((orp.mixr >= 6f && orp.mixr <= 12f) ? 1 : 0) : -1f;
+                    wind_850Condition = (orp.wind_850 != -1f) ? ((orp.wind_850 >= 1.5f && orp.wind_850 <= 12f) ? 1 : 0) : -1f;
+                    pwaterCondition = (orp.pwater != -1f) ? ((orp.pwater >= 15f && orp.pwater <= 30f) ? 1 : 0) : -1f;
                 };
 
-                List<float> parameters = new List<float>() {
-                (orp.frontogenesis_850>=-25f && orp.frontogenesis_850<=-1.5f)?1:0,
-                (orp.potentional_orographic_lift>=0.05f)?1:0,
+                List<float> param = new List<float>() {
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=-25f && orp.frontogenesis_850<=-1.5f)?1:0):-1f,
+                (orp.potentional_orographic_lift!=-1f)?((orp.potentional_orographic_lift>=0.05f)?1:0):-1f,
                 corfidiVectorCondition,
                 mixrCondition,
                 wind_850Condition,
                 pwaterCondition
                  };
+                List<float> parameters = TestParameters(param);
                 orp.quasifontalConvection = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Kvazifrontální konvekce"] = orp.quasifontalConvection;
             }
@@ -353,12 +360,13 @@ namespace Meteo
         private void OrographicConvection(CloudORPS orp) {
             if (windDirection == Util.windDirectionToInt["SZ"] || (windDirection >= Util.windDirectionToInt["SV"] && windDirection <= Util.windDirectionToInt["J"]))
             {
-                List<float> parameters = new List<float>() {
-                (orp.frontogenesis_850>=-25f && orp.frontogenesis_850<=0.8f)?1:0,
-                //orp.dls>=10?1:0,
-                (orp.wind_850<=6f)?1:0,
-                (orp.wind_300<=15)?1:0,
+                List<float> param = new List<float>() {
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=-25f && orp.frontogenesis_850<=0.8f)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=10?1:0):-1f,
+                (orp.wind_850!=-1f)?((orp.wind_850<=6f)?1:0):-1f,
+                (orp.wind_300!=-1f)?((orp.wind_300<=15)?1:0):-1f,
             };
+                List<float> parameters = TestParameters(param);
                 orp.orographicConvection = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Orografická konvekce"] = orp.orographicConvection;
             }
@@ -369,14 +377,15 @@ namespace Meteo
         private void OrographicConvectionConvergenceLine(CloudORPS orp) {
             if (windDirection != Util.windDirectionToInt["S"] && windDirection != Util.windDirectionToInt["V"] && windDirection != Util.windDirectionToInt["Z"])
             {
-                List<float> parameters = new List<float>() {
-                (orp.temperature_850>=16 && orp.temperature_850<=19)?1:0,
-                (orp.frontogenesis_850>=-25f && orp.frontogenesis_850<=0.8f)?1:0,
-                (orp.wetBulb>=63f)?1:0, 
-                //orp.dls>=5f?1:0,
-                (orp.wind_850<=3f)?1:0,
-                (orp.pwater>=38f)?1:0
+                List<float> param = new List<float>() {
+                (orp.temperature_850!=-1f)?((orp.temperature_850>=16 && orp.temperature_850<=19)?1:0):-1f,
+                (orp.frontogenesis_850!=-1f)?((orp.frontogenesis_850>=-25f && orp.frontogenesis_850<=0.8f)?1:0):-1f,
+                (orp.wetBulb!=-1f)?((orp.wetBulb>=63f)?1:0):-1f,
+                (orp.dls!=-1f)?(orp.dls>=5f?1:0):-1f,
+                (orp.wind_850!=-1f)?((orp.wind_850<=3f)?1:0):-1f,
+                (orp.pwater!=-1f)?((orp.pwater>=38f)?1:0):-1f
             };
+                List<float> parameters = TestParameters(param);
                 orp.orographicConvectionConvergenceLine = SumArray(parameters) / parameters.Count;
                 orp.convectionTypeResults["Orografická konvekce - linie konvergence"] = orp.orographicConvectionConvergenceLine;
             }
