@@ -51,6 +51,9 @@ namespace Meteo
                     orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
                     orp.output.Add("SRÁŽKY ORP", orp.precipitationResult.ToString());
                     orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());
+                    orp.output.Add("SRÁŽKY Model_ALADIN_CZ", orp.aladin.ToString());
+                    orp.output.Add("SRÁŽKY Model_WRF_ARW", orp.wrf_arw.ToString());
+                    orp.output.Add("SRÁŽKY Model_WRF_NMM_FLYMET_Srážky", orp.wrf_nmm.ToString());
 
                     //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
                     orp.statisticalPrecipitation = 0;
@@ -73,6 +76,7 @@ namespace Meteo
                 }
                 else
                 {
+
                     //Util.l("Výpočet ukončen");
                 }
 
@@ -144,12 +148,25 @@ namespace Meteo
 
                 //TODO podmínka na denní dobu (odpolední hodiny) //týká se pouze temperatureInfluence 21-3 vypadne temparatureInfluence, 6 a 9 orp.orientace_reliefu_tepelny_prohrev_dopoledne
                 //Předpověď lokálních podmínek
-                orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.orientace_reliefu_tepelny_prohrev_odpoledne, orp.vegetace_pokryti, orp.ir_kontrast, orp.cloudy }));
+                //Intervaly 6,9,30,33
+                if (sample.sample_name == "06" || sample.sample_name == "09" || sample.sample_name == "30" || sample.sample_name == "33"){
+                    orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.orientace_reliefu_tepelny_prohrev_dopoledne, orp.vegetace_pokryti, orp.ir_kontrast, orp.cloudy }));
+                }
+                //Intervaly 12,15,18,36,39,42
+                else if (sample.sample_name == "12" || sample.sample_name == "15" || sample.sample_name == "18" || sample.sample_name == "36" || sample.sample_name == "39" || sample.sample_name == "42")
+                {
+                    orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.orientace_reliefu_tepelny_prohrev_odpoledne, orp.vegetace_pokryti, orp.ir_kontrast, orp.cloudy }));
+                }
+                //NOC
+                else {
+                    orp.temperatureInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sklonitost_reliefu, orp.vegetace_pokryti, orp.ir_kontrast }));
+
+                }
                 orp.windInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sidelni_utvar, orp.sirka_udoli, orp.obtekani_prekazky, orp.wind_1000 }));
                 orp.humidityInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.rh_1000, orp.mfdiv }));
                 orp.orographicInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.polohy_nadmorskych_vysek, orp.sirka_hrebene, orp.mfdiv, orp.potentional_orographic_lift, orp.wind_850 }));
                 orp.combineInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.temperatureInfluence, orp.windInfluence, orp.humidityInfluence, orp.orographicInfluence }));
-                
+
                 //Kombinovaná předpověď intenzity konvektivních srážek
                 orp.significantPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.temperature_850, orp.corfidiVector, orp.wetBulb, orp.dls}));
                 orp.otherPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.frontogenesis_850, orp.mlcape, orp.mlcin, orp.mixr, orp.sreh_3km, orp.wind_850, orp.wind_300, orp.pwater})); //mlcape vs mucape

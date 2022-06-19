@@ -13,6 +13,12 @@ namespace Meteo
         public int id_region { get; set; }
 
         //Předpovědní parametry ORP
+        //SRážkové modely
+        public float aladin { get; set; }
+        public float wrf_arw { get; set; }
+        public float wrf_nmm { get; set; }
+
+        //Ostatní
         public float wetBulb { get; set; } 
         public float corfidiVector { get; set; } 
         public float corfidiVectorLevel { get; set; } 
@@ -126,6 +132,12 @@ namespace Meteo
             
         }
         public void LoadData(string sample_name) {
+            //Srážkové parametry
+            aladin = GetParameter("Model_ALADIN_CZ", "Srážky_MAIN", sample_name, id);
+            wrf_arw = GetParameter("Model_WRF_ARW", "Srážky_MAIN", sample_name, id);
+            wrf_nmm = GetParameter("Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN", sample_name, id);
+
+
             //přepovědní parametry
             wetBulb = GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp", sample_name, id, "REAL");
             wind_1000 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m", sample_name, id);
