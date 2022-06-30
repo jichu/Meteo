@@ -12,6 +12,27 @@ namespace Meteo
         public string name { get; set; }
         public int id_region { get; set; }
 
+        public List<string> sampleNames = new List<string>{
+            "N",
+            "00",
+            "03",
+            "06",
+            "09",
+            "12",
+            "15",
+            "18",
+            "21",
+            "24",
+            "27",
+            "30",
+            "33",
+            "36",
+            "39",
+            "42",
+            "45",
+            "48"
+        };
+
         //Předpovědní parametry ORP
         //SRážkové modely
         public float aladin { get; set; }
@@ -155,18 +176,17 @@ namespace Meteo
             mfdiv = GetParameter("Model_WRF_ARW", "MFDIV_0-1km", sample_name, id, "REAL");
             rh_700 = GetParameter("Model_WRF_ARW", "Relativní_vlhkost_700", sample_name, id, "REAL");
             rh_1000 = GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000", sample_name, id, "REAL");
-            cloudy = GetParameter("Model_ALADIN_CZ", "Oblačnost", sample_name, id);
+            cloudy = GetParameter("Model_ALADIN_CZ", "Oblačnost", sampleNames[sampleNames.IndexOf(sample_name) - 1], id); //Bere hodnotu z předchozího samplu
             pressureMLSP = GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP", sample_name, id, "REAL");
             mlcape = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCAPE+LI_Wetter_3_de", sample_name, id, "REAL");  
             mlcin = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de", sample_name, id, "REAL");
             temperature_850 = GetParameter("Model_GFS_Wetter3_DE_25km", "Teplota_850hPa", sample_name, id, "REAL");
             mucape = GetParameter("Model_GFS_Lightning_Wizard_50km", "MUCAPE", sample_name, id, "REAL");
+            relativeVorticity = GetParameter("Model_WRF_ARW", "Relativni_vorticita_500_hPa_WRF", sample_name, id);
 
             dls = -1f;
             //dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km", sample_name, id);//možná nebude k dispozici
-            //relativeVorticity = GetParameter("", "", sample_name, id);// relative vorticity 500hpa
-
-
+            
             //charakteristiky reliéfu
             sklonitost_reliefu = GetRelief("Sklonitost reliéfu (průměrná)");
             orientace_reliefu_tepelny_prohrev_dopoledne = GetRelief("Orientace reliéfu (tepelný prohřev) dopoledne"); //pro sample: 6,9,30,33

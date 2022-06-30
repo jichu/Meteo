@@ -51,9 +51,9 @@ namespace Meteo
                     orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
                     orp.output.Add("SRÁŽKY ORP", orp.precipitationResult.ToString());
                     orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());
-                    orp.output.Add("SRÁŽKY Model_ALADIN_CZ", orp.aladin.ToString());
-                    orp.output.Add("SRÁŽKY Model_WRF_ARW", orp.wrf_arw.ToString());
-                    orp.output.Add("SRÁŽKY Model_WRF_NMM_FLYMET_Srážky", orp.wrf_nmm.ToString());
+                    orp.output.Add("ALADIN ČHMÚ - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.aladin.ToString());
+                    orp.output.Add("WRF ARW - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_arw.ToString());
+                    orp.output.Add("WRF NMM - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_nmm.ToString());
 
                     //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
                     orp.statisticalPrecipitation = 0;
@@ -143,10 +143,9 @@ namespace Meteo
             if (orp.temperature_850 >= minT && orp.temperature_850 <= maxT)
             {
                 orp.warmWetSectorPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.temperature_850, orp.frontogenesis_850, orp.pressureMLSP, orp.mfdiv, orp.relativeVorticity, orp.rh_700 }));
-                orp.coldSectorPlace = (cold)?ValueToLevel(LevelScale, Probability(new List<float>() { orp.pressureMLSP, orp.mfdiv, orp.relativeVorticity, orp.rh_700 })):0;
+                orp.coldSectorPlace = (cold)?ValueToLevel(LevelScale, Probability(new List<float>() { orp.pressureMLSP, orp.mfdiv, orp.relativeVorticity, orp.rh_700 })):-1;
                 orp.combineSectorPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.warmWetSectorPlace, orp.coldSectorPlace}));
 
-                //TODO podmínka na denní dobu (odpolední hodiny) //týká se pouze temperatureInfluence 21-3 vypadne temparatureInfluence, 6 a 9 orp.orientace_reliefu_tepelny_prohrev_dopoledne
                 //Předpověď lokálních podmínek
                 //Intervaly 6,9,30,33
                 if (sample.sample_name == "06" || sample.sample_name == "09" || sample.sample_name == "30" || sample.sample_name == "33"){
@@ -165,7 +164,7 @@ namespace Meteo
                 orp.windInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sidelni_utvar, orp.sirka_udoli, orp.obtekani_prekazky, orp.wind_1000 }));
                 orp.humidityInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.rh_1000, orp.mfdiv }));
                 orp.orographicInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.polohy_nadmorskych_vysek, orp.sirka_hrebene, orp.mfdiv, orp.potentional_orographic_lift, orp.wind_850 }));
-                orp.combineInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.temperatureInfluence, orp.windInfluence, orp.humidityInfluence, orp.orographicInfluence }));
+                orp.combineInfluence = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineSectorPlace, orp.temperatureInfluence, orp.windInfluence, orp.humidityInfluence, orp.orographicInfluence }));
 
                 //Kombinovaná předpověď intenzity konvektivních srážek
                 orp.significantPredictors = ValueToLevel(LevelScale, Probability(new List<float>() { orp.combineInfluence, orp.temperature_850, orp.corfidiVector, orp.wetBulb, orp.dls}));

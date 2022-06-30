@@ -210,12 +210,14 @@ namespace Meteo
             JSONwriter.CreateJson(
               new JObject
               (
+                   new JProperty("date", GetValueFromSettingsList(settings, "last_date")),
                    new JProperty("samplename", sampleNames),
                    new JProperty("maindata", arrayMain),
                    new JProperty("secondarydata", arraySec)
                ),
-              "_" + Util.GetModelDate()
-            ); ;
+              "_" + GetValueFromSettingsList(settings, "last_date")
+            );
+
             //Vytváření souboru konkrétních dat
             //Hlavní výstupy
 
