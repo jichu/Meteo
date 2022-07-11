@@ -43,21 +43,36 @@ namespace Meteo
                     CombinePrecipitation(orp);
 
                     //Výstupní parametry / vlastnosti
-                    orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity != 0 ? orp.combineIntensity.ToString() : "0");
+                    /*orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity != 0 ? orp.combineIntensity.ToString() : "0");
                     orp.output.Add("SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
                     orp.output.Add("ČAS VÝSKYTU", sample.sample_name);
                     orp.output.Add("RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
                     orp.output.Add("PODTYP KONVEKCE", orp.convectionTypesStringForm);
                     orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
-                    orp.output.Add("SRÁŽKY ORP", orp.precipitationResult.ToString());
-                    orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());
+                    orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());*/
+
+                    orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
+                    orp.output.Add("PODTYP KONVEKCE", orp.convectionTypesStringForm);
+
+                    //Vedlejší výstupy
+                    orp.output.Add("SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
                     orp.output.Add("ALADIN ČHMÚ - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.aladin.ToString());
                     orp.output.Add("WRF ARW - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_arw.ToString());
                     orp.output.Add("WRF NMM - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_nmm.ToString());
+                    orp.output.Add("KOMBINOVANÁ PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.combineInfluence.ToString());
+
 
                     //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
-                    orp.statisticalPrecipitation = 0;
-                    if (orp.statisticalPrecipitation == 0)
+
+                    //Util.windDirectionToString[sample.windDirection] //směr proudění
+                    //Dráha bouří?
+                    //sample.sample_name //čas výskytu
+                    //orp.convectionSuperTypesStringForm //typ konvekce
+                    //(orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb")//rychlost pohybu bouře
+
+                    orp.statisticalPrecipitation = -1;
+
+                    if (orp.statisticalPrecipitation == -1)
                     {
                         orp.finalPlace = orp.combineInfluence;
                         orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.significantPredictors })); //chybí summmerge?  
@@ -67,11 +82,15 @@ namespace Meteo
                         orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineInfluence }));
                         orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.significantPredictors })); //chybí summmerge?  
                     }
-                    
 
-                    orp.output.Add("M_STATISTICKÁ PŘEDPOVĚĎ", orp.statisticalPrecipitation.ToString());
-                    orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ MÍSTA VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.finalPlace.ToString());
-                    orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.finalStorm.ToString());
+                    //Hlavní výstupy
+                    orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.finalPlace.ToString());
+                    orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU PŘÍVALOVÝCH SRÁŽEK", orp.finalStorm.ToString());
+                    
+                    //Vedlejší výstupy
+                    orp.output.Add("STATISTICKÝ ODHAD VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.statisticalPrecipitation.ToString());
+
+                    //orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.finalStorm.ToString());
 
                 }
                 else
