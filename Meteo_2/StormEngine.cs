@@ -96,10 +96,24 @@ namespace Meteo
                         }
                     }
                     //Zpracování pro vedlejší výstupy
-                    else {
-                        if(!secondaryOutputList.Contains(output.Key))
-                        secondaryOutputList.Add(output.Key);
+                    else if (output.Key.StartsWith("S_"))
+                    {
+                        splittedOutputName = output.Key.Split('_');
+                        if (!secondaryOutputList.Contains(splittedOutputName[1]))
+                            secondaryOutputList.Add(splittedOutputName[1]);
                     }
+
+                    //Zpracování pro pokročilé výstupy
+                    else if (output.Key.StartsWith("A_"))
+                    {
+                        splittedOutputName = output.Key.Split('_');
+                        if (!advancedOutputList.Contains(splittedOutputName[1]))
+                            advancedOutputList.Add(splittedOutputName[1]);
+                    }
+                    else { 
+                    
+                    }
+
                 }
             }
             List<string> orpList = new List<string>();
@@ -110,6 +124,7 @@ namespace Meteo
 
             string[,,] mainData = new string [sampleNames.Count,outputList.Count,orpList.Count]; //Hodnoty pro hlavní výstupy
             string[,,] secondaryData = new string [sampleNames.Count,secondaryOutputList.Count,orpList.Count]; //Hodnoty pro vedlejší výstupy
+            string[,,] advancedData = new string [sampleNames.Count, advancedOutputList.Count,orpList.Count]; //Hodnoty pro pokročilé výstupy
 
             List<CloudSettings> settings = Model.Cloud.SETTINGSGetSettings();
 
@@ -148,12 +163,35 @@ namespace Meteo
                         foreach (var item in filter)
                         {
                             if (item.nameOrp == orpList[k])
-                                if (item.output.ContainsKey(secondaryOutputList[j])) secondaryData[i, j, k] = (item.output[secondaryOutputList[j]]);
+                                if (item.output.ContainsKey("S_" + secondaryOutputList[j])) secondaryData[i, j, k] = (item.output["S_" + secondaryOutputList[j]]);
                                 else secondaryData[i, j, k] = ("-1");
                         }
                     }
                 }
-            }           
+
+                //Uložení pokročilých výstupů
+                for (int j = 0; j < advancedOutputList.Count; j++)
+                {
+                    for (int k = 0; k < orpList.Count; k++)
+                    {
+                        foreach (var item in filter)
+                        {
+                            if (item.nameOrp == orpList[k])
+                                if (item.output.ContainsKey("A_" + advancedOutputList[j])) advancedData[i, j, k] = (item.output["A_" + advancedOutputList[j]]);
+                                else advancedData[i, j, k] = ("-1");
+                        }
+                    }
+                }
+            }
+
+            string[] majorConvectionTypesData = new string[sampleNames.Count];
+            string[] majorConvectionSuperTypesData = new string[sampleNames.Count];
+
+            for (int i = 0; i < precipitationFilter.finalSampleList.Count; i++)
+            { 
+                majorConvectionTypesData[i] = precipitationFilter.finalSampleList[i].convectionTypeMajor;
+                majorConvectionSuperTypesData[i] = precipitationFilter.finalSampleList[i].convectionSuperTypeMajor;
+            }
 
             //Vytváření souboru root
             //Hlavní výstupy
@@ -194,6 +232,7 @@ namespace Meteo
                    new JProperty("orplist", orpList),
                    new JProperty("mainoutputlist", outputList),
                    new JProperty("secondaryoutputlist", secondaryOutputList),
+                   new JProperty("advancedoutputlist", advancedOutputList),
                    new JProperty("outputresultcolor", new JArray() {
                        GetValueFromSettingsList(settings, "output_result-1_color"),
                        GetValueFromSettingsList(settings, "output_result0_color"),
@@ -205,16 +244,20 @@ namespace Meteo
             );
             var arrayMain = JArray.FromObject(mainData);
             var arraySec = JArray.FromObject(secondaryData);
+            var arrayAdv = JArray.FromObject(advancedData);
 
             JSONwriter.CreateJson(
               new JObject
               (
                    new JProperty("date", GetValueFromSettingsList(settings, "last_date")),
                    new JProperty("samplename", sampleNames),
+                   new JProperty("majorconvectiontype", majorConvectionTypesData),
+                   new JProperty("majorconvectionsupertype", majorConvectionSuperTypesData),
                    new JProperty("maindata", arrayMain),
-                   new JProperty("secondarydata", arraySec)
+                   new JProperty("secondarydata", arraySec),
+                   new JProperty("advanceddata", arrayAdv)
                ),
-              "_" + GetValueFromSettingsList(settings, "last_date")
+              "_" +sampleNames[0] + "h_"+ GetValueFromSettingsList(settings, "last_date")
             );
 
             //Vytváření souboru konkrétních dat
