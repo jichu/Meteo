@@ -63,7 +63,7 @@ namespace Meteo
 
         public void Run() {
             //List<Thread> threadList = new List<Thread>();
-            List<Task> taskList = new List<Task>();
+            //List<Task> taskList = new List<Task>();
             //Util.StartWatch();
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
             foreach (var s in sampleNames)
@@ -76,10 +76,11 @@ namespace Meteo
                 //Algorithm(s);
             }
             
-            Task.WaitAll(taskList.ToArray());
+            //Task.WaitAll(taskList.ToArray());
 
             List<string> outputList = new List<string>(); //Hlavní výstupy
             List<string> secondaryOutputList = new List<string>(); //Vedlejší výstupy
+            List<string> advancedOutputList = new List<string>(); //Pokročilé výstupy
 
             string[] splittedOutputName = { };
             foreach (var item in Util.outputDataCache) {
@@ -113,8 +114,6 @@ namespace Meteo
             List<CloudSettings> settings = Model.Cloud.SETTINGSGetSettings();
 
             List<CloudOutput> filter = new List<CloudOutput>();
-
-
 
             for(int i = 0; i<sampleNames.Count; i++){
                 filter.Clear();

@@ -23,7 +23,7 @@ namespace Meteo
             //Parametry z CloudSample
             windDirection = sample.windDirection;
 
-            foreach (var orp in sample.ORPS) {
+            foreach (var orp in this.sample.ORPS) {
                 //Parametry z CloudORP
                 float wetBulb = orp.wetBulb;
                 //Util.l($"Konvektivní srážky / dešťové srážky pro {this.sample.sample_name}: {wetBulb}");
@@ -54,6 +54,21 @@ namespace Meteo
                     orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
                     orp.output.Add("PODTYP KONVEKCE", orp.convectionTypesStringForm);
 
+                    //Příprava na zjištění majoritních typů/supertypů konvekce
+                    this.sample.convTypesAll.Add(orp.convectionTypesStringForm);
+                    this.sample.convSuperTypesAll.Add(orp.convectionSuperTypesStringForm);
+
+                    if (!this.sample.convTypesKeys.Contains(orp.convectionTypesStringForm)) {
+                        this.sample.convTypesKeys.Add(orp.convectionTypesStringForm);
+                    }
+
+                    if (!this.sample.convSuperTypesKeys.Contains(orp.convectionSuperTypesStringForm)){
+                        this.sample.convSuperTypesKeys.Add(orp.convectionSuperTypesStringForm);
+                    }
+
+
+                    orp.output.Add("RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+
                     //Vedlejší výstupy
                     orp.output.Add("SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
                     orp.output.Add("ALADIN ČHMÚ - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.aladin.ToString());
@@ -65,7 +80,8 @@ namespace Meteo
                     //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
 
                     //Util.windDirectionToString[sample.windDirection] //směr proudění
-                    //Dráha bouří?
+                    //Dráha bouří?// orp.output.Add("SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
+
                     //sample.sample_name //čas výskytu
                     //orp.convectionSuperTypesStringForm //typ konvekce
                     //(orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb")//rychlost pohybu bouře
@@ -75,12 +91,12 @@ namespace Meteo
                     if (orp.statisticalPrecipitation == -1)
                     {
                         orp.finalPlace = orp.combineInfluence;
-                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.significantPredictors })); //chybí summmerge?  
+                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sum_merge, orp.significantPredictors })); //chybí summmerge?  
                     }
                     else
                     {
                         orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineInfluence }));
-                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.significantPredictors })); //chybí summmerge?  
+                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.sum_merge, orp.significantPredictors })); //chybí summmerge?  
                     }
 
                     //Hlavní výstupy
@@ -122,6 +138,8 @@ namespace Meteo
                 Util.outputDataCache.Add(data);
 
             }
+
+            this.sample.CountMajorConvectionType();
 
         }
         //Kombinovaná předpověď

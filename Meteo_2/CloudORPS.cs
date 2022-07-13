@@ -80,6 +80,7 @@ namespace Meteo
         public float obtekani_prekazky { get; set; }
         public float polohy_nadmorskych_vysek { get; set; }
         public float sirka_hrebene { get; set; }
+        public float sum_merge { get; set; }
 
         //Typy konvekce
         public float wavyColdFront { get; set; }
@@ -107,8 +108,8 @@ namespace Meteo
 
         public Dictionary<string, string> convectionTypeConversion = new Dictionary<string, string>
         {
-            { "Zvlněná studentá fronta", "FRONTÁLNÍ (Studená instabilní hmota)" },
-            { "Zvlněná studentá fronta - supercelární bouře", "FRONTÁLNÍ (Studená instabilní hmota)"  },
+            { "Zvlněná studentá fronta", "FRONTÁLNÍ (Teplá instabilní hmota)" },
+            { "Zvlněná studentá fronta - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"  },
             { "Studentá fronta", "FRONTÁLNÍ (Studená instabilní hmota)"  },
             { "Studentá okluze", "FRONTÁLNÍ (Studená instabilní hmota)"  },
             { "Teplá okluze", "FRONTÁLNÍ (Teplá instabilní hmota)"},
@@ -184,10 +185,11 @@ namespace Meteo
             mucape = GetParameter("Model_GFS_Lightning_Wizard_50km", "MUCAPE", sample_name, id, "REAL");
             relativeVorticity = GetParameter("Model_WRF_ARW", "Relativni_vorticita_500_hPa_WRF", sample_name, id);
 
+
             dls = -1f;
             //dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km", sample_name, id);//možná nebude k dispozici
             
-            //charakteristiky reliéfu
+            //charakteristiky reliéfu / statické parametry
             sklonitost_reliefu = GetRelief("Sklonitost reliéfu (průměrná)");
             orientace_reliefu_tepelny_prohrev_dopoledne = GetRelief("Orientace reliéfu (tepelný prohřev) dopoledne"); //pro sample: 6,9,30,33
             orientace_reliefu_tepelny_prohrev_odpoledne = GetRelief("Orientace reliéfu (tepelný prohřev) odpoledne"); //pro sample: 12,15,18,36,39,42
@@ -198,6 +200,7 @@ namespace Meteo
             obtekani_prekazky = GetRelief("Obtékání překážky");
             polohy_nadmorskych_vysek = GetRelief("Polohy nadmořských výšek");
             sirka_hrebene = GetRelief("Šířka hřebene");
+            sum_merge = GetRelief("SUM MERGE");
 
         }
 
