@@ -67,7 +67,7 @@ namespace Meteo
                     }
 
 
-                    orp.output.Add("S_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+                    orp.output.Add("A_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
 
                     //Vedlejší výstupy
                     orp.output.Add("S_SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
