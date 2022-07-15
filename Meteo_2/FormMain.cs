@@ -226,7 +226,7 @@ namespace Meteo
             Util.ShowLoading("Algoritmus počítá předpověď....");
             try
             {
-                new StormEngine();
+                new StormEngine(algorithms.statistic_forecast);
                 UserControlOutput.Instance.Render();
             }
             catch (Exception ex)
@@ -256,6 +256,13 @@ namespace Meteo
 
         private void menuDoAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DoAll();
+            /*LoadModels();
+            LoadInputs();
+            LoadAlgorithm();*/
+        }
+
+        public void DoAll() {
             LoadModels();
             LoadInputs();
             LoadAlgorithm();
@@ -348,6 +355,11 @@ namespace Meteo
                 }
                 Thread.Sleep(50);
             }
+        }
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            DoAll();
         }
     }
 }
