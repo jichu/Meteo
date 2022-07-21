@@ -39,7 +39,7 @@ namespace Meteo
          //   Util.ShowLoading("Načítání aplikace...");
             new Controller();
             //ApplyWRF();
-            this.menuItemOutput.PerformClick();            
+            //this.menuItemOutput.PerformClick();            
         }
 
         public void ShowControlLoader(string message="Zpracování...")
@@ -55,6 +55,7 @@ namespace Meteo
 
         private void LoaderOn(string message)
         {
+            UserControlLoader.Instance.Visible = true;
             if (!panelLayout.Controls.Contains(UserControlLoader.Instance))
             {
                 panelLayout.Controls.Add(UserControlLoader.Instance);
@@ -68,18 +69,20 @@ namespace Meteo
 
         public void HideControlLoader()
         {
-            if (ControlActive.InvokeRequired)
+            /*if (ControlActive.InvokeRequired)
                 ControlActive.BeginInvoke((Action)(() =>
                 {
                     LoaderOff();
                 }));
             else
-                LoaderOff();
+                LoaderOff();*/
+            LoaderOff();
         }
 
         private void LoaderOff()
         {
-            ControlActive.BringToFront();
+            //ControlActive.BringToFront();
+            UserControlLoader.Instance.Visible = false;
             Preloader = false;
             modelyToolStripMenuItem.Enabled = true;
         }
@@ -227,7 +230,7 @@ namespace Meteo
             try
             {
                 new StormEngine(algorithms.statistic_forecast);
-                UserControlOutput.Instance.Render();
+                //UserControlOutput.Instance.Render();
             }
             catch (Exception ex)
             {
@@ -359,7 +362,7 @@ namespace Meteo
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            DoAll();
+            //DoAll();
         }
     }
 }

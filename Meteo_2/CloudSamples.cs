@@ -17,6 +17,18 @@ namespace Meteo
         public string convectionTypeMajor { get; set; }
         public List<string> convTypesAll = new List<string>();
         public List<string> convTypesKeys = new List<string>();
+        public Dictionary<string, string> convectionTypeDescription { get; set; } = new Dictionary<string, string>(){
+            { "Zvlněná studená fronta", "ZVLNĚNÁ STUDENÁ FRONTA: !!!VYSOKÉ nebezpečí na SILNÉ BOUŘKY a PŘÍVALOVÉ POVODNĚ!!!" },
+            { "Zvlněná studená fronta - supercelární bouře", "ZVLNĚNÁ STUDENÁ FRONTA - SUPERCELÁRNÍ BOUŘE: !!!EXTRÉMNÍ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ a silnější TORNÁDA!!!"},
+            { "Studená fronta", "STUDENÁ FRONTA: nehrozí ŽÁDNÉ nebezpečí"},
+            { "Studená okluze", "STUDENÁ OKLUZE: nehrozí ŽÁDNÉ nebezpečí"},
+            { "Teplá okluze", "TEPLÁ OKLUZE: !!!NÍZKÉ nebezpečí na SILNÉ BOUŘKY a PŘÍVALOVÉ POVODNĚ!!!"},
+            { "Teplá okluze - supercelární bouře", "TEPLÁ OKLUZE - SUPERCELÁRNÍ BOUŘE: !!!VYSOKÉ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ a slabší TORNÁDA!!!"},
+            { "Kvazifrontální konvekce", "KVAZIFRONTÁLNÍ KONVEKCE: nehrozí ŽÁDNÉ nebezpečí"},
+            { "Orografická konvekce", "OROGRAFICKÁ KONVEKCE: !!!NÍZKÉ nebezpečí na SILNÉ BOUŘKY a PŘÍVALOVÉ POVODNĚ!!!"},
+            { "Orografická konvekce - linie konvergence", "OROGRAFICKÁ KONVEKCE - LINIE KONVERGENCE (SQL): !!!EXTRÉMNÍ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ slabší TORNÁDA!!!"}
+        };
+
         public string convectionSuperTypeMajor { get; set; }
         public List<string> convSuperTypesAll = new List<string>();
         public List<string> convSuperTypesKeys = new List<string>();
@@ -36,15 +48,18 @@ namespace Meteo
         public void CountMajorConvectionType()
         {
             int count = 0;
+            string temporaryType = "";
 
             foreach (var item in convTypesKeys)
             {
                 if (convTypesAll.Count(i => i == item) > count)
                 {
                     count = convTypesAll.Count(i => i == item);
-                    convectionTypeMajor = item;
+                    temporaryType = item;
                 }
             }
+
+            convectionTypeMajor = convectionTypeDescription[temporaryType];
 
             count = 0;
 

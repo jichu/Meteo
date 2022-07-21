@@ -95,10 +95,10 @@ namespace Meteo
 
         public Dictionary<string, float> convectionTypeResults = new Dictionary<string, float>
         {
-            { "Zvlněná studentá fronta", 0f },
-            { "Zvlněná studentá fronta - supercelární bouře", 0f },
-            { "Studentá fronta", 0f },
-            { "Studentá okluze", 0f },
+            { "Zvlněná studená fronta", 0f },
+            { "Zvlněná studená fronta - supercelární bouře", 0f },
+            { "Studená fronta", 0f },
+            { "Studená okluze", 0f },
             { "Teplá okluze", 0f},
             { "Teplá okluze - supercelární bouře", 0f},
             { "Kvazifrontální konvekce", 0f},
@@ -108,10 +108,10 @@ namespace Meteo
 
         public Dictionary<string, string> convectionTypeConversion = new Dictionary<string, string>
         {
-            { "Zvlněná studentá fronta", "FRONTÁLNÍ (Teplá instabilní hmota)" },
-            { "Zvlněná studentá fronta - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"  },
-            { "Studentá fronta", "FRONTÁLNÍ (Studená instabilní hmota)"  },
-            { "Studentá okluze", "FRONTÁLNÍ (Studená instabilní hmota)"  },
+            { "Zvlněná studená fronta", "FRONTÁLNÍ (Teplá instabilní hmota)" },
+            { "Zvlněná studená fronta - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"  },
+            { "Studená fronta", "FRONTÁLNÍ (Studená instabilní hmota)"  },
+            { "Studená okluze", "FRONTÁLNÍ (Studená instabilní hmota)"  },
             { "Teplá okluze", "FRONTÁLNÍ (Teplá instabilní hmota)"},
             { "Teplá okluze - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"},
             { "Kvazifrontální konvekce", "KVAZIFRONTÁLNÍ (Studená instabilní hmota)"},

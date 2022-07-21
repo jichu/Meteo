@@ -134,6 +134,7 @@
             this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.menuItemOutput.Size = new System.Drawing.Size(340, 22);
             this.menuItemOutput.Text = "Zobrazit výstup";
+            this.menuItemOutput.Visible = false;
             this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
             // 
             // menuItemForecast

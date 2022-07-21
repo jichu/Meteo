@@ -263,7 +263,7 @@ namespace Meteo
             };
                 List<float> parameters = TestParameters(param);
                 orp.wavyColdFront = SumArray(parameters)/parameters.Count;
-                orp.convectionTypeResults["Zvlněná studentá fronta"] = orp.wavyColdFront;
+                orp.convectionTypeResults["Zvlněná studená fronta"] = orp.wavyColdFront;
             }
             else {
                 orp.wavyColdFront = 0;
@@ -284,7 +284,7 @@ namespace Meteo
                 else { param.Add((orp.mucape!=-1f)?((orp.mucape >= 1750 && orp.mucape <= 5500) ? 1 : 0):-1f); }
                 List<float> parameters = TestParameters(param);
                 orp.wavyColdFrontS = SumArray(parameters) / parameters.Count;
-                orp.convectionTypeResults["Zvlněná studentá fronta - supercelární bouře"] = orp.wavyColdFrontS;
+                orp.convectionTypeResults["Zvlněná studená fronta - supercelární bouře"] = orp.wavyColdFrontS;
             }
             else {
                 orp.wavyColdFrontS = 0;
@@ -302,7 +302,7 @@ namespace Meteo
             };
                 List<float> parameters = TestParameters(param);
                 orp.coldFront = SumArray(parameters) / parameters.Count;
-                orp.convectionTypeResults["Studentá fronta"] = orp.coldFront;
+                orp.convectionTypeResults["Studená fronta"] = orp.coldFront;
             }
             else {
                 orp.coldFront = 0;
@@ -320,7 +320,7 @@ namespace Meteo
             };
                 List<float> parameters = TestParameters(param);
                 orp.coldOcclusion = SumArray(parameters) / parameters.Count;
-                orp.convectionTypeResults["Studentá okluze"] = orp.coldOcclusion;
+                orp.convectionTypeResults["Studená okluze"] = orp.coldOcclusion;
             }
             else {
                 orp.coldOcclusion = 0;
