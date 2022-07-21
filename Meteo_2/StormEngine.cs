@@ -46,12 +46,23 @@ namespace Meteo
 
                 Util.l("Dále bude výpočet pokračovat pro tyto intervaly: ");
                 foreach (var s in precipitationFilter.finalSampleList) {
+                    finalSampleNames.Add(s.sample_name);
+                }
+
+                foreach (var s in listSamples) {
                     s.LoadORPS();
                     Util.l($"{s.sample_name}");
-                    finalSampleNames.Add(s.sample_name);
-                    new StatisticalForecast(s);
+
+                    if (finalSampleNames.Contains(s.sample_name))
+                    {
+                        new StatisticalForecast(s);
+                    }
+                    else {
+                        new StatisticalForecast(s, false); //Neprovádí se žádný výpočet, pouze výpis prázdných výsledků
+                    }
                 }
-                sampleNames = finalSampleNames;
+
+                //sampleNames = finalSampleNames;
                 Run();
 
             }
@@ -187,10 +198,10 @@ namespace Meteo
             string[] majorConvectionTypesData = new string[sampleNames.Count];
             string[] majorConvectionSuperTypesData = new string[sampleNames.Count];
 
-            for (int i = 0; i < precipitationFilter.finalSampleList.Count; i++)
+            for (int i = 0; i < listSamples.Count; i++)
             { 
-                majorConvectionTypesData[i] = precipitationFilter.finalSampleList[i].convectionTypeMajor;
-                majorConvectionSuperTypesData[i] = precipitationFilter.finalSampleList[i].convectionSuperTypeMajor;
+                majorConvectionTypesData[i] = listSamples[i].convectionTypeMajor;
+                majorConvectionSuperTypesData[i] = listSamples[i].convectionSuperTypeMajor;
             }
 
             //Vytváření souboru root

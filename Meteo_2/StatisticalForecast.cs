@@ -16,130 +16,151 @@ namespace Meteo
 
         public int windDirection { get; set; }
 
-
-        public StatisticalForecast(CloudSamples sample)
-        {
+        public StatisticalForecast(CloudSamples sample, bool doComputing = true){
             this.sample = sample;
             //Parametry z CloudSample
             windDirection = sample.windDirection;
 
-            foreach (var orp in this.sample.ORPS) {
-                //Parametry z CloudORP
-                float wetBulb = orp.wetBulb;
-                //Util.l($"Konvektivní srážky / dešťové srážky pro {this.sample.sample_name}: {wetBulb}");
-
-                if ((windDirection == 4 || windDirection == 5) && (wetBulb >= 42f) || (windDirection < 4 || windDirection > 5) && (wetBulb >= 36f))
+            foreach (var orp in this.sample.ORPS)
+            {
+                if (doComputing)
                 {
-                    //Util.l("Výpočet bude pokračovat");
-                    //Vektor pohybu bouře
-                    List<float> windSpeedValues = new List<float>() { orp.wind_850, orp.wind_700, orp.wind_600, orp.wind_500, orp.wind_400, orp.wind_300 };
-                    orp.corfidiVector = 2 * Average(TestParameters(windSpeedValues)) - windSpeedValues.First();
-                    if (orp.corfidiVector <= 3) orp.corfidiVectorLevel = 3;
-                    else if (orp.corfidiVector <= 9) orp.corfidiVectorLevel = 2;
-                    else if (orp.corfidiVector <= 15) orp.corfidiVectorLevel = 1;
-                    else orp.corfidiVectorLevel = 0;
+                    //Parametry z CloudORP
+                    float wetBulb = orp.wetBulb;
+                    //Util.l($"Konvektivní srážky / dešťové srážky pro {this.sample.sample_name}: {wetBulb}");
 
-                    ConvectionType(orp);
-                    CombinePrecipitation(orp);
-
-                    //Výstupní parametry / vlastnosti
-                    /*orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity != 0 ? orp.combineIntensity.ToString() : "0");
-                    orp.output.Add("SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
-                    orp.output.Add("ČAS VÝSKYTU", sample.sample_name);
-                    orp.output.Add("RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
-                    orp.output.Add("PODTYP KONVEKCE", orp.convectionTypesStringForm);
-                    orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
-                    orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());*/
-
-                    orp.output.Add("A_TYP KONVEKCE", orp.convectionSuperTypesStringForm);
-                    orp.output.Add("A_PODTYP KONVEKCE", orp.convectionTypesStringForm);
-
-                    //Příprava na zjištění majoritních typů/supertypů konvekce
-                    this.sample.convTypesAll.Add(orp.convectionTypesStringForm);
-                    this.sample.convSuperTypesAll.Add(orp.convectionSuperTypesStringForm);
-
-                    if (!this.sample.convTypesKeys.Contains(orp.convectionTypesStringForm)) {
-                        this.sample.convTypesKeys.Add(orp.convectionTypesStringForm);
-                    }
-
-                    if (!this.sample.convSuperTypesKeys.Contains(orp.convectionSuperTypesStringForm)){
-                        this.sample.convSuperTypesKeys.Add(orp.convectionSuperTypesStringForm);
-                    }
-
-
-                    orp.output.Add("A_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
-
-                    //Vedlejší výstupy
-                    orp.output.Add("S_SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
-                    orp.output.Add("S_ALADIN ČHMÚ - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.aladin.ToString());
-                    orp.output.Add("S_WRF ARW - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_arw.ToString());
-                    orp.output.Add("S_WRF NMM - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_nmm.ToString());
-                    orp.output.Add("S_KOMBINOVANÁ PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.combineInfluence.ToString());
-
-
-                    //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
-
-                    //Util.windDirectionToString[sample.windDirection] //směr proudění
-                    //Dráha bouří?// orp.output.Add("SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
-
-                    //sample.sample_name //čas výskytu
-                    //orp.convectionSuperTypesStringForm //typ konvekce
-                    //(orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb")//rychlost pohybu bouře
-
-                    orp.statisticalPrecipitation = -1;
-
-                    if (orp.statisticalPrecipitation == -1)
+                    if ((windDirection == 4 || windDirection == 5) && (wetBulb >= 42f) || (windDirection < 4 || windDirection > 5) && (wetBulb >= 36f))
                     {
-                        orp.finalPlace = orp.combineInfluence;
-                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sum_merge, orp.significantPredictors })); //chybí summmerge?  
+                        //Util.l("Výpočet bude pokračovat");
+                        //Vektor pohybu bouře
+                        List<float> windSpeedValues = new List<float>() { orp.wind_850, orp.wind_700, orp.wind_600, orp.wind_500, orp.wind_400, orp.wind_300 };
+                        orp.corfidiVector = 2 * Average(TestParameters(windSpeedValues)) - windSpeedValues.First();
+                        if (orp.corfidiVector <= 3) orp.corfidiVectorLevel = 3;
+                        else if (orp.corfidiVector <= 9) orp.corfidiVectorLevel = 2;
+                        else if (orp.corfidiVector <= 15) orp.corfidiVectorLevel = 1;
+                        else orp.corfidiVectorLevel = 0;
+
+                        ConvectionType(orp);
+                        CombinePrecipitation(orp);
+
+                        //Výstupní parametry / vlastnosti
+                        /*orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity != 0 ? orp.combineIntensity.ToString() : "0");
+                        orp.output.Add("SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
+                        orp.output.Add("ČAS VÝSKYTU", sample.sample_name);
+                        orp.output.Add("RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+                        orp.output.Add("PODTYP KONVEKCE", orp.convectionTypesStringForm);
+                        orp.output.Add("TYP KONVEKCE", orp.convectionSuperTypesStringForm);
+                        orp.output.Add("SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());*/
+
+                        orp.output.Add("A_TYP KONVEKCE", orp.convectionSuperTypesStringForm);
+                        orp.output.Add("A_PODTYP KONVEKCE", orp.convectionTypesStringForm);
+
+                        //Příprava na zjištění majoritních typů/supertypů konvekce
+                        this.sample.convTypesAll.Add(orp.convectionTypesStringForm);
+                        this.sample.convSuperTypesAll.Add(orp.convectionSuperTypesStringForm);
+
+                        if (!this.sample.convTypesKeys.Contains(orp.convectionTypesStringForm))
+                        {
+                            this.sample.convTypesKeys.Add(orp.convectionTypesStringForm);
+                        }
+
+                        if (!this.sample.convSuperTypesKeys.Contains(orp.convectionSuperTypesStringForm))
+                        {
+                            this.sample.convSuperTypesKeys.Add(orp.convectionSuperTypesStringForm);
+                        }
+
+
+                        orp.output.Add("A_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+
+                        //Vedlejší výstupy
+                        orp.output.Add("S_SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
+                        orp.output.Add("S_ALADIN ČHMÚ - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.aladin.ToString());
+                        orp.output.Add("S_WRF ARW - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_arw.ToString());
+                        orp.output.Add("S_WRF NMM - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.wrf_nmm.ToString());
+                        orp.output.Add("S_KOMBINOVANÁ PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.combineInfluence.ToString());
+
+
+                        //TODO VÝPOČET STATISTICKÉ PŘEDPOVĚDI
+
+                        //Util.windDirectionToString[sample.windDirection] //směr proudění
+                        //Dráha bouří?// orp.output.Add("SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", orp.precipitationResult.ToString());
+
+                        //sample.sample_name //čas výskytu
+                        //orp.convectionSuperTypesStringForm //typ konvekce
+                        //(orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb")//rychlost pohybu bouře
+
+                        orp.statisticalPrecipitation = -1;
+
+                        if (orp.statisticalPrecipitation == -1)
+                        {
+                            orp.finalPlace = orp.combineInfluence;
+                            orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.sum_merge, orp.significantPredictors })); //chybí summmerge?  
+                        }
+                        else
+                        {
+                            orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineInfluence }));
+                            orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.sum_merge, orp.significantPredictors })); //chybí summmerge?  
+                        }
+
+                        //Hlavní výstupy
+                        orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.finalPlace.ToString());
+                        orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU PŘÍVALOVÝCH SRÁŽEK", orp.finalStorm.ToString());
+
+                        //Vedlejší výstupy
+                        orp.output.Add("S_STATISTICKÝ ODHAD VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.statisticalPrecipitation.ToString());
+
+                        //orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.finalStorm.ToString());
+
                     }
                     else
                     {
-                        orp.finalPlace = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.combineInfluence }));
-                        orp.finalStorm = ValueToLevel(LevelScale, Probability(new List<float>() { orp.statisticalPrecipitation, orp.sum_merge, orp.significantPredictors })); //chybí summmerge?  
+
+                        //Util.l("Výpočet ukončen");
                     }
 
-                    //Hlavní výstupy
-                    orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.finalPlace.ToString());
-                    orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU PŘÍVALOVÝCH SRÁŽEK", orp.finalStorm.ToString());
-                    
-                    //Vedlejší výstupy
-                    orp.output.Add("S_STATISTICKÝ ODHAD VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", orp.statisticalPrecipitation.ToString());
+                    //Výpis výsledků
+                    //Util.l($"{orp.name}; Sloučená intenzita: {orp.combineIntensity}; Směr větru: {Util.windDirectionToString[sample.windDirection]}; Typů konvekce: {orp.convectionTypes.Count}; Čas: {sample.sample_name}; Srážky: {orp.precipitationResult}");
+                    /*foreach (var type in orp.convectionTypes)
+                    {
+                        Util.l($"{type.Key}");
+                    }*/
 
-                    //orp.output.Add("M_VÝSLEDNÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.finalStorm.ToString());
+                    //Výstupní parametry / vlastnosti
+                    /*orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity!=0?orp.combineIntensity.ToString():"0");
+                    orp.output.Add("M_SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
+                    orp.output.Add("M_ČAS VÝSKYTU", sample.sample_name);
+                    orp.output.Add("M_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
+                    orp.output.Add("M_PODTYP KONVEKCE", orp.convectionTypesStringForm);
+                    orp.output.Add("M_TYP KONVEKCE", orp.convectionSuperTypesStringForm);
+                    orp.output.Add("M_SRÁŽKY ORP", orp.precipitationResult.ToString());                
+                    orp.output.Add("M_SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());*/
+
+
+
+                    CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
+                    Util.outputDataCache.Add(data);
 
                 }
-                else
-                {
-
-                    //Util.l("Výpočet ukončen");
+                else {
+                    float valueNoComputing = -1f;
+                    valueNoComputing.ToString();
+                    orp.output.Add("A_TYP KONVEKCE", valueNoComputing.ToString());
+                    orp.output.Add("A_PODTYP KONVEKCE", valueNoComputing.ToString());
+                    orp.output.Add("A_RYCHLOST POHYBU BOUŘE", valueNoComputing.ToString());
+                    orp.output.Add("S_SOUHRNNÁ NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("S_ALADIN ČHMÚ - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("S_WRF ARW - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("S_WRF NMM - NUMERICKÁ PŘEDPOVĚĎ KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("S_KOMBINOVANÁ PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("M_PŘEDPOVĚĎ VÝSKYTU PŘÍVALOVÝCH SRÁŽEK", valueNoComputing.ToString());
+                    orp.output.Add("S_STATISTICKÝ ODHAD VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
+                    CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
+                    Util.outputDataCache.Add(data);
                 }
-
-                //Výpis výsledků
-                //Util.l($"{orp.name}; Sloučená intenzita: {orp.combineIntensity}; Směr větru: {Util.windDirectionToString[sample.windDirection]}; Typů konvekce: {orp.convectionTypes.Count}; Čas: {sample.sample_name}; Srážky: {orp.precipitationResult}");
-                /*foreach (var type in orp.convectionTypes)
-                {
-                    Util.l($"{type.Key}");
-                }*/
-
-                //Výstupní parametry / vlastnosti
-                /*orp.output.Add("M_KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY KONVEKTIVNÍCH SRÁŽEK", orp.combineIntensity!=0?orp.combineIntensity.ToString():"0");
-                orp.output.Add("M_SMĚR PROUDĚNÍ", Util.windDirectionToString[sample.windDirection]);
-                orp.output.Add("M_ČAS VÝSKYTU", sample.sample_name);
-                orp.output.Add("M_RYCHLOST POHYBU BOUŘE", (orp.corfidiVectorLevel <= 2) ? "rychly pohyb" : "pomaly pohyb");
-                orp.output.Add("M_PODTYP KONVEKCE", orp.convectionTypesStringForm);
-                orp.output.Add("M_TYP KONVEKCE", orp.convectionSuperTypesStringForm);
-                orp.output.Add("M_SRÁŽKY ORP", orp.precipitationResult.ToString());                
-                orp.output.Add("M_SRÁŽKY KRAJ", orp.precipitationResultRegion.ToString());*/                
-
-
-
-                CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
-                Util.outputDataCache.Add(data);
-
             }
 
-            this.sample.CountMajorConvectionType();
+            this.sample.CountMajorConvectionType(doComputing);
 
         }
         //Kombinovaná předpověď

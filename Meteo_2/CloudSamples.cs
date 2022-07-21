@@ -45,31 +45,37 @@ namespace Meteo
             }
         }
 
-        public void CountMajorConvectionType()
+        public void CountMajorConvectionType(bool doComputing = true)
         {
-            int count = 0;
-            string temporaryType = "";
+            if (doComputing){
+                int count = 0;
+                string temporaryType = "";
 
-            foreach (var item in convTypesKeys)
-            {
-                if (convTypesAll.Count(i => i == item) > count)
+                foreach (var item in convTypesKeys)
                 {
-                    count = convTypesAll.Count(i => i == item);
-                    temporaryType = item;
+                    if (convTypesAll.Count(i => i == item) > count)
+                    {
+                        count = convTypesAll.Count(i => i == item);
+                        temporaryType = item;
+                    }
+                }
+
+                convectionTypeMajor = convectionTypeDescription[temporaryType];
+
+                count = 0;
+
+                foreach (var item in convSuperTypesKeys)
+                {
+                    if (convSuperTypesAll.Count(i => i == item) > count)
+                    {
+                        count = convSuperTypesAll.Count(i => i == item);
+                        convectionSuperTypeMajor = item;
+                    }
                 }
             }
-
-            convectionTypeMajor = convectionTypeDescription[temporaryType];
-
-            count = 0;
-
-            foreach (var item in convSuperTypesKeys)
-            {
-                if (convSuperTypesAll.Count(i => i == item) > count)
-                {
-                    count = convSuperTypesAll.Count(i => i == item);
-                    convectionSuperTypeMajor = item;
-                }
+            else {
+                convectionTypeMajor = "-1";
+                convectionSuperTypeMajor = "-1";
             }
         }
     }
