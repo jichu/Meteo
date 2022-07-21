@@ -269,6 +269,7 @@ namespace Meteo
             LoadModels();
             LoadInputs();
             LoadAlgorithm();
+            closeMeteo();
         }
 
         private void menuSettingWind_Click(object sender, EventArgs e)
@@ -279,18 +280,8 @@ namespace Meteo
         private void menuItemStatForecasting_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Začátek počítání statistické předpovědi");
-            Util.ShowLoading("Algoritmus počítá předpověď....");
-            try
-            {
-                new StormEngine(algorithms.statistic_forecast);
-                UserControlOutput.Instance.Render();
-            }
-            catch (Exception ex)
-            {
-                Util.l("Chyba při výpočtu");
-            }
-            Util.HideLoading();
-
+            LoadAlgorithm();
+            closeMeteo();
         }
 
         //WRF Apply smery vetru
@@ -363,6 +354,10 @@ namespace Meteo
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //DoAll();
+        }
+
+        private void closeMeteo() {
+            Application.Exit();
         }
     }
 }
