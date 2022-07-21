@@ -271,30 +271,6 @@ namespace Meteo
               "_" +sampleNames[0] + "h_"+ GetValueFromSettingsList(settings, "last_date")
             );
 
-            //Vytváření souboru konkrétních dat
-            //Hlavní výstupy
-
-            /*JSONwriter.CreateJson(
-              new JObject
-              (
-                   new JProperty("samplename",sampleNames),
-                   new JProperty("data", arrayMain)
-               ),
-              "_main"
-            );*/
-            //Vedlejší výstupy
-
-            /*JSONwriter.CreateJson(
-              new JObject
-              (
-                   new JProperty("samplename", sampleNames),
-                   new JProperty("data", arraySec)
-               ),
-              "_secondary"
-            );*/
-
-
-
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
 
             //Util.StopWatch("Vypočet dokončen!");

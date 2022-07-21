@@ -44,7 +44,7 @@ namespace Meteo
 
                 Task.WaitAll(tasks.ToArray());
                                 
-                ShowLog();
+                //ShowLog();
             }
             catch (Exception e)
             {

@@ -259,6 +259,10 @@ namespace Meteo
 
         private void menuDoAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //List<Task> taskList = new List<Task>();
+            //taskList.Add(Task.Run(() => DoAll())); 
+            //Task.WaitAll(taskList.ToArray());
+
             DoAll();
             /*LoadModels();
             LoadInputs();
@@ -280,7 +284,12 @@ namespace Meteo
         private void menuItemStatForecasting_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Začátek počítání statistické předpovědi");
+            /*List<Task> taskList = new List<Task>();
+            taskList.Add(Task.Run(() => LoadAlgorithm())); 
+            Task.WaitAll(taskList.ToArray());*/
+
             LoadAlgorithm();
+            //Thread.Sleep(TimeSpan.FromSeconds(1));
             closeMeteo();
         }
 
