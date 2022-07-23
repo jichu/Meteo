@@ -281,7 +281,7 @@ namespace Meteo
                    new JProperty("secondarydata", arraySec),
                    new JProperty("advanceddata", arrayAdv)
                ),
-              "_" +sampleNames[0] + "h_"+ GetValueFromSettingsList(settings, "last_date")
+              "_"+Util.curModelDir
             );
 
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
