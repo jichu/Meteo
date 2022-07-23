@@ -234,6 +234,7 @@ namespace Meteo
             }
             catch (Exception ex)
             {
+                Util.l(ex.Message);
                 Util.l("Chyba při výpočtu");
             }
             Util.HideLoading();
@@ -271,7 +272,11 @@ namespace Meteo
 
         public void DoAll() {
             LoadModels();
-            LoadInputs();
+
+            if (Util.validData)
+            {
+                LoadInputs();
+            }
             LoadAlgorithm();
             closeMeteo();
         }
@@ -362,7 +367,8 @@ namespace Meteo
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            //DoAll();
+            //Automatické spuštění celého výpočtu
+            DoAll();
         }
 
         private void closeMeteo() {

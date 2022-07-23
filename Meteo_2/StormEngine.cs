@@ -38,16 +38,28 @@ namespace Meteo
             else if (method == algorithms.statistic_forecast)
             {
                 Util.l("Algoritmus statistické předpovědi konvenktivních srážek");
+                if (listSamples.Count() == 0)
+                {
+                    listSamples.Add(new CloudSamples());
+                    listSamples[0].sample_name = Util.firstSample;
+                }
+
                 foreach (var l in listSamples)
                 {
                     sampleNames.Add(l.sample_name);
                 }
-                precipitationFilter = new PrecipitationFilter(ORPS, listSamples);
 
-                Util.l("Dále bude výpočet pokračovat pro tyto intervaly: ");
-                foreach (var s in precipitationFilter.finalSampleList) {
-                    finalSampleNames.Add(s.sample_name);
+                if (Util.validData)
+                {
+                    precipitationFilter = new PrecipitationFilter(ORPS, listSamples);
+
+                    foreach (var s in precipitationFilter.finalSampleList)
+                    {
+                        finalSampleNames.Add(s.sample_name);
+                    }
+
                 }
+                Util.l("Dále bude výpočet pokračovat pro tyto intervaly: ");
 
                 foreach (var s in listSamples) {
                     s.LoadORPS();
@@ -260,6 +272,7 @@ namespace Meteo
             JSONwriter.CreateJson(
               new JObject
               (
+                   new JProperty("validdata", Util.validData),
                    new JProperty("date", GetValueFromSettingsList(settings, "last_date")),
                    new JProperty("samplename", sampleNames),
                    new JProperty("majorconvectiontype", majorConvectionTypesData),
