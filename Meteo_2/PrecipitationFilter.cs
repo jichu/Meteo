@@ -23,7 +23,7 @@ namespace Meteo
         };
 
         public PrecipitationFilter(List<CloudORPS> ORPList, List<CloudSamples> samplesList) {
-            Util.l("Filtrování podle srážkových modelů");
+            Util.l("Filtrování podle srážkových modelů...");
             this.ORPList = ORPList;
             this.samplesList = samplesList;
 

@@ -18,6 +18,7 @@ namespace Meteo
         public List<string> convTypesAll = new List<string>();
         public List<string> convTypesKeys = new List<string>();
         public Dictionary<string, string> convectionTypeDescription { get; set; } = new Dictionary<string, string>(){
+            { "-1", "V tomto čase se nevyskytují žádné konvektivní srážky."},
             { "Zvlněná studená fronta", "ZVLNĚNÁ STUDENÁ FRONTA: !!!VYSOKÉ nebezpečí na SILNÉ BOUŘKY a PŘÍVALOVÉ POVODNĚ!!!" },
             { "Zvlněná studená fronta - supercelární bouře", "ZVLNĚNÁ STUDENÁ FRONTA - SUPERCELÁRNÍ BOUŘE: !!!EXTRÉMNÍ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ a silnější TORNÁDA!!!"},
             { "Studená fronta", "STUDENÁ FRONTA: nehrozí ŽÁDNÉ nebezpečí"},
@@ -39,6 +40,7 @@ namespace Meteo
 
         public void LoadORPS()
         {
+            Util.l($"Načitání předpovědních parametrů pro jednotlivá ORP...");
             foreach (var orp in ORPS)
             {
                 orp.LoadData(sample_name);
@@ -47,6 +49,7 @@ namespace Meteo
 
         public void CountMajorConvectionType(bool doComputing = true)
         {
+            //Util.l($"Zjišťování nejčastějšího typu konvekce...");
             if (doComputing){
                 int count = 0;
                 string temporaryType = "";
@@ -74,7 +77,7 @@ namespace Meteo
                 }
             }
             else {
-                convectionTypeMajor = "-1";
+                convectionTypeMajor = "V tomto čase se nevyskytují žádné konvektivní srážky.";
                 convectionSuperTypeMajor = "-1";
             }
         }

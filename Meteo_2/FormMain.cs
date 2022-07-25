@@ -226,6 +226,7 @@ namespace Meteo
 
         private void LoadAlgorithm()
         {
+            Util.l($"Spuštění předpovědního algoritmu...");
             Util.ShowLoading("Algoritmus počítá předpověď....");
             try
             {
@@ -238,6 +239,7 @@ namespace Meteo
                 Util.l("Chyba při výpočtu");
             }
             Util.HideLoading();
+            Util.l($"Výpočet ukončen");
         }
 
         private void menuItemForecast_Click(object sender, EventArgs e)
@@ -288,7 +290,7 @@ namespace Meteo
 
         private void menuItemStatForecasting_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Začátek počítání statistické předpovědi");
+            Util.l("Začátek počítání statistické předpovědi");
             /*List<Task> taskList = new List<Task>();
             taskList.Add(Task.Run(() => LoadAlgorithm())); 
             Task.WaitAll(taskList.ToArray());*/
@@ -308,7 +310,7 @@ namespace Meteo
             foreach (var orp in WRFparser.WRFparser.Config.ORP)
             {
                 RunWeb(orp["url"].ToString(), orp["name"].ToString());
-                Console.WriteLine(orp["name"]);
+                Util.l(orp["name"]);
             }
             //_=Completed
         }
@@ -348,7 +350,7 @@ namespace Meteo
                 new JProperty("name", wv.Tag),
                 new JProperty("wind", ja)
                 ));
-            Console.WriteLine(ja);
+            Util.l(ja);
 
         }
         public async Task Completed()

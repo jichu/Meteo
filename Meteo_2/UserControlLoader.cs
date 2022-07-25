@@ -73,7 +73,7 @@ namespace Meteo
         public void UpdateInfo(string message)
         {
             log.AppendLine(message);
-            Util.l(log.Length);
+            //Util.l(log.Length);
             /*
              infoText.BeginInvoke((Action)(() =>
             {

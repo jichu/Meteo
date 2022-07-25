@@ -139,6 +139,7 @@ namespace Meteo
 
                     CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
                     Util.outputDataCache.Add(data);
+                    //Util.l("Generování výstupních dat..");
 
                 }
                 else {
@@ -157,6 +158,7 @@ namespace Meteo
                     orp.output.Add("S_STATISTICKÝ ODHAD VÝSKYTU KONVEKTIVNÍCH SRÁŽEK", valueNoComputing.ToString());
                     CloudOutput data = new CloudOutput(orp.name, sample.sample_name, orp.output);
                     Util.outputDataCache.Add(data);
+                    //Util.l("Generování výstupních dat..");
                 }
             }
 
@@ -165,6 +167,7 @@ namespace Meteo
         }
         //Kombinovaná předpověď
         private void CombinePrecipitation(CloudORPS orp) {
+            //Util.l($"Výpočet kombinované předpovědi...");
             //Util.l($"Zvlněná studená fronta: {orp.convectionTypes.Keys.Contains("Zvlněná studentá fronta")}");
             if (orp.convectionTypes.Keys.Contains("Zvlněná studentá fronta")) {
                 precipitationProbability(orp, 14, 20);
@@ -234,6 +237,7 @@ namespace Meteo
         //Předpověď typu konvekce
         private void ConvectionType(CloudORPS orp)
         {
+            //Util.l($"Zjišťování typu konvekce pro jednotlivé ORP...");
             //Zvlněná studená fronta
             WavyColdFront(orp);
             //Zvlněná studená fronta - supercelární bouře

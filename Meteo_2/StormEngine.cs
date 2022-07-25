@@ -37,7 +37,7 @@ namespace Meteo
             }
             else if (method == algorithms.statistic_forecast)
             {
-                Util.l("Algoritmus statistické předpovědi konvenktivních srážek");
+                //Util.l("Algoritmus statistické předpovědi konvenktivních srážek");
                 if (listSamples.Count() == 0)
                 {
                     listSamples.Add(new CloudSamples());
@@ -59,19 +59,22 @@ namespace Meteo
                     }
 
                 }
-                Util.l("Dále bude výpočet pokračovat pro tyto intervaly: ");
+                //Util.l("Dále bude výpočet pokračovat pro tyto intervaly: ");
 
                 foreach (var s in listSamples) {
+                    Util.l($"Probíhá zpracování dat pro interval: {s.sample_name}");
                     s.LoadORPS();
-                    Util.l($"{s.sample_name}");
-
+                    
                     if (finalSampleNames.Contains(s.sample_name))
                     {
+                        Util.l($"Výpočet předpovědi PROBÍHÁ...");
                         new StatisticalForecast(s);
                     }
                     else {
+                        Util.l($"Výpočet předpovědi NEPROBÍHÁ...");
                         new StatisticalForecast(s, false); //Neprovádí se žádný výpočet, pouze výpis prázdných výsledků
                     }
+                    Util.l($"Konec výpočtu pro interval: {s.sample_name}");
                 }
 
                 //sampleNames = finalSampleNames;
@@ -249,6 +252,7 @@ namespace Meteo
             );*/
 
             //Všechno dohromady
+            Util.l($"Generování výstupních JSON souborů...");
             JSONwriter.CreateJsonRoot(
               new JObject
               (

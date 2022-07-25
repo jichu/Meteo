@@ -14,7 +14,7 @@ namespace Meteo
         public string coods { get; set; }
 
         public void ShowRecord() {
-            Util.l("id: "+id + " id_orp: "+ id_orp + " Color: " + color + " Coods: " + coods);
+            //Util.l("id: "+id + " id_orp: "+ id_orp + " Color: " + color + " Coods: " + coods);
         }
         public CloudMaskSpectrum() {
 

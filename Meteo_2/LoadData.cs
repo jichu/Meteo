@@ -20,10 +20,13 @@ namespace Meteo
             /*FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepsat data vybranou adresářovou strukturou, maskami a stupnicemi?");
             dlg.ShowDialog();*/
 
-            //Util.curModelDir = "models__09h__24.06.2021";
+            Util.curModelDir = "models__09h__24.06.2021";
+            Util.curModelDir = "models__03h__05.06.2019";
+            Util.curModelDir = "models__09h__23.07.2022";
+           
             Util.curModelDir = generateCurrentModelDir();
             Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings("last_date", Util.curModelDir.Split('_')[4]));
-            //Util.l($"nazev složky: {generateCurrentModelDir()}");
+            Util.l($"Složka pro aktuální data: { Util.curModelDir}");
 
             if (Util.curModelDir == null)
                 return;
@@ -63,7 +66,7 @@ namespace Meteo
             Util.firstSample = hour;
 
             dir = dir+hour + "h"+"__"+day+"."+month+"."+year;
-            Util.l($"{dir}");
+            //Util.l($"{dir}");
             return dir;
         }
 
@@ -87,7 +90,7 @@ namespace Meteo
             }
             catch (Exception e)
             {
-                Util.l(e);
+                Util.l("Nejsou k dispozici aktuální data!");
                 Util.validData = false;
             }
         }
