@@ -117,6 +117,7 @@ namespace Meteo
         private static Stopwatch watch;
 
         public static bool validData { get; set; } = true;
+        public static bool noData { get; set; } = false;
         public static string firstSample { get; set;}
 
         public static List<string> logMissingParameters { get; set; } = new List<string>();

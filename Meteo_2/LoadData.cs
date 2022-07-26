@@ -93,7 +93,8 @@ namespace Meteo
             }
             catch (Exception e)
             {
-                Util.l("Nejsou k dispozici aktuální data!");
+                Util.l("Nejsou k dispozici žádná data!");
+                Util.noData = true;
                 Util.validData = false;
             }
         }
