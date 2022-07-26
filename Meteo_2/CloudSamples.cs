@@ -77,8 +77,13 @@ namespace Meteo
                 }
             }
             else {
-                convectionTypeMajor = "V tomto čase se nevyskytují žádné konvektivní srážky.";
-                convectionSuperTypeMajor = "-1";
+                if (Util.validData) {
+                    convectionTypeMajor = "V tomto čase se nevyskytují žádné konvektivní srážky.";
+                    convectionSuperTypeMajor = "V tomto čase se nevyskytují žádné konvektivní srážky.";
+                } else {
+                    convectionTypeMajor = "Nejsou k dispozici aktuální data!";
+                    convectionSuperTypeMajor = "Nejsou k dispozici aktuální data!";
+                }
             }
         }
     }

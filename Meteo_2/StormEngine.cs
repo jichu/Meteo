@@ -76,7 +76,14 @@ namespace Meteo
                     }
                     Util.l($"Konec výpočtu pro interval: {s.sample_name}");
                 }
-
+                if (Util.logMissingParameters.Count > 0)
+                {
+                    Util.l("Chybějící modely:");
+                    foreach (var l in Util.logMissingParameters)
+                    {
+                        Util.l($"{l}");
+                    }
+                }
                 //sampleNames = finalSampleNames;
                 Run();
 
@@ -277,6 +284,7 @@ namespace Meteo
               new JObject
               (
                    new JProperty("validdata", Util.validData),
+                   new JProperty("missingdata", Util.logMissingParameters),
                    new JProperty("date", GetValueFromSettingsList(settings, "last_date")),
                    new JProperty("samplename", sampleNames),
                    new JProperty("majorconvectiontype", majorConvectionTypesData),

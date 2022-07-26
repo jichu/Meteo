@@ -85,6 +85,10 @@ namespace Meteo
                     //break;////
                 }
             }
+            else {
+                Util.validData = false;
+            }
+
             Task.WaitAll(tasks.ToArray());
             watch.Stop();
             Util.l($"Celkově bylo zpracováno {sourceImages.Count} obrázků. Doba trvání výpočtu: {watch.ElapsedMilliseconds}ms.");

@@ -235,8 +235,10 @@ namespace Meteo
             }
             catch (Exception ex)
             {
-                Util.l(ex.Message);
                 Util.l("Chyba při výpočtu");
+                //Util.l(ex.Message);
+                Util.validData = false;
+                new StormEngine(algorithms.statistic_forecast);
             }
             Util.HideLoading();
             Util.l($"Výpočet ukončen");

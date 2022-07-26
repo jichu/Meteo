@@ -116,8 +116,10 @@ namespace Meteo
         public static char logMessageDelimiter = '|';
         private static Stopwatch watch;
 
-        public static bool validData { get; set; }
+        public static bool validData { get; set; } = true;
         public static string firstSample { get; set;}
+
+        public static List<string> logMissingParameters { get; set; } = new List<string>();
 
         public static void ShowLoading(string message, string info="", bool selfClose=true)
         {

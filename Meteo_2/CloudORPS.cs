@@ -177,7 +177,6 @@ namespace Meteo
             mfdiv = GetParameter("Model_WRF_ARW", "MFDIV_0-1km", sample_name, id, "REAL");
             rh_700 = GetParameter("Model_WRF_ARW", "Relativní_vlhkost_700", sample_name, id, "REAL");
             rh_1000 = GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000", sample_name, id, "REAL");
-            cloudy = GetParameter("Model_ALADIN_CZ", "Oblačnost", sampleNames[sampleNames.IndexOf(sample_name) - 1], id); //Bere hodnotu z předchozího samplu
             pressureMLSP = GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP", sample_name, id, "REAL");
             mlcape = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCAPE+LI_Wetter_3_de", sample_name, id, "REAL");  
             mlcin = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de", sample_name, id, "REAL");
@@ -185,9 +184,11 @@ namespace Meteo
             mucape = GetParameter("Model_GFS_Lightning_Wizard_50km", "MUCAPE", sample_name, id, "REAL");
             relativeVorticity = GetParameter("Model_WRF_ARW", "Relativni_vorticita_500_hPa_WRF", sample_name, id);
 
-
-            dls = -1f;
-            //dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km", sample_name, id);//možná nebude k dispozici
+            if (sample_name == Util.firstSample) { cloudy = -1f; } else {
+                cloudy = GetParameter("Model_ALADIN_CZ", "Oblačnost", sampleNames[sampleNames.IndexOf(sample_name) - 1], id); //Bere hodnotu z předchozího samplu
+            }
+            //dls = -1f;
+            dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "DLS", sample_name, id);//možná nebude k dispozici
             
             //charakteristiky reliéfu / statické parametry
             sklonitost_reliefu = GetRelief("Sklonitost reliéfu (průměrná)");
@@ -224,6 +225,19 @@ namespace Meteo
 
         private float GetParameter(string model, string submodel, string sampleName, int id_orp, string type = "DEFAULT")
         {
+            float value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp, Util.typeValueDictionary[type]);
+            if (value == -1f)
+            {
+                /*if (!Util.logMissingParameters.Contains(model + ":" + submodel + " chybí pro interval " + sampleName))
+                {
+                    Util.logMissingParameters.Add(model + ":" + submodel + " chybí pro interval " + sampleName);
+                }*/
+                if (!Util.logMissingParameters.Contains(model + ":" + submodel))
+                {
+                    Util.logMissingParameters.Add(model + ":" + submodel);
+                }
+            }
+
             return Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp, Util.typeValueDictionary[type]);
         }
 
