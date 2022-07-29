@@ -144,6 +144,7 @@ namespace Meteo
         public int finalStorm { get; set; }
 
         public Dictionary<string, string> output { get; set; } = new Dictionary<string, string>();
+        public bool keyData { get; set; } = true;
 
         public CloudORPS() {
         }
@@ -189,7 +190,14 @@ namespace Meteo
             }
             //dls = -1f;
             dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "DLS", sample_name, id);//možná nebude k dispozici
-            
+
+            //Ošetření absence klíčových parametrů - chybí-li 2 a více, neprobíhá další výpočet
+            List<float> keyParameters = new List<float>() {aladin, temperature_850, mfdiv, relativeVorticity, rh_700, wrf_arw, wrf_nmm, wind_500, dls};
+            if (keyParameters.Count(p => p == -1) >= 2) {
+                this.keyData = false;  
+            }
+            //Util.l($"Chybí {keyParameters.Count(p => p == -1)} klíčových parametrů!");
+
             //charakteristiky reliéfu / statické parametry
             sklonitost_reliefu = GetRelief("Sklonitost reliéfu (průměrná)");
             orientace_reliefu_tepelny_prohrev_dopoledne = GetRelief("Orientace reliéfu (tepelný prohřev) dopoledne"); //pro sample: 6,9,30,33

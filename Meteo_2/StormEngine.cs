@@ -65,7 +65,7 @@ namespace Meteo
                     Util.l($"Probíhá zpracování dat pro interval: {s.sample_name}");
                     s.LoadORPS();
                     
-                    if (finalSampleNames.Contains(s.sample_name))
+                    if (finalSampleNames.Contains(s.sample_name) && s.keyData)
                     {
                         Util.l($"Výpočet předpovědi PROBÍHÁ...");
                         new StatisticalForecast(s);
@@ -283,7 +283,7 @@ namespace Meteo
             JSONwriter.CreateJson(
               new JObject
               (
-                   new JProperty("validdata", Util.validData),
+                   new JProperty("validdata", listSamples.Count(s => s.keyData==false)==0),
                    new JProperty("missingdata", Util.logMissingParameters),
                    new JProperty("date", GetValueFromSettingsList(settings, "last_date")),
                    new JProperty("samplename", sampleNames),

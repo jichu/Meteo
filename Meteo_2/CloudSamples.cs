@@ -33,6 +33,7 @@ namespace Meteo
         public string convectionSuperTypeMajor { get; set; }
         public List<string> convSuperTypesAll = new List<string>();
         public List<string> convSuperTypesKeys = new List<string>();
+        public bool keyData { get; set; } = true;
         public CloudSamples()
         {
 
@@ -45,6 +46,11 @@ namespace Meteo
             {
                 orp.LoadData(sample_name);
             }
+
+            if (ORPS.Count(o => o.keyData == false) > 0) { this.keyData = false;
+                //Util.l($"{sample_name}: chybí důležitá data!");
+            }
+
         }
 
         public void CountMajorConvectionType(bool doComputing = true)
