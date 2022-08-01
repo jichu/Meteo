@@ -24,10 +24,10 @@ namespace Meteo
             Util.firstSample = "09";*/
             /*Util.curModelDir = "models__03h__05.06.2019";
             Util.firstSample = "03";*/
-            Util.curModelDir = "models__09h__23.07.2022";
-            Util.firstSample = "09";
+            /*Util.curModelDir = "models__09h__23.07.2022";
+            Util.firstSample = "09";*/
 
-            //Util.curModelDir = generateCurrentModelDir();
+            Util.curModelDir = generateCurrentModelDir();
             Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings("last_date", Util.curModelDir.Split('_')[4]));
             Util.l($"Složka pro aktuální data: { Util.curModelDir}");
 
