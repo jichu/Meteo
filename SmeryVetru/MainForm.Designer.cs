@@ -44,7 +44,7 @@ namespace SmeryVetru
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(12, 88);
+            this.progressBar.Location = new System.Drawing.Point(12, 751);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(1098, 40);
             this.progressBar.Step = 1;
@@ -55,7 +55,7 @@ namespace SmeryVetru
             this.labelProgressInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProgressInfo.AutoSize = true;
-            this.labelProgressInfo.Location = new System.Drawing.Point(12, 65);
+            this.labelProgressInfo.Location = new System.Drawing.Point(12, 728);
             this.labelProgressInfo.Name = "labelProgressInfo";
             this.labelProgressInfo.Size = new System.Drawing.Size(0, 20);
             this.labelProgressInfo.TabIndex = 1;
@@ -74,7 +74,7 @@ namespace SmeryVetru
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1122, 152);
+            this.ClientSize = new System.Drawing.Size(1122, 815);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelProgressInfo);
             this.Controls.Add(this.progressBar);

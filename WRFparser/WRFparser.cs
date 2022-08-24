@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WRFparser
 {
-    public class WRFparser
+    internal class WRFparser
     {
         private static List<int> numbers = new List<int>();
         public static JArray Time { get; set; } = new JArray() { 4, 11 };
@@ -35,8 +35,7 @@ namespace WRFparser
 
         public static void Init(string configFile)
         {
-            LoadConfig(configFile);
-            
+            LoadConfig(configFile);            
             
         }
 
@@ -77,7 +76,7 @@ namespace WRFparser
             if(DebugTest)
                 CreateBitmap();
 
-            Debug.WriteLine(numbers.Count);
+            //Debug.WriteLine(numbers.Count);
 
             int count = 1;
             int timeCounter = 1;

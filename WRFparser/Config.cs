@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace WRFparser
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Config
+    internal class Config
     {
         [JsonProperty]
         public JArray ORP { get; set; } = new JArray();

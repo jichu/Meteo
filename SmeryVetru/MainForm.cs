@@ -1,5 +1,6 @@
 ﻿using ExcelDataReader;
 using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,6 @@ namespace SmeryVetru
 {
     public partial class MainForm : Form
     {
-        //private List<Microsoft.Web.WebView2.WinForms.WebView2> wv = new List<Microsoft.Web.WebView2.WinForms.WebView2>();
-        //public static Config Config { get; set; } = new Config();
-
-        private JArray outputs = new JArray();
 
         public MainForm()
         {
@@ -25,73 +22,24 @@ namespace SmeryVetru
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
             Do();
-            //WRFparser.WRFparser wRFparser = new WRFparser.WRFparser("SmeryVetru.json");
-            /*
-            //Config.Save();
-            Config.Load();
-
-            timer.Start();
-
-
-            WRFparser.WRFparser.Init("SmeryVetru.json");
-
-            foreach (var orp in WRFparser.WRFparser.Config.ORP)
-            {
-                RunWeb(orp["url"].ToString(), orp["name"].ToString());
-            }
-            */
 
         }
 
-        private async void Do()
+        private void Do()
         {
-            var wrf = new ApplyWRF();
-            //await wrf.Completed();
+            var wrf = new WRFparser.ApplyWRF();
+            wrf.OnCompleted += WRF_completed;
         }
 
-        /*
-private void RunWeb(string url, string name)
-{
-   Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2();
-   wv.Source = new Uri(url);
-   wv.Tag = name;
-   wv.NavigationCompleted += webView_NavigationCompleted;
-}
-
-private async void webView_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
-{
-   Debug.WriteLine("ready");
-   await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
-}
-
-private async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
-{
-   //MessageBox.Show("sdfg");
-   //(sender as Microsoft.Web.WebView2.WinForms.WebView2).CoreWebView2.DOMContentLoaded += webView_DOMContentLoaded;
-   await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
-}
+        private void WRF_completed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Hotovo WRF");
+            Console.WriteLine((sender as WRFparser.ApplyWRF).Outputs);
+        }
 
 
-private async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
-{         
-   string click = "document.querySelector(\"[data-name = '2d_w']\").click();";
-   Thread.Sleep(Config.Delay);
-   string html = "";
-   var o = await wv.CoreWebView2.ExecuteScriptAsync(click);
-   o = await wv.CoreWebView2.ExecuteScriptAsync("let g =document.querySelectorAll('#tabid_1_content_div svg g g');let result = '';for (let x of g) { result += x.getAttribute('transform') + ';'; };result");
-   html = o.ToString();
-
-   WRFparser.WRFparser.DebugTest = Config.Debug;
-   WRFparser.WRFparser.Time = Config.Time;
-   WRFparser.WRFparser.Name = wv.Tag.ToString();
-   JArray ja = WRFparser.WRFparser.Parse(html);
-   outputs.Add(new JObject(
-       new JProperty("name", wv.Tag),
-       new JProperty("wind", ja)
-       ));
-}
-*/
         private void timer_Tick(object sender, EventArgs e)
         {/*
             labelProgressInfo.Text = $"ORP {outputs.Count} z {Config.ORP.Count}";

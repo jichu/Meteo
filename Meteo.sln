@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32112.339
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo", "Meteo\Meteo.csproj", "{F169D7DE-A1C7-4919-8F25-77874992DCBF}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmeryVetru", "SmeryVetru\SmeryVetru.csproj", "{EB1C4ABE-E288-47E6-BBC9-E7ECDD7E90A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meteo_2", "Meteo_2\Meteo_2.csproj", "{03783833-7590-447C-B60A-E98EDD434281}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeteoViewerSmery", "MeteoViewerSmery\MeteoViewerSmery.csproj", "{B96521DF-60C7-4ED2-A9D9-F02F344F2881}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{03783833-7590-447C-B60A-E98EDD434281}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03783833-7590-447C-B60A-E98EDD434281}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03783833-7590-447C-B60A-E98EDD434281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B96521DF-60C7-4ED2-A9D9-F02F344F2881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B96521DF-60C7-4ED2-A9D9-F02F344F2881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B96521DF-60C7-4ED2-A9D9-F02F344F2881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B96521DF-60C7-4ED2-A9D9-F02F344F2881}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -37,9 +37,9 @@ namespace Meteo
         private void FormMain_Load(object sender, EventArgs e)
         {
          //   Util.ShowLoading("Načítání aplikace...");
-            new Controller();
+            //new Controller();
             ApplyWRF();
-            this.menuItemOutput.PerformClick();            
+            //this.menuItemOutput.PerformClick();            
         }
 
         public void ShowControlLoader(string message="Zpracování...")
@@ -293,29 +293,25 @@ namespace Meteo
             foreach (var orp in WRFparser.WRFparser.Config.ORP)
             {
                 RunWeb(orp["url"].ToString(), orp["name"].ToString());
-                Console.WriteLine(orp["name"]);
             }
-            //_=Completed
+    //       _ = Completed();
         }
 
         private void RunWeb(string url, string name)
         {
-            using (Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2())
-            {
-                wv.Source = new Uri(url);
-                wv.Tag = name;
-                wv.NavigationCompleted += webView_NavigationCompleted;
-                Thread.Sleep(WRFparser.WRFparser.Config.Delay*2);
-            }
+            Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2();
+            wv.Source = new Uri(url);
+            wv.Tag = name;
+            wv.NavigationCompleted += webView_NavigationCompleted;
         }
 
 
         private async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {
-            await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
+             await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
         }
 
-
+        int completedORP = 0;
         private async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
         {
             string click = "document.querySelector(\"[data-name = '2d_w']\").click();";
@@ -334,19 +330,22 @@ namespace Meteo
                 new JProperty("wind", ja)
                 ));
             Console.WriteLine(ja);
+            completedORP++;
 
         }
         public async Task Completed()
         {
             while (true)
             {
-                Console.WriteLine(Outputs.Count);
+                Console.WriteLine(completedORP);
+                /*
                 if (Outputs.Count == WRFparser.WRFparser.Config.ORP.Count)
                 {
                     Console.WriteLine(Outputs);
                     break;
                 }
-                Thread.Sleep(50);
+                */
+                Thread.Sleep(500);
             }
         }
     }
