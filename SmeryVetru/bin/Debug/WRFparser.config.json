@@ -1,0 +1,55 @@
+{
+  "ORP": [
+    {
+      "name": "Zlín",
+      "url": "https://www.windguru.cz/343224"
+    },
+    {
+      "name": "Praha",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha1",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha2",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha3",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha4",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha5",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha6",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha7",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha8",
+      "url": "https://www.windguru.cz/343197"
+    },
+    {
+      "name": "Praha9",
+      "url": "https://www.windguru.cz/343197"
+    }
+  ],
+  "Debug": true,
+  "Delay": 100,
+  "Timeout": 29000,
+  "Time": [
+    4,
+    11
+  ]
+}
