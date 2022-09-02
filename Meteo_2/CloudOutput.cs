@@ -10,19 +10,17 @@ namespace Meteo
     {
         public string nameOrp { get; set; }
         public string sampleName { get; set; }
-        public Dictionary<string, string> output { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, float> output { get; set; } = new Dictionary<string, float>();
 
         public CloudOutput(){
 
         }
 
-        public CloudOutput(string nameOrp, string sampleName, Dictionary<string, string> output) {
+        public CloudOutput(string nameOrp, string sampleName, Dictionary<string, float> output) {
             this.nameOrp = nameOrp;
             this.sampleName = sampleName;
             this.output = output;
-        } 
-        
-
+        }
 
         
     }

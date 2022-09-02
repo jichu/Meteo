@@ -12,38 +12,9 @@ namespace Meteo
         public string name { get; set; }
         public int id_region { get; set; }
 
-        public List<string> sampleNames = new List<string>{
-            "N",
-            "00",
-            "03",
-            "06",
-            "09",
-            "12",
-            "15",
-            "18",
-            "21",
-            "24",
-            "27",
-            "30",
-            "33",
-            "36",
-            "39",
-            "42",
-            "45",
-            "48"
-        };
-
         //Předpovědní parametry ORP
-        //SRážkové modely
-        public float aladin { get; set; }
-        public float wrf_arw { get; set; }
-        public float wrf_nmm { get; set; }
-
-        //Ostatní
         public float wetBulb { get; set; } 
         public float corfidiVector { get; set; } 
-        public float corfidiVectorLevel { get; set; } 
-        public float wind_1000 { get; set; }
         public float wind_850 { get; set; }
         public float wind_700 { get; set; }
         public float wind_600 { get; set; }
@@ -66,10 +37,9 @@ namespace Meteo
         public float rh_1000 { get; set; }
         public float cloudy { get; set; }
         public float mlcin { get; set; }
-        public float precipitationResult { get; set; }
-        public float precipitationResultRegion { get; set; }
 
         //Charakteristiky reliéfu
+
         public float sklonitost_reliefu { get; set; }
         public float orientace_reliefu_tepelny_prohrev_dopoledne { get; set; }
         public float orientace_reliefu_tepelny_prohrev_odpoledne { get; set; }
@@ -80,7 +50,6 @@ namespace Meteo
         public float obtekani_prekazky { get; set; }
         public float polohy_nadmorskych_vysek { get; set; }
         public float sirka_hrebene { get; set; }
-        public float sum_merge { get; set; }
 
         //Typy konvekce
         public float wavyColdFront { get; set; }
@@ -95,10 +64,10 @@ namespace Meteo
 
         public Dictionary<string, float> convectionTypeResults = new Dictionary<string, float>
         {
-            { "Zvlněná studená fronta", 0f },
-            { "Zvlněná studená fronta - supercelární bouře", 0f },
-            { "Studená fronta", 0f },
-            { "Studená okluze", 0f },
+            { "Zvlněná studentá fronta", 0f },
+            { "Zvlněná studentá fronta - supercelární bouře", 0f },
+            { "Studentá fronta", 0f },
+            { "Studentá okluze", 0f },
             { "Teplá okluze", 0f},
             { "Teplá okluze - supercelární bouře", 0f},
             { "Kvazifrontální konvekce", 0f},
@@ -106,45 +75,7 @@ namespace Meteo
             { "Orografická konvekce - linie konvergence", 0f}
         };
 
-        public Dictionary<string, string> convectionTypeConversion = new Dictionary<string, string>
-        {
-            { "Zvlněná studená fronta", "FRONTÁLNÍ (Teplá instabilní hmota)" },
-            { "Zvlněná studená fronta - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"  },
-            { "Studená fronta", "FRONTÁLNÍ (Studená instabilní hmota)"  },
-            { "Studená okluze", "FRONTÁLNÍ (Studená instabilní hmota)"  },
-            { "Teplá okluze", "FRONTÁLNÍ (Teplá instabilní hmota)"},
-            { "Teplá okluze - supercelární bouře", "FRONTÁLNÍ (Teplá instabilní hmota)"},
-            { "Kvazifrontální konvekce", "KVAZIFRONTÁLNÍ (Studená instabilní hmota)"},
-            { "Orografická konvekce", "OROGRAFICKÁ (Teplá instabilní hmota)"},
-            { "Orografická konvekce - linie konvergence", "OROGRAFICKÁ (Teplá instabilní hmota)"}
-        };
-
         public Dictionary<string, float> convectionTypes { get; set; } = new Dictionary<string, float>();
-        public string convectionTypesStringForm { get; set; }
-        public string convectionSuperTypesStringForm { get; set; }
-
-        //Místa výskytu srážek
-        public int warmWetSectorPlace { get; set; }
-        public int coldSectorPlace { get; set; }
-        public int combineSectorPlace { get; set; }
-
-        //Předpověď lokálních podmínek
-        public int temperatureInfluence { get; set; }
-        public int windInfluence { get; set; }
-        public int humidityInfluence { get; set; }
-        public int orographicInfluence { get; set; }
-        public int combineInfluence { get; set; }
-        public int significantPredictors { get; set; }
-        public int otherPredictors { get; set; }
-        public int combineIntensity { get; set; }
-
-        //Výsledné předpovědi
-        public int statisticalPrecipitation { get; set; }
-        public int finalPlace { get; set; }
-        public int finalStorm { get; set; }
-
-        public Dictionary<string, string> output { get; set; } = new Dictionary<string, string>();
-        public bool keyData { get; set; } = true;
 
         public CloudORPS() {
         }
@@ -155,15 +86,8 @@ namespace Meteo
             
         }
         public void LoadData(string sample_name) {
-            //Srážkové parametry
-            aladin = GetParameter("Model_ALADIN_CZ", "Srážky_MAIN", sample_name, id);
-            wrf_arw = GetParameter("Model_WRF_ARW", "Srážky_MAIN", sample_name, id);
-            wrf_nmm = GetParameter("Model_WRF_NMM_FLYMET_Srážky", "Srážky_MAIN", sample_name, id);
-
-
             //přepovědní parametry
             wetBulb = GetParameter("Model_GFS_Wetter3_DE_25km", "Wet_bulb_temp", sample_name, id, "REAL");
-            wind_1000 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_10m", sample_name, id);
             wind_850 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_850", sample_name, id);
             wind_700 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_700", sample_name, id);
             wind_600 = GetParameter("Model_WRF_NMM_FLYMET", "Vítr_600", sample_name, id);
@@ -178,27 +102,18 @@ namespace Meteo
             mfdiv = GetParameter("Model_WRF_ARW", "MFDIV_0-1km", sample_name, id, "REAL");
             rh_700 = GetParameter("Model_WRF_ARW", "Relativní_vlhkost_700", sample_name, id, "REAL");
             rh_1000 = GetParameter("Model_ALADIN_CZ", "Relativní_vlhkost_1000", sample_name, id, "REAL");
+            cloudy = GetParameter("Model_ALADIN_CZ", "Oblačnost", sample_name, id);
             pressureMLSP = GetParameter("Model_WRF_ARW", "Tlaková_tendence_MSLP", sample_name, id, "REAL");
             mlcape = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCAPE+LI_Wetter_3_de", sample_name, id, "REAL");  
             mlcin = GetParameter("Model_GFS_Wetter3_DE_25km", "MLCIN_Wetter_3_de", sample_name, id, "REAL");
-            temperature_850 = GetParameter("Model_GFS_Wetter3_DE_25km", "Teplota_850hPa", sample_name, id, "REAL");
-            mucape = GetParameter("Model_GFS_Lightning_Wizard_50km", "MUCAPE", sample_name, id, "REAL");
-            relativeVorticity = GetParameter("Model_WRF_ARW", "Relativni_vorticita_500_hPa_WRF", sample_name, id);
 
-            if (sample_name == Util.firstSample) { cloudy = -1f; } else {
-                cloudy = GetParameter("Model_ALADIN_CZ", "Oblačnost", sampleNames[sampleNames.IndexOf(sample_name) - 1], id); //Bere hodnotu z předchozího samplu
-            }
-            //dls = -1f;
-            dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "DLS", sample_name, id);//možná nebude k dispozici
 
-            //Ošetření absence klíčových parametrů - chybí-li 2 a více, neprobíhá další výpočet
-            List<float> keyParameters = new List<float>() {aladin, temperature_850, mfdiv, relativeVorticity, rh_700, wrf_arw, wrf_nmm, wind_500, dls};
-            if (keyParameters.Count(p => p == -1) >= 2) {
-                this.keyData = false;  
-            }
-            //Util.l($"Chybí {keyParameters.Count(p => p == -1)} klíčových parametrů!");
+            //temperature_850 = GetParameter("Model_GFS_Meteomodel_PL_25km", "Teplota_850", sample_name, id); //+ Wetter3 DE 25km / Teplota 850
+            //dls = GetParameter("Model_GFS_Meteomodel_PL_25km", "SHEAR_DLS_Střih_větru_0-6_km", sample_name, id);//možná nebude k dispozici
+            //relativeVorticity = GetParameter("", "", sample_name, id);// relative vorticity 500hpa
+            //mucape = GetParameter("", "", sample_name, id);//+ lighting wizard 
 
-            //charakteristiky reliéfu / statické parametry
+            //charakteristiky reliéfu
             sklonitost_reliefu = GetRelief("Sklonitost reliéfu (průměrná)");
             orientace_reliefu_tepelny_prohrev_dopoledne = GetRelief("Orientace reliéfu (tepelný prohřev) dopoledne"); //pro sample: 6,9,30,33
             orientace_reliefu_tepelny_prohrev_odpoledne = GetRelief("Orientace reliéfu (tepelný prohřev) odpoledne"); //pro sample: 12,15,18,36,39,42
@@ -209,43 +124,11 @@ namespace Meteo
             obtekani_prekazky = GetRelief("Obtékání překážky");
             polohy_nadmorskych_vysek = GetRelief("Polohy nadmořských výšek");
             sirka_hrebene = GetRelief("Šířka hřebene");
-            sum_merge = GetRelief("SUM MERGE");
 
-        }
-
-        public void ProcessConvectionTypes() {
-            if (convectionTypes.Count >= 2)
-            {
-                foreach (var item in convectionTypes)
-                {
-                    convectionTypesStringForm += item.Key + ";";
-                    convectionSuperTypesStringForm += convectionTypeConversion[item.Key] + ";";
-                }
-                //Util.l($"XXX:{convectionTypesStringForm}: {convectionSuperTypesStringForm}");
-            }
-            else {
-                
-                convectionTypesStringForm = convectionTypes.First().Key;
-                convectionSuperTypesStringForm = convectionTypeConversion[convectionTypes.First().Key];
-                //Util.l($"YYY:{convectionTypesStringForm}: {convectionSuperTypesStringForm}");
-            }
         }
 
         private float GetParameter(string model, string submodel, string sampleName, int id_orp, string type = "DEFAULT")
         {
-            float value = Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp, Util.typeValueDictionary[type]);
-            if (value == -1f)
-            {
-                /*if (!Util.logMissingParameters.Contains(model + ":" + submodel + " chybí pro interval " + sampleName))
-                {
-                    Util.logMissingParameters.Add(model + ":" + submodel + " chybí pro interval " + sampleName);
-                }*/
-                if (!Util.logMissingParameters.Contains(model + ":" + submodel))
-                {
-                    Util.logMissingParameters.Add(model + ":" + submodel);
-                }
-            }
-
             return Model.Cloud.InputDataGetData(Model.Cloud.MODELSGetSubmodelIDFromName(model, submodel), sampleName, id_orp, Util.typeValueDictionary[type]);
         }
 

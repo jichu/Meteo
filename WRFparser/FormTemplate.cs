@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace WRFparser
 {
-    public partial class FormTemplate : Form
+    internal partial class FormTemplate : Form
     {
         private PictureBox pb;
         public FormTemplate(string title, Bitmap picture)

@@ -34,7 +34,8 @@ namespace SmeryVetru
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelProgressInfo = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.wv = new Microsoft.Web.WebView2.WinForms.WebView2();
+            ((System.ComponentModel.ISupportInitialize)(this.wv)).BeginInit();
             this.SuspendLayout();
             // 
             // timer
@@ -45,10 +46,9 @@ namespace SmeryVetru
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(8, 321);
-            this.progressBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.progressBar.Location = new System.Drawing.Point(12, 751);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(732, 26);
+            this.progressBar.Size = new System.Drawing.Size(1098, 40);
             this.progressBar.Step = 1;
             this.progressBar.TabIndex = 0;
             // 
@@ -57,35 +57,45 @@ namespace SmeryVetru
             this.labelProgressInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProgressInfo.AutoSize = true;
-            this.labelProgressInfo.Location = new System.Drawing.Point(8, 306);
-            this.labelProgressInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelProgressInfo.Location = new System.Drawing.Point(12, 728);
             this.labelProgressInfo.Name = "labelProgressInfo";
-            this.labelProgressInfo.Size = new System.Drawing.Size(0, 13);
+            this.labelProgressInfo.Size = new System.Drawing.Size(0, 20);
             this.labelProgressInfo.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(8, 8);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(174, 22);
+            this.button1.Size = new System.Drawing.Size(261, 34);
             this.button1.TabIndex = 2;
             this.button1.Text = "Vložit ORP z Excelu...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // wv
+            // 
+            this.wv.AllowExternalDrop = true;
+            this.wv.CreationProperties = null;
+            this.wv.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.wv.Location = new System.Drawing.Point(50, 74);
+            this.wv.Name = "wv";
+            this.wv.Size = new System.Drawing.Size(1044, 671);
+            this.wv.TabIndex = 3;
+            this.wv.ZoomFactor = 1D;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 363);
+            this.ClientSize = new System.Drawing.Size(1122, 815);
+            this.Controls.Add(this.wv);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelProgressInfo);
             this.Controls.Add(this.progressBar);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "MainForm";
             this.Text = "Směry větru";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.wv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -96,7 +106,7 @@ namespace SmeryVetru
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelProgressInfo;
         private System.Windows.Forms.Button button1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wv;
     }
 }
 
