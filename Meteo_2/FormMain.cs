@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -307,11 +308,47 @@ namespace Meteo
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //Automatické spuštění celého výpočtu
-            DoAll();
+            //DoAll();
+            ApplyWRF();
         }
 
         private void closeMeteo() {
             Application.Exit();
+        }
+
+        private void ApplyWRF(List<string> missed = null)
+        {
+            var wrf = new WRFparser.ApplyWRF(missed);
+            wrf.OnCompleted += WRF_completed;
+        }
+
+        private int WRFattempt = 2;
+        private void WRF_completed(object sender, EventArgs e)
+        {
+            var output = (sender as WRFparser.ApplyWRF).Output;
+            Console.WriteLine($"WRF comleted: In time: {(double)output.ExecutionTime / 1000}");
+
+            if (output.ErrorTimeout)
+            {
+                Console.WriteLine("WRF: ErrorTimeout");
+                return;
+            }
+
+            if (WRFattempt > 0)
+                if (output.ErrorDataNull.Count > 0)
+                {
+                    foreach (var i in output.ErrorDataNull)
+                        Console.WriteLine($"WRF: Data {i} not found");
+
+                    WRFattempt--;
+                    //Do(output.ErrorDataNull);
+                    //return;
+                }
+
+            foreach (var i in output.DicData)
+                Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");
+
+            File.WriteAllText("_wrf.txt", output.JsonData.ToString());
         }
     }
 }
