@@ -34,7 +34,8 @@ namespace Meteo
 
         public static Dictionary<string, int> algorithmOutput = new Dictionary<string, int>
         {
-            { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", 0 },
+            { "KOMBINOVANÁ PŘEDPOVĚĎ INTENZITY", 0 },
+            /*{ "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÝCH POVODNÍ", 0 },
             { "PŘEDPOVĚĎ INTENZITY BOUŘÍ", 1 },
             { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (NWP MODELY)", 2 },
             { "PRAVDĚPODOBNOST MÍSTA VÝSKYTU SRÁŽEK (ALGORITMUS)", 3 },
@@ -44,7 +45,7 @@ namespace Meteo
             { "PŘEDPOVĚD RIZIKA KRUPOBITÍ",  7},
             { "PŘEDPOVĚD RIZIKA VÝSKYTU TORNÁD", 8 },
             { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - SUCHÁ VARIANTA", 9}, 
-            { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA", 10}
+            { "PŘEDPOVĚĎ RIZIKA PŘÍVALOVÉ POVODNĚ - VLHKÁ VARIANTA", 10}*/
         };
 
         public static List<string> pathSymbolsAlgorithmOutput = new List<string>()
@@ -114,6 +115,12 @@ namespace Meteo
         public static string ExceptionText = "Exception";
         public static char logMessageDelimiter = '|';
         private static Stopwatch watch;
+
+        public static bool validData { get; set; } = true;
+        public static bool noData { get; set; } = false;
+        public static string firstSample { get; set;}
+
+        public static List<string> logMissingParameters { get; set; } = new List<string>();
 
         public static void ShowLoading(string message, string info="", bool selfClose=true)
         {

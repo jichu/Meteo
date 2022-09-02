@@ -41,16 +41,24 @@ namespace Meteo.JSONparser
         internal static void CreateJson(JObject data = null, string fPostfix = "")
         {
             fienamePostfix = fPostfix;
-            _ = Do(data ?? JData, "");
+            //_ = Do(data ?? JData, "");
+            Do(data ?? JData, "");
         }
         internal static void CreateJsonRoot(JObject data = null, string filename = "root")
         {
-            _ = Do(data ?? JData, filename);
+            // _ = Do(data ?? JData, filename);
+            Do(data ?? JData, filename);
         }
-        internal async static Task Do(dynamic data, string name = "")
+
+        /*internal async static Task Do(dynamic data, string name = "")
         {
             await Task.Run(() => SaveToFile(data, name));
+        }*/
+        internal static void Do(dynamic data, string name = "")
+        {
+            SaveToFile(data, name);
         }
+
         private static void CreatePath()
         {
             if (!Directory.Exists(PathJson))

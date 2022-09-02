@@ -12,8 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WRFdll;
 using WRFparser;
-//using WRFdll;
 
 namespace Meteo
 {
@@ -164,10 +164,10 @@ namespace Meteo
                     return;
             Util.ShowLoading("Načítání vstupů...", "", false);
             List<Task> tasks = new List<Task>();
-            /*WRF.Init(new Dictionary<string, string>{
+            WRF.Init(new Dictionary<string, string>{
                  { "mask", Util.pathSource["wrf_mask"] },
                  { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
-                }, false);*/
+                }, false);
 
             tasks.Add(Task.Run(() => UserControlModel.Instance.EnumerationModels()));
             Task.WaitAll(tasks.ToArray());
@@ -303,101 +303,11 @@ namespace Meteo
             closeMeteo();
         }
 
-        //WRF Apply smery vetru
-        private JArray Outputs = new JArray();
-
-        /*public void ApplyWRF()
-        {
-            WRFparser.WRFparser.Init("config/SmeryVetru.json");
-
-            foreach (var orp in WRFparser.WRFparser.Config.ORP)
-            {
-                RunWeb(orp["url"].ToString(), orp["name"].ToString());
-                Util.l(orp["name"]);
-            }
-            //_=Completed
-        }*/
-
-        /*private void RunWeb(string url, string name)
-        {
-            using (Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2())
-            {
-                wv.Source = new Uri(url);
-                wv.Tag = name;
-                wv.NavigationCompleted += webView_NavigationCompleted;
-                Thread.Sleep(WRFparser.WRFparser.Config.Delay*2);
-            }
-        }*/
-
-
-        /*private async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
-        {
-            await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
-        }*/
-
-
-        /*private async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
-        {
-            string click = "document.querySelector(\"[data-name = '2d_w']\").click();";
-            Thread.Sleep(WRFparser.WRFparser.Config.Delay);
-            string html = "";
-            var o = await wv.CoreWebView2.ExecuteScriptAsync(click);
-            o = await wv.CoreWebView2.ExecuteScriptAsync("let g =document.querySelectorAll('#tabid_1_content_div svg g g');let result = '';for (let x of g) { result += x.getAttribute('transform') + ';'; };result");
-            html = o.ToString();
-
-            WRFparser.WRFparser.DebugTest = WRFparser.WRFparser.Config.Debug;
-            WRFparser.WRFparser.Time = WRFparser.WRFparser.Config.Time;
-            WRFparser.WRFparser.Name = wv.Tag.ToString();
-            JArray ja = WRFparser.WRFparser.Parse(html);
-            Outputs.Add(new JObject(
-                new JProperty("name", wv.Tag),
-                new JProperty("wind", ja)
-                ));
-            Util.l(ja);
-
-        }*/
-        /*public async Task Completed()
-        {
-            while (true)
-            {
-                Console.WriteLine(Outputs.Count);
-                if (Outputs.Count == WRFparser.WRFparser.Config.ORP.Count)
-                {
-                    Console.WriteLine(Outputs);
-                    break;
-                }
-                Thread.Sleep(50);
-            }
-        }*/
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //Automatické spuštění celého výpočtu
-            //DoAll();
-            ApplyWRF();            
-        }
-
-        public string prevod(float deg) {
-            if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else if (deg <= 22.5 || deg > 337.5) return "J";
-            else return "Error";
-        }
-
-        public void ApplyWRF(){
-            var wrf = new WRFparser.ApplyWRF();
-            wrf.OnCompleted += WRF_completed;
-        }
-
-        private void WRF_completed(object sender, EventArgs e)
-        {
-            Console.WriteLine("Hotovo WRF");
-            Console.WriteLine((sender as WRFparser.ApplyWRF).Outputs);
+            DoAll();
         }
 
         private void closeMeteo() {

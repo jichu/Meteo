@@ -74,7 +74,7 @@ namespace Meteo
 
                         Task.Delay(500).Wait();
                         Preloader.Log($"[flushing] ");
-                        Util.l($"flushing");
+                        //Util.l($"flushing");
                     }
                     i++;
                     /*
@@ -85,9 +85,13 @@ namespace Meteo
                     //break;////
                 }
             }
+            else {
+                Util.validData = false;
+            }
+
             Task.WaitAll(tasks.ToArray());
             watch.Stop();
-            Console.WriteLine($"Celkově v čase {watch.ElapsedMilliseconds}ms, obrázků {sourceImages.Count}");
+            Util.l($"Celkově bylo zpracováno {sourceImages.Count} obrázků. Doba trvání výpočtu: {watch.ElapsedMilliseconds}ms.");
             
         }
 
@@ -221,7 +225,7 @@ namespace Meteo
             {
                 pictureBoxMap.Image = (Bitmap)Image.FromFile(map);
             }));
-            Util.l($"NETUSIM: {Util.curModelName}");
+            //Util.l($"NETUSIM: {Util.curModelName}");
             new Images(map);
             ResizeMap(pictureBoxMap);
         }

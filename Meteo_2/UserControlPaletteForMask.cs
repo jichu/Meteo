@@ -59,7 +59,7 @@ namespace Meteo
                         count++;
                     }
 
-                Util.l(count);
+                //Util.l(count);
             }
             palette.Image = bmp;
         }

@@ -15,7 +15,7 @@ namespace Meteo
             Util.ORPColorGetORPColors = Model.Cloud.ORPColorGetORPColors();
 
             new Images();
-            new Ji();
+            //new Ji();
         }
     }
 }

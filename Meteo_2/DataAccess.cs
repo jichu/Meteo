@@ -407,7 +407,7 @@ namespace Meteo
                         conn.Execute("dbo.INPUT_DATA_InsertOrUpdateData @ID_MODEL, @ID_ORP, @SAMPLE_NAME, @VALUE, @TYPE", records);
                     }
                     catch (Exception e) {
-                        Util.l(e);
+                        //Util.l(e);
                     }
                    return true;
                }

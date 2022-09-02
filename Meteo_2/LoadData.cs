@@ -17,8 +17,19 @@ namespace Meteo
 
         public LoadData()
         {
-            FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepsat data vybranou adresářovou strukturou, maskami a stupnicemi?");
-            dlg.ShowDialog();
+            /*FormSetModelsDir dlg = new FormSetModelsDir("Chcete přepsat data vybranou adresářovou strukturou, maskami a stupnicemi?");
+            dlg.ShowDialog();*/
+
+            /*Util.curModelDir = "models__09h__24.06.2021";
+            Util.firstSample = "09";*/
+            /*Util.curModelDir = "models__03h__05.06.2019";
+            Util.firstSample = "03";*/
+            /*Util.curModelDir = "models__09h__23.07.2022";
+            Util.firstSample = "09";*/
+
+            Util.curModelDir = generateCurrentModelDir();
+            Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings("last_date", Util.curModelDir.Split('_')[4]));
+            Util.l($"Složka pro aktuální data: { Util.curModelDir}");
 
             if (Util.curModelDir == null)
                 return;
@@ -28,6 +39,39 @@ namespace Meteo
             Util.HideLoading();
         }
 
+        public string generateCurrentModelDir() {
+            string dir = "models__";
+            DateTime dateTime = DateTime.Now;
+            //dateTime = dateTime.AddHours(-11);
+
+            List<int> fcHours = new List<int> { 3, 9, 15, 21};
+            int fittedHour = 0;
+            
+            foreach (var time in fcHours) {
+                if (dateTime.Hour - time >= 0) {
+                    fittedHour = time;
+                }
+                else {
+                    break;
+                }
+            }
+            if (fittedHour == 0)
+            {
+                fittedHour = fcHours.Last();
+                dateTime = dateTime.AddDays(-1);
+            }
+
+            string day = (dateTime.Day.ToString().Length<2)?("0"+ dateTime.Day.ToString()):dateTime.Day.ToString();
+            string month = (dateTime.Month.ToString().Length<2)?("0"+ dateTime.Month.ToString()):dateTime.Month.ToString();
+            string hour = (fittedHour.ToString().Length<2)?("0"+ fittedHour.ToString()):fittedHour.ToString();
+            string year = dateTime.Year.ToString();
+
+            Util.firstSample = hour;
+
+            dir = dir+hour + "h"+"__"+day+"."+month+"."+year;
+            //Util.l($"{dir}");
+            return dir;
+        }
 
         public void ScanDir()
         {
@@ -36,6 +80,7 @@ namespace Meteo
                 List<Task<bool>> tasks = new List<Task<bool>>();
                 string dirPath = Util.pathSource["models"] + Util.curModelDir;
                 List<string> dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
+                Util.validData = true;
                 foreach (var dir in dirs)
                 {
                     string model = dir.Substring(dir.LastIndexOf("\\") + 1);
@@ -44,11 +89,13 @@ namespace Meteo
 
                 Task.WaitAll(tasks.ToArray());
                                 
-                ShowLog();
+                //ShowLog();
             }
             catch (Exception e)
             {
-                Util.l(e);
+                Util.l("Nejsou k dispozici žádná data!");
+                Util.noData = true;
+                Util.validData = false;
             }
         }
 

@@ -72,7 +72,7 @@ namespace Meteo
         {
             if (comboBoxModels.SelectedIndex != -1)
                 Util.curModelDir = comboBoxModels.SelectedItem.ToString();
-
+            Model.Cloud.SETTINGSInsertOrUpdate(new CloudSettings("last_date", Util.curModelDir.Split('_')[4]));
             Close();
         }
     }
