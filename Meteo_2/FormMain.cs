@@ -12,7 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WRFdll;
+using WRFparser;
+//using WRFdll;
 
 namespace Meteo
 {
@@ -163,10 +164,10 @@ namespace Meteo
                     return;
             Util.ShowLoading("Načítání vstupů...", "", false);
             List<Task> tasks = new List<Task>();
-            WRF.Init(new Dictionary<string, string>{
+            /*WRF.Init(new Dictionary<string, string>{
                  { "mask", Util.pathSource["wrf_mask"] },
                  { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
-                }, false);
+                }, false);*/
 
             tasks.Add(Task.Run(() => UserControlModel.Instance.EnumerationModels()));
             Task.WaitAll(tasks.ToArray());
@@ -305,7 +306,7 @@ namespace Meteo
         //WRF Apply smery vetru
         private JArray Outputs = new JArray();
 
-        public void ApplyWRF()
+        /*public void ApplyWRF()
         {
             WRFparser.WRFparser.Init("config/SmeryVetru.json");
 
@@ -315,9 +316,9 @@ namespace Meteo
                 Util.l(orp["name"]);
             }
             //_=Completed
-        }
+        }*/
 
-        private void RunWeb(string url, string name)
+        /*private void RunWeb(string url, string name)
         {
             using (Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2())
             {
@@ -326,16 +327,16 @@ namespace Meteo
                 wv.NavigationCompleted += webView_NavigationCompleted;
                 Thread.Sleep(WRFparser.WRFparser.Config.Delay*2);
             }
-        }
+        }*/
 
 
-        private async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        /*private async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {
             await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
-        }
+        }*/
 
 
-        private async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
+        /*private async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
         {
             string click = "document.querySelector(\"[data-name = '2d_w']\").click();";
             Thread.Sleep(WRFparser.WRFparser.Config.Delay);
@@ -354,8 +355,8 @@ namespace Meteo
                 ));
             Util.l(ja);
 
-        }
-        public async Task Completed()
+        }*/
+        /*public async Task Completed()
         {
             while (true)
             {
@@ -367,12 +368,36 @@ namespace Meteo
                 }
                 Thread.Sleep(50);
             }
-        }
+        }*/
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //Automatické spuštění celého výpočtu
-            DoAll();
+            //DoAll();
+            ApplyWRF();
+        }
+
+        public string prevod(float deg) {
+            if (deg <= 22.5 || deg > 337.5) return "J";
+            else if (deg <= 67.5 && deg > 22.5) return "JZ";
+            else if (deg <= 112.5 && deg > 67.5) return "Z";
+            else if (deg <= 157.5 && deg > 112.5) return "SZ";
+            else if (deg <= 202.5 && deg > 157.5) return "S";
+            else if (deg <= 247.5 && deg > 202.5) return "SV";
+            else if (deg <= 292.5 && deg > 247.5) return "V";
+            else if (deg <= 337.5 && deg > 292.5) return "JV";
+            else return "Error";
+        }
+
+        public void ApplyWRF(){
+            var wrf = new WRFparser.ApplyWRF();
+            wrf.OnCompleted += WRF_completed;
+        }
+
+        private void WRF_completed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Hotovo WRF");
+            Console.WriteLine((sender as WRFparser.ApplyWRF).Outputs);
         }
 
         private void closeMeteo() {

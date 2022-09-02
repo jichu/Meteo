@@ -51,6 +51,8 @@ namespace Meteo
                 //Util.l($"{sample_name}: chybí důležitá data!");
             }
 
+
+
         }
 
         public void CountMajorConvectionType(bool doComputing = true)
