@@ -85,7 +85,8 @@ namespace WRFparser
                 if (count % 23 == 0)
                 {
                     if (timeCounter >= (int)Time[0] && timeCounter <= (int)Time[1])
-                        ja.Add(i.ToString());
+                        //ja.Add(i.ToString());
+                        ja.Add(prevod((float)i));
                     timeCounter++;
                 }
                 count++;
@@ -155,7 +156,7 @@ namespace WRFparser
             bmp.Save(dir+"/"+Name+".png", ImageFormat.Png);
         }
 
-        private string prevod(float deg)
+        private static string prevod(float deg)
         {
             if (deg <= 22.5 || deg > 337.5) return "J";
             else if (deg <= 67.5 && deg > 22.5) return "JZ";
