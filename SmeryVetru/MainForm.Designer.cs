@@ -34,6 +34,8 @@ namespace SmeryVetru
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelProgressInfo = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.wv = new Microsoft.Web.WebView2.WinForms.WebView2();
+            ((System.ComponentModel.ISupportInitialize)(this.wv)).BeginInit();
             this.SuspendLayout();
             // 
             // timer
@@ -70,17 +72,30 @@ namespace SmeryVetru
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // wv
+            // 
+            this.wv.AllowExternalDrop = true;
+            this.wv.CreationProperties = null;
+            this.wv.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.wv.Location = new System.Drawing.Point(50, 74);
+            this.wv.Name = "wv";
+            this.wv.Size = new System.Drawing.Size(1044, 671);
+            this.wv.TabIndex = 3;
+            this.wv.ZoomFactor = 1D;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1122, 815);
+            this.Controls.Add(this.wv);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelProgressInfo);
             this.Controls.Add(this.progressBar);
             this.Name = "MainForm";
             this.Text = "Směry větru";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.wv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,6 +106,7 @@ namespace SmeryVetru
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelProgressInfo;
         private System.Windows.Forms.Button button1;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wv;
     }
 }
 

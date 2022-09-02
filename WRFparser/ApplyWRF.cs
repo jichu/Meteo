@@ -1,22 +1,21 @@
 ﻿using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace WRFparser
 {
     public class ApplyWRF
     {
         public event EventHandler OnCompleted;
-        public JArray Outputs = new JArray();
+        public Output Output { get; set; } = new Output();
+        private int CountOfORP { get; set; } = 0;
 
-        public ApplyWRF(string configFilename = null)
+        public ApplyWRF(List<string> filterOnlyThisORP = null, string configFilename = null)
         {
             var cfg = configFilename == null ? "WRFparser.config.json" : configFilename;
             if (!File.Exists(cfg)) return;
@@ -24,61 +23,97 @@ namespace WRFparser
 
             foreach (var orp in WRFparser.Config.ORP)
             {
-                _ = RunWebAsync(orp["url"].ToString(), orp["name"].ToString());
+                if(filterOnlyThisORP!=null)
+                    if (!filterOnlyThisORP.Contains(orp["name"].ToString()))
+                        continue;
+
+                CountOfORP++;
+               _ = RunWebAsync(orp["url"].ToString(), orp["name"].ToString());
             }
             _ = Task.Run(Completed);
         }
 
         private async Task RunWebAsync(string url, string name)
         {
-            Microsoft.Web.WebView2.WinForms.WebView2 wv = new Microsoft.Web.WebView2.WinForms.WebView2();
+            var wv = new Microsoft.Web.WebView2.WinForms.WebView2();
             wv.Tag = name;
             await wv.EnsureCoreWebView2Async();
             wv.CoreWebView2.Navigate(url);
-            //wv.Source = new Uri(url);
-            wv.NavigationCompleted += webView_NavigationCompleted;
+            wv.CoreWebView2.DOMContentLoaded += (sende1r, args1) =>
+            {
+                wv.CoreWebView2.FrameNavigationCompleted += (sende, args) =>
+                {
+                    Thread.Sleep(10);
+                    if (Output.DicData.ContainsKey(wv.Tag.ToString())) return;
+                    _ = LoadHtmlAsync2(wv);
+                };
+            };
         }
-
-        private async void webView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        private bool cookiesOnce = true;
+        private async Task LoadHtmlAsync2(WebView2 wv)
         {
-            Thread.Sleep(WRFparser.Config.Delay);
-            await LoadHtmlAsync((sender as Microsoft.Web.WebView2.WinForms.WebView2));
-        }
+            if (cookiesOnce)
+            {
+                string clickCookies = "document.getElementById(\"accept-choices\").click();";
+                await wv.CoreWebView2.ExecuteScriptAsync(clickCookies);
+                cookiesOnce = false;
+            }
 
+            int wait = WRFparser.Config.Delay;
+            string click = "document.querySelector(\"[data-name='2d_w']\").click();let fce = function() { let g =document.querySelectorAll('#tabid_1_content_div svg g g');let result = '';for (let x of g) { result += x.getAttribute('transform') + ';'; };document.body.outerHTML = result;};setTimeout(fce,"+wait+");";
+            await wv.CoreWebView2.ExecuteScriptAsync(click);
+            Thread.Sleep(wait*2);
+            string html = await wv.CoreWebView2.ExecuteScriptAsync("document.body.innerHTML");
 
-        private async Task LoadHtmlAsync(Microsoft.Web.WebView2.WinForms.WebView2 wv)
-        {
-            string clickCookies = "document.getElementById(\"accept-choices\").click();";
-            await wv.CoreWebView2.ExecuteScriptAsync(clickCookies);
-
-            string click = "document.querySelector(\"[data-name = '2d_w']\").click();";
-            string html = "";
-            var o = await wv.CoreWebView2.ExecuteScriptAsync(click);
-            o = await wv.CoreWebView2.ExecuteScriptAsync("let g =document.querySelectorAll('#tabid_1_content_div svg g g');let result = '';for (let x of g) { result += x.getAttribute('transform') + ';'; };result");
-            html = o.ToString();
             JArray ja = WRFparser.Parse(html);
-            Outputs.Add(new JObject(
-                new JProperty("name", wv.Tag),
-                new JProperty("wind", ja)
-                ));
+
+            if (Output.DicData.ContainsKey(wv.Tag.ToString())) return;
+
+            Output.JsonData.Add(new JObject(
+                    new JProperty("name", wv.Tag),
+                    new JProperty("wind", ja)
+                    ));
+            Output.DicData.Add(wv.Tag.ToString(), ja.ToObject<List<string>>());
         }
 
         public async Task Completed()
         {
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
             while (true)
             {
-                if (Outputs.Count == WRFparser.Config.ORP.Count)
+                if (Output.DicData.Count == CountOfORP)
                 {
+                    watch.Stop();
+                    Output.ExecutionTime = watch.ElapsedMilliseconds;
                     Close();
                     return;
                 }
-                Thread.Sleep(50);
+                if(watch.ElapsedMilliseconds>WRFparser.Config.Timeout)
+                {
+                    watch.Stop();
+                    Output.ExecutionTime = watch.ElapsedMilliseconds;
+                    Output.ErrorTimeout = true;
+                    Close();
+                    return;
+                }
+                Thread.Sleep(40);
             }
         }
 
         private void Close()
         {
+            CheckData();
             OnCompleted?.Invoke(this, new EventArgs());
+        }
+
+        private void CheckData()
+        {
+            foreach(var orp in Output.DicData)
+            {
+                if (orp.Value.Count == 0)
+                    Output.ErrorDataNull.Add(orp.Key);
+            }
         }
     }
 }

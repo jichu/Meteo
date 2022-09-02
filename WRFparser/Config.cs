@@ -10,14 +10,16 @@ using System.Threading.Tasks;
 namespace WRFparser
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class Config
+    public class Config
     {
         [JsonProperty]
         public JArray ORP { get; set; } = new JArray();
         [JsonProperty]
         public bool Debug { get; set; } = false;
         [JsonProperty]
-        public int Delay { get; set; } = 600;
+        public int Delay { get; set; } = 200;
+        [JsonProperty]
+        public int Timeout { get; set; } = 5000;
         [JsonProperty]
         public string OutputFile { get; set; } = "__.json";
         [JsonProperty]

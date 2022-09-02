@@ -85,7 +85,7 @@ namespace WRFparser
                 if (count % 23 == 0)
                 {
                     if (timeCounter >= (int)Time[0] && timeCounter <= (int)Time[1])
-                        ja.Add(i);
+                        ja.Add(i.ToString());
                     timeCounter++;
                 }
                 count++;
