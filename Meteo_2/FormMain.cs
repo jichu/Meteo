@@ -327,7 +327,7 @@ namespace Meteo
             var wrf = new WRFparser.ApplyWRF(missed);
             wrf.OnCompleted += WRF_completed;
 
-            await Task.Delay(10000);
+            await Task.Delay(120000);
         }
 
         private int WRFattempt = 2;
@@ -362,12 +362,11 @@ namespace Meteo
             List<string> tempArr = new List<string>{ };
             List<string> majorWind = new List<string> { };
             List<string> typeWind = new List<string> { "S", "SV", "V", "JV", "J", "JZ", "Z", "SZ"};
-            for (int i = 0; i < output.DicData.First().Value.Count; i++) {
+            for (int i = 0; i < 8; i++)
+            {//i < output.DicData.First().Value.Count
                 foreach (var item in output.DicData) {
                     tempArr.Add(item.Value[i]);
-
                 }
-
                 int count = 0;
                 string temporaryType = "";
 
