@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WRFdll;
+using WRFparser;
 
 namespace Meteo
 {
@@ -121,6 +123,7 @@ namespace Meteo
         public static string firstSample { get; set;}
 
         public static List<string> logMissingParameters { get; set; } = new List<string>();
+        public static List<string> majorWinds = new List<string> { };
 
         public static void ShowLoading(string message, string info="", bool selfClose=true)
         {

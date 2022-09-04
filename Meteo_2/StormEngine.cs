@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Meteo
         public List<string> finalSampleNames = new List<string>();
         public algorithms algorithm { get; set; }
         public PrecipitationFilter precipitationFilter { get; set; }
+        private int WRFattempt = 2;
 
         public StormEngine(algorithms method = algorithms.dangerous_phenomen)
         {
@@ -37,6 +39,8 @@ namespace Meteo
             }
             else if (method == algorithms.statistic_forecast)
             {
+                /*foreach(var item in Util.majorWinds)
+                Util.l($"{item}");*/
                 //Util.l("Algoritmus statistické předpovědi konvenktivních srážek");
                 if (listSamples.Count() == 0)
                 {
@@ -47,6 +51,12 @@ namespace Meteo
                 foreach (var l in listSamples)
                 {
                     sampleNames.Add(l.sample_name);
+                }
+
+                foreach (var l in listSamples)
+                {
+                    l.windDirection = Util.windDirectionToInt[Util.majorWinds[sampleNames.IndexOf(l.sample_name)]];
+                    Util.l($"Nejčastější směr větru pro {l.sample_name}:{Util.majorWinds[sampleNames.IndexOf(l.sample_name)]}:{l.windDirection}");
                 }
 
                 if (Util.validData)
@@ -372,6 +382,39 @@ namespace Meteo
 
         }
 
+        private void ApplyWRF(List<string> missed = null)
+        {
+            var wrf = new WRFparser.ApplyWRF(missed);
+            wrf.OnCompleted += WRF_completed;
+        }
+    
+        private void WRF_completed(object sender, EventArgs e)
+        {
+            var output = (sender as WRFparser.ApplyWRF).Output;
+            Console.WriteLine($"WRF completed: In time: {(double)output.ExecutionTime / 1000}");
+
+            if (output.ErrorTimeout)
+            {
+                Console.WriteLine("WRF: ErrorTimeout");
+                return;
+            }
+
+            if (WRFattempt > 0)
+                if (output.ErrorDataNull.Count > 0)
+                {
+                    foreach (var i in output.ErrorDataNull)
+                        Console.WriteLine($"WRF: Data {i} not found");
+
+                    WRFattempt--;
+                    //Do(output.ErrorDataNull);
+                    //return;
+                }
+
+            foreach (var i in output.DicData)
+                Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");
+
+            File.WriteAllText("_wrf.txt", output.JsonData.ToString());
+        }
 
     }
 }

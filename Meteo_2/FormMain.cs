@@ -277,6 +277,7 @@ namespace Meteo
         }
 
         public void DoAll() {
+
             LoadModels();
 
             if (Util.validData)
@@ -304,29 +305,36 @@ namespace Meteo
             closeMeteo();
         }
 
+        private CancellationTokenSource ts = new CancellationTokenSource();
+
+        public async void LaunchAll() {
+            await ApplyWRF();
+            DoAll();
+        }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //Automatické spuštění celého výpočtu
-            //DoAll();
-            ApplyWRF();
+            LaunchAll();
         }
 
         private void closeMeteo() {
             Application.Exit();
         }
 
-        private void ApplyWRF(List<string> missed = null)
+        public async Task ApplyWRF(List<string> missed = null)
         {
             var wrf = new WRFparser.ApplyWRF(missed);
             wrf.OnCompleted += WRF_completed;
+
+            await Task.Delay(10000);
         }
 
         private int WRFattempt = 2;
         private void WRF_completed(object sender, EventArgs e)
         {
             var output = (sender as WRFparser.ApplyWRF).Output;
-            Console.WriteLine($"WRF comleted: In time: {(double)output.ExecutionTime / 1000}");
+            Console.WriteLine($"WRF completed: In time: {(double)output.ExecutionTime / 1000}");
 
             if (output.ErrorTimeout)
             {
@@ -345,10 +353,40 @@ namespace Meteo
                     //return;
                 }
 
-            foreach (var i in output.DicData)
+            foreach (var i in output.DicData) 
                 Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");
-
+            
+            
             File.WriteAllText("_wrf.txt", output.JsonData.ToString());
+
+            List<string> tempArr = new List<string>{ };
+            List<string> majorWind = new List<string> { };
+            List<string> typeWind = new List<string> { "S", "SV", "V", "JV", "J", "JZ", "Z", "SZ"};
+            for (int i = 0; i < output.DicData.First().Value.Count; i++) {
+                foreach (var item in output.DicData) {
+                    tempArr.Add(item.Value[i]);
+
+                }
+
+                int count = 0;
+                string temporaryType = "";
+
+                foreach (var item in typeWind)
+                {
+                    if (tempArr.Count(j => j == item) > count)
+                    {
+                        count = tempArr.Count(j => j == item);
+                        temporaryType = item;
+                    }
+                }
+
+                majorWind.Add(temporaryType);
+                count = 0;
+                tempArr.Clear();
+            }
+
+            Util.majorWinds = majorWind;
+           
         }
     }
 }
