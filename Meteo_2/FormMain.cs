@@ -307,9 +307,9 @@ namespace Meteo
 
         private CancellationTokenSource ts = new CancellationTokenSource();
 
-        public async void LaunchAll() {
-            await ApplyWRF();
-            DoAll();
+        public void LaunchAll() {
+            //ApplyWRF(new List<string>() { "Zlín", "Praha"});
+            ApplyWRF();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -322,15 +322,16 @@ namespace Meteo
             Application.Exit();
         }
 
-        public async Task ApplyWRF(List<string> missed = null)
-        {
-            var wrf = new WRFparser.ApplyWRF(missed);
-            wrf.OnCompleted += WRF_completed;
+        ApplyWRF wrf;
 
-            await Task.Delay(120000);
+        public void ApplyWRF(List<string> missed = null)
+        {
+            wrf = new WRFparser.ApplyWRF(missed);
+            wrf.OnCompleted += WRF_completed;
         }
 
-        private int WRFattempt = 2;
+        private int WRFattempt = 10;
+        public Dictionary<string, List<string>> WRFDict { get; set; } = new Dictionary<string, List<string>>();
         private void WRF_completed(object sender, EventArgs e)
         {
             var output = (sender as WRFparser.ApplyWRF).Output;
@@ -342,6 +343,9 @@ namespace Meteo
                 return;
             }
 
+            foreach (var i in output.DicData)
+                if (!WRFDict.ContainsKey(i.Key) && i.Value.Count!=0) WRFDict.Add(i.Key, i.Value);
+
             if (WRFattempt > 0)
                 if (output.ErrorDataNull.Count > 0)
                 {
@@ -349,14 +353,21 @@ namespace Meteo
                         Console.WriteLine($"WRF: Data {i} not found");
 
                     WRFattempt--;
-                    //Do(output.ErrorDataNull);
-                    //return;
+                    
+                    this.Invoke(new Action(() =>
+                    {
+                        wrf = null;
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        ApplyWRF(output.ErrorDataNull);
+                    }));
+                    //ApplyWRF(output.ErrorDataNull);
+                    return;
                 }
-
+            output.DicData = WRFDict;
             foreach (var i in output.DicData) 
-                Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");
-            
-            
+                Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");            
+            Util.l($"Pokusů:{10-WRFattempt+1}");
             File.WriteAllText("_wrf.txt", output.JsonData.ToString());
 
             List<string> tempArr = new List<string>{ };
@@ -385,7 +396,13 @@ namespace Meteo
             }
 
             Util.majorWinds = majorWind;
-           
+
+            //Application.DoEvents();
+            this.Invoke(new Action(() =>
+            {
+                DoAll();
+            }));
+            
         }
     }
 }
