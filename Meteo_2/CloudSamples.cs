@@ -69,7 +69,7 @@ namespace Meteo
                     }
                 }
 
-                convectionTypeMajor = convectionTypeDescription[temporaryType];
+                convectionTypeMajor = convectionTypeDescription[temporaryType.Split(';')[0]];
 
                 count = 0;
 
