@@ -238,7 +238,7 @@ namespace Meteo
             catch (Exception ex)
             {
                 Util.l("Chyba při výpočtu");
-                //Util.l(ex.Message);
+                Util.l(ex.Message);
                 Util.validData = false;
                 new StormEngine(algorithms.statistic_forecast);
             }
@@ -376,7 +376,14 @@ namespace Meteo
             for (int i = 0; i < 8; i++)
             {//i < output.DicData.First().Value.Count
                 foreach (var item in output.DicData) {
-                    tempArr.Add(item.Value[i]);
+                    try
+                    {
+                        tempArr.Add(item.Value[i]);
+                    }
+                    catch (ArgumentOutOfRangeException ex) {
+                        //Util.l(ex);
+                        continue;
+                    }
                 }
                 int count = 0;
                 string temporaryType = "";
