@@ -23,6 +23,7 @@ namespace DownloaderImagesModels
 
         private string pathOutput = "models";
         private string pathOutputDate = "";
+        private string runAfter = "";
         private List<int> timeupdate = new List<int>();
         private List<int> alreadyDownloaded = new List<int>();
 
@@ -121,10 +122,13 @@ namespace DownloaderImagesModels
 
                 Util.ProcessReady($"Uloženo celkem {counterSuccess} obrázků do adresáře models. Chyb: {Errors.Count}");
 
+
                 if (Errors.Count > 0)
                 {
                     ErrorsSaveLog();
                 }
+
+                _= RunAfter();
             }
             catch (Exception e)
             {
@@ -132,6 +136,13 @@ namespace DownloaderImagesModels
             }
 
             process = false;
+        }
+
+        private async Task RunAfter()
+        {
+            await Task.Delay(100);
+            var process = System.Diagnostics.Process.Start(runAfter);
+            process.WaitForExit();
         }
 
         private void LoadConfig(string fileName)
@@ -153,6 +164,7 @@ namespace DownloaderImagesModels
                     if (key == "pathOutput") pathOutput = value;
                     if (key == "pathOutputDate") pathOutputDate = value;
                     if (key == "timeupdate") ParseTimeUpdate(value);
+                    if (key == "runAfter") runAfter = @value;
 
                 }
                 reader.Close();
