@@ -18,6 +18,7 @@ namespace WRFparser
     internal class WRFparser
     {
         private static List<int> numbers = new List<int>();
+        private static List<List<int>> NumbersTable = new List<List<int>>();
         public static JArray Time { get; set; } = new JArray() { 4, 11 };
         private static char sep = ';';
         public static string Name{ get; set; } = "temp";
@@ -63,6 +64,9 @@ namespace WRFparser
             JArray ja = new JArray();
             if (html.IndexOf(sep) == -1) return ja;
 
+            int n = 1;
+            NumbersTable.Add(new List<int>());
+
             foreach (var item in html.Split(sep))
             {
                 if (item.IndexOf(' ') == -1) continue;
@@ -71,12 +75,18 @@ namespace WRFparser
                 int i = 0;
                 int.TryParse(rotate, out i);
                 numbers.Add(i);
+                if (n==24) {
+                    n = 1;
+                    NumbersTable.Add(new List<int>());
+                }
+                NumbersTable[NumbersTable.Count - 1].Add(i);
+                n++;
             }
 
-            if(DebugTest)
+            if(Config.Debug)
                 CreateBitmap();
 
-            //Debug.WriteLine(numbers.Count);
+            Debug.WriteLine(Config.Height);
 
             int count = 1;
             int timeCounter = 1;
@@ -103,8 +113,36 @@ namespace WRFparser
             int x = 0;
             int y = size-offset-20;
             int yStart = y;
-            int count = 0;
-            int timeCounter = 1;
+            int countOfCol = 0;
+            int countOfRow = 0;
+            foreach (var col in NumbersTable)
+            {
+                countOfCol++;
+                /*
+                if (countOfCol < (int)Time[0])
+                    continue;
+                */
+                foreach (var row in col)
+                {
+                    if (Config.Height == countOfRow)
+                    {
+                        if (countOfCol >= (int)Time[0] && countOfCol <= (int)Time[1])
+                            g.DrawImage(CreateBitmapArrow(row - 90, Color.DarkGreen), new Point(x, y));
+                        else
+                            g.DrawImage(CreateBitmapArrow(row - 90, Color.Black), new Point(x, y));
+                        y -= offset;
+                        //break;
+                    }
+                    countOfRow++;
+                }
+                /*
+                if (countOfCol >= (int)Time[1])
+                    break;
+                */
+                x += offset;
+                y = yStart;
+            }
+            /*
             foreach (var i in numbers)
             {
                 count++;
@@ -127,6 +165,7 @@ namespace WRFparser
                 if (y <= 0)
                     break;
             }
+            */
             Show(bmp);
         }
 
@@ -148,7 +187,7 @@ namespace WRFparser
 
         private static void Show(Bitmap bmp, string title = "")
         {
-            //new FormTemplate(title, bmpNew).Show();                
+            new FormTemplate(title, bmp).Show();                
             string dir = "temp";
             if(!Directory.Exists(dir))
                 System.IO.Directory.CreateDirectory(dir);
