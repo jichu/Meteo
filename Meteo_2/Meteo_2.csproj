@@ -14,6 +14,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,8 +30,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,7 +80,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -99,11 +99,18 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WRFdll">
-      <HintPath>..\WRFdll\bin\Debug\WRFdll.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cloud3DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cloud3DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="CloudDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CloudDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="CloudOutput.cs" />
     <Compile Include="CloudOutputData.cs" />
     <Compile Include="CloudSamples.cs" />
@@ -215,6 +222,11 @@
     </Compile>
     <Compile Include="Util.cs" />
     <Compile Include="View.cs" />
+    <Compile Include="_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.xsd</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormLoader.resx">
       <DependentUpon>FormLoader.cs</DependentUpon>
     </EmbeddedResource>
@@ -415,6 +427,28 @@
     <None Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET\Vítr_850\Barvy_stupnice.csv" />
     <None Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET_Srážky\model.cfg" />
     <None Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET_Srážky\Srážky_MAIN\Barvy_stupnice.csv" />
+    <None Include="Cloud3DataSet.xsc">
+      <DependentUpon>Cloud3DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Cloud3DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Cloud3DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Cloud3DataSet.xss">
+      <DependentUpon>Cloud3DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="CloudDataSet.xsc">
+      <DependentUpon>CloudDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="CloudDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CloudDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CloudDataSet.xss">
+      <DependentUpon>CloudDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Drapper.Settings.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -426,6 +460,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.xsc">
+      <DependentUpon>_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.xss">
+      <DependentUpon>_C__SOURCE_REPOS_METEO_2_CLOUD3_MDFDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\config\masks\Model_ALADIN_CZ.bmp" />
@@ -602,12 +647,9 @@
     <Content Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET\Vítr_850\18.png" />
     <Content Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET\Vítr_850\21.png" />
     <Content Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET_Srážky\Model_WRF_NMM_FLYMET_Srážky.bmp" />
-    <Content Include="Cloud3.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Cloud3.mdf" />
     <Content Include="Cloud3_log.ldf">
       <DependentUpon>Cloud3.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

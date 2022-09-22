@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WRFdll;
 using WRFparser;
 
 namespace Meteo
@@ -165,10 +164,12 @@ namespace Meteo
                     return;
             Util.ShowLoading("Načítání vstupů...", "", false);
             List<Task> tasks = new List<Task>();
+            /*
             WRF.Init(new Dictionary<string, string>{
                  { "mask", Util.pathSource["wrf_mask"] },
                  { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
                 }, false);
+            */
 
             tasks.Add(Task.Run(() => UserControlModel.Instance.EnumerationModels()));
             Task.WaitAll(tasks.ToArray());
@@ -230,8 +231,7 @@ namespace Meteo
         {
             Util.l($"Spuštění předpovědního algoritmu...");
             Util.ShowLoading("Algoritmus počítá předpověď....");
-            new StormEngine(algorithms.statistic_forecast);
-            /*try
+            try
             {
                 new StormEngine(algorithms.statistic_forecast);
                 //UserControlOutput.Instance.Render();
@@ -242,7 +242,7 @@ namespace Meteo
                 Util.l(ex.Message);
                 Util.validData = false;
                 new StormEngine(algorithms.statistic_forecast);
-            }*/
+            }
             Util.HideLoading();
             Util.l($"Výpočet ukončen");
         }
@@ -319,7 +319,9 @@ namespace Meteo
             LaunchAll();
         }
 
-        private void closeMeteo() {
+        private void closeMeteo()
+        {
+            Close();
             Application.Exit();
         }
 
@@ -327,6 +329,7 @@ namespace Meteo
 
         public void ApplyWRF(List<string> missed = null)
         {
+            Util.ShowLoading("Načítání a zpracování směrů větru...", "", false);
             wrf = new WRFparser.ApplyWRF(missed);
             wrf.OnCompleted += WRF_completed;
         }
@@ -381,8 +384,7 @@ namespace Meteo
                     {
                         tempArr.Add(item.Value[i]);
                     }
-                    catch (ArgumentOutOfRangeException ex)
-                    {
+                    catch (ArgumentOutOfRangeException ex) {
                         //Util.l(ex);
                         continue;
                     }
@@ -409,9 +411,24 @@ namespace Meteo
             //Application.DoEvents();
             this.Invoke(new Action(() =>
             {
+                Kill();
+                Util.ShowLoading($"WRF completed: In time: {(double)output.ExecutionTime / 1000}");
                 DoAll();
             }));
             
+        }
+        public void Kill()
+        {
+
+            /*Process[] workers = Process.GetProcessesByName("msedgewebview2");
+            foreach (Process worker in workers)
+            {
+                worker.Kill();
+                worker.WaitForExit();
+                worker.Dispose();
+            }*/
+            /*string strCmdText = "taskkill /im msedgewebview2.exe /t /F";
+            System.Diagnostics.Process.Start("CMD.exe",strCmdText);*/
         }
     }
 }

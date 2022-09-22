@@ -27,7 +27,8 @@ namespace Meteo
             { "Teplá okluze - supercelární bouře", "TEPLÁ OKLUZE - SUPERCELÁRNÍ BOUŘE: !!!VYSOKÉ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ a slabší TORNÁDA!!!"},
             { "Kvazifrontální konvekce", "KVAZIFRONTÁLNÍ KONVEKCE: nehrozí ŽÁDNÉ nebezpečí"},
             { "Orografická konvekce", "OROGRAFICKÁ KONVEKCE: !!!NÍZKÉ nebezpečí na SILNÉ BOUŘKY a PŘÍVALOVÉ POVODNĚ!!!"},
-            { "Orografická konvekce - linie konvergence", "OROGRAFICKÁ KONVEKCE - LINIE KONVERGENCE (SQL): !!!EXTRÉMNÍ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ slabší TORNÁDA!!!"}
+            { "Orografická konvekce - linie konvergence", "OROGRAFICKÁ KONVEKCE - LINIE KONVERGENCE (SQL): !!!EXTRÉMNÍ nebezpečí na SILNÉ BOUŘKY, PŘÍVALOVÉ POVODNĚ slabší TORNÁDA!!!"},
+            { "", "V tomto čase se nevyskytují žádné konvektivní srážky."}
         };
 
         public string convectionSuperTypeMajor { get; set; }

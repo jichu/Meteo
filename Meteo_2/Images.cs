@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WRFdll;
 
 namespace Meteo
 {
@@ -53,6 +52,7 @@ namespace Meteo
         }
 
         private void LoadWindDirection(SourceImage si) {
+            /*
             if (si.Type == "WIND")
             {
                 string samplename = si.Path.Split('\\').Last().Split('.')[0];
@@ -62,7 +62,6 @@ namespace Meteo
                 wrfSet = new Dictionary<string, string>{
                  { "source", si.Path },
                 };
-
                 Dictionary<string, string> wrf = WRF.Process(wrfSet);
                 if (wrf != null)
                 {
@@ -76,6 +75,7 @@ namespace Meteo
                     }
                 }
             }
+            */
         }
 
         private void LoadPointsOfColorsInMap(bool onlyEnumeration=false)

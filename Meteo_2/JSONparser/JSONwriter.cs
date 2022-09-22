@@ -11,7 +11,7 @@ namespace Meteo.JSONparser
 {
     internal static class JSONwriter
     {
-        internal static string PathJson { get; set; } = "export";
+        internal static string PathJson { get; set; } = @"C:\Meteo\data";//C://Meteo/data/
         private static string fienamePostfix = "";
         private static string format = "yyMMdd_HHmmss";
         private static string ext = ".json";

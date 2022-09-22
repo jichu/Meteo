@@ -306,6 +306,22 @@ namespace Meteo
               "_"+Util.curModelDir
             );
 
+            JSONwriter.CreateJsonRoot(
+              new JObject
+              (
+                   new JProperty("validdata", listSamples.Count(s => s.keyData == false) == 0),
+                   new JProperty("missingdata", Util.logMissingParameters),
+                   new JProperty("date", GetValueFromSettingsList(settings, "last_date")),
+                   new JProperty("samplename", sampleNames),
+                   new JProperty("majorconvectiontype", majorConvectionTypesData),
+                   new JProperty("majorconvectionsupertype", majorConvectionSuperTypesData),
+                   new JProperty("maindata", arrayMain),
+                   new JProperty("secondarydata", arraySec),
+                   new JProperty("advanceddata", arrayAdv)
+               ),
+              "data"
+            );
+
             //Util.l($"Počet záznamů v cache: {Util.outputDataCache.Count()}");
 
             //Util.StopWatch("Vypočet dokončen!");

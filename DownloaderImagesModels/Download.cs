@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -140,9 +141,16 @@ namespace DownloaderImagesModels
 
         private async Task RunAfter()
         {
-            await Task.Delay(100);
-            var process = System.Diagnostics.Process.Start(runAfter);
-            process.WaitForExit();
+            await Task.Delay(50);
+            if (!File.Exists(runAfter)) return;
+            using (Process p = new Process())
+            {
+                p.StartInfo.FileName = runAfter;
+                p.StartInfo.UseShellExecute = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.Start();
+                p.WaitForExit();
+            }
         }
 
         private void LoadConfig(string fileName)
@@ -161,7 +169,7 @@ namespace DownloaderImagesModels
                     if (item.Length > 2) continue;
                     string value = item[1];
                     string key = item[0];
-                    if (key == "pathOutput") pathOutput = value;
+                    if (key == "pathOutput") pathOutput = @value;
                     if (key == "pathOutputDate") pathOutputDate = value;
                     if (key == "timeupdate") ParseTimeUpdate(value);
                     if (key == "runAfter") runAfter = @value;
