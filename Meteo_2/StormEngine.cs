@@ -306,7 +306,7 @@ namespace Meteo
               "_"+Util.curModelDir
             );
 
-            JSONwriter.CreateJsonRoot(
+            JSONwriter.CreateJsonData(
               new JObject
               (
                    new JProperty("validdata", listSamples.Count(s => s.keyData == false) == 0),

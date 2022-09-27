@@ -21,14 +21,59 @@ namespace Meteo
     {
         dynamic ControlActive = null;
         public bool Preloader { get; set; } = false;
+        public static Config Config { get; set; }
+        private NotifyIcon notifyIcon = new NotifyIcon();
 
         public FormMain()
         {
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            Config.Load();
+            NotifyIcon();
+            this.Hide();
             View.FormMain = this;
             menuSettingWind.Checked = false;
             Application.Idle += Application_Idle;
+        }
+
+        private void NotifyIcon()
+        {
+            notifyIcon.Text = "Meteo";
+            notifyIcon.Icon = (Icon)Properties.Resources.icon;
+            notifyIcon.Visible = true;
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            ToolStripMenuItem exitApplication = new ToolStripMenuItem();
+            notifyIcon.ContextMenuStrip = contextMenu;
+            notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+            exitApplication.Text = "Zavřít";
+            exitApplication.Click += new EventHandler(ExitApplication_Click);
+            contextMenu.Items.Add(exitApplication);
+        }
+
+        public void ShowBalloonTip(string text, int duration)
+        {
+            BeginInvoke(new MethodInvoker(delegate
+            {
+                notifyIcon.BalloonTipText = text;
+                notifyIcon.ShowBalloonTip(duration * 1000);
+            }));
+        }
+
+        private void ExitApplication_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            if(!Config.Debug) return;
+            if (!this.Visible)
+            {
+                this.TopMost = true;
+                this.Show();
+            }
+            else
+                this.Hide();
         }
 
         private void Application_Idle(object sender, EventArgs e)
@@ -37,10 +82,18 @@ namespace Meteo
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-         //   Util.ShowLoading("Načítání aplikace...");
+            BeginInvoke(new MethodInvoker(delegate
+            {
+                Hide();
+
+            }));
+            ShowBalloonTip(this.Text, 2);
+
             new Controller();
-            //ApplyWRF();
-            //this.menuItemOutput.PerformClick();            
+
+            //Automatické spuštění celého výpočtu
+            LaunchAll();
+
         }
 
         public void ShowControlLoader(string message="Zpracování...")
@@ -90,6 +143,8 @@ namespace Meteo
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+
+            notifyIcon = null;
             try
             {
                 foreach (var process in Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName))
@@ -113,16 +168,6 @@ namespace Meteo
         private void menuItemLoadModels_Click(object sender, EventArgs e)
         {
             LoadModels();
-            /*
-            DialogResult dialogResult = MessageBox.Show("Jste si jistí, že chcete přepat data aktuálníma maskama ORP a adresářovou strukturou?", "Načíst data do databáze", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                FormSetModelsDir f = new FormSetModelsDir();
-                f.ShowDialog();
-                PreImage mapORP = new PreImage();
-                mapORP.LoadORPfromModels();
-            }
-            */
         }
 
         private void LoadModels()
@@ -164,13 +209,6 @@ namespace Meteo
                     return;
             Util.ShowLoading("Načítání vstupů...", "", false);
             List<Task> tasks = new List<Task>();
-            /*
-            WRF.Init(new Dictionary<string, string>{
-                 { "mask", Util.pathSource["wrf_mask"] },
-                 { "mask_orp", Util.pathSource["masks"]+"Model_WRF_NMM_FLYMET.bmp" }
-                }, false);
-            */
-
             tasks.Add(Task.Run(() => UserControlModel.Instance.EnumerationModels()));
             Task.WaitAll(tasks.ToArray());
             Util.HideLoading();
@@ -267,14 +305,7 @@ namespace Meteo
 
         private void menuDoAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //List<Task> taskList = new List<Task>();
-            //taskList.Add(Task.Run(() => DoAll())); 
-            //Task.WaitAll(taskList.ToArray());
-
             DoAll();
-            /*LoadModels();
-            LoadInputs();
-            LoadAlgorithm();*/
         }
 
         public void DoAll() {
@@ -297,26 +328,21 @@ namespace Meteo
         private void menuItemStatForecasting_Click(object sender, EventArgs e)
         {
             Util.l("Začátek počítání statistické předpovědi");
-            /*List<Task> taskList = new List<Task>();
-            taskList.Add(Task.Run(() => LoadAlgorithm())); 
-            Task.WaitAll(taskList.ToArray());*/
 
             LoadAlgorithm();
-            //Thread.Sleep(TimeSpan.FromSeconds(1));
             closeMeteo();
         }
 
         private CancellationTokenSource ts = new CancellationTokenSource();
 
         public void LaunchAll() {
-            //ApplyWRF(new List<string>() { "Zlín", "Praha"});
             ApplyWRF();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            //Automatické spuštění celého výpočtu
-            LaunchAll();
+
+
         }
 
         private void closeMeteo()
@@ -372,7 +398,7 @@ namespace Meteo
             foreach (var i in output.DicData) 
                 Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");            
             Util.l($"Pokusů:{10-WRFattempt+1}");
-            File.WriteAllText("_wrf.txt", output.JsonData.ToString());
+            File.WriteAllText("wrf.tmp", output.JsonData.ToString());
 
             List<string> tempArr = new List<string>{ };
             List<string> majorWind = new List<string> { };

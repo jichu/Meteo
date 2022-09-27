@@ -125,6 +125,7 @@ namespace Meteo
 
         public static void ShowLoading(string message, string info="", bool selfClose=true)
         {
+            View.FormMain.ShowBalloonTip(message, 1);
             Preloader.ShowAuto(message, info, selfClose);
         }
         public static void HideLoading()

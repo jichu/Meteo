@@ -651,6 +651,8 @@
     <Content Include="Cloud3_log.ldf">
       <DependentUpon>Cloud3.mdf</DependentUpon>
     </Content>
+    <Compile Include="Config.cs" />
+    <None Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -659,9 +661,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\WRFparser\WRFparser.csproj">
       <Project>{07e472d2-b654-4773-88f1-7f4706d153a9}</Project>

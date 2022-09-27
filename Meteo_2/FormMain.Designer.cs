@@ -40,8 +40,8 @@
             this.menuItemOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemForecast = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemPalette = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuDoAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemStatForecasting = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDoAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemWind = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSettingWind = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLayout = new System.Windows.Forms.Panel();
@@ -58,8 +58,7 @@
             this.menuItemWind});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuMain.Size = new System.Drawing.Size(1008, 24);
+            this.menuMain.Size = new System.Drawing.Size(2279, 33);
             this.menuMain.TabIndex = 2;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -68,13 +67,13 @@
             this.souborToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemClose});
             this.souborToolStripMenuItem.Name = "souborToolStripMenuItem";
-            this.souborToolStripMenuItem.Size = new System.Drawing.Size(57, 22);
+            this.souborToolStripMenuItem.Size = new System.Drawing.Size(87, 29);
             this.souborToolStripMenuItem.Text = "Soubor";
             // 
             // menuItemClose
             // 
             this.menuItemClose.Name = "menuItemClose";
-            this.menuItemClose.Size = new System.Drawing.Size(107, 22);
+            this.menuItemClose.Size = new System.Drawing.Size(162, 34);
             this.menuItemClose.Text = "Konec";
             this.menuItemClose.Click += new System.EventHandler(this.menuItemClose_Click);
             // 
@@ -91,14 +90,14 @@
             this.menuItemStatForecasting,
             this.menuDoAllToolStripMenuItem});
             this.modelyToolStripMenuItem.Name = "modelyToolStripMenuItem";
-            this.modelyToolStripMenuItem.Size = new System.Drawing.Size(59, 22);
+            this.modelyToolStripMenuItem.Size = new System.Drawing.Size(88, 29);
             this.modelyToolStripMenuItem.Text = "Modely";
             // 
             // menuItemExplore
             // 
             this.menuItemExplore.Name = "menuItemExplore";
             this.menuItemExplore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.menuItemExplore.Size = new System.Drawing.Size(340, 22);
+            this.menuItemExplore.Size = new System.Drawing.Size(514, 34);
             this.menuItemExplore.Text = "Prohlídnout modely";
             this.menuItemExplore.Visible = false;
             this.menuItemExplore.Click += new System.EventHandler(this.menuItemExplore_Click);
@@ -107,7 +106,7 @@
             // 
             this.menuItemLoadModels.Name = "menuItemLoadModels";
             this.menuItemLoadModels.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuItemLoadModels.Size = new System.Drawing.Size(340, 22);
+            this.menuItemLoadModels.Size = new System.Drawing.Size(514, 34);
             this.menuItemLoadModels.Text = "Načíst modely a ORP masky ...";
             this.menuItemLoadModels.Click += new System.EventHandler(this.menuItemLoadModels_Click);
             // 
@@ -115,7 +114,7 @@
             // 
             this.menuItemLoadInputs.Name = "menuItemLoadInputs";
             this.menuItemLoadInputs.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.menuItemLoadInputs.Size = new System.Drawing.Size(340, 22);
+            this.menuItemLoadInputs.Size = new System.Drawing.Size(514, 34);
             this.menuItemLoadInputs.Text = "Načíst vstupy";
             this.menuItemLoadInputs.Click += new System.EventHandler(this.menuItemLoadInputs_Click);
             // 
@@ -123,7 +122,7 @@
             // 
             this.MenuItemAlgorithm.Name = "MenuItemAlgorithm";
             this.MenuItemAlgorithm.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
-            this.MenuItemAlgorithm.Size = new System.Drawing.Size(340, 22);
+            this.MenuItemAlgorithm.Size = new System.Drawing.Size(514, 34);
             this.MenuItemAlgorithm.Text = "Spustit algoritmus předpovědi bouří";
             this.MenuItemAlgorithm.Visible = false;
             this.MenuItemAlgorithm.Click += new System.EventHandler(this.MenuItemAlgorithm_Click);
@@ -132,7 +131,7 @@
             // 
             this.menuItemOutput.Name = "menuItemOutput";
             this.menuItemOutput.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuItemOutput.Size = new System.Drawing.Size(340, 22);
+            this.menuItemOutput.Size = new System.Drawing.Size(514, 34);
             this.menuItemOutput.Text = "Zobrazit výstup";
             this.menuItemOutput.Visible = false;
             this.menuItemOutput.Click += new System.EventHandler(this.menuItemOutput_Click);
@@ -140,7 +139,7 @@
             // menuItemForecast
             // 
             this.menuItemForecast.Name = "menuItemForecast";
-            this.menuItemForecast.Size = new System.Drawing.Size(340, 22);
+            this.menuItemForecast.Size = new System.Drawing.Size(514, 34);
             this.menuItemForecast.Text = "Obecné informace z webu";
             this.menuItemForecast.Visible = false;
             this.menuItemForecast.Click += new System.EventHandler(this.menuItemForecast_Click);
@@ -148,41 +147,41 @@
             // menuItemPalette
             // 
             this.menuItemPalette.Name = "menuItemPalette";
-            this.menuItemPalette.Size = new System.Drawing.Size(340, 22);
+            this.menuItemPalette.Size = new System.Drawing.Size(514, 34);
             this.menuItemPalette.Text = "Paleta masky";
             this.menuItemPalette.Visible = false;
             this.menuItemPalette.Click += new System.EventHandler(this.menuItemPalette_Click);
+            // 
+            // menuItemStatForecasting
+            // 
+            this.menuItemStatForecasting.Name = "menuItemStatForecasting";
+            this.menuItemStatForecasting.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.menuItemStatForecasting.Size = new System.Drawing.Size(514, 34);
+            this.menuItemStatForecasting.Text = "Statistická předpověď konvektivních srážek";
+            this.menuItemStatForecasting.Click += new System.EventHandler(this.menuItemStatForecasting_Click);
             // 
             // menuDoAllToolStripMenuItem
             // 
             this.menuDoAllToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.menuDoAllToolStripMenuItem.Name = "menuDoAllToolStripMenuItem";
             this.menuDoAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.menuDoAllToolStripMenuItem.Size = new System.Drawing.Size(340, 22);
+            this.menuDoAllToolStripMenuItem.Size = new System.Drawing.Size(514, 34);
             this.menuDoAllToolStripMenuItem.Text = "Proveď CELÝ výpočet předpovědí ...";
             this.menuDoAllToolStripMenuItem.ToolTipText = "Načíst modely a ORP masky, načíst vstupy, algoritmus předpovědí";
             this.menuDoAllToolStripMenuItem.Click += new System.EventHandler(this.menuDoAllToolStripMenuItem_Click);
-            // 
-            // menuItemStatForecasting
-            // 
-            this.menuItemStatForecasting.Name = "menuItemStatForecasting";
-            this.menuItemStatForecasting.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuItemStatForecasting.Size = new System.Drawing.Size(340, 22);
-            this.menuItemStatForecasting.Text = "Statistická předpověď konvektivních srážek";
-            this.menuItemStatForecasting.Click += new System.EventHandler(this.menuItemStatForecasting_Click);
             // 
             // menuItemWind
             // 
             this.menuItemWind.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuSettingWind});
             this.menuItemWind.Name = "menuItemWind";
-            this.menuItemWind.Size = new System.Drawing.Size(71, 22);
+            this.menuItemWind.Size = new System.Drawing.Size(105, 29);
             this.menuItemWind.Text = "Nastavení";
             // 
             // menuSettingWind
             // 
             this.menuSettingWind.Name = "menuSettingWind";
-            this.menuSettingWind.Size = new System.Drawing.Size(258, 22);
+            this.menuSettingWind.Size = new System.Drawing.Size(391, 34);
             this.menuSettingWind.Text = "Zahrnout do výpočtů i Směry větru";
             this.menuSettingWind.Click += new System.EventHandler(this.menuSettingWind_Click);
             // 
@@ -191,9 +190,10 @@
             this.panelLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelLayout.Location = new System.Drawing.Point(12, 27);
+            this.panelLayout.Location = new System.Drawing.Point(18, 42);
+            this.panelLayout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panelLayout.Name = "panelLayout";
-            this.panelLayout.Size = new System.Drawing.Size(983, 681);
+            this.panelLayout.Size = new System.Drawing.Size(2241, 2116);
             this.panelLayout.TabIndex = 3;
             // 
             // backgroundWorkerEnumerationModels
@@ -202,17 +202,20 @@
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1008, 690);
+            this.ClientSize = new System.Drawing.Size(2279, 2130);
             this.Controls.Add(this.panelLayout);
             this.Controls.Add(this.menuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMain;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormMain";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Aplikace předpovědi meteorologických modelových výstupů";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.Shown += new System.EventHandler(this.FormMain_Shown);

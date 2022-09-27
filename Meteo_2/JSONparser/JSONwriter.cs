@@ -11,7 +11,7 @@ namespace Meteo.JSONparser
 {
     internal static class JSONwriter
     {
-        internal static string PathJson { get; set; } = @"C:\Meteo\data";//C://Meteo/data/
+        internal static string PathJson { get; set; } = @"data";//C://Meteo/data/
         private static string fienamePostfix = "";
         private static string format = "yyMMdd_HHmmss";
         private static string ext = ".json";
@@ -40,12 +40,20 @@ namespace Meteo.JSONparser
 
         internal static void CreateJson(JObject data = null, string fPostfix = "")
         {
+            PathJson = FormMain.Config.PathExportOutputDataArchives;
             fienamePostfix = fPostfix;
             //_ = Do(data ?? JData, "");
             Do(data ?? JData, "");
         }
         internal static void CreateJsonRoot(JObject data = null, string filename = "root")
         {
+            PathJson = FormMain.Config.PathExportOutputData;
+            // _ = Do(data ?? JData, filename);
+            Do(data ?? JData, filename);
+        }
+        internal static void CreateJsonData(JObject data = null, string filename = "archives")
+        {
+            PathJson = FormMain.Config.PathExportOutputData;
             // _ = Do(data ?? JData, filename);
             Do(data ?? JData, filename);
         }
