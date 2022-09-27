@@ -21,9 +21,9 @@ namespace WRFparser
         [JsonProperty]
         public int Timeout { get; set; } = 5000;
         [JsonProperty]
-        public string OutputFile { get; set; } = "__.json";
-        [JsonProperty]
         public JArray Time { get; set; } = new JArray() { 4, 11 };
+        [JsonProperty]
+        public int Height { get; set; } = 1;
 
         private static string file = System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".json";
 

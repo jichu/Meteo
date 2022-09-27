@@ -30,7 +30,7 @@ namespace SmeryVetru
 
         private void Do(List<string> missed=null)
         {
-            var wrf = new WRFparser.ApplyWRF(missed);
+            var wrf = new WRFparser.ApplyWRF(missed, "WRFparser.config.test.json");
             wrf.OnCompleted += WRF_completed;
         }
 
