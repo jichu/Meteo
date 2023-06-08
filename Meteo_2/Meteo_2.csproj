@@ -170,6 +170,7 @@
     <Compile Include="CloudMaskSpectrum.cs" />
     <Compile Include="Chu.cs" />
     <Compile Include="Ji.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="PrecipitationFilter.cs" />
     <Compile Include="StatisticalForecast.cs" />
     <Compile Include="UserControlLoader.cs">
@@ -647,6 +648,11 @@
     <Content Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET\Vítr_850\18.png" />
     <Content Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET\Vítr_850\21.png" />
     <Content Include="bin\Debug\models\models__12h__03.05.2019\Model_WRF_NMM_FLYMET_Srážky\Model_WRF_NMM_FLYMET_Srážky.bmp" />
+    <Content Include="bin\Release\Meteo.exe" />
+    <Content Include="bin\Release\Microsoft.Web.WebView2.Core.dll" />
+    <Content Include="bin\Release\Microsoft.Web.WebView2.WinForms.dll" />
+    <Content Include="bin\Release\Microsoft.Web.WebView2.Wpf.dll" />
+    <Content Include="bin\Release\WRFparser.dll" />
     <Content Include="Cloud3.mdf" />
     <Content Include="Cloud3_log.ldf">
       <DependentUpon>Cloud3.mdf</DependentUpon>

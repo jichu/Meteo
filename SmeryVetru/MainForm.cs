@@ -23,8 +23,8 @@ namespace SmeryVetru
         private void MainForm_Load(object sender, EventArgs e)
         {
             Do();
-            //Do(new List<string>() { "Zlín" });
-        //    _ = RunWebAsync("https://www.windguru.cz/343224", "Zlín");
+          //  Do(new List<string>() { "Zlín" });
+            //_ = RunWebAsync("https://www.windguru.cz/343224", "Zlín");
         }
 
 
@@ -145,7 +145,7 @@ namespace SmeryVetru
         
         private void SaveOutput(string outputs)
         {
-            System.IO.File.WriteAllText("_tt.txt", outputs.ToString());
+            System.IO.File.WriteAllText("wrf.tmp", outputs.ToString());
         }
 
         private void button1_Click(object sender, EventArgs e)

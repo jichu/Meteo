@@ -27,6 +27,7 @@ namespace Meteo
         public FormMain()
         {
             InitializeComponent();
+            Log.Clear();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             Config.Load();
             NotifyIcon();
@@ -365,11 +366,11 @@ namespace Meteo
         private void WRF_completed(object sender, EventArgs e)
         {
             var output = (sender as WRFparser.ApplyWRF).Output;
-            Console.WriteLine($"WRF completed: In time: {(double)output.ExecutionTime / 1000}");
+            Log.Add($"WRF completed: In time: {(double)output.ExecutionTime / 1000}");
 
             if (output.ErrorTimeout)
             {
-                Console.WriteLine("WRF: ErrorTimeout");
+                Log.Add("WRF: ErrorTimeout");
                 return;
             }
 
@@ -380,7 +381,7 @@ namespace Meteo
                 if (output.ErrorDataNull.Count > 0)
                 {
                     foreach (var i in output.ErrorDataNull)
-                        Console.WriteLine($"WRF: Data {i} not found");
+                        Log.Add($"WRF: Data {i} not found");
 
                     WRFattempt--;
                     
@@ -396,7 +397,7 @@ namespace Meteo
                 }
             output.DicData = WRFDict;
             foreach (var i in output.DicData) 
-                Console.WriteLine($"WRF: {i.Key} : {i.Value.Count}");            
+                Log.Add($"WRF: {i.Key} : {i.Value.Count}");            
             Util.l($"Pokusů:{10-WRFattempt+1}");
             File.WriteAllText("wrf.tmp", output.JsonData.ToString());
 

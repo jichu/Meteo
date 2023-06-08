@@ -80,6 +80,7 @@ namespace SmeryVetru
             this.wv.Location = new System.Drawing.Point(50, 74);
             this.wv.Name = "wv";
             this.wv.Size = new System.Drawing.Size(1044, 671);
+            this.wv.Source = new System.Uri("https://www.windguru.cz/343224", System.UriKind.Absolute);
             this.wv.TabIndex = 3;
             this.wv.ZoomFactor = 1D;
             // 

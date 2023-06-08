@@ -19,8 +19,10 @@ namespace WRFparser
 
         public ApplyWRF(List<string> filterOnlyThisORP = null, string configFilename = null)
         {
+            Log.Clear();
             var cfg = configFilename == null ? "WRFparser.config.json" : configFilename;
             if (!File.Exists(cfg)) return;
+            Log.Add($"{cfg} loaded OK");
             WRFparser.Init(cfg);
 
             foreach (var orp in WRFparser.Config.ORP)
@@ -66,7 +68,7 @@ namespace WRFparser
 
         private async Task LoadHtmlAsync2(WebView2 wv)
         {
-            Console.WriteLine($"... WRF: processing {wv.Tag.ToString()}");
+            Log.Add($"... WRF: processing {wv.Tag.ToString()}");
             if (Output.DicData.ContainsKey(wv.Tag.ToString())) return;
             if (cookiesOnce)
             {
