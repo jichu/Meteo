@@ -28,11 +28,12 @@ namespace Meteo
         {
             InitializeComponent();
             Log.Clear();
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             Config.Load();
             NotifyIcon();
             this.Hide();
             View.FormMain = this;
+            WeViewTest();
             menuSettingWind.Checked = false;
             Application.Idle += Application_Idle;
         }
@@ -63,6 +64,12 @@ namespace Meteo
         private void ExitApplication_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void WeViewTest()
+        {
+            if (!Config.Debug) return;
+            new FormTestWebView().ShowDialog();
         }
 
         private void NotifyIcon_DoubleClick(object sender, EventArgs e)
